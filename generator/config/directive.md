@@ -17,8 +17,9 @@ Avoid duplicates with the existing collection in `ui/components/glass/`. Priorit
    - Use Lucide icons (`<i data-lucide="..."></i>`) initialized via `lucide.createIcons()`.
 
 2. **Flexible Intent (Configurable by Prompt)**:
-   - Component Category: Buttons, Form Inputs, Cards, Badges, Pickers, Navigations, Steppers, Overlays, or Data Displays.
-   - Purpose: Workspace productivity, AI prompting, settings, dashboards, status indicators, or audio-visual feedback.
+   - Component Taxonomy: Buttons, Form Inputs, Sliders & Steppers, Toggles & Switches, Cards & Info Panels, Navigation & Docks, Telemetry & Visualizers, Dialogs & Overlays, Feedback & Alerts, Dashboards & Command Centers, Scenery (Composite multi-widget scenes & workstation setups), or "Other" (Novel experimental glass paradigms).
+   - Complexity: Single focused molecules, compound organisms, or composite scene layouts (Scenery).
+   - Purpose: Workspace productivity, AI prompting, monitoring, dashboards, creative tools, or sensory feedback.
 
 3. **Autonomous Exploration (Creative Space)**:
    - Visual treatments: Frosted glass, aurora gradients, glowing edges, specular highlights, liquid glass, refractive highlights.

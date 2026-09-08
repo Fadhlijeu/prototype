@@ -78,12 +78,25 @@ def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = Fals
     item_id = pipeline["queue"].enqueue_pending(decompiled, val, router_meta)
     print(f"      Successfully enqueued to: generator/queue/pending/{item_id}")
 
+    # Export web manifest for Generator Lab UI review
+    try:
+        manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
+        pipeline["queue"].export_web_manifest(manifest_out)
+        print(f"      Exported web manifest to: projects/generator-lab/queue.json")
+    except Exception as ex:
+        print(f"      [WARN] Could not export web manifest: {ex}")
+
     if auto_approve:
         print("\n[AUTO-APPROVE] Approving and deploying component to core design system...")
         deploy_res = pipeline["curator"].approve_and_deploy(item_id, auto_rebuild=True)
         if deploy_res.get("success"):
             print(f"      Deployed to: {deploy_res.get('deployed_to')}")
             print(f"      Rebuild status: OK")
+            # Update web manifest after approval
+            try:
+                pipeline["queue"].export_web_manifest(manifest_out)
+            except Exception:
+                pass
 
     return item_id
 
@@ -170,6 +183,11 @@ def main():
                 print(f"[SUCCESS] Approved and deployed to: {res.get('deployed_to')}")
             else:
                 print(f"[FAILED] {res.get('error')}")
+            try:
+                manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
+                pipeline["queue"].export_web_manifest(manifest_out)
+            except Exception:
+                pass
 
         if args.reject:
             print(f"\nRejecting item '{args.reject}'...")
@@ -178,6 +196,11 @@ def main():
                 print(f"[SUCCESS] Item moved to rejected queue.")
             else:
                 print(f"[FAILED] Could not reject item.")
+            try:
+                manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
+                pipeline["queue"].export_web_manifest(manifest_out)
+            except Exception:
+                pass
 
     else:
         parser.print_help()

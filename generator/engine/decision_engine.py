@@ -11,12 +11,17 @@ class DecisionEngine:
 
     CATEGORIES = {
         "inputs": ["input", "login", "form", "search", "password", "textarea", "prompt", "chat", "pill"],
+        "buttons": ["button", "fab", "action button", "pill button", "button group", "cta"],
+        "sliders": ["slider", "stepper", "scrubber", "range", "trackbar", "dial control"],
+        "controls": ["toggle", "switch", "checkbox", "radio", "selector", "segmented control"],
         "cards": ["card", "panel", "folder", "storage", "profile", "preview", "widget", "container"],
         "navigation": ["dock", "bar", "nav", "tab", "menu", "sidebar", "breadcrumb", "pagination"],
-        "controls": ["button", "toggle", "switch", "checkbox", "radio", "slider", "stepper"],
+        "telemetry": ["chart", "meter", "progress", "stat", "gauge", "graph", "histogram", "audio visualizer"],
         "overlays": ["modal", "dialog", "drawer", "sheet", "popup", "bottom sheet"],
         "feedback": ["toast", "notification", "alert", "badge", "tooltip", "status", "banner"],
-        "telemetry": ["chart", "meter", "progress", "stat", "gauge", "graph", "histogram"],
+        "dashboards": ["dashboard", "analytics", "command center", "metrics board", "kpi", "admin panel", "workbench"],
+        "scenery": ["scenery", "scene", "screenery", "composition", "full screen", "composite", "layout collection", "showcase scene", "workspace"],
+        "other": ["other", "lainnya", "bebas", "custom", "experimental", "hybrid", "creative", "misc", "novelty"]
     }
 
     VARIATIONS = [
@@ -65,12 +70,16 @@ class DecisionEngine:
             variation = random.choice(self.VARIATIONS)
 
         # 3. Determine atomic hierarchy
-        if detected_category in ["controls", "feedback"]:
+        if detected_category in ["controls", "buttons", "inputs"]:
             atomic_level = "Atomic"
-        elif detected_category in ["overlays", "navigation"]:
-            atomic_level = "Organism"
-        else:
+        elif detected_category in ["sliders", "cards", "navigation", "telemetry", "feedback"]:
             atomic_level = "Molecule"
+        elif detected_category in ["overlays"]:
+            atomic_level = "Organism"
+        elif detected_category in ["dashboards", "scenery"]:
+            atomic_level = "Composite Scenery"
+        else:
+            atomic_level = "Creative Freeform"
 
         # 4. Generate human-readable title and clean kebab slug
         words = re.findall(r"\b[a-zA-Z]{3,}\b", prompt)
@@ -96,12 +105,17 @@ class DecisionEngine:
         # Suggested icons
         icon_map = {
             "inputs": ["sparkles", "search", "send", "at-sign", "lock"],
+            "buttons": ["sparkles", "zap", "check", "play", "plus"],
+            "sliders": ["sliders", "sliders-horizontal", "gauge", "disc"],
             "cards": ["layout", "folder", "hard-drive", "cpu", "layers"],
             "navigation": ["compass", "grid", "home", "menu", "arrow-right"],
-            "controls": ["sliders", "toggle-right", "check", "play", "zap"],
+            "controls": ["toggle-right", "check", "play", "circle", "power"],
             "overlays": ["maximize-2", "x", "info", "shield", "external-link"],
             "feedback": ["bell", "alert-circle", "check-circle-2", "flame"],
             "telemetry": ["activity", "bar-chart-2", "trending-up", "gauge"],
+            "dashboards": ["layout-dashboard", "kanban", "pie-chart", "bar-chart-3"],
+            "scenery": ["monitor", "palette", "sparkles", "columns", "box"],
+            "other": ["sparkles", "wand-2", "shapes", "gem"]
         }
         icons = icon_map.get(detected_category, ["sparkles", "star"])
 

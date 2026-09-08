@@ -664,6 +664,9 @@
                 <a href="../../ui/components/glass/showcase.html" class="nav-btn" title="Showroom Komponen">
                     <i data-lucide="gem"></i> Live Showroom
                 </a>
+                <button type="button" class="nav-btn" onclick="syncCloudQueue(true)" title="Sinkronkan antrean review dari cloud/git">
+                    <i data-lucide="refresh-cw"></i> Sync Cloud
+                </button>
                 <button type="button" class="nav-btn btn-accent" onclick="openSettingsModal()" title="Pengaturan Cloud Gateway & Passkey">
                     <i data-lucide="shield"></i> Cloud & Passkey
                 </button>
@@ -740,15 +743,18 @@
                         <span>Taksonomi Kategori</span>
                     </label>
                     <select class="form-select" id="categorySelect">
-                        <option value="inputs">Form Inputs & Controls</option>
-                        <option value="buttons">Action & Buttons</option>
-                        <option value="sliders">Sliders & Steppers</option>
-                        <option value="controls">Toggles & Switches</option>
-                        <option value="cards">Cards & Information Panels</option>
-                        <option value="navigation">Navigation & Dock Bars</option>
-                        <option value="telemetry">Telemetry & Visualizer</option>
-                        <option value="overlays">Dialog & Overlays</option>
-                        <option value="feedback">Feedback & Toast Alerts</option>
+                        <option value="other">Other / Bebas &amp; Eksperimental</option>
+                        <option value="scenery">Scenery &amp; Multi-Widget Scene</option>
+                        <option value="dashboards">Dashboards &amp; Command Centers</option>
+                        <option value="buttons">Action &amp; Buttons</option>
+                        <option value="inputs">Form Inputs &amp; Controls</option>
+                        <option value="sliders">Sliders &amp; Steppers</option>
+                        <option value="controls">Toggles &amp; Switches</option>
+                        <option value="cards">Cards &amp; Information Panels</option>
+                        <option value="navigation">Navigation &amp; Dock Bars</option>
+                        <option value="telemetry">Telemetry &amp; Visualizer</option>
+                        <option value="overlays">Dialog &amp; Overlays</option>
+                        <option value="feedback">Feedback &amp; Toast Alerts</option>
                     </select>
                 </div>
 
@@ -887,13 +893,14 @@
                 </div>
             </div>
         </div>
-    </div>
-
     <!-- Toast Notification -->
     <div class="toast-notification" id="toast">
         <div class="toast-icon"><i data-lucide="sparkles"></i></div>
         <div id="toastMsg">Operasi berhasil!</div>
     </div>
+
+    <!-- Optional preloaded cloud queue (works seamlessly under file:// and http://) -->
+    <script src="queue.js"></script>
 
     <script>
         // ======================================================================
@@ -931,6 +938,9 @@
 
         const STANDARD_CATEGORIES = [
             { id: "all", label: "Semua" },
+            { id: "other", label: "Other / Bebas" },
+            { id: "scenery", label: "Scenery" },
+            { id: "dashboards", label: "Dashboards" },
             { id: "buttons", label: "Buttons" },
             { id: "inputs", label: "Inputs" },
             { id: "sliders", label: "Sliders" },
@@ -940,6 +950,43 @@
             { id: "telemetry", label: "Telemetry" },
             { id: "feedback", label: "Feedback & Modals" }
         ];
+
+        async function syncCloudQueue(showNotification = false) {
+            let cloudData = null;
+            if (window.PROTOTYPE_CLOUD_QUEUE && Array.isArray(window.PROTOTYPE_CLOUD_QUEUE.pending)) {
+                cloudData = window.PROTOTYPE_CLOUD_QUEUE;
+            }
+            try {
+                const res = await fetch(`queue.json?t=${Date.now()}`);
+                if (res.ok) {
+                    cloudData = await res.json();
+                }
+            } catch (err) {
+                // file:// protocol fallback to window.PROTOTYPE_CLOUD_QUEUE
+            }
+
+            if (cloudData && Array.isArray(cloudData.pending) && cloudData.pending.length > 0) {
+                const store = getLabStore();
+                let addedCount = 0;
+                cloudData.pending.forEach(cItem => {
+                    const inPending = store.pending.some(x => x.id === cItem.id || x.slug === cItem.slug);
+                    const inApproved = store.approved.some(x => x.id === cItem.id || x.slug === cItem.slug);
+                    const inRejected = store.rejected.some(x => x.id === cItem.id || x.slug === cItem.slug);
+                    if (!inPending && !inApproved && !inRejected) {
+                        store.pending.unshift(cItem);
+                        addedCount++;
+                    }
+                });
+                if (addedCount > 0) {
+                    saveLabStore(store);
+                    if (showNotification) showToast(`${addedCount} komponen baru dari Cloud berhasil masuk antrean!`);
+                } else if (showNotification) {
+                    showToast("Antrean cloud sudah sinkron dengan data lokal.");
+                }
+            } else if (showNotification) {
+                showToast("Antrean cloud kosong (0 pending).");
+            }
+        }
 
         function switchFilter(filter) {
             activeFilter = filter;
@@ -1145,6 +1192,21 @@
             store.approved.unshift(item);
 
             saveLabStore(store);
+
+            // Jika terhubung ke Cloud GAS, dispatch sinyal persetujuan
+            const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
+            const passkey = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
+            if (gasUrl) {
+                fetch(gasUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: "approve_item",
+                        item_id: id,
+                        passkey: passkey
+                    })
+                }).catch(() => {});
+            }
+
             showToast(`"${item.title}" berhasil disetujui & masuk ke Showroom!`);
         }
 
@@ -1159,6 +1221,21 @@
             store.rejected.unshift(item);
 
             saveLabStore(store);
+
+            // Jika terhubung ke Cloud GAS, dispatch sinyal penolakan
+            const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
+            const passkey = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
+            if (gasUrl) {
+                fetch(gasUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: "reject_item",
+                        item_id: id,
+                        passkey: passkey
+                    })
+                }).catch(() => {});
+            }
+
             showToast(`Kandidat "${item.title}" ditolak.`);
         }
 
@@ -1441,6 +1518,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) lucide.createIcons();
             renderCurrentView();
+            syncCloudQueue(false);
         });
     </script>
 </body>

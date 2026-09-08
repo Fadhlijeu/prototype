@@ -1,0 +1,23 @@
+{
+  "title": "Glass Scenery Composite",
+  "slug": "glass-scenery-composite",
+  "category": "scenery",
+  "badge": "Organism",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "scenery",
+    "interactive"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Composite Scenery",
+  "icons": [
+    "monitor",
+    "palette",
+    "sparkles",
+    "columns",
+    "box"
+  ],
+  "raw_prompt": "Glass scenery composite workstation viewport with weather node, server metrics and quick action dock"
+}

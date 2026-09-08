@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import time
 import urllib.request
@@ -36,10 +37,6 @@ class ModelRouter:
             env_key = provider.get("env_key")
             endpoint = provider.get("endpoint", "")
             api_key = os.environ.get(env_key) if env_key else None
-
-            # Localhost proxies (like local 9router) don't strictly require an external key
-            if not api_key and ("localhost" in endpoint or "127.0.0.1" in endpoint):
-                api_key = "sk-local-proxy"
 
             # Skip provider if required API key is missing (except mock provider)
             if env_key and not api_key:
@@ -150,7 +147,7 @@ class ModelRouter:
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"}
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
@@ -176,21 +173,69 @@ class ModelRouter:
             data=json.dumps(payload).encode("utf-8"),
             headers=headers
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return data["choices"][0]["message"]["content"]
 
     def _call_mock(self, system_prompt: str, user_prompt: str) -> str:
         """Deterministic offline mock generator for testing & CI without live keys."""
-        # Simple extraction of slug/title from prompt
-        title = "Aurora Glass Pill Badge"
-        slug = "aurora-glass-pill-badge"
-        if "input" in user_prompt.lower() or "login" in user_prompt.lower():
-            title = "Aurora Floating Glass Input"
-            slug = "aurora-floating-glass-input"
+        title_match = re.search(r"Title:\s*([^\n\r]+)", user_prompt)
+        slug_match = re.search(r"Slug:\s*([^\n\r]+)", user_prompt)
+        cat_match = re.search(r"Category:\s*([^\n\r]+)", user_prompt)
 
-        return f"""
-<!DOCTYPE html>
+        title = title_match.group(1).strip() if title_match else "Glass Dynamic Widget"
+        slug = slug_match.group(1).strip() if slug_match else re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+        category = cat_match.group(1).strip().lower() if cat_match else "other"
+
+        # Adaptive layout depending on category (scenery/dashboard vs single widget)
+        is_scenery = category in ["scenery", "dashboards"]
+        canvas_style = "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;width:100%;max-width:720px;" if is_scenery else "display:flex;align-items:center;justify-content:center;"
+
+        if category == "navigation":
+            widget_html = f"""
+            <nav class="glass-widget-box" aria-label="{title}">
+                <span class="glass-pill-icon"><i data-lucide="compass"></i></span>
+                <span class="glass-pill-text">{title}</span>
+                <span style="color:rgba(255,255,255,0.25);">/</span>
+                <span style="color:var(--accent-cyan,#06B6D4);font-size:13px;">Active</span>
+            </nav>"""
+        elif category == "telemetry":
+            widget_html = f"""
+            <div class="glass-widget-box" role="status" aria-label="{title}">
+                <span class="glass-pill-icon"><i data-lucide="gauge"></i></span>
+                <span class="glass-pill-text">{title}</span>
+                <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:9999px;overflow:hidden;">
+                    <div style="width:78%;height:100%;background:linear-gradient(90deg,#06B6D4,#3B82F6);"></div>
+                </div>
+                <span style="font-size:12px;font-weight:700;color:#22D3EE;">78%</span>
+            </div>"""
+        elif category == "sliders":
+            widget_html = f"""
+            <div class="glass-widget-box" style="flex-direction:column;align-items:stretch;width:280px;gap:10px;">
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;">
+                    <span>{title}</span>
+                    <span id="slider-val" style="color:#22D3EE;">65%</span>
+                </div>
+                <input type="range" min="0" max="100" value="65" style="accent-color:#06B6D4;width:100%;cursor:pointer;" oninput="document.getElementById('slider-val').innerText = this.value + '%'">
+            </div>"""
+        elif is_scenery:
+            widget_html = f"""
+            <div class="glass-widget-box" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                <span style="font-size:11px;color:#9CA3AF;text-transform:uppercase;">Composite Card A</span>
+                <div style="display:flex;align-items:center;gap:8px;font-weight:700;"><i data-lucide="layers" style="color:#06B6D4;"></i> {title}</div>
+            </div>
+            <div class="glass-widget-box" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                <span style="font-size:11px;color:#9CA3AF;text-transform:uppercase;">Telemetry Node B</span>
+                <div style="display:flex;align-items:center;gap:8px;font-weight:700;"><i data-lucide="activity" style="color:#10B981;"></i> 99.8% Sync</div>
+            </div>"""
+        else:
+            widget_html = f"""
+            <button type="button" class="glass-widget-box" id="sample-widget-btn" aria-label="{title}">
+                <span class="glass-pill-icon"><i data-lucide="sparkles"></i></span>
+                <span class="glass-pill-text">{title}</span>
+            </button>"""
+
+        return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -200,29 +245,29 @@ class ModelRouter:
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .component-canvas {{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 240px;
-            padding: 32px;
+            {canvas_style}
+            min-height: 220px;
+            padding: 24px;
             background: var(--bg-main, #030712);
+            box-sizing: border-box;
         }}
-        .glass-pill-widget {{
+        .glass-widget-box {{
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 20px;
-            background: var(--glass-surface-1, rgba(255, 255, 255, 0.04));
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            padding: 12px 22px;
+            background: var(--glass-surface-1, rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--glass-border-specular, rgba(255, 255, 255, 0.12));
-            border-radius: var(--radius-full, 9999px);
+            border-radius: var(--radius-lg, 16px);
             color: var(--text-primary, #f9fafb);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
+            box-sizing: border-box;
         }}
-        .glass-pill-widget:hover {{
+        .glass-widget-box:hover {{
             transform: translateY(-2px);
             background: var(--glass-surface-2, rgba(255, 255, 255, 0.08));
             border-color: rgba(6, 182, 212, 0.45);
@@ -236,11 +281,11 @@ class ModelRouter:
         .glass-pill-text {{
             font-family: var(--font-sans, system-ui);
             font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.02em;
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }}
         @media (prefers-reduced-motion: reduce) {{
-            .glass-pill-widget {{
+            .glass-widget-box {{
                 transition: none !important;
                 transform: none !important;
             }}
@@ -249,27 +294,24 @@ class ModelRouter:
 </head>
 <body>
     <div class="component-canvas">
-        <button type="button" class="glass-pill-widget" id="sample-pill-btn" aria-label="{title}">
-            <span class="glass-pill-icon"><i data-lucide="sparkles"></i></span>
-            <span class="glass-pill-text">{title}</span>
-        </button>
+        {widget_html}
     </div>
 
     <script id="component-manifest" type="application/json">
     {{
         "title": "{title}",
         "slug": "{slug}",
-        "category": "inputs",
-        "badge": "Molecule",
+        "category": "{category}",
+        "badge": "{'Organism' if is_scenery else 'Molecule'}",
         "variation": "aurora-gradient-glow",
-        "tags": ["glass", "pill", "aurora", "interactive"]
+        "tags": ["glass", "{category}", "interactive"]
     }}
     </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {{
             if (window.lucide) window.lucide.createIcons();
-            const btn = document.getElementById('sample-pill-btn');
+            const btn = document.getElementById('sample-widget-btn');
             if (btn) {{
                 btn.addEventListener('click', () => {{
                     btn.classList.toggle('active');

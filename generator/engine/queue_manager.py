@@ -140,3 +140,56 @@ class QueueManager:
             "approved": self._count_valid_items(self.approved_dir),
             "rejected": self._count_valid_items(self.rejected_dir),
         }
+
+    def export_web_manifest(self, output_path: str):
+        """Exports all pending review items to a single JSON manifest for the Generator Lab web UI."""
+        pending_list = []
+        for meta in self.get_pending_items():
+            item_id = meta.get("item_id", "")
+            slug = meta.get("slug", "")
+            item_dir = os.path.join(self.pending_dir, item_id)
+            preview_file = os.path.join(item_dir, f"{slug}.html")
+            if not os.path.exists(preview_file):
+                preview_file = os.path.join(item_dir, "index.html")
+
+            preview_html = ""
+            if os.path.exists(preview_file):
+                try:
+                    with open(preview_file, "r", encoding="utf-8") as f:
+                        preview_html = f.read()
+                except Exception:
+                    pass
+
+            manifest_file = os.path.join(item_dir, "manifest.json")
+            manifest_data = {}
+            if os.path.exists(manifest_file):
+                try:
+                    with open(manifest_file, "r", encoding="utf-8") as f:
+                        manifest_data = json.load(f)
+                except Exception:
+                    pass
+
+            pending_list.append({
+                "id": item_id,
+                "title": manifest_data.get("title", slug.replace("-", " ").title()),
+                "slug": slug,
+                "category": manifest_data.get("category", "other"),
+                "variation": manifest_data.get("variation", "frosted-glass"),
+                "score": meta.get("validation", {}).get("score", 95),
+                "provider": f"{meta.get('router', {}).get('provider', 'ai')}:{meta.get('router', {}).get('model', 'model')}",
+                "createdAt": meta.get("created_at", time.strftime("%Y-%m-%d %H:%M:%S")),
+                "previewHtml": preview_html
+            })
+
+        data = {
+            "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "pending": pending_list
+        }
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+
+        # Also write queue.js for file:// protocol support without CORS restrictions
+        js_path = os.path.splitext(output_path)[0] + ".js"
+        with open(js_path, "w", encoding="utf-8") as f:
+            f.write("window.PROTOTYPE_CLOUD_QUEUE = " + json.dumps(data, indent=2) + ";\n")

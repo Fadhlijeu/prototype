@@ -84,8 +84,30 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // Aksi 3: Persetujuan / Curation Approval dari Web UI
+    if (data.action === "approve_item" && data.item_id) {
+      var appRes = dispatchApproveToGitHub(data.item_id);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "APPROVED_DISPATCHED",
+        ok: true,
+        message: "Perintah persetujuan komponen diteruskan ke GitHub Actions",
+        dispatch: appRes
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Aksi 4: Penolakan / Curation Rejection dari Web UI
+    if (data.action === "reject_item" && data.item_id) {
+      var rejRes = dispatchRejectToGitHub(data.item_id);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "REJECTED_DISPATCHED",
+        ok: true,
+        message: "Perintah penolakan komponen diteruskan ke GitHub Actions",
+        dispatch: rejRes
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     var prompt = data.prompt || "Aurora Glass Floating Input with Glow";
-    var category = data.category || "inputs";
+    var category = data.category || "other";
     var directive = data.directive || "Explore new creative dark glass variations adhering to design tokens";
     var mode = data.mode || "dispatch"; // 'dispatch' (ke GitHub Actions) atau 'direct' (generate langsung di GAS)
 
@@ -172,11 +194,77 @@ function dispatchToGitHub(prompt, category, directive) {
 }
 
 /**
+ * Memicu persetujuan komponen ke GitHub Actions
+ */
+function dispatchApproveToGitHub(itemId) {
+  var githubToken = getSecret("GITHUB_REPO_TOKEN");
+  var repo = getSecret("GITHUB_REPO", "Fadhlijeu/prototype");
+  
+  var url = "https://api.github.com/repos/" + repo + "/dispatches";
+  var payload = {
+    event_type: "approve_task",
+    client_payload: {
+      action: "approve",
+      item_id: itemId,
+      timestamp: new Date().toISOString()
+    }
+  };
+
+  var options = {
+    method: "post",
+    headers: {
+      "Authorization": "Bearer " + githubToken,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  var response = UrlFetchApp.fetch(url, options);
+  var code = response.getResponseCode();
+  return { success: code >= 200 && code < 300, statusCode: code };
+}
+
+/**
+ * Memicu penolakan komponen ke GitHub Actions
+ */
+function dispatchRejectToGitHub(itemId) {
+  var githubToken = getSecret("GITHUB_REPO_TOKEN");
+  var repo = getSecret("GITHUB_REPO", "Fadhlijeu/prototype");
+  
+  var url = "https://api.github.com/repos/" + repo + "/dispatches";
+  var payload = {
+    event_type: "reject_task",
+    client_payload: {
+      action: "reject",
+      item_id: itemId,
+      timestamp: new Date().toISOString()
+    }
+  };
+
+  var options = {
+    method: "post",
+    headers: {
+      "Authorization": "Bearer " + githubToken,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  var response = UrlFetchApp.fetch(url, options);
+  var code = response.getResponseCode();
+  return { success: code >= 200 && code < 300, statusCode: code };
+}
+
+/**
  * METODE 2: Direct AI Call di Serverless Google (Gemini API)
  */
 function generateWithGeminiDirect(prompt) {
   var apiKey = getSecret("GEMINI_API_KEY");
-  var model = "gemini-1.5-flash"; // atau gemini-2.5-flash
+  var model = "gemini-1.5-flash";
   var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey;
 
   var systemInstruction = "You are the UI Component Architect for this design system. Generate complete single-file dark glassmorphism component HTML referencing ../css.css tokens and Lucide icons.";
@@ -202,36 +290,39 @@ function generateWithGeminiDirect(prompt) {
 /**
  * Trigger Otomatis Berulang (Cron Trigger)
  * Frekuensi bisa diatur di Triggers (Ikon Jam):
- * - Minutes timer: Every 1 minute, Every 5 minutes, Every 10 minutes
- * - Hour timer: Every hour
+ * - Minutes timer: Every 5 minutes, Every 10 minutes, Every 15 minutes, Every hour
  *
- * Tiap kali jalan, fungsi ini bisa men-dispatch beberapa variasi (batch) sekaligus!
+ * Tiap kali jalan, fungsi ini men-dispatch variasi batch otonom ke GitHub Actions.
  */
 function autonomousCronTrigger() {
   Logger.log("Menjalankan siklus otonom cloud Prototype...");
   
-  // Koleksi seed ide komponen untuk variasi otonom tanpa batas
+  // Koleksi seed kaya variasi: Single Molecules, Compound Organisms, Scenery, Dashboards, & Experimental Other
   var seedPool = [
-    "Floating glass telemetry dial gauge with specular illumination",
+    "Glass scenery composite workstation viewport with weather node, server metrics and quick action dock",
+    "Obsidian glass telemetry command center dashboard with mini sparkline charts and live status matrix",
     "Liquid frosted breadcrumb navigation with spring pill indicators",
+    "Floating glass telemetry dial gauge with specular illumination",
+    "Aurora glass interactive slider with magnetic haptic tick marks",
+    "Specular frosted floating action button with expandable speed dial",
+    "Experimental obsidian glass circular command wheel with radial touch hotspots",
+    "Aurora ambient gradient notification banner with refractive glass blur",
+    "Glass password strength meter with animated glowing segments",
+    "Cyberpunk dark glass HUD scenery with floating telemetry widgets",
+    "Holographic glass timeline node with reactive particle trail",
     "Obsidian glass segmented audio visualizer bar with live meter",
-    "Aurora ambient gradient notification card with glass glow",
-    "Frosted glass toggle switch with glowing micro-thumb",
-    "Glass interactive slider with magnetic haptic feedback",
-    "Aurora glass tab bar with liquid active indicator",
-    "Compact dark glass telemetry status pill with pulsing indicator",
-    "Specular glass file upload dropzone with blur refraction",
-    "Glass password strength meter with animated glowing segments"
+    "Liquid refraction multi-tab switcher with frosted specular pill",
+    "Dark glass floating telemetry node with dual ring dial and live latency"
   ];
   
-  // Acak dan kirim Batch (misal 2-3 komponen sekaligus per trigger)
-  var BATCH_COUNT = 2; // Ubah sesuai kebutuhan (1, 2, 3, dst.)
+  // Acak dan kirim Batch (misal 2 komponen sekaligus per trigger)
+  var BATCH_COUNT = 2;
   var shuffled = seedPool.sort(function() { return 0.5 - Math.random(); });
   
   for (var i = 0; i < Math.min(BATCH_COUNT, shuffled.length); i++) {
     var prompt = shuffled[i];
     Logger.log("Dispatching batch item #" + (i + 1) + ": " + prompt);
-    dispatchToGitHub(prompt, "autonomous", "Explore fresh glass interaction paradigms");
-    Utilities.sleep(1000); // jeda 1 detik antar dispatch
+    dispatchToGitHub(prompt, "other", "Explore diverse novel glass paradigms and scenery");
+    Utilities.sleep(1500); // jeda 1.5 detik antar dispatch
   }
 }

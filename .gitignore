@@ -35,14 +35,8 @@ __pycache__/
 *$py.class
 .pytest_cache/
 
-# Generator runtime caches & queues
+# Generator runtime caches & temp
 generator/queue/cache/
 generator/queue/temp/
-generator/queue/pending/*
-!generator/queue/pending/.gitkeep
-generator/queue/approved/*
-!generator/queue/approved/.gitkeep
-generator/queue/rejected/*
-!generator/queue/rejected/.gitkeep
 
 

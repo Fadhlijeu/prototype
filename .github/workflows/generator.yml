@@ -2,17 +2,25 @@ name: Autonomous Cloud Generator
 
 on:
   repository_dispatch:
-    types: [generate_task, glassos_generate_task]
+    types: [generate_task, glassos_generate_task, approve_task, reject_task]
   workflow_dispatch:
     inputs:
       prompt:
         description: "Component prompt to generate"
         required: false
-        default: "Aurora Floating Glass Input"
+        default: "Aurora Floating Glass Component"
       provider:
         description: "Provider (gemini, tokenrouter, mock)"
         required: false
         default: "gemini"
+      action:
+        description: "Action (generate, approve, reject)"
+        required: false
+        default: "generate"
+      item_id:
+        description: "Item ID (if action is approve or reject)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -31,15 +39,26 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run Autonomous Generator
+      - name: Run Autonomous Generator or Curation Action
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TOKENROUTER_API_KEY: ${{ secrets.TOKENROUTER_API_KEY }}
           ROUTER_API_KEY: ${{ secrets.ROUTER_API_KEY }}
         run: |
-          PROMPT="${{ github.event.client_payload.prompt || github.event.inputs.prompt || 'Aurora Floating Glass Component' }}"
-          echo "Generating component for prompt: $PROMPT"
-          python -m generator.runner generate --prompt "$PROMPT" --auto-approve
+          EVENT_TYPE="${{ github.event_name == 'repository_dispatch' && github.event.action || github.event.inputs.action || 'generate_task' }}"
+          ITEM_ID="${{ github.event.client_payload.item_id || github.event.inputs.item_id }}"
+
+          if [ "$EVENT_TYPE" = "approve_task" ] || [ "$EVENT_TYPE" = "approve" ]; then
+            echo "Approving pending component: $ITEM_ID"
+            python -m generator.runner curate --approve "$ITEM_ID"
+          elif [ "$EVENT_TYPE" = "reject_task" ] || [ "$EVENT_TYPE" = "reject" ]; then
+            echo "Rejecting pending component: $ITEM_ID"
+            python -m generator.runner curate --reject "$ITEM_ID"
+          else
+            PROMPT="${{ github.event.client_payload.prompt || github.event.inputs.prompt || 'Aurora Floating Glass Component' }}"
+            echo "Generating component for prompt: $PROMPT"
+            python -m generator.runner generate --prompt "$PROMPT"
+          fi
 
       - name: Rebuild Showcase & Web Apps Registry
         run: |
@@ -50,10 +69,10 @@ jobs:
         run: |
           git config --global user.name "Prototype Autonomous Bot"
           git config --global user.email "bot@prototype.local"
-          git add ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
+          git add generator/queue/ projects/generator-lab/queue.json ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
           if git diff --staged --quiet; then
-            echo "No new components to commit."
+            echo "No changes to commit."
           else
-            git commit -m "feat(generator): auto-deploy new glass component [skip ci]"
+            git commit -m "feat(generator): process autonomous queue pulse [skip ci]"
             git push origin main
           fi
