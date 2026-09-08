@@ -10,13 +10,37 @@
       "cooldown_seconds": 60,
       "models": [
         {
-          "model_id": "gemini-2.5-flash",
+          "model_id": "gemini-3.5-flash-lite",
           "capabilities": ["html", "css", "js", "creative-ui"],
           "priority": 100,
           "status": "available"
         },
         {
-          "model_id": "gemini-1.5-flash",
+          "model_id": "gemini-3.1-flash-lite",
+          "capabilities": ["html", "css", "js", "creative-ui"],
+          "priority": 80,
+          "status": "available"
+        },
+        {
+          "model_id": "gemini-3.5-flash",
+          "capabilities": ["html", "css", "js", "creative-ui"],
+          "priority": 80,
+          "status": "available"
+        },
+        {
+          "model_id": "gemini-3.6-flash",
+          "capabilities": ["html", "css", "js", "creative-ui"],
+          "priority": 80,
+          "status": "available"
+        },
+        {
+          "model_id": "gemini-3.7-flash",
+          "capabilities": ["html", "css", "js", "creative-ui"],
+          "priority": 80,
+          "status": "available"
+        },
+        {
+          "model_id": "gemini-3.8-flash",
           "capabilities": ["html", "css", "js", "creative-ui"],
           "priority": 80,
           "status": "available"
@@ -25,20 +49,30 @@
     },
     {
       "id": "9router",
-      "name": "9Router / OpenAI-Compatible API",
+      "name": "9Router (Local Gateway)",
       "env_key": "ROUTER_API_KEY",
-      "endpoint": "https://api.9router.com/v1/chat/completions",
+      "endpoint": "http://localhost:20128/v1/chat/completions",
       "priority": 2,
       "cooldown_seconds": 60,
       "models": [
         {
-          "model_id": "claude-3-5-sonnet",
+          "model_id": "openrouter/openrouter/free",
           "capabilities": ["html", "css", "js", "creative-ui"],
           "priority": 90,
           "status": "available"
-        },
+        }
+      ]
+    },
+    {
+      "id": "tokenrouter",
+      "name": "TokenRouter API",
+      "env_key": "TOKENROUTER_API_KEY",
+      "endpoint": "https://api.tokenrouter.com/v1/chat/completions",
+      "priority": 3,
+      "cooldown_seconds": 60,
+      "models": [
         {
-          "model_id": "gpt-4o",
+          "model_id": "z-ai/glm-5.3-free",
           "capabilities": ["html", "css", "js", "creative-ui"],
           "priority": 85,
           "status": "available"

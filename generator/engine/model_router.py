@@ -34,7 +34,12 @@ class ModelRouter:
         for provider in providers:
             p_id = provider["id"]
             env_key = provider.get("env_key")
+            endpoint = provider.get("endpoint", "")
             api_key = os.environ.get(env_key) if env_key else None
+
+            # Localhost proxies (like local 9router) don't strictly require an external key
+            if not api_key and ("localhost" in endpoint or "127.0.0.1" in endpoint):
+                api_key = "sk-local-proxy"
 
             # Skip provider if required API key is missing (except mock provider)
             if env_key and not api_key:
@@ -105,7 +110,7 @@ class ModelRouter:
                         "cascaded_from": errors
                     }
 
-                elif provider_id == "9router":
+                elif provider_id in ["9router", "tokenrouter"] or "chat/completions" in model.get("endpoint", "") or "v1" in model.get("endpoint", ""):
                     output = self._call_openai_compatible(model["endpoint"], model["model_id"], model["api_key"], system_prompt, user_prompt)
                     return output, {
                         "provider": provider_id,
@@ -150,6 +155,10 @@ class ModelRouter:
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
     def _call_openai_compatible(self, endpoint: str, model_id: str, api_key: str, system_prompt: str, user_prompt: str) -> str:
+        url = endpoint
+        if not url.endswith("/chat/completions"):
+            url = url.rstrip("/") + "/chat/completions"
+
         payload = {
             "model": model_id,
             "messages": [
@@ -158,13 +167,14 @@ class ModelRouter:
             ],
             "temperature": 0.7
         }
+        headers = {"Content-Type": "application/json"}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+
         req = urllib.request.Request(
-            endpoint,
+            url,
             data=json.dumps(payload).encode("utf-8"),
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key}"
-            }
+            headers=headers
         )
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode("utf-8"))
