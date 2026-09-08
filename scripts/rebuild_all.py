@@ -1604,7 +1604,7 @@ projects_registry = [
         "id": "ai-studio",
         "title": "GlassOS AI Agent Studio",
         "version": "v1.0",
-        "status": "Production Ready",
+        "status": "Interactive Prototype",
         "desc": "Ruang kerja agentik AI otonom interaktif dengan pemilihan model reaktif (K3-Pro Ultra, Swarm Agent, Flash Instant), pengatur penalaran bergradasi, respon streaming interaktif, dan sound haptik.",
         "icon": "sparkles",
         "folder": "projects/ai-studio",

@@ -374,6 +374,61 @@
             display: flex; align-items: center; gap: 5px;
         }
 
+        .reasoning-trace {
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 2.5px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            color: #94A3B8;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.45;
+        }
+        .reasoning-trace summary {
+            cursor: pointer;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+            user-select: none;
+        }
+        .reasoning-trace summary::-webkit-details-marker { display: none; }
+        .reasoning-trace-body {
+            margin-top: 6px;
+            color: #CBD5E1;
+            font-size: 11px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 6px;
+        }
+        .streaming-cursor {
+            display: inline-block;
+            width: 7px;
+            height: 13px;
+            background: var(--accent-cyan);
+            vertical-align: middle;
+            margin-left: 3px;
+            animation: cursorBlink 0.8s infinite;
+        }
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .ai-code-block {
+            background: #06070A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: #93C5FD;
+            overflow-x: auto;
+        }
+
         /* Prompt Pills */
         .pills-bar {
             display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px;
@@ -502,7 +557,7 @@
                 </div>
                 <div class="brand-title">
                     <h2>AI Agent Studio</h2>
-                    <p>GlassOS Autonomous Agent Workspace <span class="app-status-badge">Prototype</span></p>
+                    <p>GlassOS Autonomous Agent Workspace <span class="app-status-badge">Interactive Prototype</span></p>
                 </div>
             </div>
             <div class="nav-actions">
@@ -598,7 +653,7 @@
         <!-- Chat Input Bar -->
         <div class="input-bar">
             <input type="text" id="userInput" class="chat-input" placeholder="Tulis instruksi atau prompt di sini..." onkeydown="handleKey(event)">
-            <button class="send-btn" onclick="submitMessage()" title="Kirim Prompt">
+            <button class="send-btn" id="sendBtn" onclick="submitMessage()" title="Kirim Prompt">
                 <i data-lucide="send"></i>
             </button>
         </div>
@@ -780,43 +835,131 @@
             submitMessage();
         }
 
+        let isGenerating = false;
+
         function submitMessage() {
+            if (isGenerating) return;
+
             const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
             const text = input.value.trim();
             if (!text) return;
 
+            isGenerating = true;
+            input.disabled = true;
+            if (sendBtn) sendBtn.disabled = true;
             playHapticSound(640);
 
             const stream = document.getElementById('chatStream');
             
-            // Append user bubble
+            // 1. Append user bubble
             const userBubble = document.createElement('div');
             userBubble.className = 'chat-bubble bubble-user';
             userBubble.innerText = text;
             stream.appendChild(userBubble);
             AIStudioStore.addMessage('user', text);
             input.value = "";
-
-            // Simulate AI response
-            setTimeout(() => {
-                playHapticSound(820);
-                const aiBubble = document.createElement('div');
-                aiBubble.className = 'chat-bubble bubble-ai';
-                const responseText = `Menjalankan analisa mendalam untuk: "<em>${text}</em>". Seluruh token visual Glass Dark Premium dan state reaktif berhasil dioptimalkan.`;
-                aiBubble.innerHTML = `
-                    <div class="bubble-ai-meta">
-                        <i data-lucide="bot"></i>
-                        <span>${AIStudioStore.state.activeModel}</span>
-                    </div>
-                    ${responseText}
-                `;
-                stream.appendChild(aiBubble);
-                AIStudioStore.addMessage('ai', responseText);
-                lucide.createIcons();
-                stream.scrollTop = stream.scrollHeight;
-            }, 600);
-
             stream.scrollTop = stream.scrollHeight;
+
+            // 2. Determine Model Personality & Reasoning Trace
+            const model = AIStudioStore.state.activeModel;
+            const effort = AIStudioStore.state.reasoningEffort;
+            const lower = text.toLowerCase();
+
+            let reasoningHtml = "";
+            let responseContent = "";
+
+            if (effort.includes('High') || effort.includes('Max')) {
+                const traceStep1 = model.includes('Swarm') 
+                    ? `[Swarm Coordinator] Decomposing request into 3 worker pipelines: layout-audit, token-mapper, motion-calibrator.`
+                    : `[K3 Deep Thinking] Parsing semantic constraints: glass dark aesthetic, optical refraction, single-source-of-truth tokens.`;
+                const traceStep2 = `[Knowledge Synthesis] Cross-referencing 21 Glass components & 9 Raw Semantic foundations. Validating WCAG 2.1 contrast.`;
+                const traceStep3 = `[Execution Gate] Formatting response with clean modularity. Reasoning confidence: 99.4%.`;
+
+                reasoningHtml = `
+                    <details class="reasoning-trace" open>
+                        <summary><i data-lucide="brain" style="width: 14px; height: 14px;"></i> Reasoning Trace (${model} • Effort ${effort})</summary>
+                        <div class="reasoning-trace-body">
+                            <div>• ${traceStep1}</div>
+                            <div>• ${traceStep2}</div>
+                            <div>• ${traceStep3}</div>
+                        </div>
+                    </details>
+                `;
+            }
+
+            // Contextual dynamic response synthesis
+            if (lower.includes('login') || lower.includes('input') || lower.includes('form')) {
+                responseContent = `Berikut rancangan arsitektur Glass Login & Form Input berbasis <strong>GlassOS Design System</strong>:<br><br>
+1. <strong>Struktur Komponen</strong>: Menggunakan <code>input-field-glass</code> dengan backdrop-filter blur 28px dan asymmetric border lighting (top 0.28, bottom 0.05).<br>
+2. <strong>Haptic Feedback</strong>: Integrasikan procedural Web Audio pada saat focus dan validasi input.<br>
+3. <strong>Semantik & A11y</strong>: Input dilengkapi <code>aria-describedby</code> dan fokus indikator <code>:focus-visible</code> cyan glow ring.`;
+            } else if (lower.includes('token') || lower.includes('css') || lower.includes('color')) {
+                responseContent = `Analisa <strong>CSS Design Tokens (Single Source of Truth)</strong>:<br><br>
+• Seluruh variabel terpusat pada <code>ui/components/glass/css.css</code>.<br>
+• <strong>Lighting Border</strong>: <code>--glass-border-top</code> (rgba 0.22-0.35) mensimulasikan sumber cahaya fisik dari sudut atas-kiri.<br>
+• <strong>Surfaces</strong>: <code>--glass-card</code> (rgba 0.06), <code>--glass-card-hover</code> (rgba 0.10) memberikan kedalaman visual natural tanpa over-saturation.`;
+            } else if (lower.includes('state') || lower.includes('arsitektur') || lower.includes('store')) {
+                responseContent = `Rekomendasi <strong>State Architecture GlassOS</strong>:<br><br>
+• Gunakan modular store <code>AIStudioStore</code> dan <code>FileManagerStore</code>.<br>
+• Data di-cache dalam <code>localStorage</code> secara deterministik.<br>
+• Aksi UI tidak lagi langsung merusak DOM, melainkan melalui mutation cycle: <code>Intent -> Store Action -> State Change -> DOM Render</code>.`;
+            } else if (lower.includes('visual') || lower.includes('motion') || lower.includes('animasi')) {
+                responseContent = `Panduan <strong>Physics Motion & Optical Glass</strong>:<br><br>
+• Gunakan kurva spring <code>cubic-bezier(0.34, 1.1, 0.64, 1)</code> untuk interaksi tombol & dock.<br>
+• Durasi micro-interaction ideal adalah 180ms - 240ms.<br>
+• Selalu sediakan fallback <code>@media (prefers-reduced-motion: reduce)</code> untuk kenyamanan aksesibilitas.`;
+            } else {
+                responseContent = `Saya telah memproses instruksi: "<strong>${escapeHtml(text)}</strong>" menggunakan model <strong>${model}</strong>.<br><br>
+• <strong>Status Sistem</strong>: Optimal & terhubung ke state management lokal.<br>
+• <strong>Feedback</strong>: Parameter penalaran (<em>${effort}</em>) berhasil diadaptasikan untuk menghasilkan sintesis terstruktur.<br>
+• Anda dapat mencoba mengganti model di atas atau memilih prompt instan untuk eksplorasi lebih lanjut.`;
+            }
+
+            // 3. Create AI Bubble Container
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'chat-bubble bubble-ai';
+            aiBubble.innerHTML = `
+                <div class="bubble-ai-meta">
+                    <i data-lucide="bot"></i>
+                    <span>${model}</span>
+                </div>
+                ${reasoningHtml}
+                <div class="ai-text-content"></div><span class="streaming-cursor"></span>
+            `;
+            stream.appendChild(aiBubble);
+            lucide.createIcons();
+            stream.scrollTop = stream.scrollHeight;
+
+            const textContainer = aiBubble.querySelector('.ai-text-content');
+            const cursor = aiBubble.querySelector('.streaming-cursor');
+
+            // 4. Token-by-Token Streaming Simulation
+            const tokens = responseContent.split(' ');
+            let tokenIdx = 0;
+            const streamInterval = setInterval(() => {
+                if (tokenIdx < tokens.length) {
+                    textContainer.innerHTML += (tokenIdx === 0 ? '' : ' ') + tokens[tokenIdx];
+                    tokenIdx++;
+                    stream.scrollTop = stream.scrollHeight;
+                } else {
+                    clearInterval(streamInterval);
+                    if (cursor) cursor.remove();
+                    isGenerating = false;
+                    input.disabled = false;
+                    if (sendBtn) sendBtn.disabled = false;
+                    input.focus();
+                    playHapticSound(880);
+
+                    // Save complete message to store
+                    const fullSavedHtml = (reasoningHtml ? reasoningHtml : '') + textContainer.innerHTML;
+                    AIStudioStore.addMessage('ai', fullSavedHtml);
+                }
+            }, 30);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         function resetChat() {
