@@ -4,6 +4,32 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.4.0] — 2026-09-08
+
+### 🎚️ Interactive Horizontal Sliders & Seamless Anti-Clipping Resolution
+
+#### 1. Slider Horizontal Interaktif pada Toolbar Kartu & Header
+- **Slider Lebar Per-Kartu**: Menambahkan kontrol slider horizontal (`<input type="range" class="card-slider-range">`) pada toolbar setiap kartu showroom ([Glass Showcase](file:///d:/PROJECT/prototype/ui/components/glass/showcase.html) dan [Raw Showcase](file:///d:/PROJECT/prototype/ui/components/raw/showcase.html)). Pengguna dapat menggeser lebar preview secara bebas dari 320px hingga 1000px dengan indikator badge pixel real-time (`Full`, `800px`, `640px`, `375px`).
+- **Slider Lebar Global**: Menambahkan slider horizontal terpusat di bar kontrol atas untuk menyesuaikan lebar seluruh kartu secara serentak, lengkap dengan tombol reset instan.
+- **Slider Viewport Web Apps**: Menambahkan slider horizontal pada simulator Stage View di [`web-apps.html`](file:///d:/PROJECT/prototype/web-apps.html) (skala 360px - 1440px).
+
+#### 2. Slider Scrollbar Horizontal Terintegrasi (Bebas Konten Terpotong)
+- Mengganti `overflow: hidden` pada `.card-preview-zone`, `.comp-preview-zone`, dan `.app-live-stage` menjadi `overflow-x: auto; overflow-y: hidden;` dengan styling scrollbar slider kaca gelap modern (tinggi 8px, track transparan, thumb gradien cyan-purple dengan efek glow saat hover).
+- Mengatur wrapper preview dengan `flex-shrink: 0`, sehingga ketika kartu disetel ke lebar lebih besar dari kolom grid (misal 640px di kolom 380px), slider scrollbar horizontal otomatis aktif dan konten dapat digeser mulus tanpa terpotong (*zero clipping*).
+
+#### 3. Perbaikan Total Komponen yang Sebelumnya Terpotong
+- **`prompt-pills-row/`**:
+  - Menghilangkan `scrollbar-width: none` dan `display: none` pada scrollbar.
+  - Mengintegrasikan slider scrollbar horizontal glowing dan tombol navigasi panah geser interaktif (`<` dan `>`) untuk menggeser deretan pills dengan 1-klik.
+- **`raw/table/`**:
+  - Membungkus tabel dalam `.table-responsive-container` dengan scroll slider horizontal, memastikan seluruh 4 kolom (`ID`, `Component`, `Category`, `Status`) dapat diakses penuh di semua ukuran layar.
+- **`glass-dock-navigation/`**:
+  - Menghapus `overflow-x: hidden` dan menambahkan media query responsif (`@media (max-width: 440px)`), menjaga seluruh 4 tombol navigasi dan tombol FAB `+` tetap utuh.
+- **`telemetry-activity-chart/`**, **`chat-input-bar/`**, & **`thinking-effort-selector/`**:
+  - Mengoptimalkan padding pada layar kecil dan mengaktifkan horizontal scrollbar slider agar tidak ada teks, tombol kirim, atau baris metrik yang terpotong.
+
+---
+
 ## [Version 3.3.0] — 2026-09-08
 
 ### 🛠️ Showcase Bugfixes, Grid Layout Selector, Multi-Project Web Apps Studio & Hub Deduplication

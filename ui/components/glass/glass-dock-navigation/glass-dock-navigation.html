@@ -29,7 +29,21 @@
             align-items: center;
             justify-content: center;
             padding: 8px 12px;
-            overflow-x: hidden;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(74, 158, 255, 0.4) rgba(0, 0, 0, 0.3);
+        }
+
+        body::-webkit-scrollbar {
+            height: 6px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: rgba(74, 158, 255, 0.4);
+            border-radius: 3px;
         }
 
         .dock-container {
@@ -211,6 +225,26 @@
 
         .fab:active {
             transform: scale(0.94);
+        }
+
+        @media (max-width: 440px) {
+            .dock-container {
+                gap: 6px;
+            }
+            .glass-dock {
+                height: 60px;
+                padding: 0 2px;
+            }
+            .nav-item {
+                height: 50px;
+            }
+            .nav-item .label {
+                font-size: 10.5px;
+            }
+            .fab {
+                width: 48px;
+                height: 48px;
+            }
         }
     </style>
 </head>

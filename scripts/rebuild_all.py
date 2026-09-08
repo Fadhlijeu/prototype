@@ -86,15 +86,23 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
                 </div>
                 <div class="card-resizer-toolbar">
                     <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('{card_id}', '100%', this)">
+                        <button class="btn-preset active" onclick="setCardWidth('{card_id}', '100%', this)" title="Tampilan Penuh (100%)">
                             <i data-lucide="maximize-2"></i> Full
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '640px', this)">
+                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '640px', this)" title="Tablet (640px)">
                             <i data-lucide="tablet"></i> 640px
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '375px', this)">
+                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '375px', this)" title="Mobile (375px)">
                             <i data-lucide="smartphone"></i> 375px
                         </button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
+                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
+                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
+                                   id="slider-{card_id}"
+                                   oninput="setCardSliderWidth('{card_id}', this.value)"
+                                   aria-label="Atur lebar kartu secara horizontal">
+                            <span class="slider-val-badge" id="badge-{card_id}">Full</span>
+                        </div>
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('{folder}', '{title}')">
@@ -378,16 +386,76 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background: rgba(74, 158, 255, 0.25); color: #FFFFFF;
         }}
 
-        /* Preview Zone - Seamless Flex Fill without detached gap */
+        .card-slider-wrap {{
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 3px 8px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-left: 4px;
+        }}
+        .slider-icon {{ width: 12px; height: 12px; color: var(--accent-cyan); opacity: 0.85; flex-shrink: 0; }}
+        .card-slider-range {{
+            -webkit-appearance: none; appearance: none;
+            width: 75px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
+            transition: background 0.2s;
+        }}
+        .card-slider-range::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #38BDF8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+            cursor: pointer; transition: transform 0.15s;
+        }}
+        .card-slider-range::-webkit-slider-thumb:hover {{
+            transform: scale(1.25);
+        }}
+        .slider-val-badge {{
+            font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
+            color: #38BDF8; min-width: 34px; text-align: center;
+        }}
+        .btn-reset-slider {{
+            background: transparent; border: none; color: var(--text-muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            padding: 2px; border-radius: 4px; transition: color 0.15s;
+        }}
+        .btn-reset-slider:hover {{ color: #FFFFFF; }}
+        .btn-reset-slider svg {{ width: 12px; height: 12px; }}
+
+        /* Preview Zone - Seamless Horizontal Scrolling Slider & Zero Blank Void */
         .card-preview-zone {{
             flex: 1; width: 100%; min-height: 400px;
-            display: flex; align-items: center; justify-content: center;
-            background: #050508; position: relative; overflow: hidden; padding: 0;
+            display: flex; align-items: stretch; justify-content: center;
+            background: #050508; position: relative;
+            overflow-x: auto; overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(74, 158, 255, 0.45) rgba(0, 0, 0, 0.5);
+            padding: 0;
+        }}
+
+        /* Modern Glass Horizontal Slider Scrollbar */
+        .card-preview-zone::-webkit-scrollbar {{
+            height: 8px;
+        }}
+        .card-preview-zone::-webkit-scrollbar-track {{
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            margin: 0 10px;
+        }}
+        .card-preview-zone::-webkit-scrollbar-thumb {{
+            background: linear-gradient(90deg, rgba(74, 158, 255, 0.45), rgba(139, 92, 246, 0.45));
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }}
+        .card-preview-zone::-webkit-scrollbar-thumb:hover {{
+            background: linear-gradient(90deg, rgba(74, 158, 255, 0.8), rgba(139, 92, 246, 0.8));
+            box-shadow: 0 0 10px rgba(74, 158, 255, 0.6);
         }}
 
         .preview-resizer-wrapper {{
-            width: 100%; height: 100%; min-height: 100%; transition: max-width 0.35s var(--ease-spring);
-            display: flex; align-items: center; justify-content: center; margin: 0 auto;
+            width: 100%; height: 100%; min-height: 100%;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            display: flex; align-items: stretch; justify-content: center;
+            margin: 0 auto; flex-shrink: 0;
         }}
 
         .preview-resizer-wrapper iframe {{
@@ -571,12 +639,23 @@ glass_showcase_content = f"""<!DOCTYPE html>
         <div class="controls-right">
             <!-- Grid Layout Selector -->
             <div class="layout-selector">
-                <span class="layout-label"><i data-lucide="grid"></i> Tampilan:</span>
+                <span class="layout-label"><i data-lucide="grid"></i> Kolom:</span>
                 <button class="btn-layout" data-cols="1" onclick="setGridLayout('1', this)" title="1 Kolom">1</button>
                 <button class="btn-layout" data-cols="2" onclick="setGridLayout('2', this)" title="2 Kolom">2</button>
                 <button class="btn-layout" data-cols="3" onclick="setGridLayout('3', this)" title="3 Kolom">3</button>
                 <button class="btn-layout" data-cols="4" onclick="setGridLayout('4', this)" title="4 Kolom">4</button>
                 <button class="btn-layout active" data-cols="auto" onclick="setGridLayout('auto', this)" title="Auto Kolom">Auto</button>
+            </div>
+
+            <!-- Global Width Slider -->
+            <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar seluruh card sekaligus">
+                <span class="layout-label"><i data-lucide="sliders-horizontal"></i> Slider:</span>
+                <input type="range" id="globalWidthSlider" class="card-slider-range" min="320" max="1200" step="20" value="1200"
+                       oninput="setGlobalCardWidth(this.value)" title="Atur lebar seluruh card sekaligus">
+                <span class="slider-val-badge" id="globalWidthBadge">Auto</span>
+                <button class="btn-reset-slider" onclick="resetGlobalCardWidth()" title="Reset Lebar ke Default (Auto / 100%)">
+                    <i data-lucide="rotate-ccw"></i>
+                </button>
             </div>
 
             <div class="search-box">
@@ -696,10 +775,77 @@ glass_showcase_content = f"""<!DOCTYPE html>
             const card = document.getElementById(cardId);
             if (!card) return;
             card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
 
             const wrapper = card.querySelector('.preview-resizer-wrapper');
-            if (wrapper) wrapper.style.maxWidth = width;
+            const slider = document.getElementById(`slider-${{cardId}}`);
+            const badge = document.getElementById(`badge-${{cardId}}`);
+
+            if (wrapper) {{
+                if (width === '100%') {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                    if (slider) slider.value = 1000;
+                    if (badge) badge.innerText = 'Full';
+                }} else {{
+                    wrapper.style.maxWidth = width;
+                    wrapper.style.width = width;
+                    const num = parseInt(width);
+                    if (slider) slider.value = num;
+                    if (badge) badge.innerText = width;
+                }}
+            }}
+        }}
+
+        function setCardSliderWidth(cardId, val) {{
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            const badge = document.getElementById(`badge-${{cardId}}`);
+
+            if (val >= 1000) {{
+                if (wrapper) {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }}
+                if (badge) badge.innerText = 'Full';
+                const fullBtn = card.querySelector('.btn-preset:first-child');
+                if (fullBtn) fullBtn.classList.add('active');
+            }} else {{
+                const w = `${{val}}px`;
+                if (wrapper) {{
+                    wrapper.style.maxWidth = w;
+                    wrapper.style.width = w;
+                }}
+                if (badge) badge.innerText = w;
+                card.querySelectorAll('.btn-preset').forEach(b => {{
+                    if (b.textContent.includes(w)) b.classList.add('active');
+                }});
+            }}
+        }}
+
+        function setGlobalCardWidth(val) {{
+            const badge = document.getElementById('globalWidthBadge');
+            const cards = document.querySelectorAll('.component-card');
+            cards.forEach(card => {{
+                const id = card.id;
+                const slider = document.getElementById(`slider-${{id}}`);
+                if (slider) slider.value = val;
+                setCardSliderWidth(id, val);
+            }});
+            if (val >= 1200) {{
+                if (badge) badge.innerText = 'Auto';
+            }} else {{
+                if (badge) badge.innerText = `${{val}}px`;
+            }}
+        }}
+
+        function resetGlobalCardWidth() {{
+            const slider = document.getElementById('globalWidthSlider');
+            if (slider) slider.value = 1200;
+            setGlobalCardWidth(1200);
         }}
 
         function openComponentModal(folder, title) {{
@@ -875,21 +1021,37 @@ for folder, title, tag in raw_components:
     
     raw_cards_html += f"""
             <!-- Component: {title} -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-{folder}">
                 <div class="comp-card-head">
                     <span class="comp-card-title">{title}</span>
                     <span class="comp-card-tag">{escaped_tag}</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/{folder}/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-{folder}', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-{folder}', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-{folder}', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-{folder}"
+                                   oninput="setRawCardSliderWidth('raw-card-{folder}', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-{folder}">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('{folder}', '{title}')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('{folder}')">Salin</button>
                         <a href="{folder}/{aio_file}" target="_blank" class="btn-act">Solo</a>
                     </div>
+                </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-{folder}">
+                        <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/{folder}/</span>
                 </div>
             </article>
 """
@@ -997,9 +1159,69 @@ raw_showcase_content = f"""<!DOCTYPE html>
             border-radius: 4px; background: rgba(255, 255, 255, 0.06); color: #93C5FD;
         }}
 
+        .card-resizer-toolbar {{
+            padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0; gap: 8px; flex-wrap: wrap;
+        }}
+        .viewport-presets {{ display: flex; align-items: center; gap: 4px; }}
+        .btn-preset {{
+            padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
+            background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+        }}
+        .btn-preset:hover {{ color: #FFFFFF; border-color: rgba(255, 255, 255, 0.3); }}
+        .btn-preset.active {{
+            background: rgba(59, 130, 246, 0.2); color: #60A5FA; font-weight: 600;
+            border-color: rgba(59, 130, 246, 0.4);
+        }}
+        .card-slider-wrap {{
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 2px 6px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color);
+        }}
+        .card-slider-range {{
+            -webkit-appearance: none; appearance: none;
+            width: 65px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2); outline: none; cursor: pointer;
+        }}
+        .card-slider-range::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none;
+            width: 11px; height: 11px; border-radius: 50%;
+            background: #60A5FA; cursor: pointer;
+        }}
+        .slider-val-badge {{
+            font-size: 10px; font-family: 'JetBrains Mono', monospace;
+            color: #60A5FA; min-width: 30px; text-align: center;
+        }}
+
         .comp-preview-zone {{
-            flex: 1; min-height: 280px; background: #FFFFFF; display: flex; align-items: center; justify-content: center;
-            padding: 0; overflow: hidden;
+            flex: 1; min-height: 280px; background: #FFFFFF;
+            display: flex; align-items: stretch; justify-content: center;
+            padding: 0; overflow-x: auto; overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #94A3B8 #E2E8F0;
+        }}
+        .comp-preview-zone::-webkit-scrollbar {{
+            height: 7px;
+        }}
+        .comp-preview-zone::-webkit-scrollbar-track {{
+            background: #E2E8F0;
+            border-radius: 4px;
+        }}
+        .comp-preview-zone::-webkit-scrollbar-thumb {{
+            background: #94A3B8;
+            border-radius: 4px;
+        }}
+        .comp-preview-zone::-webkit-scrollbar-thumb:hover {{
+            background: #3B82F6;
+        }}
+        .comp-preview-zone .preview-resizer-wrapper {{
+            width: 100%; height: 100%; min-height: 100%;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            display: flex; align-items: stretch; justify-content: center;
+            margin: 0 auto; flex-shrink: 0;
         }}
         .comp-preview-zone iframe {{ width: 100%; height: 100%; min-height: 100%; border: none; display: block; }}
 
@@ -1139,6 +1361,61 @@ raw_showcase_content = f"""<!DOCTYPE html>
 
         function closeRawModal() {{
             document.getElementById('rawModal').classList.remove('active');
+        }}
+
+        function setRawCardWidth(cardId, width, btn) {{
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            const slider = card.querySelector('.card-slider-range');
+            const badge = card.querySelector('.slider-val-badge');
+
+            if (wrapper) {{
+                if (width === '100%') {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                    if (slider) slider.value = 900;
+                    if (badge) badge.innerText = 'Full';
+                }} else {{
+                    wrapper.style.maxWidth = width;
+                    wrapper.style.width = width;
+                    const num = parseInt(width);
+                    if (slider) slider.value = num;
+                    if (badge) badge.innerText = width;
+                }}
+            }}
+        }}
+
+        function setRawCardSliderWidth(cardId, val) {{
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            const badge = card.querySelector('.slider-val-badge');
+
+            if (val >= 900) {{
+                if (wrapper) {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }}
+                if (badge) badge.innerText = 'Full';
+                const fullBtn = card.querySelector('.btn-preset:first-child');
+                if (fullBtn) fullBtn.classList.add('active');
+            }} else {{
+                const w = `${{val}}px`;
+                if (wrapper) {{
+                    wrapper.style.maxWidth = w;
+                    wrapper.style.width = w;
+                }}
+                if (badge) badge.innerText = w;
+                card.querySelectorAll('.btn-preset').forEach(b => {{
+                    if (b.textContent.includes(w)) b.classList.add('active');
+                }});
+            }}
         }}
 
         async function copyRawAio(folder) {{
@@ -1540,17 +1817,62 @@ web_apps_html_content = f"""<!DOCTYPE html>
         }}
         .btn-launch-primary:hover {{ transform: scale(1.02); }}
 
-        /* Live Preview Stage */
+        .card-slider-wrap {{
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 3px 8px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-left: 4px;
+        }}
+        .slider-icon {{ width: 12px; height: 12px; color: var(--accent-cyan); opacity: 0.85; flex-shrink: 0; }}
+        .card-slider-range {{
+            -webkit-appearance: none; appearance: none;
+            width: 80px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
+            transition: background 0.2s;
+        }}
+        .card-slider-range::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #38BDF8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+            cursor: pointer; transition: transform 0.15s;
+        }}
+        .card-slider-range::-webkit-slider-thumb:hover {{
+            transform: scale(1.25);
+        }}
+        .slider-val-badge {{
+            font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
+            color: #38BDF8; min-width: 36px; text-align: center;
+        }}
+
+        /* Live Preview Stage with Horizontal Slider Scrollbar */
         .app-live-stage {{
             position: relative; width: 100%; height: 750px; background: #040407;
             border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            display: flex; align-items: stretch; justify-content: center;
+            overflow-x: auto; overflow-y: hidden;
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.45) rgba(0, 0, 0, 0.5);
+        }}
+        .app-live-stage::-webkit-scrollbar {{
+            height: 8px;
+        }}
+        .app-live-stage::-webkit-scrollbar-track {{
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }}
+        .app-live-stage::-webkit-scrollbar-thumb {{
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.45), rgba(139, 92, 246, 0.45));
+            border-radius: 4px;
+        }}
+        .app-live-stage::-webkit-scrollbar-thumb:hover {{
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8));
         }}
 
         .app-frame-wrapper {{
-            width: 100%; height: 100%; transition: max-width 0.4s var(--ease-spring);
-            margin: 0 auto; display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%; transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            margin: 0 auto; display: flex; align-items: stretch; justify-content: center;
+            flex-shrink: 0;
         }}
 
         .app-frame-wrapper iframe {{
@@ -1846,15 +2168,21 @@ web_apps_html_content = f"""<!DOCTYPE html>
 
                 <div class="app-controls-cluster">
                     <div class="viewport-selector">
-                        <button class="vp-btn active" onclick="setAppViewport('100%', this)">
+                        <button class="vp-btn active" onclick="setAppViewport('100%', this)" title="Desktop (100%)">
                             <i data-lucide="monitor"></i> Desktop
                         </button>
-                        <button class="vp-btn" onclick="setAppViewport('768px', this)">
-                            <i data-lucide="tablet"></i> Tablet (768px)
+                        <button class="vp-btn" onclick="setAppViewport('768px', this)" title="Tablet (768px)">
+                            <i data-lucide="tablet"></i> 768px
                         </button>
-                        <button class="vp-btn" onclick="setAppViewport('375px', this)">
-                            <i data-lucide="smartphone"></i> Mobile (375px)
+                        <button class="vp-btn" onclick="setAppViewport('375px', this)" title="Mobile (375px)">
+                            <i data-lucide="smartphone"></i> 375px
                         </button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser simulator viewport secara fluid">
+                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
+                            <input type="range" id="stageWidthSlider" min="360" max="1440" step="10" value="1440"
+                                   oninput="setStageSliderWidth(this.value)" class="card-slider-range" aria-label="Slider lebar viewport">
+                            <span class="slider-val-badge" id="stageWidthBadge">100%</span>
+                        </div>
                     </div>
 
                     <button class="btn-tool-secondary" onclick="openActiveAppModal('PROJECT_SPEC.md')">
@@ -2042,8 +2370,53 @@ web_apps_html_content = f"""<!DOCTYPE html>
 
         function setAppViewport(width, btn) {{
             document.querySelectorAll('.vp-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('appFrameWrapper').style.maxWidth = width;
+            if (btn) btn.classList.add('active');
+            const wrapper = document.getElementById('appFrameWrapper');
+            const slider = document.getElementById('stageWidthSlider');
+            const badge = document.getElementById('stageWidthBadge');
+
+            if (width === '100%') {{
+                if (wrapper) {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }}
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = '100%';
+            }} else {{
+                if (wrapper) {{
+                    wrapper.style.maxWidth = width;
+                    wrapper.style.width = width;
+                }}
+                const num = parseInt(width);
+                if (slider) slider.value = num;
+                if (badge) badge.innerText = width;
+            }}
+        }}
+
+        function setStageSliderWidth(val) {{
+            const wrapper = document.getElementById('appFrameWrapper');
+            const badge = document.getElementById('stageWidthBadge');
+            document.querySelectorAll('.vp-btn').forEach(b => b.classList.remove('active'));
+
+            if (val >= 1440) {{
+                if (wrapper) {{
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }}
+                if (badge) badge.innerText = '100%';
+                const dBtn = document.querySelector('.vp-btn:first-child');
+                if (dBtn) dBtn.classList.add('active');
+            }} else {{
+                const w = `${{val}}px`;
+                if (wrapper) {{
+                    wrapper.style.maxWidth = w;
+                    wrapper.style.width = w;
+                }}
+                if (badge) badge.innerText = w;
+                document.querySelectorAll('.vp-btn').forEach(b => {{
+                    if (b.textContent.includes(w)) b.classList.add('active');
+                }});
+            }}
         }}
 
         function openActiveAppModal(filename) {{

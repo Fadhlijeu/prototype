@@ -29,7 +29,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 14px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(74, 158, 255, 0.4) rgba(0, 0, 0, 0.3);
+        }
+
+        body::-webkit-scrollbar {
+            height: 6px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: rgba(74, 158, 255, 0.4);
+            border-radius: 3px;
         }
 
         .glass-card-wrapper {

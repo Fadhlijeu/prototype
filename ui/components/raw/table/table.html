@@ -10,33 +10,77 @@ body {
     padding: 16px;
     margin: 0;
     line-height: 1.5;
+    background: #FFFFFF;
+    color: #1E293B;
+}
+
+.table-responsive-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #94A3B8 #E2E8F0;
+    padding-bottom: 6px;
+}
+
+.table-responsive-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive-container::-webkit-scrollbar-track {
+    background: #E2E8F0;
+    border-radius: 3px;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb {
+    background: #94A3B8;
+    border-radius: 3px;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb:hover {
+    background: #3B82F6;
+}
+
+table {
+    width: 100%;
+    min-width: 360px;
+    border-collapse: collapse;
+    font-size: 13px;
 }
     </style>
 </head>
 <body>
-<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-    <thead>
-        <tr style="background: #f0f0f0;">
-            <th style="border: 1px solid #ccc; padding: 6px;">ID</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Component</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Category</th>
-            <th style="border: 1px solid #ccc; padding: 6px;">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 6px;">01</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Button</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Action</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Stable</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 6px;">02</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Input</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Form</td>
-            <td style="border: 1px solid #ccc; padding: 6px;">Stable</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive-container">
+    <table>
+        <thead>
+            <tr style="background: #f0f0f0;">
+                <th style="border: 1px solid #ccc; padding: 6px; text-align: left;">ID</th>
+                <th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Component</th>
+                <th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Category</th>
+                <th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 6px;">01</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Button</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Action</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Stable</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 6px;">02</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Input</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Form</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Stable</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 6px;">03</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Dropdown</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Select</td>
+                <td style="border: 1px solid #ccc; padding: 6px;">Stable</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -99,9 +99,69 @@
             border-radius: 4px; background: rgba(255, 255, 255, 0.06); color: #93C5FD;
         }
 
+        .card-resizer-toolbar {
+            padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0; gap: 8px; flex-wrap: wrap;
+        }
+        .viewport-presets { display: flex; align-items: center; gap: 4px; }
+        .btn-preset {
+            padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
+            background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+        }
+        .btn-preset:hover { color: #FFFFFF; border-color: rgba(255, 255, 255, 0.3); }
+        .btn-preset.active {
+            background: rgba(59, 130, 246, 0.2); color: #60A5FA; font-weight: 600;
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        .card-slider-wrap {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 2px 6px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color);
+        }
+        .card-slider-range {
+            -webkit-appearance: none; appearance: none;
+            width: 65px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2); outline: none; cursor: pointer;
+        }
+        .card-slider-range::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 11px; height: 11px; border-radius: 50%;
+            background: #60A5FA; cursor: pointer;
+        }
+        .slider-val-badge {
+            font-size: 10px; font-family: 'JetBrains Mono', monospace;
+            color: #60A5FA; min-width: 30px; text-align: center;
+        }
+
         .comp-preview-zone {
-            flex: 1; min-height: 280px; background: #FFFFFF; display: flex; align-items: center; justify-content: center;
-            padding: 0; overflow: hidden;
+            flex: 1; min-height: 280px; background: #FFFFFF;
+            display: flex; align-items: stretch; justify-content: center;
+            padding: 0; overflow-x: auto; overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #94A3B8 #E2E8F0;
+        }
+        .comp-preview-zone::-webkit-scrollbar {
+            height: 7px;
+        }
+        .comp-preview-zone::-webkit-scrollbar-track {
+            background: #E2E8F0;
+            border-radius: 4px;
+        }
+        .comp-preview-zone::-webkit-scrollbar-thumb {
+            background: #94A3B8;
+            border-radius: 4px;
+        }
+        .comp-preview-zone::-webkit-scrollbar-thumb:hover {
+            background: #3B82F6;
+        }
+        .comp-preview-zone .preview-resizer-wrapper {
+            width: 100%; height: 100%; min-height: 100%;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            display: flex; align-items: stretch; justify-content: center;
+            margin: 0 auto; flex-shrink: 0;
         }
         .comp-preview-zone iframe { width: 100%; height: 100%; min-height: 100%; border: none; display: block; }
 
@@ -188,173 +248,317 @@
     <main class="raw-grid cols-auto" id="rawGrid">
 
             <!-- Component: Buttons & Actions -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-button">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Buttons & Actions</span>
                     <span class="comp-card-tag">&lt;button&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="button/button.html" title="Buttons & Actions Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/button/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-button', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-button', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-button', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-button"
+                                   oninput="setRawCardSliderWidth('raw-card-button', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-button">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('button', 'Buttons & Actions')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('button')">Salin</button>
                         <a href="button/button.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-button">
+                        <iframe src="button/button.html" title="Buttons & Actions Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/button/</span>
+                </div>
             </article>
 
             <!-- Component: Form Input Fields -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-input">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Form Input Fields</span>
                     <span class="comp-card-tag">&lt;input type=&quot;...&quot;&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="input/input.html" title="Form Input Fields Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/input/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-input', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-input', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-input', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-input"
+                                   oninput="setRawCardSliderWidth('raw-card-input', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-input">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('input', 'Form Input Fields')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('input')">Salin</button>
                         <a href="input/input.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-input">
+                        <iframe src="input/input.html" title="Form Input Fields Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/input/</span>
+                </div>
             </article>
 
             <!-- Component: Checkboxes & Radios -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-checkbox-radio">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Checkboxes & Radios</span>
                     <span class="comp-card-tag">&lt;input type=&quot;checkbox|radio&quot;&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="checkbox-radio/checkbox-radio.html" title="Checkboxes & Radios Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/checkbox-radio/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-checkbox-radio', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-checkbox-radio', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-checkbox-radio', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-checkbox-radio"
+                                   oninput="setRawCardSliderWidth('raw-card-checkbox-radio', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-checkbox-radio">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('checkbox-radio', 'Checkboxes & Radios')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('checkbox-radio')">Salin</button>
                         <a href="checkbox-radio/checkbox-radio.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-checkbox-radio">
+                        <iframe src="checkbox-radio/checkbox-radio.html" title="Checkboxes & Radios Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/checkbox-radio/</span>
+                </div>
             </article>
 
             <!-- Component: Select Dropdown -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-select-dropdown">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Select Dropdown</span>
                     <span class="comp-card-tag">&lt;select&gt; &amp; &lt;option&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="select-dropdown/select-dropdown.html" title="Select Dropdown Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/select-dropdown/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-select-dropdown', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-select-dropdown', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-select-dropdown', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-select-dropdown"
+                                   oninput="setRawCardSliderWidth('raw-card-select-dropdown', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-select-dropdown">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('select-dropdown', 'Select Dropdown')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('select-dropdown')">Salin</button>
                         <a href="select-dropdown/select-dropdown.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-select-dropdown">
+                        <iframe src="select-dropdown/select-dropdown.html" title="Select Dropdown Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/select-dropdown/</span>
+                </div>
             </article>
 
             <!-- Component: Toggle Switch (Raw) -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-toggle-switch">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Toggle Switch (Raw)</span>
                     <span class="comp-card-tag">&lt;input type=&quot;checkbox&quot; role=&quot;switch&quot;&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="toggle-switch/toggle-switch.html" title="Toggle Switch (Raw) Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/toggle-switch/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-toggle-switch', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-toggle-switch', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-toggle-switch', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-toggle-switch"
+                                   oninput="setRawCardSliderWidth('raw-card-toggle-switch', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-toggle-switch">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('toggle-switch', 'Toggle Switch (Raw)')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('toggle-switch')">Salin</button>
                         <a href="toggle-switch/toggle-switch.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-toggle-switch">
+                        <iframe src="toggle-switch/toggle-switch.html" title="Toggle Switch (Raw) Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/toggle-switch/</span>
+                </div>
             </article>
 
             <!-- Component: Disclosure / Accordion -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-details-accordion">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Disclosure / Accordion</span>
                     <span class="comp-card-tag">&lt;details&gt; &amp; &lt;summary&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="details-accordion/details-accordion.html" title="Disclosure / Accordion Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/details-accordion/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-details-accordion', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-details-accordion', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-details-accordion', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-details-accordion"
+                                   oninput="setRawCardSliderWidth('raw-card-details-accordion', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-details-accordion">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('details-accordion', 'Disclosure / Accordion')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('details-accordion')">Salin</button>
                         <a href="details-accordion/details-accordion.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-details-accordion">
+                        <iframe src="details-accordion/details-accordion.html" title="Disclosure / Accordion Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/details-accordion/</span>
+                </div>
             </article>
 
             <!-- Component: Native Modal Dialog -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-modal-dialog">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Native Modal Dialog</span>
                     <span class="comp-card-tag">&lt;dialog&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="modal-dialog/modal-dialog.html" title="Native Modal Dialog Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/modal-dialog/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-modal-dialog', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-modal-dialog', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-modal-dialog', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-modal-dialog"
+                                   oninput="setRawCardSliderWidth('raw-card-modal-dialog', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-modal-dialog">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('modal-dialog', 'Native Modal Dialog')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('modal-dialog')">Salin</button>
                         <a href="modal-dialog/modal-dialog.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-modal-dialog">
+                        <iframe src="modal-dialog/modal-dialog.html" title="Native Modal Dialog Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/modal-dialog/</span>
+                </div>
             </article>
 
             <!-- Component: Progress & Meter -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-progress-meter">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Progress & Meter</span>
                     <span class="comp-card-tag">&lt;progress&gt; &amp; &lt;meter&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="progress-meter/progress-meter.html" title="Progress & Meter Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/progress-meter/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-progress-meter', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-progress-meter', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-progress-meter', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-progress-meter"
+                                   oninput="setRawCardSliderWidth('raw-card-progress-meter', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-progress-meter">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('progress-meter', 'Progress & Meter')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('progress-meter')">Salin</button>
                         <a href="progress-meter/progress-meter.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-progress-meter">
+                        <iframe src="progress-meter/progress-meter.html" title="Progress & Meter Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/progress-meter/</span>
+                </div>
             </article>
 
             <!-- Component: Tabular Data Grid -->
-            <article class="comp-card">
+            <article class="comp-card" id="raw-card-table">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Tabular Data Grid</span>
                     <span class="comp-card-tag">&lt;table&gt;, &lt;thead&gt;, &lt;tbody&gt;</span>
                 </div>
-                <div class="comp-preview-zone">
-                    <iframe src="table/table.html" title="Tabular Data Grid Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/table/</span>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-table', '100%', this)" title="100% Full Width">Full</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-table', '560px', this)" title="Tablet 560px">560px</button>
+                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-table', '360px', this)" title="Mobile 360px">360px</button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
+                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
+                                   id="raw-slider-table"
+                                   oninput="setRawCardSliderWidth('raw-card-table', this.value)"
+                                   aria-label="Atur lebar kartu raw">
+                            <span class="slider-val-badge" id="raw-badge-table">Full</span>
+                        </div>
+                    </div>
                     <div class="foot-actions">
                         <button class="btn-act" onclick="openRawModal('table', 'Tabular Data Grid')">Kode</button>
                         <button class="btn-act" onclick="copyRawAio('table')">Salin</button>
                         <a href="table/table.html" target="_blank" class="btn-act">Solo</a>
                     </div>
+                </div>
+                <div class="comp-preview-zone">
+                    <div class="preview-resizer-wrapper" id="raw-wrapper-table">
+                        <iframe src="table/table.html" title="Tabular Data Grid Preview"></iframe>
+                    </div>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/table/</span>
                 </div>
             </article>
 
@@ -375,7 +579,7 @@
     <div class="toast" id="toastMsg">Kode disalin!</div>
 
     <script type="application/json" id="rawDb">
-{"button": {"button.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "input": {"input.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "checkbox-radio": {"checkbox-radio.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "select-dropdown": {"select-dropdown.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "toggle-switch": {"toggle-switch.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "details-accordion": {"details-accordion.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "modal-dialog": {"modal-dialog.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "progress-meter": {"progress-meter.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "table": {"table.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status<\/th>\n        <\/tr>\n    <\/thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n    <\/tbody>\n<\/table>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status<\/th>\n        <\/tr>\n    <\/thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n    <\/tbody>\n<\/table>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}}
+{"button": {"button.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "input": {"input.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "checkbox-radio": {"checkbox-radio.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "select-dropdown": {"select-dropdown.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "toggle-switch": {"toggle-switch.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "details-accordion": {"details-accordion.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "modal-dialog": {"modal-dialog.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "progress-meter": {"progress-meter.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "table": {"table.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n    background: #FFFFFF;\n    color: #1E293B;\n}\n\n.table-responsive-container {\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    scrollbar-width: thin;\n    scrollbar-color: #94A3B8 #E2E8F0;\n    padding-bottom: 6px;\n}\n\n.table-responsive-container::-webkit-scrollbar {\n    height: 6px;\n}\n\n.table-responsive-container::-webkit-scrollbar-track {\n    background: #E2E8F0;\n    border-radius: 3px;\n}\n\n.table-responsive-container::-webkit-scrollbar-thumb {\n    background: #94A3B8;\n    border-radius: 3px;\n}\n\n.table-responsive-container::-webkit-scrollbar-thumb:hover {\n    background: #3B82F6;\n}\n\ntable {\n    width: 100%;\n    min-width: 360px;\n    border-collapse: collapse;\n    font-size: 13px;\n}\n    <\/style>\n<\/head>\n<body>\n<div class=\"table-responsive-container\">\n    <table>\n        <thead>\n            <tr style=\"background: #f0f0f0;\">\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">ID<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Component<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Category<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Status<\/th>\n            <\/tr>\n        <\/thead>\n        <tbody>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">03<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Dropdown<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Select<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n        <\/tbody>\n    <\/table>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div class=\"table-responsive-container\">\n    <table>\n        <thead>\n            <tr style=\"background: #f0f0f0;\">\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">ID<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Component<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Category<\/th>\n                <th style=\"border: 1px solid #ccc; padding: 6px; text-align: left;\">Status<\/th>\n            <\/tr>\n        <\/thead>\n        <tbody>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n            <tr>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">03<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Dropdown<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Select<\/td>\n                <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n            <\/tr>\n        <\/tbody>\n    <\/table>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset with responsive horizontal scroll slider */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n    background: #FFFFFF;\n    color: #1E293B;\n}\n\n.table-responsive-container {\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    scrollbar-width: thin;\n    scrollbar-color: #94A3B8 #E2E8F0;\n    padding-bottom: 6px;\n}\n\n.table-responsive-container::-webkit-scrollbar {\n    height: 6px;\n}\n\n.table-responsive-container::-webkit-scrollbar-track {\n    background: #E2E8F0;\n    border-radius: 3px;\n}\n\n.table-responsive-container::-webkit-scrollbar-thumb {\n    background: #94A3B8;\n    border-radius: 3px;\n}\n\n.table-responsive-container::-webkit-scrollbar-thumb:hover {\n    background: #3B82F6;\n}\n\ntable {\n    width: 100%;\n    min-width: 360px;\n    border-collapse: collapse;\n    font-size: 13px;\n}\n"}}
     </script>
 
     <script>
@@ -412,6 +616,61 @@
 
         function closeRawModal() {
             document.getElementById('rawModal').classList.remove('active');
+        }
+
+        function setRawCardWidth(cardId, width, btn) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            const slider = card.querySelector('.card-slider-range');
+            const badge = card.querySelector('.slider-val-badge');
+
+            if (wrapper) {
+                if (width === '100%') {
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                    if (slider) slider.value = 900;
+                    if (badge) badge.innerText = 'Full';
+                } else {
+                    wrapper.style.maxWidth = width;
+                    wrapper.style.width = width;
+                    const num = parseInt(width);
+                    if (slider) slider.value = num;
+                    if (badge) badge.innerText = width;
+                }
+            }
+        }
+
+        function setRawCardSliderWidth(cardId, val) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            const badge = card.querySelector('.slider-val-badge');
+
+            if (val >= 900) {
+                if (wrapper) {
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }
+                if (badge) badge.innerText = 'Full';
+                const fullBtn = card.querySelector('.btn-preset:first-child');
+                if (fullBtn) fullBtn.classList.add('active');
+            } else {
+                const w = `${val}px`;
+                if (wrapper) {
+                    wrapper.style.maxWidth = w;
+                    wrapper.style.width = w;
+                }
+                if (badge) badge.innerText = w;
+                card.querySelectorAll('.btn-preset').forEach(b => {
+                    if (b.textContent.includes(w)) b.classList.add('active');
+                });
+            }
         }
 
         async function copyRawAio(folder) {

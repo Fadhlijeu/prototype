@@ -1,16 +1,13 @@
-/**
- * Prompt Pills Row Logic
- */
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.lucide) {
-        window.lucide.createIcons();
-    }
+// Initialize Lucide Icons
+if (window.lucide) {
+    lucide.createIcons();
+}
 
-    const pills = document.querySelectorAll('.pill');
-    pills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            const action = pill.querySelector('span')?.innerText || 'Pill';
-            alert('Action: ' + action);
-        });
-    });
-});
+function slidePills(delta) {
+    const track = document.getElementById('pillsTrack');
+    if (track) track.scrollBy({ left: delta, behavior: 'smooth' });
+}
+
+function triggerPill(action) {
+    console.log('Action activated:', action);
+}

@@ -223,17 +223,62 @@
         }
         .btn-launch-primary:hover { transform: scale(1.02); }
 
-        /* Live Preview Stage */
+        .card-slider-wrap {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 3px 8px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-left: 4px;
+        }
+        .slider-icon { width: 12px; height: 12px; color: var(--accent-cyan); opacity: 0.85; flex-shrink: 0; }
+        .card-slider-range {
+            -webkit-appearance: none; appearance: none;
+            width: 80px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .card-slider-range::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #38BDF8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+            cursor: pointer; transition: transform 0.15s;
+        }
+        .card-slider-range::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+        .slider-val-badge {
+            font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
+            color: #38BDF8; min-width: 36px; text-align: center;
+        }
+
+        /* Live Preview Stage with Horizontal Slider Scrollbar */
         .app-live-stage {
             position: relative; width: 100%; height: 750px; background: #040407;
             border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            display: flex; align-items: stretch; justify-content: center;
+            overflow-x: auto; overflow-y: hidden;
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.45) rgba(0, 0, 0, 0.5);
+        }
+        .app-live-stage::-webkit-scrollbar {
+            height: 8px;
+        }
+        .app-live-stage::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+        .app-live-stage::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.45), rgba(139, 92, 246, 0.45));
+            border-radius: 4px;
+        }
+        .app-live-stage::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8));
         }
 
         .app-frame-wrapper {
-            width: 100%; height: 100%; transition: max-width 0.4s var(--ease-spring);
-            margin: 0 auto; display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%; transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            margin: 0 auto; display: flex; align-items: stretch; justify-content: center;
+            flex-shrink: 0;
         }
 
         .app-frame-wrapper iframe {
@@ -529,15 +574,21 @@
 
                 <div class="app-controls-cluster">
                     <div class="viewport-selector">
-                        <button class="vp-btn active" onclick="setAppViewport('100%', this)">
+                        <button class="vp-btn active" onclick="setAppViewport('100%', this)" title="Desktop (100%)">
                             <i data-lucide="monitor"></i> Desktop
                         </button>
-                        <button class="vp-btn" onclick="setAppViewport('768px', this)">
-                            <i data-lucide="tablet"></i> Tablet (768px)
+                        <button class="vp-btn" onclick="setAppViewport('768px', this)" title="Tablet (768px)">
+                            <i data-lucide="tablet"></i> 768px
                         </button>
-                        <button class="vp-btn" onclick="setAppViewport('375px', this)">
-                            <i data-lucide="smartphone"></i> Mobile (375px)
+                        <button class="vp-btn" onclick="setAppViewport('375px', this)" title="Mobile (375px)">
+                            <i data-lucide="smartphone"></i> 375px
                         </button>
+                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser simulator viewport secara fluid">
+                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
+                            <input type="range" id="stageWidthSlider" min="360" max="1440" step="10" value="1440"
+                                   oninput="setStageSliderWidth(this.value)" class="card-slider-range" aria-label="Slider lebar viewport">
+                            <span class="slider-val-badge" id="stageWidthBadge">100%</span>
+                        </div>
                     </div>
 
                     <button class="btn-tool-secondary" onclick="openActiveAppModal('PROJECT_SPEC.md')">
@@ -820,8 +871,53 @@
 
         function setAppViewport(width, btn) {
             document.querySelectorAll('.vp-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('appFrameWrapper').style.maxWidth = width;
+            if (btn) btn.classList.add('active');
+            const wrapper = document.getElementById('appFrameWrapper');
+            const slider = document.getElementById('stageWidthSlider');
+            const badge = document.getElementById('stageWidthBadge');
+
+            if (width === '100%') {
+                if (wrapper) {
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = '100%';
+            } else {
+                if (wrapper) {
+                    wrapper.style.maxWidth = width;
+                    wrapper.style.width = width;
+                }
+                const num = parseInt(width);
+                if (slider) slider.value = num;
+                if (badge) badge.innerText = width;
+            }
+        }
+
+        function setStageSliderWidth(val) {
+            const wrapper = document.getElementById('appFrameWrapper');
+            const badge = document.getElementById('stageWidthBadge');
+            document.querySelectorAll('.vp-btn').forEach(b => b.classList.remove('active'));
+
+            if (val >= 1440) {
+                if (wrapper) {
+                    wrapper.style.maxWidth = '100%';
+                    wrapper.style.width = '100%';
+                }
+                if (badge) badge.innerText = '100%';
+                const dBtn = document.querySelector('.vp-btn:first-child');
+                if (dBtn) dBtn.classList.add('active');
+            } else {
+                const w = `${val}px`;
+                if (wrapper) {
+                    wrapper.style.maxWidth = w;
+                    wrapper.style.width = w;
+                }
+                if (badge) badge.innerText = w;
+                document.querySelectorAll('.vp-btn').forEach(b => {
+                    if (b.textContent.includes(w)) b.classList.add('active');
+                });
+            }
         }
 
         function openActiveAppModal(filename) {

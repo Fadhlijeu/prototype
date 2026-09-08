@@ -10,18 +10,37 @@
 </head>
 <body>
 
-    <div class="pills-container" role="toolbar" aria-label="Quick Actions">
-        <button class="pill glass-noise">
-            <i data-lucide="monitor-play"></i> <span>Slides</span>
+    <div class="pills-wrapper">
+        <button class="pill-nav-btn" onclick="slidePills(-180)" title="Slide Kiri" aria-label="Slide Left">
+            <i data-lucide="chevron-left"></i>
         </button>
-        <button class="pill glass-noise">
-            <i data-lucide="bot"></i> <span>Swarm</span>
-        </button>
-        <button class="pill glass-noise">
-            <i data-lucide="layout-grid"></i> <span>Websites</span>
-        </button>
-        <button class="pill glass-noise">
-            <i data-lucide="microscope"></i> <span>Deep Research</span>
+
+        <div class="pills-container" id="pillsTrack" role="toolbar" aria-label="Quick Actions">
+            <button class="pill glass-noise" onclick="triggerPill('Slides')">
+                <i data-lucide="monitor-play"></i> <span>Slides</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Swarm')">
+                <i data-lucide="bot"></i> <span>Swarm</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Websites')">
+                <i data-lucide="layout-grid"></i> <span>Websites</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Deep Research')">
+                <i data-lucide="microscope"></i> <span>Deep Research</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Code Synthesizer')">
+                <i data-lucide="code-2"></i> <span>Code Synthesizer</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Audio Visualizer')">
+                <i data-lucide="activity"></i> <span>Audio Visualizer</span>
+            </button>
+            <button class="pill glass-noise" onclick="triggerPill('Neural Reasoning')">
+                <i data-lucide="sparkles"></i> <span>Neural Reasoning</span>
+            </button>
+        </div>
+
+        <button class="pill-nav-btn" onclick="slidePills(180)" title="Slide Kanan" aria-label="Slide Right">
+            <i data-lucide="chevron-right"></i>
         </button>
     </div>
 

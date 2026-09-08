@@ -1,7 +1,43 @@
-/* Raw unstyled component - minimal clean typography reset */
+/* Raw unstyled component - minimal clean typography reset with responsive horizontal scroll slider */
 body {
     font-family: system-ui, -apple-system, sans-serif;
     padding: 16px;
     margin: 0;
     line-height: 1.5;
+    background: #FFFFFF;
+    color: #1E293B;
+}
+
+.table-responsive-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #94A3B8 #E2E8F0;
+    padding-bottom: 6px;
+}
+
+.table-responsive-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive-container::-webkit-scrollbar-track {
+    background: #E2E8F0;
+    border-radius: 3px;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb {
+    background: #94A3B8;
+    border-radius: 3px;
+}
+
+.table-responsive-container::-webkit-scrollbar-thumb:hover {
+    background: #3B82F6;
+}
+
+table {
+    width: 100%;
+    min-width: 360px;
+    border-collapse: collapse;
+    font-size: 13px;
 }

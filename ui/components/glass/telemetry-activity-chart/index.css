@@ -27,7 +27,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 14px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(74, 158, 255, 0.4) rgba(0, 0, 0, 0.3);
+        }
+
+        body::-webkit-scrollbar {
+            height: 6px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: rgba(74, 158, 255, 0.4);
+            border-radius: 3px;
         }
 
         .chart-card-wrapper {
@@ -140,4 +155,16 @@
             margin-top: 14px;
             font-size: 12px;
             color: var(--text-secondary);
+        }
+
+        @media (max-width: 440px) {
+            .chart-card {
+                padding: 16px 16px;
+            }
+            .chart-title {
+                font-size: 15px;
+            }
+            .bars-container {
+                gap: 5px;
+            }
         }
