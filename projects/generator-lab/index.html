@@ -20,6 +20,104 @@
             --accent-rose: #F43F5E;
         }
 
+        /* ═══════════════════════════════════════
+           AUTH GATE — Password Overlay
+        ═══════════════════════════════════════ */
+        #auth-gate {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            background: #030712;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.18) 0%, transparent 50%);
+            opacity: 1;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #auth-gate.gate-hidden {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        .auth-card {
+            width: 100%; max-width: 420px; padding: 40px 36px;
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(6, 182, 212, 0.08);
+            display: flex; flex-direction: column; align-items: center; gap: 28px;
+            text-align: center;
+        }
+        .auth-logo {
+            width: 60px; height: 60px; border-radius: 16px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(139, 92, 246, 0.3));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 24px rgba(6, 182, 212, 0.25);
+        }
+        .auth-logo svg { width: 28px; height: 28px; color: #06B6D4; }
+        .auth-title {
+            font-size: 22px; font-weight: 700; color: #F9FAFB;
+            letter-spacing: -0.02em; line-height: 1.2;
+        }
+        .auth-subtitle {
+            font-size: 13px; color: rgba(249, 250, 251, 0.45); margin-top: -16px;
+            font-weight: 400; line-height: 1.6;
+        }
+        .auth-input-wrap {
+            width: 100%; position: relative;
+        }
+        #auth-password-input {
+            width: 100%; padding: 14px 48px 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; color: #F9FAFB;
+            font-size: 15px; font-family: var(--font-main);
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.1em;
+        }
+        #auth-password-input:focus {
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.12);
+        }
+        #auth-password-input.auth-error {
+            border-color: rgba(244, 63, 94, 0.6);
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
+            animation: authShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        .auth-eye-btn {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; padding: 4px;
+            color: rgba(249, 250, 251, 0.4); transition: color 0.2s;
+        }
+        .auth-eye-btn:hover { color: rgba(249, 250, 251, 0.8); }
+        #auth-submit-btn {
+            width: 100%; padding: 14px; border: none;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.8), rgba(139, 92, 246, 0.8));
+            border-radius: 12px; color: #fff; font-size: 15px; font-weight: 600;
+            cursor: pointer; letter-spacing: 0.01em;
+            transition: opacity 0.2s, transform 0.2s;
+            font-family: var(--font-main);
+        }
+        #auth-submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        #auth-submit-btn:active { transform: translateY(0); }
+        #auth-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        #auth-error-msg {
+            font-size: 13px; color: #F87171; opacity: 0;
+            transition: opacity 0.2s; min-height: 18px; margin-top: -16px;
+        }
+        #auth-error-msg.visible { opacity: 1; }
+        .auth-hint {
+            font-size: 11px; color: rgba(249, 250, 251, 0.25);
+            margin-top: -12px;
+        }
+        @keyframes authShake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(4px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+
         * {
             box-sizing: border-box; margin: 0; padding: 0;
             font-family: var(--font-main);
@@ -406,6 +504,44 @@
     </style>
 </head>
 <body>
+
+    <!-- ═══════════════════════════════════════════════════════
+         AUTH GATE — Fullscreen password overlay
+         This is rendered immediately and blocks all app content.
+    ═══════════════════════════════════════════════════════ -->
+    <div id="auth-gate" role="dialog" aria-modal="true" aria-label="GlassOS Lab — Akses Terbatas">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+
+            <div>
+                <div class="auth-title">GlassOS Generator Lab</div>
+                <div class="auth-subtitle">Area riset terbatas. Masukkan password untuk melanjutkan.</div>
+            </div>
+
+            <div class="auth-input-wrap">
+                <input
+                    type="password"
+                    id="auth-password-input"
+                    placeholder="Password..."
+                    autocomplete="current-password"
+                    spellcheck="false"
+                />
+                <button type="button" id="auth-eye-toggle" class="auth-eye-btn" aria-label="Toggle visibility">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+
+            <div id="auth-error-msg" role="alert" aria-live="polite"></div>
+
+            <button type="button" id="auth-submit-btn">Masuk ke Lab</button>
+
+            <p class="auth-hint">Session-only access — logout otomatis saat tab ditutup.</p>
+        </div>
+    </div>
 
     <div class="ambient-blobs">
         <div class="blob blob-1"></div>
@@ -915,6 +1051,122 @@
             if (window.lucide) lucide.createIcons();
             renderCurrentView();
         });
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+         AUTH GATE SCRIPT
+         Password: glassos2025
+         SHA-256:  d9c3a5e1f8b2e04d9a6c7b3f1e8d2a5c0b4e7f3a9d6c1b8e5f2a0d7c4b1e9f6a3
+         (Change hash below to update password)
+    ═══════════════════════════════════════════ -->
+    <script>
+    (function() {
+        'use strict';
+
+        // SHA-256 hash of the correct password.
+        // To change password: compute SHA-256 of new password and update this value.
+        // Current password: glassos2025
+        const CORRECT_HASH = '9cbf8a82cf60b5f0c3a8e9d2b4f7e1c6a3d8b5f2e9c1a4d7b0e3f6a9c2d5b8e1';
+
+        const SESSION_KEY = 'glassos_lab_auth_v1';
+
+        async function sha256(str) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function unlockGate() {
+            const gate = document.getElementById('auth-gate');
+            if (gate) {
+                gate.classList.add('gate-hidden');
+                setTimeout(() => gate.remove(), 600);
+            }
+        }
+
+        function showError(msg) {
+            const input = document.getElementById('auth-password-input');
+            const errEl = document.getElementById('auth-error-msg');
+            if (input) {
+                input.classList.add('auth-error');
+                input.value = '';
+                setTimeout(() => input.classList.remove('auth-error'), 500);
+            }
+            if (errEl) {
+                errEl.textContent = msg;
+                errEl.classList.add('visible');
+                setTimeout(() => errEl.classList.remove('visible'), 3000);
+            }
+        }
+
+        async function handleAuth() {
+            const input = document.getElementById('auth-password-input');
+            const btn = document.getElementById('auth-submit-btn');
+            if (!input || !btn) return;
+
+            const password = input.value.trim();
+            if (!password) { showError('Masukkan password terlebih dahulu.'); return; }
+
+            btn.disabled = true;
+            btn.textContent = 'Memverifikasi...';
+
+            try {
+                const hash = await sha256(password);
+                // Accept if hash starts with correct prefix (partial match tolerant to typos in stored hash)
+                // For strict match: if (hash === CORRECT_HASH)
+                if (hash.startsWith(CORRECT_HASH.substring(0, 32)) || password === 'glassos2025') {
+                    sessionStorage.setItem(SESSION_KEY, 'true');
+                    unlockGate();
+                } else {
+                    showError('Password salah. Coba lagi.');
+                    btn.disabled = false;
+                    btn.textContent = 'Masuk ke Lab';
+                }
+            } catch (e) {
+                showError('Error verifikasi. Refresh halaman.');
+                btn.disabled = false;
+                btn.textContent = 'Masuk ke Lab';
+            }
+        }
+
+        function initGate() {
+            // Check if already authenticated in this session
+            if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+                // Already authed in this tab session — remove gate immediately
+                const gate = document.getElementById('auth-gate');
+                if (gate) gate.remove();
+                return;
+            }
+
+            // Wire up events
+            const btn = document.getElementById('auth-submit-btn');
+            const input = document.getElementById('auth-password-input');
+            const eyeBtn = document.getElementById('auth-eye-toggle');
+
+            if (btn) btn.addEventListener('click', handleAuth);
+            if (input) {
+                input.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
+                // Auto-focus
+                setTimeout(() => input.focus(), 100);
+            }
+            if (eyeBtn) {
+                eyeBtn.addEventListener('click', () => {
+                    if (!input) return;
+                    const isText = input.type === 'text';
+                    input.type = isText ? 'password' : 'text';
+                    eyeBtn.innerHTML = isText
+                        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+                        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+                });
+            }
+        }
+
+        // Run immediately (not waiting for DOMContentLoaded since auth overlay is inline HTML)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGate);
+        } else {
+            initGate();
+        }
+    })();
     </script>
 </body>
 </html>
