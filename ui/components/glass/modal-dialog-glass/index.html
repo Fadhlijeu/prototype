@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Modal Dialog — Glass Dark Premium</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3 class="modal-title">Confirm Component Action</h3>
+            <button type="button" class="close-btn" onclick="alert('Modal closed!')">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <p class="modal-content">
+            Are you sure you want to deploy the Glass Dark Premium design tokens to all child components?
+        </p>
+        <div class="modal-actions">
+            <button type="button" class="btn-m cancel" onclick="alert('Cancelled')">Cancel</button>
+            <button type="button" class="btn-m confirm" onclick="alert('Confirmed!')">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+</body>
+</html>

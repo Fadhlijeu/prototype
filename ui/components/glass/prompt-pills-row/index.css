@@ -1,0 +1,85 @@
+/**
+ * Prompt Pills Quick Scroller Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+body {
+    background-color: var(--bg-page);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 14px;
+    overflow-x: auto;
+}
+
+.pills-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 8px 4px;
+    width: max-content;
+    min-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pills-container::-webkit-scrollbar {
+    display: none;
+}
+
+.pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 20px;
+    background: var(--glass-card);
+    backdrop-filter: var(--blur-glass-light);
+    -webkit-backdrop-filter: var(--blur-glass-light);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.22s var(--ease-spring);
+}
+
+.pill:hover {
+    background: var(--glass-card-hover);
+    border-top-color: rgba(255, 255, 255, 0.35);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 12px rgba(74, 158, 255, 0.25);
+}
+
+.pill:active {
+    transform: scale(0.96);
+}
+
+.pill svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5px;
+    color: var(--accent-cyan);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.pill span {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Toggle Switch — Glass Dark Premium</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="toggle-group">
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Aurora Glow</span>
+                <span class="toggle-desc">Enable ambient mesh</span>
+            </div>
+            <div class="glass-switch active">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Noise Texture</span>
+                <span class="toggle-desc">Apply tactile overlay</span>
+            </div>
+            <div class="glass-switch active">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Sound FX</span>
+                <span class="toggle-desc">Spring audio haptics</span>
+            </div>
+            <div class="glass-switch">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>

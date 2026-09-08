@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Floating Dropdown — Glass Dark Premium</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="dropdown-wrap" id="drop">
+        <button type="button" class="dropdown-trigger" onclick="toggleDropdown()">
+            <span id="selectedLabel">Glass Dark Premium</span>
+            <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="dropdown-menu">
+            <div class="dropdown-item selected" onclick="selectOption('Glass Dark Premium', this)">
+                <i data-lucide="gem"></i> Glass Dark Premium
+            </div>
+            <div class="dropdown-item" onclick="selectOption('Raw Semantic HTML', this)">
+                <i data-lucide="code-2"></i> Raw Semantic HTML
+            </div>
+            <div class="dropdown-item" onclick="selectOption('Neumorphism Soft', this)">
+                <i data-lucide="circle-dot"></i> Neumorphism Soft
+            </div>
+            <div class="dropdown-item" onclick="selectOption('Cyberpunk Neon', this)">
+                <i data-lucide="zap"></i> Cyberpunk Neon
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Toggle Switch — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toggle-label {
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.toggle-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.glass-switch {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.28s var(--ease-spring);
+}
+
+.glass-switch.active {
+    background: linear-gradient(135deg, #4A7BF7, #2E5FD9);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+}
+
+.switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.28s var(--ease-spring);
+}
+
+.glass-switch.active .switch-thumb {
+    transform: translateX(20px);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="toggle-group">
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Aurora Glow</span>
+                <span class="toggle-desc">Enable ambient mesh</span>
+            </div>
+            <div class="glass-switch active">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Noise Texture</span>
+                <span class="toggle-desc">Apply tactile overlay</span>
+            </div>
+            <div class="glass-switch active">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+        <div class="toggle-row" onclick="toggleSwitch(this)">
+            <div class="toggle-info">
+                <span class="toggle-label">Sound FX</span>
+                <span class="toggle-desc">Spring audio haptics</span>
+            </div>
+            <div class="glass-switch">
+                <div class="switch-thumb"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script>
+
+function toggleSwitch(row) {
+    const sw = row.querySelector('.glass-switch');
+    sw.classList.toggle('active');
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Input Fields — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.form-group-wrap {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.glass-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border-radius: 14px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding: 0 14px;
+    transition: all 0.2s ease;
+}
+
+.glass-field:focus-within {
+    border-color: rgba(74, 158, 255, 0.45);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.glass-field svg {
+    color: var(--text-muted);
+    width: 17px; height: 17px;
+    stroke-width: 1.5px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.glass-field:focus-within svg {
+    color: var(--accent-cyan);
+}
+
+.glass-input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 13.5px;
+    font-family: inherit;
+    padding: 12px 10px;
+}
+
+.glass-input::placeholder {
+    color: var(--text-muted);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="form-group-wrap">
+        <div class="glass-field">
+            <i data-lucide="search"></i>
+            <input type="text" class="glass-input" placeholder="Search components, tokens, or files...">
+        </div>
+        <div class="glass-field">
+            <i data-lucide="mail"></i>
+            <input type="email" class="glass-input" placeholder="Enter email address...">
+        </div>
+        <div class="glass-field">
+            <i data-lucide="lock"></i>
+            <input type="password" class="glass-input" placeholder="Enter secure password...">
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script>
+
+    </script>
+</body>
+</html>

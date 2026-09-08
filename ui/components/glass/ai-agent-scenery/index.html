@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Scenery — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="scenery-container">
+        
+        <header class="top-bar">
+            <div class="icon-btn"><i data-lucide="menu"></i></div>
+            <div class="icon-btn"><i data-lucide="volume-2"></i></div>
+        </header>
+
+        <main class="main-workspace">
+            <div class="glow-orb"></div>
+
+            <div class="glass-card">
+                <div class="model-item" onclick="selectModel(this)">
+                    <div>
+                        <div class="model-title">K3</div>
+                        <div class="model-subtitle">Chat & Agent, flagship all-rounder</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item" onclick="selectModel(this)">
+                    <div>
+                        <div class="model-title">K3 Swarm</div>
+                        <div class="model-subtitle">Massive search, batch processing</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item active" onclick="selectModel(this)">
+                    <div>
+                        <div class="model-title">Instant</div>
+                        <div class="model-subtitle">Fast chat, quick replies</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="effort-row">
+                    <div>
+                        <div class="model-title">Thinking effort</div>
+                        <div class="model-subtitle">Reasoning depth</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 12.5px; color: var(--accent-cyan); font-weight: 500;">High</span>
+                        <i data-lucide="chevron-right" style="color: #8E8E93; width: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="greeting">
+                Hi <strong>Muhammad Fadhli</strong>, what would<br>you like to do with GlassOS today?
+            </div>
+        </main>
+
+        <section class="bottom-section">
+            <div class="pills-scroll">
+                <button class="pill"><i data-lucide="monitor-play"></i> Slides</button>
+                <button class="pill"><i data-lucide="bot"></i> Swarm</button>
+                <button class="pill"><i data-lucide="layout-grid"></i> Websites</button>
+                <button class="pill"><i data-lucide="microscope"></i> Deep Research</button>
+            </div>
+
+            <div class="chat-bar">
+                <button class="icon-circle"><i data-lucide="plus"></i></button>
+                <input type="text" class="chat-input" placeholder="Ask anything. Images work too...">
+                <button class="icon-circle"><i data-lucide="mic"></i></button>
+                <button class="icon-circle send-btn"><i data-lucide="arrow-up"></i></button>
+            </div>
+        </section>
+
+    </div>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

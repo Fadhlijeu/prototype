@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)</title>
+    <style>
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 16px;
+    margin: 0;
+    line-height: 1.5;
+}
+    </style>
+</head>
+<body>
+<div>
+    <button type="button" onclick="document.getElementById('nativeDialog').showModal()">Open Native &lt;dialog&gt;</button>
+    <dialog id="nativeDialog" style="border: 1px solid #ccc; border-radius: 8px; padding: 20px;">
+        <h3 style="margin-top: 0;">Native HTML5 Dialog</h3>
+        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.</p>
+        <div style="text-align: right; margin-top: 14px;">
+            <button type="button" onclick="document.getElementById('nativeDialog').close()">Close</button>
+        </div>
+    </dialog>
+</div>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Glass Dock Navigation — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-page: #0A0A0A;
+            --glass-card: rgba(255, 255, 255, 0.06);
+            --glass-border-top: rgba(255, 255, 255, 0.25);
+            --glass-border-side: rgba(255, 255, 255, 0.12);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.50);
+            --ease-spring: cubic-bezier(0.34, 1.1, 0.64, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            overflow-x: hidden;
+        }
+
+        .dock-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .glass-dock {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            height: 68px;
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 4px;
+            background: var(--glass-card);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        /* Layer 1: Noise Texture Overlay */
+        .glass-dock::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Active Pill Indicator with Spring Movement */
+        .active-pill-bg {
+            position: absolute;
+            top: var(--pill-top, 5px);
+            left: var(--pill-left, 5px);
+            width: var(--pill-width, 64px);
+            height: var(--pill-height, 58px);
+            border-radius: 29px;
+            z-index: 0;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            transition: left 0.45s var(--ease-spring), width 0.45s var(--ease-spring);
+        }
+
+        .active-pill-bg::before {
+            content: '';
+            position: absolute;
+            top: 2px; left: 8px;
+            width: 18px; height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            filter: blur(8px);
+            border-radius: 50%;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            height: 58px;
+            padding: 0 4px;
+            color: var(--text-secondary);
+            border-radius: 29px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .nav-item.active {
+            color: #FFFFFF;
+            transform: translateY(0);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 1.5px;
+            transition: transform 0.45s var(--ease-spring);
+            transform: scale(0.92);
+        }
+
+        .nav-item.active svg {
+            transform: scale(1.08);
+            color: #FFFFFF;
+        }
+
+        .nav-item .label {
+            font-size: 10.5px;
+            font-weight: 500;
+            letter-spacing: 0.1px;
+            opacity: 0.75;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: font-weight 0.2s ease, opacity 0.2s ease;
+        }
+
+        .nav-item.active .label {
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        @media (max-width: 375px) {
+            .dock-container {
+                gap: 8px;
+            }
+            .glass-dock {
+                height: 62px;
+            }
+            .nav-item {
+                height: 54px;
+                padding: 0 2px;
+            }
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+            .nav-item .label {
+                font-size: 9.5px;
+            }
+            .fab {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Separate Floating Action Button (FAB) */
+        .fab {
+            flex-shrink: 0;
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(135deg, #4A7BF7 0%, #2E5FD9 60%, #1E3A8A 100%);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s var(--ease-spring), box-shadow 0.2s ease;
+        }
+
+        .fab svg {
+            width: 24px; height: 24px;
+            stroke-width: 1.5px;
+        }
+
+        .fab:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .fab:active {
+            transform: scale(0.94);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dock-container">
+        <nav class="glass-dock" role="navigation" aria-label="Bottom Navigation">
+            <div class="active-pill-bg" id="pill"></div>
+
+            <button class="nav-item active" onclick="switchNav(this)">
+                <i data-lucide="home"></i>
+                <span class="label">Home</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="folder"></i>
+                <span class="label">Folders</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="rocket"></i>
+                <span class="label">Clean</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="settings"></i>
+                <span class="label">Settings</span>
+            </button>
+        </nav>
+
+        <button class="fab" onclick="alert('FAB Action Clicked!')" title="Add New Item">
+            <i data-lucide="plus"></i>
+        </button>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        const dock = document.querySelector('.glass-dock');
+        const items = document.querySelectorAll('.nav-item');
+
+        function updatePill(el) {
+            if (!el) return;
+            dock.style.setProperty('--pill-left', `${el.offsetLeft}px`);
+            dock.style.setProperty('--pill-top', `${el.offsetTop}px`);
+            dock.style.setProperty('--pill-width', `${el.offsetWidth}px`);
+            dock.style.setProperty('--pill-height', `${el.offsetHeight}px`);
+        }
+
+        function switchNav(el) {
+            items.forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            updatePill(el);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => updatePill(document.querySelector('.nav-item.active')), 50);
+        });
+        window.addEventListener('resize', () => {
+            updatePill(document.querySelector('.nav-item.active'));
+        });
+    </script>
+</body>
+</html>

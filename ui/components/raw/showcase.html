@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw Semantic HTML Components Catalog — Pure Web Anatomy</title>
+    <meta name="description" content="Katalog komponen murni berbasis standar semantik web (HTML5) tanpa hiasan styling untuk mempelajari anatomi & nama resmi komponen web.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --bg-page: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --border-color: #E2E8F0;
+            --border-dark: #CBD5E1;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --accent-blue: #2563EB;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 80px;
+        }
+
+        header {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-text h1 { font-size: 18px; font-weight: 700; color: #0F172A; }
+        .brand-text p { font-size: 12px; color: var(--text-muted); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .hero-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 32px;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+            display: inline-block;
+        }
+
+        .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+        .hero-desc { font-size: 14px; color: var(--text-muted); max-width: 800px; line-height: 1.6; }
+
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+
+        .comp-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: box-shadow 0.2s;
+        }
+
+        .comp-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border-color: var(--border-dark);
+        }
+
+        .comp-card-head {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .comp-card-title { font-size: 14.5px; font-weight: 600; }
+        .comp-card-tag {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            background: #E2E8F0;
+            color: #334155;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }
+
+        .comp-preview-zone {
+            padding: 16px;
+            min-height: 160px;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comp-preview-zone iframe {
+            width: 100%;
+            height: 150px;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            background: #FAFAFA;
+        }
+
+        .comp-card-foot {
+            padding: 10px 16px;
+            border-top: 1px solid var(--border-color);
+            background: #F8FAFC;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .path-label {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+        }
+
+        .foot-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-act {
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: #334155;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-act:hover {
+            background: #F1F5F9;
+            color: var(--accent-blue);
+        }
+
+        /* Modal */
+        .code-modal {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+
+        .code-modal.active { opacity: 1; pointer-events: auto; }
+
+        .code-modal-box {
+            background: #FFFFFF;
+            width: 100%; max-width: 800px; max-height: 85vh;
+            border-radius: 14px;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .code-modal-head {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .code-modal-body {
+            padding: 18px;
+            overflow-y: auto;
+            background: #0F172A;
+        }
+
+        .code-modal-body pre {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: #F8FAFC;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .toast-msg {
+            position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+            background: #0F172A; color: #FFFFFF;
+            padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            opacity: 0; transform: translateY(20px); transition: all 0.2s;
+        }
+        .toast-msg.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a href="../../../index.html" class="nav-link" title="Kembali ke Gateway Hub">
+                <i data-lucide="home"></i> Gateway
+            </a>
+            <div class="brand-text">
+                <h1>Raw Semantic HTML Components</h1>
+                <p>Kamus Anatomi & Tag Baku HTML5 Murni Tanpa Styling</p>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="../../../showcase.html" class="nav-link">
+                <i data-lucide="layers"></i> Master Showcase
+            </a>
+            <a href="../glass/showcase.html" class="nav-link">
+                <i data-lucide="gem"></i> Glass Showcase
+            </a>
+            <a href="../../../component.md" class="nav-link">
+                <i data-lucide="book-open"></i> component.md
+            </a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <section class="hero-box">
+            <span class="hero-tag">Design-Agnostic Anatomy</span>
+            <h2 class="hero-title">Kenali Nama Baku & Struktur Komponen Web</h2>
+            <p class="hero-desc">
+                Sebelum diberi gaya desain visual (seperti Glass Dark, Neumorphism, atau Flat), setiap komponen web memiliki anatomi dasar dan tag semantik resmi HTML5. Gunakan katalog ini untuk memahami peran, atribut standar, dan hierarki elemen tanpa terdistraksi oleh kosmetik visual.
+            </p>
+        </section>
+
+        <div class="comp-grid">
+
+            <!-- 1. Button -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Buttons & Actions</span>
+                    <span class="comp-card-tag">&lt;button&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="button/index.html" title="Button Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/button/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('button/button.html', 'HTML Buttons')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('button/button.html')">Salin</button>
+                        <a href="button/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 2. Form Input -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Form Input Fields</span>
+                    <span class="comp-card-tag">&lt;input type="..."&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="input/index.html" title="Input Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/input/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('input/input.html', 'Form Inputs')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('input/input.html')">Salin</button>
+                        <a href="input/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 3. Checkbox & Radio -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Checkbox & Radio</span>
+                    <span class="comp-card-tag">&lt;fieldset&gt;, &lt;input&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="checkbox-radio/index.html" title="Checkbox Radio Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/checkbox-radio/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('checkbox-radio/checkbox-radio.html', 'Checkbox & Radio')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('checkbox-radio/checkbox-radio.html')">Salin</button>
+                        <a href="checkbox-radio/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 4. Toggle Switch -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Role Switch</span>
+                    <span class="comp-card-tag">role="switch"</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="toggle-switch/index.html" title="Toggle Switch Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/toggle-switch/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('toggle-switch/toggle-switch.html', 'Toggle Switch')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('toggle-switch/toggle-switch.html')">Salin</button>
+                        <a href="toggle-switch/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 5. Select Dropdown -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Select Dropdown</span>
+                    <span class="comp-card-tag">&lt;select&gt;, &lt;option&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="select-dropdown/index.html" title="Select Dropdown Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/select-dropdown/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('select-dropdown/select-dropdown.html', 'Select Dropdown')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('select-dropdown/select-dropdown.html')">Salin</button>
+                        <a href="select-dropdown/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 6. Native Dialog Modal -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Native Dialog Modal</span>
+                    <span class="comp-card-tag">&lt;dialog&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="modal-dialog/index.html" title="Modal Dialog Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/modal-dialog/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('modal-dialog/modal-dialog.html', 'Modal Dialog')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('modal-dialog/modal-dialog.html')">Salin</button>
+                        <a href="modal-dialog/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 7. Data Table -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Data Table</span>
+                    <span class="comp-card-tag">&lt;table&gt;, &lt;tbody&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="table/index.html" title="Table Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/table/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('table/table.html', 'Data Table')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('table/table.html')">Salin</button>
+                        <a href="table/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 8. Progress & Meter -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Progress & Meter</span>
+                    <span class="comp-card-tag">&lt;progress&gt;, &lt;meter&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="progress-meter/index.html" title="Progress Meter Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/progress-meter/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('progress-meter/progress-meter.html', 'Progress & Meter')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('progress-meter/progress-meter.html')">Salin</button>
+                        <a href="progress-meter/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 9. Details Accordion -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Details Accordion</span>
+                    <span class="comp-card-tag">&lt;details&gt;, &lt;summary&gt;</span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="details-accordion/index.html" title="Details Accordion Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/details-accordion/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="showRawCode('details-accordion/details-accordion.html', 'Details Accordion')">Kode</button>
+                        <button class="btn-act" onclick="copyRawCode('details-accordion/details-accordion.html')">Salin</button>
+                        <a href="details-accordion/index.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+    </div>
+
+    <!-- Code Modal -->
+    <div class="code-modal" id="codeModal">
+        <div class="code-modal-box">
+            <div class="code-modal-head">
+                <h3 id="modalTitle">Component Source Code</h3>
+                <button class="btn-act" onclick="closeModal()">Tutup</button>
+            </div>
+            <div class="code-modal-body">
+                <pre><code id="codeText">Loading...</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-msg" id="toast">Kode berhasil disalin!</div>
+
+    <script>
+        lucide.createIcons();
+
+        async function showRawCode(path, title) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('codeText').innerText = "Memuat...";
+            document.getElementById('codeModal').classList.add('active');
+            try {
+                const res = await fetch(path);
+                const text = await res.text();
+                document.getElementById('codeText').innerText = text;
+            } catch (e) {
+                document.getElementById('codeText').innerText = "Gagal memuat: " + e.message;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('codeModal').classList.remove('active');
+        }
+
+        async function copyRawCode(path) {
+            try {
+                const res = await fetch(path);
+                const text = await res.text();
+                await navigator.clipboard.writeText(text);
+                const toast = document.getElementById('toast');
+                toast.classList.add('active');
+                setTimeout(() => toast.classList.remove('active'), 2000);
+            } catch (e) {
+                alert('Gagal menyalin: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/* Raw unstyled component - minimal clean typography reset */
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 16px;
+    margin: 0;
+    line-height: 1.5;
+}

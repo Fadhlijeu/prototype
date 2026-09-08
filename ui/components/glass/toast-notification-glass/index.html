@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Toast Notification — Glass Dark Premium</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="toast-stack">
+        <div class="glass-toast">
+            <div class="toast-icon success">
+                <i data-lucide="check-circle-2"></i>
+            </div>
+            <div class="toast-body">
+                <span class="toast-title">Changes Saved</span>
+                <span class="toast-msg">Component code copied to clipboard</span>
+            </div>
+        </div>
+        <div class="glass-toast">
+            <div class="toast-icon info">
+                <i data-lucide="sparkles"></i>
+            </div>
+            <div class="toast-body">
+                <span class="toast-title">Style Synchronized</span>
+                <span class="toast-msg">Token css.css applied to all 21 items</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+</body>
+</html>

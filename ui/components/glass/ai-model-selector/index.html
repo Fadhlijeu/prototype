@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Selector Card — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-card-wrapper">
+        <div class="layer-4-shadow"></div>
+        <div class="layer-3-aurora">
+            <div class="aurora-blob blob-1"></div>
+            <div class="aurora-blob blob-2"></div>
+        </div>
+
+        <div class="layer-2-glass">
+            <div class="model-list">
+                <div class="model-item" onclick="select(this)">
+                    <div class="model-info">
+                        <span class="model-title">K3</span>
+                        <span class="model-subtitle">Chat & Agent, flagship all-rounder</span>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item" onclick="select(this)">
+                    <div class="model-info">
+                        <span class="model-title">K3 Swarm</span>
+                        <span class="model-subtitle">Massive search, multi-agent coordination</span>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item active" onclick="select(this)">
+                    <div class="model-info">
+                        <span class="model-title">Instant</span>
+                        <span class="model-subtitle">Low-latency responses, fast reasoning</span>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

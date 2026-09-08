@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Glass Dock Navigation — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="dock-container">
+        <nav class="glass-dock" role="navigation" aria-label="Bottom Navigation">
+            <div class="active-pill-bg" id="pill"></div>
+
+            <button class="nav-item active" onclick="switchNav(this)">
+                <i data-lucide="home"></i>
+                <span class="label">Home</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="folder"></i>
+                <span class="label">Folders</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="rocket"></i>
+                <span class="label">Clean</span>
+            </button>
+
+            <button class="nav-item" onclick="switchNav(this)">
+                <i data-lucide="settings"></i>
+                <span class="label">Settings</span>
+            </button>
+        </nav>
+
+        <button class="fab" onclick="alert('FAB Action Clicked!')" title="Add New Item">
+            <i data-lucide="plus"></i>
+        </button>
+    </div>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

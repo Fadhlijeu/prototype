@@ -1,0 +1,74 @@
+/**
+ * Glass Input Fields Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.form-group-wrap {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.glass-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border-radius: 14px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding: 0 14px;
+    transition: all 0.2s ease;
+}
+
+.glass-field:focus-within {
+    border-color: rgba(74, 158, 255, 0.45);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.glass-field svg {
+    color: var(--text-muted);
+    width: 17px; height: 17px;
+    stroke-width: 1.5px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.glass-field:focus-within svg {
+    color: var(--accent-cyan);
+}
+
+.glass-input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 13.5px;
+    font-family: inherit;
+    padding: 12px 10px;
+}
+
+.glass-input::placeholder {
+    color: var(--text-muted);
+}
+

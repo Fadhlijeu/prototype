@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Dark Premium Showroom — 21 Decomposed Components</title>
+    <meta name="description" content="Koleksi 21 Komponen UI/UX Glass Dark Premium terdekomposisi lengkap dengan resize preview, source code, dan tombol salin.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-page: #08080C;
+            --glass-card: rgba(255, 255, 255, 0.05);
+            --glass-card-hover: rgba(255, 255, 255, 0.08);
+            --glass-border-top: rgba(255, 255, 255, 0.24);
+            --glass-border-side: rgba(255, 255, 255, 0.10);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --text-muted: rgba(255, 255, 255, 0.38);
+            --accent-cyan: #4A9EFF;
+            --accent-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
+            --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .ambient-mesh {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(110px); opacity: 0.32;
+            animation: float 22s infinite alternate ease-in-out;
+        }
+
+        .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #3B82F6 0%, transparent 70%); top: -150px; left: -100px; }
+        .blob-2 { width: 550px; height: 550px; background: radial-gradient(circle, #8B5CF6 0%, transparent 70%); top: 30%; right: -150px; animation-delay: -6s; }
+        .blob-3 { width: 480px; height: 480px; background: radial-gradient(circle, #06B6D4 0%, transparent 70%); bottom: -120px; left: 25%; animation-delay: -12s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 35px) scale(1.06); }
+        }
+
+        .showcase-header {
+            position: sticky; top: 0; z-index: 50; padding: 16px 32px;
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            background: rgba(8, 8, 12, 0.75); border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .brand-cluster { display: flex; align-items: center; gap: 12px; }
+
+        .back-home-btn {
+            width: 38px; height: 38px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); text-decoration: none; transition: all 0.2s;
+        }
+
+        .back-home-btn:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; transform: scale(1.05); }
+        .brand-text h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+        .brand-text h1 span { color: var(--accent-cyan); }
+        .brand-text p { font-size: 12px; color: var(--text-secondary); }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .badge-count {
+            padding: 6px 14px; border-radius: 20px;
+            background: rgba(74, 158, 255, 0.12); border: 1px solid rgba(74, 158, 255, 0.25);
+            font-size: 12px; font-weight: 500; color: var(--accent-cyan);
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ADE80; box-shadow: 0 0 10px #4ADE80; }
+
+        .btn-top-link {
+            padding: 6px 12px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-secondary); font-size: 12px; font-weight: 500; text-decoration: none;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-top-link:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
+
+        .showcase-main {
+            position: relative; z-index: 1; flex: 1; max-width: 1440px; margin: 0 auto; width: 100%;
+            padding: 32px 24px 80px;
+        }
+
+        .hero-banner {
+            position: relative; padding: 32px 36px; border-radius: 28px;
+            background: var(--glass-card); backdrop-filter: blur(28px) saturate(160%);
+            border: 1px solid transparent; border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side); border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4); margin-bottom: 28px; overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.035; mix-blend-mode: overlay; pointer-events: none;
+        }
+
+        .hero-tag {
+            font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--accent-cyan); margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .hero-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .hero-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 840px; }
+
+        .category-filter-bar {
+            display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none;
+            margin-bottom: 28px; padding-bottom: 6px;
+        }
+        .category-filter-bar::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            padding: 9px 16px; border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer;
+            white-space: nowrap; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .filter-btn:hover { background: rgba(255, 255, 255, 0.09); color: #FFFFFF; transform: translateY(-1px); }
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.22);
+            color: #FFFFFF; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .components-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 24px;
+        }
+
+        .component-card {
+            position: relative; border-radius: 26px;
+            background: var(--glass-card); backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid transparent; border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side); border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); display: flex; flex-direction: column;
+            overflow: hidden; transition: box-shadow 0.3s ease;
+        }
+
+        .component-card:hover {
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 24px rgba(74, 158, 255, 0.12);
+        }
+
+        .card-top {
+            position: relative; z-index: 1; padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.015);
+        }
+
+        .card-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+        .card-category { font-size: 11.5px; color: var(--text-secondary); }
+
+        .badge-type {
+            font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 8px;
+            background: rgba(74, 158, 255, 0.12); color: var(--accent-cyan); border: 1px solid rgba(74, 158, 255, 0.22);
+        }
+        .badge-type.scenery { background: rgba(168, 85, 247, 0.12); color: #C084FC; border-color: rgba(168, 85, 247, 0.25); }
+
+        .card-resizer-toolbar {
+            position: relative; z-index: 1; padding: 8px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.04); border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .viewport-presets { display: flex; align-items: center; gap: 6px; }
+
+        .btn-preset {
+            padding: 4px 8px; border-radius: 6px; background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-secondary);
+            font-size: 11px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn-preset:hover { background: rgba(255, 255, 255, 0.08); color: #FFFFFF; }
+        .btn-preset.active {
+            background: rgba(74, 158, 255, 0.15); border-color: rgba(74, 158, 255, 0.3); color: var(--accent-cyan);
+        }
+        .btn-preset svg { width: 12px; height: 12px; }
+
+        .toolbar-right { display: flex; align-items: center; gap: 8px; }
+
+        .btn-action-tool {
+            display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px;
+            border-radius: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary); font-size: 11px; font-weight: 500; cursor: pointer; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-action-tool:hover { background: rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+        .btn-action-tool.copy-btn:hover { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #34D399; }
+        .btn-action-tool svg { width: 12px; height: 12px; }
+
+        .card-preview-zone {
+            position: relative; z-index: 1; background: rgba(0, 0, 0, 0.35); padding: 20px 16px;
+            display: flex; align-items: center; justify-content: center; min-height: 240px; overflow: hidden;
+        }
+        .card-preview-zone.tall { min-height: 480px; }
+
+        .preview-resizer-wrapper {
+            width: 100%; display: flex; justify-content: center; transition: max-width 0.35s var(--ease-spring);
+        }
+        .preview-resizer-wrapper iframe {
+            width: 100%; height: 240px; border: none; border-radius: 16px; background: transparent;
+        }
+        .card-preview-zone.tall .preview-resizer-wrapper iframe { height: 460px; }
+
+        .card-bottom {
+            position: relative; z-index: 1; padding: 12px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.015); border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .file-link-tag { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+        .btn-view-solo {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500;
+            color: #FFFFFF; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 5px 10px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
+        }
+        .btn-view-solo:hover { background: rgba(255, 255, 255, 0.15); color: var(--accent-cyan); transform: translateY(-1px); }
+        .btn-view-solo svg { width: 13px; height: 13px; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-card {
+            width: 100%; max-width: 900px; max-height: 88vh; background: #0E0E14; border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .modal-title-wrap h3 { font-size: 16px; font-weight: 600; }
+        .modal-title-wrap p { font-size: 12px; color: var(--text-secondary); }
+
+        .modal-close-btn {
+            width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }
+
+        .modal-body { flex: 1; overflow-y: auto; padding: 20px; background: #08080C; }
+        .code-pre { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #E2E8F0; line-height: 1.6; white-space: pre-wrap; }
+
+        .toast-notification {
+            position: fixed; bottom: 30px; right: 30px; z-index: 2000; padding: 12px 20px; border-radius: 14px;
+            background: #10B981; color: #FFFFFF; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); transform: translateY(100px); opacity: 0; transition: all 0.3s var(--ease-spring);
+        }
+        .toast-notification.active { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .components-grid { grid-template-columns: 1fr; }
+            .showcase-header { padding: 14px 18px; }
+            .showcase-main { padding: 20px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-mesh" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <header class="showcase-header">
+        <div class="brand-cluster">
+            <a href="../../../index.html" class="back-home-btn" title="Back to Portal Gateway">
+                <i data-lucide="arrow-left"></i>
+            </a>
+            <div class="brand-text">
+                <h1>Glass<span>OS</span> Premium Showroom</h1>
+                <p>21 Komponen Glass Dark Premium Terdekomposisi</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <div class="badge-count">
+                <span class="pulse-dot"></span>
+                <span><strong>21</strong> Komponen Glass</span>
+            </div>
+            <a href="../../../showcase.html" class="btn-top-link">
+                <i data-lucide="layers"></i> Master Hub
+            </a>
+            <a href="../raw/showcase.html" class="btn-top-link">
+                <i data-lucide="code-2"></i> Raw Showcase
+            </a>
+        </div>
+    </header>
+
+    <main class="showcase-main">
+
+        <section class="hero-banner">
+            <span class="hero-tag"><i data-lucide="sparkles"></i> Gaya Desain: Glass Dark Premium (Decomposed)</span>
+            <h2 class="hero-title">Laboratorium Komponen Kaca Modern</h2>
+            <p class="hero-desc">
+                Seluruh komponen kini terisolasi dalam foldernya masing-masing (<code>index.html</code>, <code>index.css</code>, <code>index.js</code>, dan all-in-one HTML) dan mengimpor token desain terpusat dari <code>css.css</code>. Gunakan kontrol <strong>Mobile (375px)</strong>, <strong>Tablet (640px)</strong>, atau <strong>Full</strong> untuk menguji responsivitas.
+            </p>
+        </section>
+
+        <nav class="category-filter-bar" aria-label="Category Filters">
+            <button class="filter-btn active" onclick="filterCategory('all', this)">
+                <i data-lucide="grid"></i> Semua (21)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('inputs', this)">
+                <i data-lucide="text-cursor-input"></i> Buttons & Inputs (8)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('cards', this)">
+                <i data-lucide="credit-card"></i> Cards & Displays (5)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('navigation', this)">
+                <i data-lucide="compass"></i> Navigasi & Sidepanel (2)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('overlays', this)">
+                <i data-lucide="layers"></i> Overlays & Feedback (4)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('telemetry', this)">
+                <i data-lucide="bar-chart-2"></i> Diagram & Charts (1)
+            </button>
+            <button class="filter-btn" onclick="filterCategory('scenery', this)">
+                <i data-lucide="layout"></i> Full Scenery (1)
+            </button>
+        </nav>
+
+        <div class="components-grid" id="grid">
+
+            <!-- Component: Glass Buttons Collection -->
+            <article class="component-card" data-cat="inputs" id="card-button-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Buttons Collection</div>
+                        <div class="card-category">Action / Buttons</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-button-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-button-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-button-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('button-glass/button-glass.html', 'Glass Buttons Collection')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('button-glass/button-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="button-glass/index.html" title="Glass Buttons Collection Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/button-glass/</span>
+                    <a href="button-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Chat Input Bar -->
+            <article class="component-card" data-cat="inputs" id="card-chat-input-bar">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Chat Input Bar</div>
+                        <div class="card-category">Form Input / AI Prompt</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-chat-input-bar', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-chat-input-bar', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-chat-input-bar', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('chat-input-bar/chat-input-bar.html', 'Glass Chat Input Bar')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('chat-input-bar/chat-input-bar.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="chat-input-bar/index.html" title="Glass Chat Input Bar Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/chat-input-bar/</span>
+                    <a href="chat-input-bar/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Form Input Fields -->
+            <article class="component-card" data-cat="inputs" id="card-input-field-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Form Input Fields</div>
+                        <div class="card-category">Form / Inputs</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-input-field-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-input-field-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-input-field-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('input-field-glass/input-field-glass.html', 'Glass Form Input Fields')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('input-field-glass/input-field-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="input-field-glass/index.html" title="Glass Form Input Fields Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/input-field-glass/</span>
+                    <a href="input-field-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Prompt Pills Quick Scroller -->
+            <article class="component-card" data-cat="inputs" id="card-prompt-pills-row">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Prompt Pills Quick Scroller</div>
+                        <div class="card-category">Chips / Action Pills</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-prompt-pills-row', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-prompt-pills-row', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-prompt-pills-row', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('prompt-pills-row/prompt-pills-row.html', 'Prompt Pills Quick Scroller')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('prompt-pills-row/prompt-pills-row.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="prompt-pills-row/index.html" title="Prompt Pills Quick Scroller Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/prompt-pills-row/</span>
+                    <a href="prompt-pills-row/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Thinking Effort Selector -->
+            <article class="component-card" data-cat="inputs" id="card-thinking-effort-selector">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Thinking Effort Selector</div>
+                        <div class="card-category">Segmented Stepper</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-thinking-effort-selector', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-thinking-effort-selector', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-thinking-effort-selector', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('thinking-effort-selector/thinking-effort-selector.html', 'Thinking Effort Selector')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('thinking-effort-selector/thinking-effort-selector.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="thinking-effort-selector/index.html" title="Thinking Effort Selector Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/thinking-effort-selector/</span>
+                    <a href="thinking-effort-selector/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Toggle Switch -->
+            <article class="component-card" data-cat="inputs" id="card-toggle-switch-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Toggle Switch</div>
+                        <div class="card-category">Control / Switch</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-toggle-switch-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-toggle-switch-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-toggle-switch-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('toggle-switch-glass/toggle-switch-glass.html', 'Glass Toggle Switch')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('toggle-switch-glass/toggle-switch-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="toggle-switch-glass/index.html" title="Glass Toggle Switch Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/toggle-switch-glass/</span>
+                    <a href="toggle-switch-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Checkbox & Radio -->
+            <article class="component-card" data-cat="inputs" id="card-checkbox-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Checkbox & Radio</div>
+                        <div class="card-category">Control / Checkbox</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-checkbox-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-checkbox-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-checkbox-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('checkbox-glass/checkbox-glass.html', 'Glass Checkbox & Radio')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('checkbox-glass/checkbox-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="checkbox-glass/index.html" title="Glass Checkbox & Radio Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/checkbox-glass/</span>
+                    <a href="checkbox-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Floating Dropdown -->
+            <article class="component-card" data-cat="inputs" id="card-dropdown-select-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Floating Dropdown</div>
+                        <div class="card-category">Control / Select</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-dropdown-select-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-dropdown-select-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-dropdown-select-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('dropdown-select-glass/dropdown-select-glass.html', 'Glass Floating Dropdown')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('dropdown-select-glass/dropdown-select-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="dropdown-select-glass/index.html" title="Glass Floating Dropdown Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/dropdown-select-glass/</span>
+                    <a href="dropdown-select-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: AI Model Selector Card -->
+            <article class="component-card" data-cat="cards" id="card-ai-model-selector">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">AI Model Selector Card</div>
+                        <div class="card-category">Selection Control</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-ai-model-selector', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-ai-model-selector', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-ai-model-selector', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('ai-model-selector/ai-model-selector.html', 'AI Model Selector Card')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('ai-model-selector/ai-model-selector.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="ai-model-selector/index.html" title="AI Model Selector Card Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/ai-model-selector/</span>
+                    <a href="ai-model-selector/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Frosted Folder Card -->
+            <article class="component-card" data-cat="cards" id="card-frosted-folder-card">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Frosted Folder Card</div>
+                        <div class="card-category">File System / Card</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-frosted-folder-card', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-frosted-folder-card', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-frosted-folder-card', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('frosted-folder-card/frosted-folder-card.html', 'Frosted Folder Card')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('frosted-folder-card/frosted-folder-card.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="frosted-folder-card/index.html" title="Frosted Folder Card Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/frosted-folder-card/</span>
+                    <a href="frosted-folder-card/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Aurora Storage Card -->
+            <article class="component-card" data-cat="cards" id="card-aurora-storage-card">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Aurora Storage Card</div>
+                        <div class="card-category">Data Display / Gauge</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-aurora-storage-card', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-aurora-storage-card', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-aurora-storage-card', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('aurora-storage-card/aurora-storage-card.html', 'Aurora Storage Card')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('aurora-storage-card/aurora-storage-card.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="aurora-storage-card/index.html" title="Aurora Storage Card Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/aurora-storage-card/</span>
+                    <a href="aurora-storage-card/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Glowing Progress Bar -->
+            <article class="component-card" data-cat="cards" id="card-progress-bar-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Glowing Progress Bar</div>
+                        <div class="card-category">Display / Progress</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-progress-bar-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-progress-bar-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-progress-bar-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('progress-bar-glass/progress-bar-glass.html', 'Glass Glowing Progress Bar')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('progress-bar-glass/progress-bar-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="progress-bar-glass/index.html" title="Glass Glowing Progress Bar Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/progress-bar-glass/</span>
+                    <a href="progress-bar-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Avatar with Status -->
+            <article class="component-card" data-cat="cards" id="card-avatar-badge-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Avatar with Status</div>
+                        <div class="card-category">Display / Avatar</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-avatar-badge-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-avatar-badge-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-avatar-badge-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('avatar-badge-glass/avatar-badge-glass.html', 'Glass Avatar with Status')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('avatar-badge-glass/avatar-badge-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="avatar-badge-glass/index.html" title="Glass Avatar with Status Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/avatar-badge-glass/</span>
+                    <a href="avatar-badge-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Floating Glass Dock -->
+            <article class="component-card" data-cat="navigation" id="card-glass-dock-navigation">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Floating Glass Dock</div>
+                        <div class="card-category">Navigation / Spring Dock</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-glass-dock-navigation', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-glass-dock-navigation', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-glass-dock-navigation', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('glass-dock-navigation/glass-dock-navigation.html', 'Floating Glass Dock')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('glass-dock-navigation/glass-dock-navigation.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="glass-dock-navigation/index.html" title="Floating Glass Dock Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/glass-dock-navigation/</span>
+                    <a href="glass-dock-navigation/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Productivity Glass Sidepanel -->
+            <article class="component-card" data-cat="navigation" id="card-glass-sidepanel">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Productivity Glass Sidepanel</div>
+                        <div class="card-category">Navigation / Desktop Drawer</div>
+                    </div>
+                    <span class="badge-type">Organism</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-glass-sidepanel', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-glass-sidepanel', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-glass-sidepanel', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('glass-sidepanel/glass-sidepanel.html', 'Productivity Glass Sidepanel')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('glass-sidepanel/glass-sidepanel.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone tall">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="glass-sidepanel/index.html" title="Productivity Glass Sidepanel Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/glass-sidepanel/</span>
+                    <a href="glass-sidepanel/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Swirl Refraction Bottom Sheet -->
+            <article class="component-card" data-cat="overlays" id="card-swirl-bottom-sheet">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Swirl Refraction Bottom Sheet</div>
+                        <div class="card-category">Overlay / Canvas 2D Refraction</div>
+                    </div>
+                    <span class="badge-type">Organism</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-swirl-bottom-sheet', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-swirl-bottom-sheet', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-swirl-bottom-sheet', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('swirl-bottom-sheet/swirl-bottom-sheet.html', 'Swirl Refraction Bottom Sheet')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('swirl-bottom-sheet/swirl-bottom-sheet.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone tall">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="swirl-bottom-sheet/index.html" title="Swirl Refraction Bottom Sheet Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/swirl-bottom-sheet/</span>
+                    <a href="swirl-bottom-sheet/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Modal Dialog -->
+            <article class="component-card" data-cat="overlays" id="card-modal-dialog-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Modal Dialog</div>
+                        <div class="card-category">Overlay / Centered Dialog</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-modal-dialog-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-modal-dialog-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-modal-dialog-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('modal-dialog-glass/modal-dialog-glass.html', 'Glass Modal Dialog')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('modal-dialog-glass/modal-dialog-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="modal-dialog-glass/index.html" title="Glass Modal Dialog Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/modal-dialog-glass/</span>
+                    <a href="modal-dialog-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Toast Notification -->
+            <article class="component-card" data-cat="overlays" id="card-toast-notification-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Toast Notification</div>
+                        <div class="card-category">Feedback / Toast Alert</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-toast-notification-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-toast-notification-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-toast-notification-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('toast-notification-glass/toast-notification-glass.html', 'Glass Toast Notification')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('toast-notification-glass/toast-notification-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="toast-notification-glass/index.html" title="Glass Toast Notification Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/toast-notification-glass/</span>
+                    <a href="toast-notification-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Glass Micro Tooltip -->
+            <article class="component-card" data-cat="overlays" id="card-tooltip-glass">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Glass Micro Tooltip</div>
+                        <div class="card-category">Feedback / Tooltip</div>
+                    </div>
+                    <span class="badge-type">Atomic</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-tooltip-glass', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-tooltip-glass', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-tooltip-glass', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('tooltip-glass/tooltip-glass.html', 'Glass Micro Tooltip')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('tooltip-glass/tooltip-glass.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="tooltip-glass/index.html" title="Glass Micro Tooltip Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/tooltip-glass/</span>
+                    <a href="tooltip-glass/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: Telemetry Activity Chart -->
+            <article class="component-card" data-cat="telemetry" id="card-telemetry-activity-chart">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">Telemetry Activity Chart</div>
+                        <div class="card-category">Analytics / Bar Histogram</div>
+                    </div>
+                    <span class="badge-type">Molecule</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-telemetry-activity-chart', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-telemetry-activity-chart', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-telemetry-activity-chart', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('telemetry-activity-chart/telemetry-activity-chart.html', 'Telemetry Activity Chart')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('telemetry-activity-chart/telemetry-activity-chart.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="telemetry-activity-chart/index.html" title="Telemetry Activity Chart Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/telemetry-activity-chart/</span>
+                    <a href="telemetry-activity-chart/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+            <!-- Component: AI Agent Studio Scenery -->
+            <article class="component-card" data-cat="scenery" id="card-ai-agent-scenery">
+                <div class="card-top">
+                    <div class="card-meta-left">
+                        <div class="card-name">AI Agent Studio Scenery</div>
+                        <div class="card-category">Complete Workspace Scenery</div>
+                    </div>
+                    <span class="badge-type scenery">Scenery</span>
+                </div>
+                <div class="card-resizer-toolbar">
+                    <div class="viewport-presets">
+                        <button class="btn-preset active" onclick="setCardWidth('card-ai-agent-scenery', '100%', this)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-ai-agent-scenery', '640px', this)">
+                            <i data-lucide="tablet"></i> 640px
+                        </button>
+                        <button class="btn-preset" onclick="setCardWidth('card-ai-agent-scenery', '375px', this)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn-action-tool" onclick="viewCode('ai-agent-scenery/ai-agent-scenery.html', 'AI Agent Studio Scenery')">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-action-tool copy-btn" onclick="copyComponentCode('ai-agent-scenery/ai-agent-scenery.html')">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                    </div>
+                </div>
+                <div class="card-preview-zone tall">
+                    <div class="preview-resizer-wrapper">
+                        <iframe src="ai-agent-scenery/index.html" title="AI Agent Studio Scenery Preview"></iframe>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="file-link-tag">ui/components/glass/ai-agent-scenery/</span>
+                    <a href="ai-agent-scenery/index.html" target="_blank" class="btn-view-solo">
+                        <i data-lucide="external-link"></i> Solo File
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <h3 id="modalComponentTitle">Component Source Code</h3>
+                    <p id="modalComponentPath">ui/components/glass/...</p>
+                </div>
+                <div class="modal-actions" style="display: flex; align-items: center; gap: 8px;">
+                    <button class="btn-action-tool copy-btn" onclick="copyActiveCode()">
+                        <i data-lucide="copy"></i> Salin Kode
+                    </button>
+                    <button class="modal-close-btn" onclick="closeCodeModal()" title="Tutup Modal">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <pre class="code-pre"><code id="modalCodeSnippet">Memuat kode...</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-notification" id="toast">
+        <i data-lucide="check-circle-2"></i>
+        <span id="toastMsg">Kode berhasil disalin ke clipboard!</span>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.component-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function setCardWidth(cardId, width, btn) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            const buttons = card.querySelectorAll('.btn-preset');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const wrapper = card.querySelector('.preview-resizer-wrapper');
+            if (wrapper) wrapper.style.maxWidth = width;
+        }
+
+        let activeCode = "";
+
+        async function viewCode(filename, title) {
+            document.getElementById('modalComponentTitle').innerText = title;
+            document.getElementById('modalComponentPath').innerText = `ui/components/glass/${filename}`;
+            document.getElementById('modalCodeSnippet').innerText = "Sedang mengambil berkas...";
+            document.getElementById('codeModal').classList.add('active');
+
+            try {
+                const res = await fetch(filename);
+                if (!res.ok) throw new Error("Gagal memuat berkas: " + res.status);
+                activeCode = await res.text();
+                document.getElementById('modalCodeSnippet').innerText = activeCode;
+            } catch (err) {
+                document.getElementById('modalCodeSnippet').innerText = "Error saat memuat kode: " + err.message;
+            }
+        }
+
+        function closeCodeModal() {
+            document.getElementById('codeModal').classList.remove('active');
+        }
+
+        async function copyComponentCode(filename) {
+            try {
+                const res = await fetch(filename);
+                if (!res.ok) throw new Error("Gagal memuat berkas: " + res.status);
+                const code = await res.text();
+                await navigator.clipboard.writeText(code);
+                showToast("Kode " + filename.split('/').pop() + " berhasil disalin!");
+            } catch (err) {
+                showToast("Gagal menyalin: " + err.message);
+            }
+        }
+
+        async function copyActiveCode() {
+            if (!activeCode) return;
+            await navigator.clipboard.writeText(activeCode);
+            showToast("Kode berhasil disalin!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 2500);
+        }
+
+        document.getElementById('codeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'codeModal') closeCodeModal();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+/**
+ * Glass Floating Dropdown Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.dropdown-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+}
+
+.dropdown-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: var(--glass-card);
+    backdrop-filter: blur(24px);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    color: #FFFFFF;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.dropdown-trigger svg {
+    width: 16px; height: 16px;
+    color: var(--text-secondary);
+    transition: transform 0.25s var(--ease-spring);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; width: 100%;
+    background: rgba(15, 15, 22, 0.85);
+    backdrop-filter: blur(28px) saturate(180%);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    padding: 6px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 100;
+}
+
+.dropdown-wrap.open .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-wrap.open .dropdown-trigger svg {
+    transform: rotate(180deg);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.09);
+    color: #FFFFFF;
+}
+
+.dropdown-item.selected {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.dropdown-item svg {
+    width: 16px; height: 16px;
+}
+

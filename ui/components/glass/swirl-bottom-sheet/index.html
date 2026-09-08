@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swirl Refraction Glass Bottom Sheet — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <button class="open-trigger" onclick="openSheet()">Open Glass Bottom Sheet</button>
+
+    <div class="scrim" id="scrim" onclick="closeSheet()"></div>
+
+    <div class="modal-container" id="modalContainer" role="dialog" aria-modal="true">
+        <section class="sheet" id="sheet">
+            <canvas id="fxCanvas"></canvas>
+            <div class="sheet-glass"></div>
+
+            <div class="modal-icon-badge">
+                <div class="folder-badge-graphic">
+                    <i class="tab-color r"></i>
+                    <i class="tab-color g"></i>
+                    <i class="tab-color b"></i>
+                </div>
+            </div>
+
+            <div class="sheet-content">
+                <h2 class="modal-title">Enter Folder Name</h2>
+                <p class="modal-desc">Create a new space for your files. The glass behind this sheet is organically refracted.</p>
+                
+                <div class="modal-input-wrap">
+                    <input type="text" id="folderInput" placeholder="e.g. Design Systems" oninput="updateBtn()">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" onclick="closeSheet()">Cancel</button>
+                    <button class="modal-btn create" id="createBtn" disabled onclick="alert('Created: ' + document.getElementById('folderInput').value); closeSheet()">Create</button>
+                </div>
+
+                <div class="ios-indicator"></div>
+            </div>
+        </section>
+    </div>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

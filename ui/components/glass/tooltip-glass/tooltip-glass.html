@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Micro Tooltip — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.tooltip-demo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.has-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+
+.trigger-btn {
+    width: 42px; height: 42px;
+    border-radius: 14px;
+    background: var(--glass-card);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.trigger-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.glass-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: rgba(15, 15, 22, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.22s var(--ease-spring);
+}
+
+.glass-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(15, 15, 22, 0.85) transparent transparent transparent;
+}
+
+.has-tooltip:hover .glass-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="tooltip-demo-wrap">
+        <div class="has-tooltip">
+            <button type="button" class="trigger-btn">
+                <i data-lucide="share-2"></i>
+            </button>
+            <div class="glass-tooltip">Share Component</div>
+        </div>
+        <div class="has-tooltip">
+            <button type="button" class="trigger-btn">
+                <i data-lucide="heart"></i>
+            </button>
+            <div class="glass-tooltip">Add to Favorites</div>
+        </div>
+        <div class="has-tooltip">
+            <button type="button" class="trigger-btn">
+                <i data-lucide="copy"></i>
+            </button>
+            <div class="glass-tooltip">Copy Source Code</div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script>
+
+    </script>
+</body>
+</html>

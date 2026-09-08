@@ -1,0 +1,106 @@
+/**
+ * Glass Dark Premium — Shared CSS Design System & Design Tokens
+ * Single source of truth untuk seluruh komponen bertema Glass.
+ * Lokasi: ui/components/glass/css.css
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    /* 1. Canvas & Page Backgrounds */
+    --bg-page: #08080C;
+    --bg-surface: #0A0A0E;
+    --bg-elevated: #111118;
+
+    /* 2. Glass Surfaces (Multi-layer Opacities) */
+    --glass-base: rgba(255, 255, 255, 0.04);
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-elevated: rgba(255, 255, 255, 0.12);
+    --glass-pill: rgba(255, 255, 255, 0.07);
+
+    /* 3. Asymmetric Specular Borders (Simulasi Arah Cahaya dari Atas) */
+    --glass-border-top: rgba(255, 255, 255, 0.24);    /* Specular highlight paling terang */
+    --glass-border-side: rgba(255, 255, 255, 0.10);   /* Refleksi tepi sedang */
+    --glass-border-bottom: rgba(255, 255, 255, 0.04); /* Bayangan tepi paling redup */
+
+    /* 4. Typography Colors */
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+
+    /* 5. Accent & Semantic Signal Colors */
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-purple: #8B5CF6;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+
+    /* 6. Shadows & Optical Glows */
+    --shadow-glass: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    --shadow-glass-hover: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(74, 158, 255, 0.15);
+    --shadow-glow-cyan: 0 0 20px rgba(74, 158, 255, 0.35);
+    --shadow-glow-blue: 0 6px 22px rgba(59, 130, 246, 0.4);
+
+    /* 7. Blur & Filter Standards */
+    --blur-glass-light: blur(16px) saturate(150%);
+    --blur-glass-standard: blur(24px) saturate(160%);
+    --blur-glass-heavy: blur(36px) saturate(180%);
+
+    /* 8. Physics & Timing Curves */
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* 9. Typography Fonts */
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Universal Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-page);
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Common Utility: SVG Noise Texture Overlay */
+.glass-noise {
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.038;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Common Utility: Glass Card Surface */
+.glass-surface {
+    background: var(--glass-card);
+    backdrop-filter: var(--blur-glass-standard);
+    -webkit-backdrop-filter: var(--blur-glass-standard);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: var(--shadow-glass);
+}

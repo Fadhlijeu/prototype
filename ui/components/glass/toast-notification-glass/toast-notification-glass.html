@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Toast Notification — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.toast-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.glass-toast {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 18px;
+    background: var(--glass-card);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    user-select: none;
+}
+
+.toast-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toast-icon.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+}
+
+.toast-icon.info {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--accent-cyan);
+}
+
+.toast-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toast-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.toast-msg {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="toast-stack">
+        <div class="glass-toast">
+            <div class="toast-icon success">
+                <i data-lucide="check-circle-2"></i>
+            </div>
+            <div class="toast-body">
+                <span class="toast-title">Changes Saved</span>
+                <span class="toast-msg">Component code copied to clipboard</span>
+            </div>
+        </div>
+        <div class="glass-toast">
+            <div class="toast-icon info">
+                <i data-lucide="sparkles"></i>
+            </div>
+            <div class="toast-body">
+                <span class="toast-title">Style Synchronized</span>
+                <span class="toast-msg">Token css.css applied to all 21 items</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script>
+
+    </script>
+</body>
+</html>

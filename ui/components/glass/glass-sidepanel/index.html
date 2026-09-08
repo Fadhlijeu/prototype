@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Sidepanel / Sidebar — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <aside class="sidepanel-wrapper" role="navigation" aria-label="Main Sidepanel">
+        <div class="sidepanel-glow"></div>
+
+        <div class="brand-header">
+            <div class="brand-icon">
+                <i data-lucide="shield"></i>
+            </div>
+            <div>
+                <div class="brand-title">Glass<span>OS</span></div>
+                <div style="font-size: 11px; color: var(--text-secondary);"><span class="live-dot"></span> Online Workspace</div>
+            </div>
+        </div>
+
+        <div class="search-wrap">
+            <i data-lucide="search"></i>
+            <input type="text" class="search-input" placeholder="Search spaces & files...">
+        </div>
+
+        <div class="menu-list">
+            <div class="section-label">Main Workspace</div>
+            
+            <div class="menu-item active" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="layout-grid"></i>
+                    <span>Overview</span>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="folder"></i>
+                    <span>Spaces & Folders</span>
+                </div>
+                <span class="item-badge">4</span>
+            </div>
+
+            <div class="menu-item" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="bot"></i>
+                    <span>AI Swarm</span>
+                </div>
+                <span class="item-badge" style="color: #4ADE80;">Live</span>
+            </div>
+
+            <div class="section-label">System & Tools</div>
+
+            <div class="menu-item" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>Telemetry</span>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="sparkles"></i>
+                    <span>Memory Cleaner</span>
+                </div>
+                <span class="item-badge" style="color: #F87171;">2.4G</span>
+            </div>
+
+            <div class="menu-item" onclick="activate(this)">
+                <div class="item-left">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="storage-footer">
+            <div class="storage-text">
+                <span>Storage</span>
+                <strong>70.1 GB / 128 TB</strong>
+            </div>
+            <div class="meter-track">
+                <div class="meter-fill"></div>
+            </div>
+        </div>
+    </aside>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

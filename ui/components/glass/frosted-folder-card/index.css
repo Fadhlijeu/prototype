@@ -1,0 +1,124 @@
+/**
+ * frosted-folder-card Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+:root {
+            --bg-page: #0A0A0A;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 24px;
+            flex-wrap: wrap;
+        }
+
+        /* Folder Card Container */
+        .folder-card {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+            filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.35));
+        }
+
+        .folder-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            filter: drop-shadow(0 20px 28px rgba(0, 0, 0, 0.45));
+        }
+
+        .folder-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Single Unified Frosted Glass Panel */
+        .glass-folder {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            mask: url(#folder-shape);
+            -webkit-mask: url(#folder-shape);
+        }
+
+        /* Layer 1: Noise Texture Overlay */
+        .glass-folder::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+
+        /* Glossy Highlight Border */
+        .glossy-border {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+
+        /* Content */
+        .card-content {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 20px 20px 20px;
+            pointer-events: none;
+        }
+
+        .folder-icon-wrapper {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .folder-icon-wrapper svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 1.5px;
+        }
+
+        .folder-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .folder-title {
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .folder-subtitle {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 400;
+        }

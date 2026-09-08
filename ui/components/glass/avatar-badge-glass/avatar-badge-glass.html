@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Avatar with Status Badge — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #4A9EFF;
+    --accent-blue-1: #4A7BF7;
+    --accent-blue-2: #2E5FD9;
+    --accent-blue-3: #1E3A8A;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.glass-avatar-wrap {
+    position: relative;
+    width: 52px; height: 52px;
+}
+
+.glass-avatar {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(74, 123, 247, 0.5), rgba(139, 92, 246, 0.5));
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+    overflow: hidden;
+}
+
+.glass-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.avatar-badge {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid #08080C;
+}
+
+.avatar-badge.online {
+    background: #10B981;
+    box-shadow: 0 0 8px #10B981;
+}
+
+.avatar-badge.busy {
+    background: #EF4444;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="avatar-row">
+        <div class="glass-avatar-wrap">
+            <div class="glass-avatar">K3</div>
+            <div class="avatar-badge online"></div>
+        </div>
+        <div class="glass-avatar-wrap">
+            <div class="glass-avatar" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">SW</div>
+            <div class="avatar-badge online"></div>
+        </div>
+        <div class="glass-avatar-wrap">
+            <div class="glass-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">AG</div>
+            <div class="avatar-badge busy"></div>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script>
+
+    </script>
+</body>
+</html>

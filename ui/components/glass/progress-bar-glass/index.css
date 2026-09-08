@@ -1,0 +1,61 @@
+/**
+ * Glass Glowing Progress Bar Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.progress-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.prog-title { font-size: 13.5px; font-weight: 600; }
+.prog-val { font-size: 12px; color: var(--accent-cyan); font-weight: 600; }
+
+.glass-track {
+    width: 100%;
+    height: 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.glass-fill {
+    height: 100%;
+    width: 72%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #4A7BF7 0%, #06B6D4 100%);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
+    transition: width 0.4s var(--ease-spring);
+}
+

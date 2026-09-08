@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress & Meter — Raw Pure HTML</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px;">
+    <label>Task Progress:
+        <progress value="68" max="100" style="width: 100%;"></progress>
+        <small>68% complete</small>
+    </label>
+    <label>Disk Usage (Meter):
+        <meter min="0" max="100" low="33" high="66" optimum="20" value="85" style="width: 100%;"></meter>
+        <small>85 GB / 100 GB</small>
+    </label>
+</div>
+</body>
+</html>

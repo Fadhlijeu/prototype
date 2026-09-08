@@ -1,0 +1,88 @@
+/**
+ * Glass Toggle Switch Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toggle-label {
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.toggle-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.glass-switch {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.28s var(--ease-spring);
+}
+
+.glass-switch.active {
+    background: linear-gradient(135deg, #4A7BF7, #2E5FD9);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+}
+
+.switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.28s var(--ease-spring);
+}
+
+.glass-switch.active .switch-thumb {
+    transform: translateX(20px);
+}
+

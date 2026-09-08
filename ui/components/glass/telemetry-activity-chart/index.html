@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Activity Chart — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="chart-card-wrapper">
+        <div class="chart-card">
+            <div class="chart-header">
+                <div>
+                    <div class="chart-mini">System Telemetry</div>
+                    <div class="chart-title">Activity (Last 12 Hours)</div>
+                </div>
+                <div class="badge-live">
+                    <span class="status-dot"></span> Live Sync
+                </div>
+            </div>
+
+            <div class="bars-container" id="bars"></div>
+
+            <div class="chart-footer">
+                <span>12h ago</span>
+                <span>6h ago</span>
+                <span>Just now</span>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

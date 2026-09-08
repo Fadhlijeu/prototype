@@ -1,0 +1,143 @@
+/**
+ * telemetry-activity-chart Styles
+ * Uses tokens from ../css.css
+ */
+@import url('../css.css');
+
+:root {
+            --bg-page: #0A0A0A;
+            --glass-card: rgba(255, 255, 255, 0.06);
+            --glass-border-top: rgba(255, 255, 255, 0.22);
+            --glass-border-side: rgba(255, 255, 255, 0.10);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --accent-blue-1: #4A7BF7;
+            --accent-blue-2: #2E5FD9;
+            --accent-cyan: #4A9EFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .chart-card-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .chart-card {
+            position: relative;
+            padding: 24px 26px;
+            background: var(--glass-card);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-radius: 28px;
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        /* Layer 1: Noise Texture Overlay */
+        .chart-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .chart-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .chart-mini {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .chart-title {
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-top: 4px;
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #4ADE80;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #4ADE80;
+            box-shadow: 0 0 8px #4ADE80;
+        }
+
+        .bars-container {
+            position: relative;
+            z-index: 1;
+            height: 110px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .bar-col {
+            flex: 1;
+            border-radius: 8px 8px 3px 3px;
+            background: linear-gradient(180deg, rgba(120, 150, 255, 0.95), rgba(56, 84, 190, 0.35));
+            box-shadow: 0 0 16px rgba(76, 110, 255, 0.15);
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .bar-col:hover {
+            transform: scaleY(1.08);
+            filter: brightness(1.25);
+        }
+
+        .chart-footer {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }

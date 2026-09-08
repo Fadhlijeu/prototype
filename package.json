@@ -1,0 +1,10 @@
+{
+  "name": "glassos-prototype",
+  "version": "1.0.0",
+  "description": "GlassOS UI/UX Component Prototype Ecosystem",
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve .",
+    "serve": "serve ."
+  }
+}
