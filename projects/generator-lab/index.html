@@ -1216,13 +1216,10 @@
             if (idx === -1) return;
 
             const item = store.pending.splice(idx, 1)[0];
-            item.status = "REJECTED";
-            item.rejectedAt = new Date().toLocaleString();
-            store.rejected.unshift(item);
-
+            // Hapus total dari antrean
             saveLabStore(store);
 
-            // Jika terhubung ke Cloud GAS, dispatch sinyal penolakan
+            // Jika terhubung ke Cloud GAS, dispatch sinyal penolakan (hapus total di server/git)
             const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
             const passkey = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
             if (gasUrl) {
@@ -1236,7 +1233,7 @@
                 }).catch(() => {});
             }
 
-            showToast(`Kandidat "${item.title}" ditolak.`);
+            showToast(`Kandidat "${item.title}" dihapus total dari sistem.`);
         }
 
         function clearCurrentTab() {

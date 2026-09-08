@@ -288,6 +288,23 @@ function generateWithGeminiDirect(prompt) {
 }
 
 /**
+ * Menghasilkan instruksi otonom kreatif umum (Dynamic Creative Directives).
+ * AI Web Engineer diberi kebebasan penuh memilih tipe komponen (input field, slider,
+ * button, dock, scenery composite, telemetry visualizer, dashboard, atau konsep orisinal bebas).
+ */
+function generateAutonomousPrompt() {
+  var creativeDirectives = [
+    "Anda adalah Senior AI Web Engineer & Glassmorphism Design Technologist. Secara bebas dan mandiri, ciptakan sebuah komponen web dark glass premium atau layout scenery interaktif. Ada beragam opsi yang bisa kamu eksplorasi: input field futuristik, interactive slider/stepper, specular action button, telemetry dial gauge, navigation dock, segmented controller, status monitor card, dashboard matrix, atau konsep orisinal baru di kategori 'other'. Tentukan sendiri nama, konsep, dan interaksi uniknya dengan standar estetika tertinggi.",
+    "Anda adalah Creative Frontend Architect. Buatlah sebuah komponen UI dark glassmorphism yang memukau dan fungsional. Kamu bebas memilih opsi apa pun: bisa berupa single molecule (seperti dynamic toggle, floating input, button), compound organism (seperti audio visualizer, file dropzone, filter cluster), scenery composite (kumpulan widget dalam satu workstation view), atau inovasi interaktif bebas. Desain dengan asymmetric border, ambient aurora glow, dan physics spring yang halus.",
+    "Sebagai autonomous UI Engineer, rancang sebuah komponen atau pemandangan antarmuka (scenery/dashboard) bertema Dark Obsidian Glass. Kamu memiliki kebebasan penuh: pilih apakah ingin membuat kontrol formulir, telemetry data dial, navigation stepper, floating widget, atau screenery layout terpadu. Bebas berinovasi di kategori apa pun termasuk 'other'.",
+    "Anda bertindak sebagai Lead Design System Engineer. Eksplorasi paradigma antarmuka baru untuk Prototype Design System. Ciptakan komponen web dark glass yang elegan dan interaktif. Silakan pilih secara bebas dari taksonomi: inputs, sliders, controls, cards, navigation, telemetry, scenery, dashboards, atau other. Prioritaskan kebaruan interaksi, depth layering, dan micro-animations."
+  ];
+
+  var idx = Math.floor(Math.random() * creativeDirectives.length);
+  return creativeDirectives[idx];
+}
+
+/**
  * Trigger Otomatis Berulang (Cron Trigger)
  * Frekuensi bisa diatur di Triggers (Ikon Jam):
  * - Minutes timer: Every 5 minutes, Every 10 minutes, Every 15 minutes, Every hour
@@ -297,32 +314,13 @@ function generateWithGeminiDirect(prompt) {
 function autonomousCronTrigger() {
   Logger.log("Menjalankan siklus otonom cloud Prototype...");
   
-  // Koleksi seed kaya variasi: Single Molecules, Compound Organisms, Scenery, Dashboards, & Experimental Other
-  var seedPool = [
-    "Glass scenery composite workstation viewport with weather node, server metrics and quick action dock",
-    "Obsidian glass telemetry command center dashboard with mini sparkline charts and live status matrix",
-    "Liquid frosted breadcrumb navigation with spring pill indicators",
-    "Floating glass telemetry dial gauge with specular illumination",
-    "Aurora glass interactive slider with magnetic haptic tick marks",
-    "Specular frosted floating action button with expandable speed dial",
-    "Experimental obsidian glass circular command wheel with radial touch hotspots",
-    "Aurora ambient gradient notification banner with refractive glass blur",
-    "Glass password strength meter with animated glowing segments",
-    "Cyberpunk dark glass HUD scenery with floating telemetry widgets",
-    "Holographic glass timeline node with reactive particle trail",
-    "Obsidian glass segmented audio visualizer bar with live meter",
-    "Liquid refraction multi-tab switcher with frosted specular pill",
-    "Dark glass floating telemetry node with dual ring dial and live latency"
-  ];
-  
-  // Acak dan kirim Batch (misal 2 komponen sekaligus per trigger)
-  var BATCH_COUNT = 2;
-  var shuffled = seedPool.sort(function() { return 0.5 - Math.random(); });
-  
-  for (var i = 0; i < Math.min(BATCH_COUNT, shuffled.length); i++) {
-    var prompt = shuffled[i];
-    Logger.log("Dispatching batch item #" + (i + 1) + ": " + prompt);
-    dispatchToGitHub(prompt, "other", "Explore diverse novel glass paradigms and scenery");
-    Utilities.sleep(1500); // jeda 1.5 detik antar dispatch
+  var BATCH_COUNT = 2; // Jumlah batch per siklus
+  for (var i = 0; i < BATCH_COUNT; i++) {
+    var prompt = generateAutonomousPrompt();
+    Logger.log("Dispatching autonomous batch item #" + (i + 1) + ": " + prompt.substring(0, 75) + "...");
+    dispatchToGitHub(prompt, "other", "Rujuk ui/components/glass/STYLE_SPEC.md dan css.css untuk menghasilkan UI Dark Glass berkualitas tinggi");
+    if (i < BATCH_COUNT - 1) {
+      Utilities.sleep(1500); // jeda antar dispatch
+    }
   }
 }

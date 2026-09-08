@@ -82,14 +82,23 @@ class DecisionEngine:
             atomic_level = "Creative Freeform"
 
         # 4. Generate human-readable title and clean kebab slug
+        stop_words = {
+            "buat", "bikin", "make", "create", "bebas", "desain", "dan", "untuk", "the", "yang",
+            "anda", "adalah", "you", "are", "senior", "lead", "architect", "engineer", "technologist",
+            "ciptakan", "sebuah", "rancang", "tentukan", "options", "pilih", "secara", "mandiri", "kreatif",
+            "dengan", "ada", "bisa", "kamu", "terdapat", "prototype", "system", "component", "komponen", "web"
+        }
         words = re.findall(r"\b[a-zA-Z]{3,}\b", prompt)
-        filtered_words = [w.capitalize() for w in words if w.lower() not in ["buat", "bikin", "make", "create", "bebas", "desain", "dan", "untuk", "the", "yang"]]
-        
+        filtered_words = [w.capitalize() for w in words if w.lower() not in stop_words]
+
+        var_label = variation.replace("-", " ").title()
+        cat_label = detected_category.rstrip("s").title()
+
         if len(filtered_words) >= 2:
             title_base = " ".join(filtered_words[:3])
+        elif len(filtered_words) == 1:
+            title_base = f"{filtered_words[0]} {cat_label}"
         else:
-            var_label = variation.replace("-", " ").title()
-            cat_label = detected_category.rstrip("s").title()
             title_base = f"{var_label} {cat_label}"
 
         title = f"Glass {title_base}" if "glass" not in title_base.lower() else title_base

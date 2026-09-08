@@ -111,23 +111,14 @@ class QueueManager:
         return dest
 
     def reject(self, item_id: str, reason: str = "Human curator decision") -> Optional[str]:
-        """Moves item from pending to rejected."""
+        """Completely deletes/purges item from pending queue (hapus total)."""
         src = os.path.join(self.pending_dir, item_id)
-        if not os.path.exists(src):
-            return None
-        dest = os.path.join(self.rejected_dir, item_id)
-        shutil.move(src, dest)
-
-        meta_path = os.path.join(dest, "queue_meta.json")
-        if os.path.exists(meta_path):
-            with open(meta_path, "r", encoding="utf-8") as f:
-                meta = json.load(f)
-            meta["status"] = "REJECTED"
-            meta["rejection_reason"] = reason
-            meta["rejected_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
-            with open(meta_path, "w", encoding="utf-8") as f:
-                json.dump(meta, f, indent=2)
-        return dest
+        if os.path.exists(src):
+            shutil.rmtree(src, ignore_errors=True)
+        rej_path = os.path.join(self.rejected_dir, item_id)
+        if os.path.exists(rej_path):
+            shutil.rmtree(rej_path, ignore_errors=True)
+        return "purged"
 
     def _count_valid_items(self, folder: str) -> int:
         if not os.path.exists(folder):

@@ -24,9 +24,11 @@ class GeneratorEngine:
 
         # Primary context file paths
         self.directive_path = os.path.join(self.root_dir, "generator", "config", "directive.md")
+        self.style_spec_path = os.path.join(self.root_dir, "ui", "components", "glass", "STYLE_SPEC.md")
         self.glass_skill_path = os.path.join(self.root_dir, "skills", "glass-ui.md")
         self.css_tokens_path = os.path.join(self.root_dir, "ui", "components", "glass", "css.css")
         self.component_taxonomy_path = os.path.join(self.root_dir, "component.md")
+        self.glass_components_dir = os.path.join(self.root_dir, "ui", "components", "glass")
         self.skills_dir = os.path.join(self.root_dir, "skills")
 
         # Backward compat alias
@@ -41,6 +43,35 @@ class GeneratorEngine:
                 content = content[:max_chars] + "\n...[truncated for context budget]"
             return content
         return ""
+
+    def _load_exemplar_components(self) -> str:
+        """Loads actual working HTML code from key components in ui/components/glass as real-world exemplars."""
+        exemplar_slugs = ["aurora-storage-card", "chat-input-bar", "thinking-effort-selector", "ai-agent-scenery"]
+        output = []
+
+        for slug in exemplar_slugs:
+            comp_file = os.path.join(self.glass_components_dir, slug, f"{slug}.html")
+            if not os.path.exists(comp_file):
+                comp_file = os.path.join(self.glass_components_dir, slug, "index.html")
+            if os.path.exists(comp_file):
+                code = self._read_context_file(comp_file, max_chars=3500)
+                output.append(f"#### Reference Component: `{slug}`\n```html\n{code}\n```")
+
+        return "\n\n".join(output)
+
+    def _load_glass_directory_index(self) -> str:
+        """Lists all component directories and files in ui/components/glass/ to provide full repository context."""
+        if not os.path.isdir(self.glass_components_dir):
+            return ""
+        items = []
+        for name in sorted(os.listdir(self.glass_components_dir)):
+            full_path = os.path.join(self.glass_components_dir, name)
+            if os.path.isdir(full_path):
+                files = [f for f in os.listdir(full_path) if os.path.isfile(os.path.join(full_path, f))]
+                items.append(f"- `ui/components/glass/{name}/` (Files: {', '.join(files)})")
+            elif os.path.isfile(full_path) and name in ["css.css", "STYLE_SPEC.md", "showcase.html"]:
+                items.append(f"- `ui/components/glass/{name}` (Core system file)")
+        return "\n".join(items)
 
     def _load_all_skills(self) -> List[Dict[str, str]]:
         """Loads all .md files from the skills/ directory (excluding glass-ui.md which is loaded separately)."""
@@ -70,22 +101,36 @@ class GeneratorEngine:
         if directive:
             ctx["directive"] = directive
 
-        # 2. Glass UI design system rules (primary skill)
+        # 2. Glass Dark Premium STYLE SPEC (STYLE_SPEC.md) - Crucial for 5-layer architecture & asymmetric borders
+        style_spec = self._read_context_file(self.style_spec_path, max_chars=8000)
+        if style_spec:
+            ctx["style_spec"] = style_spec
+
+        # 3. Glass UI design system rules (skills/glass-ui.md)
         glass_skill = self._read_context_file(self.glass_skill_path)
         if glass_skill:
             ctx["glass_skill"] = glass_skill
 
-        # 3. CSS token definitions — the SINGLE SOURCE OF TRUTH for all design tokens
+        # 4. CSS token definitions — the SINGLE SOURCE OF TRUTH for all design tokens (css.css)
         css_tokens = self._read_context_file(self.css_tokens_path, max_chars=6000)
         if css_tokens:
             ctx["css_tokens"] = css_tokens
 
-        # 4. Master component taxonomy — understand what exists, avoid duplicates
+        # 5. Master component taxonomy — understand what exists, avoid duplicates
         taxonomy = self._read_context_file(self.component_taxonomy_path, max_chars=5000)
         if taxonomy:
             ctx["component_taxonomy"] = taxonomy
 
-        # 5. Additional skills (component patterns, interaction models, etc.)
+        # 6. Real component references and directory structure from ui/components/glass/
+        glass_index = self._load_glass_directory_index()
+        if glass_index:
+            ctx["glass_index"] = glass_index
+
+        exemplars = self._load_exemplar_components()
+        if exemplars:
+            ctx["exemplars"] = exemplars
+
+        # 7. Additional skills (component patterns, interaction models, etc.)
         extra_skills = self._load_all_skills()
         if extra_skills:
             ctx["extra_skills"] = extra_skills
@@ -105,25 +150,50 @@ class GeneratorEngine:
         for skill in ctx.get("extra_skills", []):
             extra_skills_str += f"\n### Skill Reference: {skill['name']}\n{skill['content']}\n"
 
-        system_prompt = f"""You are the Autonomous UI Component Architect for this Prototype design system.
-Your mission is to generate production-grade, accessible, dark glassmorphic web components.
+        system_prompt = f"""You are the Autonomous Senior UI/UX Engineer & Glassmorphism Design Technologist for this Prototype design system.
+Your mission is to invent and generate production-grade, accessible, dark glassmorphic web components.
 
 === GENERATION DIRECTIVE ===
 {ctx.get('directive', 'Generate creative, high-fidelity glass UI components.')}
 
-=== GLASS UI DESIGN SYSTEM RULES ===
-{ctx.get('glass_skill', '')}
+=== GLASS DARK PREMIUM STYLE SPECIFICATION (STYLE_SPEC.md) ===
+You MUST adhere strictly to the rules in STYLE_SPEC.md:
+1. 5-Layer Glass Card Architecture:
+   - Layer 4: 3D Shadow Card (colored deep shadow glow with blur: 30px)
+   - Layer 3: Dynamic Aurora Mesh Gradient (radial-gradient blobs animated with @keyframes auroraMorph)
+   - Layer 2: Main Glass Card (backdrop-filter: blur(30px) saturate(160%), asymmetric specular border lighting)
+   - Layer 1: Noise Texture Overlay (SVG feTurbulence overlay, opacity 0.04)
+   - Layer 0: Content Layout & Typography
+2. Asymmetric Glass Borders (Simulate directional top specular light):
+   - border-top-color: var(--glass-border-top, rgba(255, 255, 255, 0.22)); (Brightest)
+   - border-left-color: var(--glass-border-side, rgba(255, 255, 255, 0.10));
+   - border-right-color: var(--glass-border-side, rgba(255, 255, 255, 0.10));
+   - border-bottom-color: var(--glass-border-bottom, rgba(255, 255, 255, 0.04)); (Darkest)
+3. Iconography:
+   - Outline / stroke only, uniform 1.5px stroke-width (NEVER filled). Lucide icons.
+4. Color Harmony:
+   - Deep void canvas (#0A0A0A / #030712 / var(--bg-main)).
+   - Cyan/Electric blue/violet glowing accents.
 
-=== CSS DESIGN TOKENS (SINGLE SOURCE OF TRUTH) ===
+{ctx.get('style_spec', '')}
+
+=== CSS DESIGN TOKENS (css.css - SINGLE SOURCE OF TRUTH) ===
 The following is the ACTUAL css.css file from this project. Use these EXACT variable names in your generated components:
 
 ```css
 {ctx.get('css_tokens', '/* css.css not found - use standard glass tokens */')}
 ```
 
-=== MASTER COMPONENT TAXONOMY ===
-Reference this to understand existing components and avoid duplication. Pick from categories that need new variations:
+=== REPOSITORY DIRECTORY CATALOGUE (ui/components/glass/) ===
+The following components and core system files already exist in `ui/components/glass/`:
+{ctx.get('glass_index', '')}
 
+=== REAL REPOSITORY EXEMPLAR COMPONENTS (FROM ui/components/glass/) ===
+Study these existing high-quality components from the repository to match their structural elegance and polish:
+
+{ctx.get('exemplars', '')}
+
+=== MASTER COMPONENT TAXONOMY ===
 {ctx.get('component_taxonomy', '<!-- taxonomy not loaded -->')}
 
 === ADDITIONAL SKILL REFERENCES ===
@@ -132,8 +202,8 @@ Reference this to understand existing components and avoid duplication. Pick fro
 === IMMUTABLE GENERATION RULES ===
 1. Always output a single complete HTML file containing embedded <style>, semantic HTML, manifest JSON in <script id="component-manifest" type="application/json">, and interactive <script>.
 2. Do NOT use external CSS frameworks (no Tailwind, no Bootstrap). Only Vanilla CSS.
-3. Reference design system tokens from `../css.css` using EXACT variable names from the CSS Tokens section above (e.g. `var(--glass-surface-1)`, `var(--glass-border-specular)`, `var(--text-primary)`, `var(--accent-cyan)`).
-4. Use Lucide icons: `<i data-lucide="..."></i>` and call `lucide.createIcons()`.
+3. Reference design system tokens from `../css.css` using EXACT variable names (e.g. `var(--glass-surface-1)`, `var(--glass-border-top)`, `var(--text-primary)`, `var(--accent-cyan)`).
+4. Use Lucide icons: `<i data-lucide="..."></i>` with uniform 1.5px stroke width, and call `lucide.createIcons()`.
 5. Implement `@media (prefers-reduced-motion: reduce)` to disable heavy animations.
 6. Provide accessible ARIA attributes (`aria-label`, `role`, etc.).
 7. Return pure HTML without unnecessary markdown explanations or conversational filler.

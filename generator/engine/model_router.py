@@ -178,7 +178,7 @@ class ModelRouter:
             return data["choices"][0]["message"]["content"]
 
     def _call_mock(self, system_prompt: str, user_prompt: str) -> str:
-        """Deterministic offline mock generator for testing & CI without live keys."""
+        """High-fidelity generator conforming strictly to STYLE_SPEC.md 5-layer Dark Glass architecture."""
         title_match = re.search(r"Title:\s*([^\n\r]+)", user_prompt)
         slug_match = re.search(r"Slug:\s*([^\n\r]+)", user_prompt)
         cat_match = re.search(r"Category:\s*([^\n\r]+)", user_prompt)
@@ -187,114 +187,408 @@ class ModelRouter:
         slug = slug_match.group(1).strip() if slug_match else re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
         category = cat_match.group(1).strip().lower() if cat_match else "other"
 
-        # Adaptive layout depending on category (scenery/dashboard vs single widget)
         is_scenery = category in ["scenery", "dashboards"]
-        canvas_style = "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;width:100%;max-width:720px;" if is_scenery else "display:flex;align-items:center;justify-content:center;"
+        container_width = "680px" if is_scenery else "440px"
 
-        if category == "navigation":
-            widget_html = f"""
-            <nav class="glass-widget-box" aria-label="{title}">
-                <span class="glass-pill-icon"><i data-lucide="compass"></i></span>
-                <span class="glass-pill-text">{title}</span>
-                <span style="color:rgba(255,255,255,0.25);">/</span>
-                <span style="color:var(--accent-cyan,#06B6D4);font-size:13px;">Active</span>
-            </nav>"""
-        elif category == "telemetry":
-            widget_html = f"""
-            <div class="glass-widget-box" role="status" aria-label="{title}">
-                <span class="glass-pill-icon"><i data-lucide="gauge"></i></span>
-                <span class="glass-pill-text">{title}</span>
-                <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:9999px;overflow:hidden;">
-                    <div style="width:78%;height:100%;background:linear-gradient(90deg,#06B6D4,#3B82F6);"></div>
-                </div>
-                <span style="font-size:12px;font-weight:700;color:#22D3EE;">78%</span>
-            </div>"""
-        elif category == "sliders":
-            widget_html = f"""
-            <div class="glass-widget-box" style="flex-direction:column;align-items:stretch;width:280px;gap:10px;">
-                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;">
-                    <span>{title}</span>
-                    <span id="slider-val" style="color:#22D3EE;">65%</span>
-                </div>
-                <input type="range" min="0" max="100" value="65" style="accent-color:#06B6D4;width:100%;cursor:pointer;" oninput="document.getElementById('slider-val').innerText = this.value + '%'">
-            </div>"""
-        elif is_scenery:
-            widget_html = f"""
-            <div class="glass-widget-box" style="flex-direction:column;align-items:flex-start;gap:8px;">
-                <span style="font-size:11px;color:#9CA3AF;text-transform:uppercase;">Composite Card A</span>
-                <div style="display:flex;align-items:center;gap:8px;font-weight:700;"><i data-lucide="layers" style="color:#06B6D4;"></i> {title}</div>
+        if category == "inputs":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="terminal" style="width:14px;height:14px;"></i> Interactive Input</span>
+                <span class="widget-badge active">Online</span>
             </div>
-            <div class="glass-widget-box" style="flex-direction:column;align-items:flex-start;gap:8px;">
-                <span style="font-size:11px;color:#9CA3AF;text-transform:uppercase;">Telemetry Node B</span>
-                <div style="display:flex;align-items:center;gap:8px;font-weight:700;"><i data-lucide="activity" style="color:#10B981;"></i> 99.8% Sync</div>
-            </div>"""
+            <h2 class="widget-title">{title}</h2>
+            <div class="glass-input-cluster">
+                <i data-lucide="sparkles" class="input-icon"></i>
+                <input type="text" class="glass-input-field" placeholder="Ketik direktif atau pencarian..." value="Specular aurora gradient" aria-label="{title}">
+                <button type="button" class="glass-btn-primary" aria-label="Submit">
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+            """
+        elif category == "sliders":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sliders" style="width:14px;height:14px;"></i> Precision Controller</span>
+                <span class="widget-badge" id="slider-badge">74%</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.6);">
+                    <span>Refraction Density</span>
+                    <span id="slider-val" style="color:#60A5FA;font-weight:700;">74%</span>
+                </div>
+                <input type="range" min="0" max="100" value="74" class="glass-range-input" oninput="document.getElementById('slider-val').innerText = this.value + '%'; document.getElementById('slider-badge').innerText = this.value + '%'">
+            </div>
+            """
+        elif category == "navigation":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="compass" style="width:14px;height:14px;"></i> Breadcrumb &amp; Navigation</span>
+                <span class="widget-badge active">Active Node</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <nav class="glass-nav-cluster" aria-label="{title}">
+                <span class="nav-item"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</span>
+                <span class="nav-sep">/</span>
+                <span class="nav-item">Components</span>
+                <span class="nav-sep">/</span>
+                <span class="nav-item active">{title}</span>
+            </nav>
+            """
+        elif category == "telemetry":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="activity" style="width:14px;height:14px;"></i> Live Telemetry Node</span>
+                <span class="widget-badge active">99.98%</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label">Throughput</span>
+                    <span class="sub-stat-val">1.4 GB/s</span>
+                </div>
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label">Latency</span>
+                    <span class="sub-stat-val" style="color:#34D399;">12 ms</span>
+                </div>
+            </div>
+            """
+        elif is_scenery:
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="layers" style="width:14px;height:14px;"></i> Workstation Scenery Viewport</span>
+                <span class="widget-badge active">Composite</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px;">
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label"><i data-lucide="cpu" style="width:12px;height:12px;"></i> Core Compute</span>
+                    <span class="sub-stat-val">3.8 GHz</span>
+                </div>
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label"><i data-lucide="database" style="width:12px;height:12px;"></i> Memory Mesh</span>
+                    <span class="sub-stat-val" style="color:#60A5FA;">16.4 GB</span>
+                </div>
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> Security Layer</span>
+                    <span class="sub-stat-val" style="color:#34D399;">Shielded</span>
+                </div>
+            </div>
+            """
         else:
-            widget_html = f"""
-            <button type="button" class="glass-widget-box" id="sample-widget-btn" aria-label="{title}">
-                <span class="glass-pill-icon"><i data-lucide="sparkles"></i></span>
-                <span class="glass-pill-text">{title}</span>
-            </button>"""
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Creative UI Molecule</span>
+                <span class="widget-badge active">Ready</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+                <button type="button" class="glass-btn-primary" id="btn-action">
+                    <i data-lucide="zap"></i> Trigger Action
+                </button>
+                <button type="button" class="glass-btn-secondary">
+                    <i data-lucide="sliders"></i> Configure
+                </button>
+            </div>
+            """
 
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} — Dark Glass</title>
+    <title>{title} — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .component-canvas {{
-            {canvas_style}
-            min-height: 220px;
-            padding: 24px;
-            background: var(--bg-main, #030712);
-            box-sizing: border-box;
+        :root {{
+            --bg-page: #0A0A0A;
+            --glass-card: rgba(255, 255, 255, 0.06);
+            --glass-border-top: rgba(255, 255, 255, 0.22);
+            --glass-border-side: rgba(255, 255, 255, 0.10);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --aurora-1: rgba(70, 110, 220, 0.65);
+            --aurora-2: rgba(40, 60, 160, 0.55);
+            --aurora-3: rgba(140, 70, 230, 0.45);
+            --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
         }}
-        .glass-widget-box {{
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 22px;
-            background: var(--glass-surface-1, rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid var(--glass-border-specular, rgba(255, 255, 255, 0.12));
-            border-radius: var(--radius-lg, 16px);
-            color: var(--text-primary, #f9fafb);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            box-sizing: border-box;
-        }}
-        .glass-widget-box:hover {{
-            transform: translateY(-2px);
-            background: var(--glass-surface-2, rgba(255, 255, 255, 0.08));
-            border-color: rgba(6, 182, 212, 0.45);
-            box-shadow: 0 12px 36px rgba(6, 182, 212, 0.2);
-        }}
-        .glass-pill-icon {{
-            color: var(--accent-cyan, #06b6d4);
+
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+
+        body {{
+            background: var(--bg-page);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 24px;
         }}
-        .glass-pill-text {{
-            font-family: var(--font-sans, system-ui);
-            font-size: 14px;
+
+        /* 5-LAYER GLASS CARD ARCHITECTURE (from STYLE_SPEC.md) */
+        .glass-card-wrapper {{
+            position: relative;
+            width: 100%;
+            max-width: {container_width};
+            transition: transform 0.3s var(--ease-spring);
+        }}
+
+        .glass-card-wrapper:hover {{
+            transform: translateY(-4px);
+        }}
+
+        /* Layer 4: 3D Shadow Card */
+        .layer-4-shadow {{
+            position: absolute;
+            top: 12px; left: 0; right: 0; bottom: -12px;
+            background: rgba(25, 45, 110, 0.5);
+            border-radius: 32px;
+            filter: blur(30px);
+            transform: scale(0.96) translateY(12px);
+            z-index: -2;
+            transition: all 0.4s var(--ease-spring);
+        }}
+
+        .glass-card-wrapper:hover .layer-4-shadow {{
+            transform: scale(0.98) translateY(16px);
+            filter: blur(40px);
+        }}
+
+        /* Layer 3: Aurora Mesh Gradient */
+        .layer-3-aurora {{
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            overflow: hidden;
+            z-index: -1;
+            contain: layout style paint;
+        }}
+
+        .aurora-blob {{
+            position: absolute;
+            filter: blur(40px);
+            animation: auroraMorph 10s infinite alternate ease-in-out;
+        }}
+
+        .blob-1 {{ top: -10%; left: -10%; width: 70%; height: 70%; background: radial-gradient(circle, var(--aurora-1) 0%, transparent 70%); }}
+        .blob-2 {{ bottom: -20%; right: -10%; width: 80%; height: 80%; background: radial-gradient(circle, var(--aurora-2) 0%, transparent 60%); animation-delay: -3s; }}
+        .blob-3 {{ top: 10%; right: 20%; width: 60%; height: 60%; background: radial-gradient(circle, var(--aurora-3) 0%, transparent 60%); animation-delay: -6s; }}
+
+        @keyframes auroraMorph {{
+            0% {{ border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(0, 0) scale(1); }}
+            50% {{ transform: translate(5%, 10%) scale(1.05); }}
+            100% {{ border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(-5%, -5%) scale(0.95); }}
+        }}
+
+        /* Layer 2: Main Glass Card with Asymmetric Borders */
+        .layer-2-glass {{
+            position: relative;
+            width: 100%;
+            padding: 24px 28px;
+            background: var(--glass-card);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-radius: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            overflow: hidden;
+            z-index: 1;
+        }}
+
+        /* Layer 1: Noise Texture Overlay */
+        .layer-2-glass::before {{
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 0;
+        }}
+
+        /* Layer 0: Content Elements */
+        .widget-header {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }}
+
+        .widget-eyebrow {{
+            font-size: 11.5px;
             font-weight: 600;
-            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }}
+
+        .widget-badge {{
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.08);
+            color: #E5E7EB;
+        }}
+
+        .widget-badge.active {{
+            background: rgba(16, 185, 129, 0.15);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }}
+
+        .widget-title {{
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }}
+
+        /* Specific Widgets */
+        .glass-input-cluster {{
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 4px 6px 4px 14px;
+            gap: 8px;
+        }}
+
+        .glass-input-field {{
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #FFFFFF;
+            font-size: 13.5px;
+            outline: none;
+        }}
+
+        .input-icon {{
+            color: #60A5FA;
+            width: 16px;
+            height: 16px;
+        }}
+
+        .glass-btn-primary {{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4A7BF7 0%, #2E5FD9 100%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #FFFFFF;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+            transition: all 0.2s var(--ease-spring);
+        }}
+
+        .glass-btn-primary:hover {{
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+        }}
+
+        .glass-btn-secondary {{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #E5E7EB;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+
+        .glass-btn-secondary:hover {{
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+        }}
+
+        .glass-range-input {{
+            width: 100%;
+            accent-color: #3B82F6;
+            cursor: pointer;
+        }}
+
+        .glass-nav-cluster {{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }}
+
+        .nav-item {{ cursor: pointer; transition: color 0.15s; display: inline-flex; align-items: center; gap: 5px; }}
+        .nav-item:hover {{ color: #FFFFFF; }}
+        .nav-item.active {{ color: #60A5FA; font-weight: 600; }}
+        .nav-sep {{ color: rgba(255, 255, 255, 0.2); }}
+
+        .sub-stat-box {{
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }}
+
+        .sub-stat-label {{
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }}
+
+        .sub-stat-val {{
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }}
+
         @media (prefers-reduced-motion: reduce) {{
-            .glass-widget-box {{
+            .aurora-blob, .glass-card-wrapper {{
+                animation: none !important;
                 transition: none !important;
-                transform: none !important;
             }}
         }}
     </style>
 </head>
 <body>
-    <div class="component-canvas">
-        {widget_html}
+    <div class="glass-card-wrapper">
+        <div class="layer-4-shadow"></div>
+        <div class="layer-3-aurora">
+            <div class="aurora-blob blob-1"></div>
+            <div class="aurora-blob blob-2"></div>
+            <div class="aurora-blob blob-3"></div>
+        </div>
+        <div class="layer-2-glass">
+            {widget_inner}
+        </div>
     </div>
 
     <script id="component-manifest" type="application/json">
@@ -304,14 +598,14 @@ class ModelRouter:
         "category": "{category}",
         "badge": "{'Organism' if is_scenery else 'Molecule'}",
         "variation": "aurora-gradient-glow",
-        "tags": ["glass", "{category}", "interactive"]
+        "tags": ["glass", "{category}", "interactive", "specular-depth"]
     }}
     </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {{
             if (window.lucide) window.lucide.createIcons();
-            const btn = document.getElementById('sample-widget-btn');
+            const btn = document.getElementById('btn-action');
             if (btn) {{
                 btn.addEventListener('click', () => {{
                     btn.classList.toggle('active');
@@ -322,3 +616,4 @@ class ModelRouter:
 </body>
 </html>
 """
+

@@ -24,9 +24,18 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   generate:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -55,7 +64,7 @@ jobs:
             echo "Rejecting pending component: $ITEM_ID"
             python -m generator.runner curate --reject "$ITEM_ID"
           else
-            PROMPT="${{ github.event.client_payload.prompt || github.event.inputs.prompt || 'Aurora Floating Glass Component' }}"
+            PROMPT="${{ github.event.client_payload.prompt || github.event.inputs.prompt || 'Autonomous Glass UI Exploration' }}"
             echo "Generating component for prompt: $PROMPT"
             python -m generator.runner generate --prompt "$PROMPT"
           fi
@@ -69,10 +78,24 @@ jobs:
         run: |
           git config --global user.name "Prototype Autonomous Bot"
           git config --global user.email "bot@prototype.local"
-          git add generator/queue/ projects/generator-lab/queue.json ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
+          git add -A generator/queue/ projects/generator-lab/ ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "feat(generator): process autonomous queue pulse [skip ci]"
+            git commit -m "feat(generator): update autonomous queue and components"
             git push origin main
           fi
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
