@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlassOS Autonomous Generator Lab & Curation Studio</title>
+    <link rel="stylesheet" href="../../ui/components/glass/css.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-deep: #030712;
+            --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --accent-glow: rgba(6, 182, 212, 0.4);
+            --accent-emerald: #10B981;
+            --accent-rose: #F43F5E;
+        }
+
+        * {
+            box-sizing: border-box; margin: 0; padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary, #F9FAFB);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Ambient Blobs */
+        .ambient-blobs {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
+            animation: blobFloat 22s infinite alternate ease-in-out;
+        }
+        .blob-1 { width: 420px; height: 420px; background: rgba(6, 182, 212, 0.18); top: -80px; left: 10%; }
+        .blob-2 { width: 480px; height: 480px; background: rgba(147, 51, 234, 0.16); top: 35%; right: -100px; animation-delay: -6s; }
+        .blob-3 { width: 360px; height: 360px; background: rgba(16, 185, 129, 0.12); bottom: -60px; left: 25%; animation-delay: -12s; }
+
+        @keyframes blobFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(35px, 45px) scale(1.08); }
+        }
+
+        /* Shell */
+        .lab-shell {
+            position: relative; z-index: 1; max-width: 1400px; margin: 0 auto;
+            padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 32px;
+        }
+
+        /* Header */
+        .lab-header {
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+            padding: 18px 24px; border-radius: 20px;
+            background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+            flex-wrap: wrap;
+        }
+        .brand-group {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .brand-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(139, 92, 246, 0.25));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            color: #22D3EE; box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+        .brand-text h1 {
+            font-size: 20px; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px;
+        }
+        .brand-text h1 span { color: #22D3EE; }
+        .brand-text p {
+            font-size: 12.5px; color: var(--text-secondary, #9CA3AF); margin-top: 2px;
+        }
+
+        .header-nav {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+        .nav-btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+            border-radius: 10px; font-size: 12.5px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary, #9CA3AF); text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1); color: #FFFFFF;
+            transform: translateY(-1px); border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        /* Telemetry Cards */
+        .telemetry-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+        }
+        .telemetry-card {
+            background: rgba(17, 24, 39, 0.5); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px;
+            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .telemetry-card:hover {
+            transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.18);
+        }
+        .telemetry-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+        }
+        .tc-left { display: flex; flex-direction: column; gap: 4px; }
+        .tc-label { font-size: 11.5px; color: var(--text-muted, #6B7280); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .tc-val { font-size: 19px; font-weight: 700; color: #FFFFFF; display: flex; align-items: baseline; gap: 6px; }
+        .tc-sub { font-size: 11px; color: var(--text-secondary, #9CA3AF); }
+        .tc-badge {
+            display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px;
+            border-radius: 9999px; font-size: 11px; font-weight: 600;
+        }
+        .tc-badge.active { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .tc-badge.unlimited { background: rgba(6, 182, 212, 0.15); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.3); }
+        .tc-badge.local { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        /* Generator Studio Workspace */
+        .lab-workspace {
+            display: grid; grid-template-columns: 380px 1fr; gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 1024px) {
+            .lab-workspace { grid-template-columns: 1fr; }
+        }
+
+        /* Control Panel (Left) */
+        .control-panel {
+            background: rgba(17, 24, 39, 0.65); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            padding: 24px; display: flex; flex-direction: column; gap: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+        .panel-heading {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .panel-heading h2 {
+            font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
+        .panel-heading h2 i { color: #22D3EE; }
+
+        .form-group {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .form-label {
+            font-size: 12px; font-weight: 600; color: var(--text-secondary, #9CA3AF);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .form-input, .form-select {
+            width: 100%; padding: 12px 14px; border-radius: 12px;
+            background: rgba(3, 7, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #FFFFFF; font-size: 13.5px; outline: none;
+            transition: all 0.2s;
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: #22D3EE; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+            background: rgba(3, 7, 18, 0.85);
+        }
+        textarea.form-input {
+            min-height: 84px; resize: vertical; line-height: 1.5;
+        }
+
+        .prompt-seeds-cluster {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+        }
+        .seed-chip {
+            padding: 4px 10px; border-radius: 8px; font-size: 11px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary, #9CA3AF); cursor: pointer;
+            transition: all 0.15s;
+        }
+        .seed-chip:hover {
+            background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35);
+            color: #22D3EE; transform: translateY(-1px);
+        }
+
+        .btn-generate {
+            width: 100%; padding: 14px; border-radius: 12px;
+            background: linear-gradient(135deg, #06B6D4, #3B82F6);
+            border: none; color: #FFFFFF; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            gap: 10px; box-shadow: 0 8px 24px rgba(6, 182, 212, 0.35);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px); box-shadow: 0 12px 30px rgba(6, 182, 212, 0.5);
+            filter: brightness(1.1);
+        }
+        .btn-generate:active { transform: translateY(0); }
+        .btn-generate:disabled {
+            opacity: 0.6; cursor: not-allowed; transform: none; filter: none;
+        }
+
+        /* Queue & Decision Stage (Right) */
+        .stage-container {
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* Queue Navigation Tabs */
+        .queue-filter-bar {
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 8px 12px; border-radius: 16px;
+            background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap;
+        }
+        .tab-cluster {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .filter-tab {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+            border-radius: 10px; font-size: 13px; font-weight: 600;
+            background: transparent; border: 1px solid transparent; color: var(--text-secondary, #9CA3AF);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .filter-tab:hover {
+            color: #FFFFFF; background: rgba(255, 255, 255, 0.04);
+        }
+        .filter-tab.active {
+            background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35);
+            color: #22D3EE;
+        }
+        .tab-count {
+            padding: 2px 7px; border-radius: 9999px; font-size: 11px; font-weight: 700;
+            background: rgba(255, 255, 255, 0.1); color: #FFFFFF;
+        }
+        .filter-tab.active .tab-count {
+            background: #06B6D4; color: #030712;
+        }
+
+        /* Cards Stream */
+        .cards-stream {
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* Candidate Card */
+        .candidate-card {
+            background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            padding: 24px; display: flex; flex-direction: column; gap: 18px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+            position: relative; overflow: hidden;
+            animation: cardAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header-row {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+            flex-wrap: wrap;
+        }
+        .cand-info h3 {
+            font-size: 18px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+        }
+        .cand-tags {
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+        }
+        .meta-pill {
+            display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+            border-radius: 6px; font-size: 11px; font-weight: 600;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary, #9CA3AF);
+        }
+        .meta-pill.score {
+            background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3);
+        }
+        .meta-pill.provider {
+            background: rgba(139, 92, 246, 0.15); color: #C084FC; border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        /* Preview Frame */
+        .cand-preview-box {
+            border-radius: 16px; background: rgba(3, 7, 18, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden;
+            min-height: 260px; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .cand-preview-iframe {
+            width: 100%; height: 260px; border: none; background: transparent;
+        }
+
+        /* Decision Action Bar */
+        .decision-bar {
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+        }
+        .decision-actions {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-decision {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+            border-radius: 10px; font-size: 13.5px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid transparent;
+        }
+        .btn-accept {
+            background: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.4);
+            color: #34D399; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+        }
+        .btn-accept:hover {
+            background: rgba(16, 185, 129, 0.3); transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35); color: #FFFFFF;
+        }
+        .btn-reject {
+            background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.3);
+            color: #FB7185;
+        }
+        .btn-reject:hover {
+            background: rgba(244, 63, 94, 0.25); transform: translateY(-2px);
+            color: #FFFFFF;
+        }
+        .btn-view-code {
+            padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary, #9CA3AF); cursor: pointer; transition: all 0.2s;
+        }
+        .btn-view-code:hover { background: rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+
+        /* ======================================================================
+           EMPTY STATE UI (CRITICAL DESIGN REQUIREMENT)
+        ====================================================================== */
+        .empty-state-card {
+            background: rgba(17, 24, 39, 0.5); backdrop-filter: blur(24px);
+            border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 24px;
+            padding: 64px 32px; text-align: center; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: cardAppear 0.4s ease-out;
+        }
+        .empty-icon-wrap {
+            width: 76px; height: 76px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.25), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(6, 182, 212, 0.35); display: flex; align-items: center;
+            justify-content: center; color: #22D3EE; font-size: 32px; margin-bottom: 6px;
+            box-shadow: 0 0 32px rgba(6, 182, 212, 0.2);
+            animation: pulseGlow 4s infinite alternate ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 24px rgba(6, 182, 212, 0.2); }
+            100% { transform: scale(1.06); box-shadow: 0 0 44px rgba(6, 182, 212, 0.4); }
+        }
+        .empty-state-title {
+            font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #FFFFFF;
+        }
+        .empty-state-desc {
+            max-width: 520px; font-size: 14px; line-height: 1.6; color: var(--text-secondary, #9CA3AF);
+        }
+        .empty-actions-row {
+            display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center;
+        }
+        .btn-empty-action {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+            border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-empty-primary {
+            background: rgba(6, 182, 212, 0.18); border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #22D3EE;
+        }
+        .btn-empty-primary:hover {
+            background: rgba(6, 182, 212, 0.3); color: #FFFFFF; transform: translateY(-1px);
+        }
+        .btn-empty-secondary {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary, #9CA3AF);
+        }
+        .btn-empty-secondary:hover {
+            background: rgba(255, 255, 255, 0.1); color: #FFFFFF;
+        }
+
+        /* Toast */
+        .toast-notification {
+            position: fixed; bottom: 32px; right: 32px; z-index: 100;
+            background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 14px;
+            padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+            color: #FFFFFF; font-size: 13.5px; font-weight: 600;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+            transform: translateY(120px); opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast-notification.active {
+            transform: translateY(0); opacity: 1; pointer-events: auto;
+        }
+        .toast-icon {
+            color: #34D399; display: flex; align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="lab-shell">
+
+        <!-- Header -->
+        <header class="lab-header">
+            <div class="brand-group">
+                <div class="brand-icon">
+                    <i data-lucide="cpu"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Glass<span>OS</span> Autonomous Generator Lab</h1>
+                    <p>Decision Layer, Live Review Queue & Human Curation Studio</p>
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <a href="../../index.html" class="nav-btn" title="Gateway Portal">
+                    <i data-lucide="home"></i> Gateway
+                </a>
+                <a href="../../web-apps.html" class="nav-btn" title="Web Applications Studio">
+                    <i data-lucide="folder-kanban"></i> Web Apps
+                </a>
+                <a href="../../ui/components/glass/showcase.html" class="nav-btn" title="Showroom Komponen">
+                    <i data-lucide="gem"></i> Live Showroom
+                </a>
+            </div>
+        </header>
+
+        <!-- Telemetry Cards -->
+        <section class="telemetry-grid">
+            <div class="telemetry-card">
+                <div class="tc-left">
+                    <span class="tc-label">Primary Cloud Model</span>
+                    <div class="tc-val">Gemini 3.5 Lite</div>
+                    <span class="tc-sub">Kuota 1.000 req/hari • Active Priority #1</span>
+                </div>
+                <span class="tc-badge active"><i data-lucide="check-circle-2"></i> Online</span>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="tc-left">
+                    <span class="tc-label">Cloud Workhorse</span>
+                    <div class="tc-val">TokenRouter GLM</div>
+                    <span class="tc-sub">Unlimited Free Tier • Priority #2</span>
+                </div>
+                <span class="tc-badge unlimited"><i data-lucide="zap"></i> Unlimited</span>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="tc-left">
+                    <span class="tc-label">Localhost Gateway</span>
+                    <div class="tc-val">9Router Local</div>
+                    <span class="tc-sub">Port 20128 • Desktop CLI Mode</span>
+                </div>
+                <span class="tc-badge local"><i data-lucide="laptop"></i> Local</span>
+            </div>
+
+            <div class="telemetry-card">
+                <div class="tc-left">
+                    <span class="tc-label">Curator Review Queue</span>
+                    <div class="tc-val" id="queueStatVal">0 Pending</div>
+                    <span class="tc-sub" id="approvedStatVal">1 Approved in Showroom</span>
+                </div>
+                <span class="tc-badge active" id="queueBadgeStatus">Ready</span>
+            </div>
+        </section>
+
+        <!-- Main Workspace -->
+        <main class="lab-workspace">
+
+            <!-- Generator Control Panel (Left) -->
+            <aside class="control-panel">
+                <div class="panel-heading">
+                    <h2><i data-lucide="sparkles"></i> Direct Synthesis</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="promptInput">
+                        <span>Component Directive Prompt</span>
+                    </label>
+                    <textarea class="form-input" id="promptInput" placeholder="Contoh: Aurora glowing telemetry mini-gauge with animated specular dial..."></textarea>
+                    <div class="prompt-seeds-cluster">
+                        <span class="seed-chip" onclick="fillSeed('Aurora glass tab bar with liquid indicator')">Liquid Tab Bar</span>
+                        <span class="seed-chip" onclick="fillSeed('Specular frosted file dropzone with blur refraction')">Frosted Dropzone</span>
+                        <span class="seed-chip" onclick="fillSeed('Obsidian glass segmented audio visualizer bar')">Audio Visualizer</span>
+                        <span class="seed-chip" onclick="fillSeed('Glass password strength meter with glowing segments')">Password Meter</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="categorySelect">
+                        <span>Taksonomi Kategori</span>
+                    </label>
+                    <select class="form-select" id="categorySelect">
+                        <option value="inputs">Form Inputs & Controls</option>
+                        <option value="cards">Cards & Information Panels</option>
+                        <option value="navigation">Navigation & Dock Bars</option>
+                        <option value="telemetry">Telemetry & Visualizer</option>
+                        <option value="overlays">Dialog & Overlays</option>
+                        <option value="feedback">Feedback & Toast Alerts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modelSelect">
+                        <span>Active Model Provider</span>
+                    </label>
+                    <select class="form-select" id="modelSelect">
+                        <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (Priority #1)</option>
+                        <option value="tokenrouter-glm-5.3">TokenRouter GLM-5.3 Free (Unlimited)</option>
+                        <option value="mock-generator">Mock Offline Engine (Fast Simulation)</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-generate" id="btnGenerate" onclick="generateCandidate()">
+                    <i data-lucide="wand-2"></i> Generate Component
+                </button>
+            </aside>
+
+            <!-- Queue & Decision Stream (Right) -->
+            <section class="stage-container">
+
+                <div class="queue-filter-bar">
+                    <div class="tab-cluster">
+                        <button class="filter-tab active" id="tabPending" onclick="switchFilter('pending')">
+                            <i data-lucide="clock"></i> Pending Review
+                            <span class="tab-count" id="countPending">0</span>
+                        </button>
+                        <button class="filter-tab" id="tabApproved" onclick="switchFilter('approved')">
+                            <i data-lucide="check-circle"></i> Approved Showroom
+                            <span class="tab-count" id="countApproved">1</span>
+                        </button>
+                        <button class="filter-tab" id="tabRejected" onclick="switchFilter('rejected')">
+                            <i data-lucide="x-circle"></i> Rejected Archive
+                            <span class="tab-count" id="countRejected">0</span>
+                        </button>
+                    </div>
+
+                    <button class="nav-btn" onclick="seedSampleCandidate()" title="Muat sampel kandidat untuk mencoba kurasi">
+                        <i data-lucide="plus-circle"></i> Sample Candidate
+                    </button>
+                </div>
+
+                <!-- Stream Area (Where Cards or Empty State Render) -->
+                <div class="cards-stream" id="streamContainer">
+                    <!-- Dynamic rendering via JavaScript -->
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast">
+        <div class="toast-icon"><i data-lucide="sparkles"></i></div>
+        <div id="toastMsg">Komponen berhasil disetujui!</div>
+    </div>
+
+    <script>
+        // Store Key for persistence
+        const STORE_KEY = "glassos_generator_lab_v1";
+
+        // Default initial data if localStorage is empty
+        const defaultState = {
+            pending: [],
+            approved: [
+                {
+                    id: "1788879668-aurora-floating-glass",
+                    title: "Aurora Floating Glass Input",
+                    slug: "aurora-floating-glass-input",
+                    category: "inputs",
+                    variation: "aurora-gradient-glow",
+                    badge: "Molecule",
+                    score: 100,
+                    provider: "Mock / Gemini Engine",
+                    createdAt: "2026-09-08 22:01:08",
+                    previewHtml: `
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:220px;background:#030712;padding:20px;">
+                            <div style="display:inline-flex;align-items:center;gap:12px;padding:10px 22px;background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);border:1px solid rgba(6,182,212,0.4);border-radius:9999px;color:#F9FAFB;box-shadow:0 8px 32px rgba(6,182,212,0.2);">
+                                <span style="color:#06B6D4;font-size:16px;">✦</span>
+                                <span style="font-size:14px;font-weight:600;font-family:sans-serif;">Aurora Floating Glass Input</span>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            rejected: []
+        };
+
+        function getLabStore() {
+            try {
+                const raw = localStorage.getItem(STORE_KEY);
+                return raw ? JSON.parse(raw) : defaultState;
+            } catch (e) {
+                return defaultState;
+            }
+        }
+
+        function saveLabStore(data) {
+            localStorage.setItem(STORE_KEY, JSON.stringify(data));
+            renderCurrentView();
+        }
+
+        let activeFilter = "pending";
+
+        function switchFilter(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            if (filter === 'pending') document.getElementById('tabPending').classList.add('active');
+            if (filter === 'approved') document.getElementById('tabApproved').classList.add('active');
+            if (filter === 'rejected') document.getElementById('tabRejected').classList.add('active');
+            renderCurrentView();
+        }
+
+        function fillSeed(text) {
+            document.getElementById('promptInput').value = text;
+        }
+
+        function renderCurrentView() {
+            const store = getLabStore();
+            const container = document.getElementById('streamContainer');
+            
+            // Update stats
+            document.getElementById('countPending').innerText = store.pending.length;
+            document.getElementById('countApproved').innerText = store.approved.length;
+            document.getElementById('countRejected').innerText = store.rejected.length;
+            document.getElementById('queueStatVal').innerText = `${store.pending.length} Pending`;
+            document.getElementById('approvedStatVal').innerText = `${store.approved.length} Approved in Showroom`;
+
+            const items = store[activeFilter] || [];
+
+            // ==========================================================
+            // EMPTY STATE RENDERING (If items.length === 0)
+            // ==========================================================
+            if (items.length === 0) {
+                if (activeFilter === "pending") {
+                    container.innerHTML = `
+                        <div class="empty-state-card">
+                            <div class="empty-icon-wrap">
+                                <i data-lucide="sparkles"></i>
+                            </div>
+                            <h3 class="empty-state-title">Review Queue is Clear</h3>
+                            <p class="empty-state-desc">
+                                0 kandidat dalam antrean review. Seluruh artefak UI yang digenerate oleh AI telah dikurasi ke dalam GlassOS design system.
+                            </p>
+                            <div class="empty-actions-row">
+                                <button type="button" class="btn-empty-action btn-empty-primary" onclick="seedSampleCandidate()">
+                                    <i data-lucide="plus-circle"></i> Generate Sample Candidate
+                                </button>
+                                <button type="button" class="btn-empty-action btn-empty-secondary" onclick="document.getElementById('promptInput').focus()">
+                                    <i data-lucide="edit-3"></i> Tulis Prompt Sendiri
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else if (activeFilter === "approved") {
+                    container.innerHTML = `
+                        <div class="empty-state-card">
+                            <div class="empty-icon-wrap" style="color:#34D399;border-color:rgba(16,185,129,0.3);background:radial-gradient(circle,rgba(16,185,129,0.25),transparent)">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <h3 class="empty-state-title">Belum Ada Komponen Disetujui</h3>
+                            <p class="empty-state-desc">Komponen yang Anda setujui di tab Pending akan diarsipkan dan dipasang ke showroom di sini.</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state-card">
+                            <div class="empty-icon-wrap" style="color:#FB7185;border-color:rgba(244,63,94,0.3);background:radial-gradient(circle,rgba(244,63,94,0.2),transparent)">
+                                <i data-lucide="trash-2"></i>
+                            </div>
+                            <h3 class="empty-state-title">Tidak Ada Komponen Ditolak</h3>
+                            <p class="empty-state-desc">Arsip penolakan kosong. Semua kandidat memenuhi standar atau belum ada yang ditolak.</p>
+                        </div>
+                    `;
+                }
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            // ==========================================================
+            // CANDIDATE CARDS RENDERING
+            // ==========================================================
+            let html = "";
+            items.forEach(item => {
+                const isPending = activeFilter === "pending";
+                html += `
+                    <article class="candidate-card" id="card-${item.id}">
+                        <div class="card-header-row">
+                            <div class="cand-info">
+                                <h3>
+                                    <i data-lucide="gem" style="color:#22D3EE;width:18px;height:18px;"></i>
+                                    ${item.title}
+                                </h3>
+                                <div class="cand-tags">
+                                    <span class="meta-pill"><i data-lucide="folder"></i> ${item.category}</span>
+                                    <span class="meta-pill"><i data-lucide="palette"></i> ${item.variation || 'frosted'}</span>
+                                    <span class="meta-pill score"><i data-lucide="shield-check"></i> Score: ${item.score}/100</span>
+                                    <span class="meta-pill provider"><i data-lucide="cpu"></i> ${item.provider}</span>
+                                    <span class="meta-pill"><i data-lucide="calendar"></i> ${item.createdAt}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Component Preview -->
+                        <div class="cand-preview-box">
+                            <iframe class="cand-preview-iframe" srcdoc="${escapeHtml(item.previewHtml)}"></iframe>
+                        </div>
+
+                        <!-- Decision Bar -->
+                        <div class="decision-bar">
+                            <div class="decision-status-label">
+                                <span style="font-size:12px;color:#9CA3AF;">ID: <code>${item.id}</code></span>
+                            </div>
+                            <div class="decision-actions">
+                                ${isPending ? `
+                                    <button type="button" class="btn-decision btn-reject" onclick="rejectCandidate('${item.id}')">
+                                        <i data-lucide="x"></i> Tolak (Reject)
+                                    </button>
+                                    <button type="button" class="btn-decision btn-accept" onclick="approveCandidate('${item.id}')">
+                                        <i data-lucide="check"></i> Setujui & Deploy
+                                    </button>
+                                ` : `
+                                    <span class="meta-pill ${activeFilter === 'approved' ? 'score' : ''}">
+                                        Status: ${activeFilter.toUpperCase()}
+                                    </span>
+                                `}
+                            </div>
+                        </div>
+                    </article>
+                `;
+            });
+
+            container.innerHTML = html;
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/"/g, '&quot;');
+        }
+
+        function approveCandidate(id) {
+            const store = getLabStore();
+            const idx = store.pending.findIndex(x => x.id === id);
+            if (idx === -1) return;
+
+            const item = store.pending.splice(idx, 1)[0];
+            item.status = "APPROVED";
+            item.approvedAt = new Date().toLocaleString();
+            store.approved.unshift(item);
+
+            saveLabStore(store);
+            showToast(`"${item.title}" berhasil disetujui & masuk ke Showroom!`);
+        }
+
+        function rejectCandidate(id) {
+            const store = getLabStore();
+            const idx = store.pending.findIndex(x => x.id === id);
+            if (idx === -1) return;
+
+            const item = store.pending.splice(idx, 1)[0];
+            item.status = "REJECTED";
+            item.rejectedAt = new Date().toLocaleString();
+            store.rejected.unshift(item);
+
+            saveLabStore(store);
+            showToast(`Kandidat "${item.title}" ditolak dan diarsipkan.`);
+        }
+
+        function seedSampleCandidate() {
+            const store = getLabStore();
+            const samples = [
+                {
+                    title: "Specular Glass Segmented Stepper",
+                    category: "controls",
+                    variation: "specular-frosted",
+                    color: "#A855F7"
+                },
+                {
+                    title: "Liquid Glass Audio Frequency Meter",
+                    category: "telemetry",
+                    variation: "liquid-refraction",
+                    color: "#06B6D4"
+                },
+                {
+                    title: "Aurora Glass Toast Alert Banner",
+                    category: "feedback",
+                    variation: "aurora-gradient-glow",
+                    color: "#10B981"
+                }
+            ];
+
+            const sample = samples[Math.floor(Math.random() * samples.length)];
+            const newId = `${Date.now()}-${sample.title.toLowerCase().replace(/\\s+/g, '-')}`;
+
+            store.pending.unshift({
+                id: newId,
+                title: sample.title,
+                slug: sample.title.toLowerCase().replace(/\\s+/g, '-'),
+                category: sample.category,
+                variation: sample.variation,
+                badge: "Molecule",
+                score: 98,
+                provider: "Gemini 3.5 Lite / TokenRouter",
+                createdAt: new Date().toLocaleTimeString(),
+                previewHtml: `
+                    <!DOCTYPE html><html><head>
+                    <link rel="stylesheet" href="../../ui/components/glass/css.css">
+                    <style>
+                        body { margin:0; display:flex; align-items:center; justify-content:center; min-height:220px; background:#030712; font-family:sans-serif; }
+                        .preview-widget {
+                            display:inline-flex; align-items:center; gap:12px; padding:12px 24px;
+                            background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+                            border:1px solid rgba(255,255,255,0.18); border-radius:9999px; color:#FFFFFF;
+                            box-shadow:0 8px 32px rgba(0,0,0,0.4); cursor:pointer; transition:all 0.25s;
+                        }
+                        .preview-widget:hover { transform:translateY(-2px); border-color:${sample.color}; box-shadow:0 12px 36px ${sample.color}44; }
+                        .dot { width:8px; height:8px; border-radius:50%; background:${sample.color}; box-shadow:0 0 10px ${sample.color}; }
+                    </style>
+                    </head><body>
+                        <button type="button" class="preview-widget" onclick="this.style.transform='scale(0.95)';setTimeout(()=>this.style.transform='none',150)">
+                            <span class="dot"></span>
+                            <span style="font-weight:600;font-size:14px;">${sample.title}</span>
+                        </button>
+                    </body></html>
+                `
+            });
+
+            saveLabStore(store);
+            switchFilter('pending');
+            showToast("Kandidat sampel baru berhasil ditambahkan ke Review Queue!");
+        }
+
+        function generateCandidate() {
+            const prompt = document.getElementById('promptInput').value.trim() || "Obsidian Glass Interactive Widget";
+            const category = document.getElementById('categorySelect').value;
+            const model = document.getElementById('modelSelect').value;
+            const btn = document.getElementById('btnGenerate');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="spin"></i> Mensintesis Komponen...`;
+            if (window.lucide) lucide.createIcons();
+
+            setTimeout(() => {
+                const store = getLabStore();
+                const newId = `${Date.now()}-${prompt.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30)}`;
+
+                store.pending.unshift({
+                    id: newId,
+                    title: prompt.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    slug: prompt.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30),
+                    category: category,
+                    variation: "specular-frosted",
+                    badge: "Molecule",
+                    score: 95,
+                    provider: model,
+                    createdAt: new Date().toLocaleTimeString(),
+                    previewHtml: `
+                        <!DOCTYPE html><html><head>
+                        <link rel="stylesheet" href="../../ui/components/glass/css.css">
+                        <style>
+                            body { margin:0; display:flex; align-items:center; justify-content:center; min-height:220px; background:#030712; font-family:sans-serif; }
+                            .widget-box {
+                                padding:16px 28px; background:rgba(255,255,255,0.06); backdrop-filter:blur(20px);
+                                border:1px solid rgba(6,182,212,0.4); border-radius:18px; color:#FFFFFF;
+                                box-shadow:0 12px 32px rgba(6,182,212,0.25); text-align:center;
+                            }
+                        </style>
+                        </head><body>
+                            <div class="widget-box">
+                                <div style="font-size:15px;font-weight:700;margin-bottom:4px;">${prompt}</div>
+                                <div style="font-size:12px;color:#22D3EE;">Generated by ${model}</div>
+                            </div>
+                        </body></html>
+                    `
+                });
+
+                saveLabStore(store);
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="wand-2"></i> Generate Component`;
+                if (window.lucide) lucide.createIcons();
+
+                switchFilter('pending');
+                showToast(`"${prompt}" berhasil dibuat dan masuk antrean!`);
+                document.getElementById('promptInput').value = "";
+            }, 900);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 2800);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            renderCurrentView();
+        });
+    </script>
+</body>
+</html>

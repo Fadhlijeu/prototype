@@ -1622,6 +1622,28 @@ projects_registry = [
             "Synthesizer Sine Wave Haptic Audio Feedback",
             "Adaptive Fluid Viewport for Mobile & Desktop"
         ]
+    },
+    {
+        "id": "generator-lab",
+        "title": "GlassOS Autonomous Generator Lab",
+        "version": "v1.0",
+        "status": "Production Ready",
+        "desc": "Ruang kerja visual otonom untuk memantau siklus generasi AI, menguji prompt on-demand, meninjau antrean kandidat (Review Queue), dan mengeksekusi keputusan kurasi manusia (Accept/Reject).",
+        "icon": "cpu",
+        "folder": "projects/generator-lab",
+        "components": [
+            ("Glass Buttons Collection", "sparkles", "ui/components/glass/showcase.html#card-button-glass"),
+            ("Form Input Fields", "text-cursor-input", "ui/components/glass/showcase.html#card-input-field-glass"),
+            ("Telemetry Activity Chart", "bar-chart-2", "ui/components/glass/showcase.html#card-telemetry-activity-chart"),
+            ("Aurora Storage Card", "gauge", "ui/components/glass/showcase.html#card-aurora-storage-card"),
+            ("Toast Notification Glass", "bell", "ui/components/glass/showcase.html#card-toast-notification-glass"),
+        ],
+        "features": [
+            "Real-time Review Queue & Curation Decisions",
+            "Dynamic Obsidian Empty State Architecture",
+            "Model Cascade Health Monitor (Gemini & TokenRouter)",
+            "Live Interactive Isolated Candidate Preview"
+        ]
     }
 ]
 
@@ -2342,6 +2364,10 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 </button>
                 <button class="proj-tab-btn" id="tab-ai-studio" onclick="switchToProject('ai-studio')">
                     <i data-lucide="sparkles"></i> AI Agent Studio
+                    <span class="badge-pill">v1.0</span>
+                </button>
+                <button class="proj-tab-btn" id="tab-generator-lab" onclick="switchToProject('generator-lab')">
+                    <i data-lucide="cpu"></i> Generator Lab
                     <span class="badge-pill">v1.0</span>
                 </button>
             </div>
