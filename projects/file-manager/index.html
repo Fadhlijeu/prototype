@@ -1538,6 +1538,40 @@
                 gap: 10px;
             }
         }
+
+        /* Accessibility Focus Indicators */
+        :focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px #08090C, 0 0 0 4px var(--accent-cyan, #2D9CDB) !important;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        [role="button"]:focus-visible,
+        [role="tab"]:focus-visible,
+        .nav-item:focus-visible,
+        .folder-card:focus-visible,
+        .model-item:focus-visible,
+        .pill:focus-visible,
+        .setting-row:focus-visible,
+        .icon-btn:focus-visible,
+        .fab:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px #08090C, 0 0 0 4px var(--accent-cyan, #2D9CDB) !important;
+        }
+
+        /* Accessibility: Prefers Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .ambient-blob, .aurora-blob, .plus-mark {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1594,7 +1628,7 @@
             <!-- ========================================== -->
             <!-- VIEW 1: AI ASSISTANT / HOME (UI.html)      -->
             <!-- ========================================== -->
-            <section class="tab-view active" id="view-home" aria-label="AI Assistant View">
+            <section class="tab-view active" id="view-home" role="tabpanel" aria-labelledby="tab-home" aria-label="AI Assistant View">
                 <div class="ai-hero">
                     <div class="glow-orb" aria-hidden="true"></div>
 
@@ -1687,7 +1721,7 @@
             <!-- ========================================== -->
             <!-- VIEW 2: FOLDERS / CLOUD DRIVE             -->
             <!-- ========================================== -->
-            <section class="tab-view" id="view-folders" aria-label="Folders and Storage View">
+            <section class="tab-view" id="view-folders" role="tabpanel" aria-labelledby="tab-folders" aria-label="Folders and Storage View">
                 <div class="storage-section">
                     
                     <!-- Ultra-Premium Storage Glass Card (monitor.html) -->
@@ -1827,7 +1861,7 @@
             <!-- ========================================== -->
             <!-- VIEW 3: CLEAN / ANALYTICS (glass-bottom-sheet-2) -->
             <!-- ========================================== -->
-            <section class="tab-view" id="view-clean" aria-label="System Optimizer View">
+            <section class="tab-view" id="view-clean" role="tabpanel" aria-labelledby="tab-clean" aria-label="System Optimizer View">
                 
                 <div class="analytics-grid">
                     <div class="stat-card" style="--glow: rgba(82, 110, 255, 0.3)">
@@ -1867,7 +1901,7 @@
             <!-- ========================================== -->
             <!-- VIEW 4: SETTINGS                          -->
             <!-- ========================================== -->
-            <section class="tab-view" id="view-settings" aria-label="Settings View">
+            <section class="tab-view" id="view-settings" role="tabpanel" aria-labelledby="tab-settings" aria-label="Settings View">
                 
                 <div class="settings-card glass-card glass-edge">
                     <div class="setting-row" onclick="toggleSoundPreference()">
@@ -1935,25 +1969,25 @@
         <!-- FIXED BOTTOM NAVIGATION DOCK (bottomnav.html) -->
         <!-- ========================================== -->
         <div class="bottom-nav-container">
-            <nav class="glass-nav glass-edge" role="navigation" aria-label="Bottom dock">
+            <nav class="glass-nav glass-edge" role="tablist" aria-label="Bottom dock navigation">
                 <div class="active-pill-bg" id="dockPill" aria-hidden="true"></div>
                 
-                <button class="nav-item active" data-tab="home" onclick="switchTab('home', this)" aria-selected="true">
+                <button class="nav-item active" data-tab="home" id="tab-home" onclick="switchTab('home', this)" role="tab" aria-selected="true" aria-controls="view-home">
                     <i class="ph-fill ph-house"></i>
                     <span class="label">Home</span>
                 </button>
                 
-                <button class="nav-item" data-tab="folders" onclick="switchTab('folders', this)" aria-selected="false">
+                <button class="nav-item" data-tab="folders" id="tab-folders" onclick="switchTab('folders', this)" role="tab" aria-selected="false" aria-controls="view-folders">
                     <i class="ph-fill ph-folder"></i>
                     <span class="label">Folders</span>
                 </button>
                 
-                <button class="nav-item" data-tab="clean" onclick="switchTab('clean', this)" aria-selected="false">
+                <button class="nav-item" data-tab="clean" id="tab-clean" onclick="switchTab('clean', this)" role="tab" aria-selected="false" aria-controls="view-clean">
                     <i class="ph-fill ph-rocket-launch"></i>
                     <span class="label">Clean</span>
                 </button>
                 
-                <button class="nav-item" data-tab="settings" onclick="switchTab('settings', this)" aria-selected="false">
+                <button class="nav-item" data-tab="settings" id="tab-settings" onclick="switchTab('settings', this)" role="tab" aria-selected="false" aria-controls="view-settings">
                     <i class="ph-fill ph-gear"></i>
                     <span class="label">Settings</span>
                 </button>
@@ -2004,7 +2038,7 @@
     </div>
 
     <!-- Feedback Toast -->
-    <div class="toast-notification" id="toastBox">
+    <div class="toast-notification" id="toastBox" role="status" aria-live="polite">
         <i data-lucide="check-circle-2"></i>
         <span id="toastMsg">Folder created successfully!</span>
     </div>
@@ -2015,6 +2049,82 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+
+        /* ========================================================
+           0. FileManagerStore: Persistence & Reactive State
+           ======================================================== */
+        const FileManagerStore = {
+            KEYS: {
+                FOLDERS: 'glassos_fm_folders_v1',
+                ACTIVE_TAB: 'glassos_fm_tab_v1',
+                PREFS: 'glassos_fm_prefs_v1',
+                STATS: 'glassos_fm_stats_v1',
+            },
+            defaultFolders: [
+                { id: 'f1', name: 'Figma Files', subtitle: '202 files, 2.6 GB', isFigma: true },
+                { id: 'f2', name: 'Design System', subtitle: '84 files, 1.2 GB', icon: 'layers', iconColor: '#60A5FA' },
+                { id: 'f3', name: 'AI Models', subtitle: '34 files, 18.4 GB', icon: 'cpu', iconColor: '#A855F7' },
+                { id: 'f4', name: 'Prototypes', subtitle: '1,420 files, 4.1 GB', icon: 'code-2', iconColor: '#34D399' }
+            ],
+            getFolders() {
+                try {
+                    const raw = localStorage.getItem(this.KEYS.FOLDERS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) {
+                    console.warn('Storage read warning:', e);
+                }
+                return [...this.defaultFolders];
+            },
+            saveFolders(folders) {
+                try {
+                    localStorage.setItem(this.KEYS.FOLDERS, JSON.stringify(folders));
+                } catch (e) {
+                    console.warn('Storage write warning:', e);
+                }
+            },
+            addFolder(folder) {
+                const folders = this.getFolders();
+                folders.unshift(folder);
+                this.saveFolders(folders);
+                return folders;
+            },
+            getActiveTab() {
+                try {
+                    return localStorage.getItem(this.KEYS.ACTIVE_TAB) || 'home';
+                } catch (e) {
+                    return 'home';
+                }
+            },
+            saveActiveTab(tabId) {
+                try {
+                    localStorage.setItem(this.KEYS.ACTIVE_TAB, tabId);
+                } catch (e) {}
+            },
+            getPrefs() {
+                try {
+                    const raw = localStorage.getItem(this.KEYS.PREFS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) {}
+                return { soundEnabled: true, refractionEnabled: true, ambientMotion: true };
+            },
+            savePrefs(prefs) {
+                try {
+                    localStorage.setItem(this.KEYS.PREFS, JSON.stringify(prefs));
+                } catch (e) {}
+            },
+            getStats() {
+                try {
+                    const raw = localStorage.getItem(this.KEYS.STATS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) {}
+                return { isCleaned: false, cacheVal: '2.4 GB', usedLabel: '70.1 GB', progressFill: '58%' };
+            },
+            saveStats(stats) {
+                try {
+                    localStorage.setItem(this.KEYS.STATS, JSON.stringify(stats));
+                } catch (e) {}
+            }
+        };
 
         /* ----------------------------------------------------
            1. Web Audio Native Sound Synthesizer (No external mp3)
@@ -2048,9 +2158,7 @@
                 gain.connect(ctx.destination);
                 osc.start();
                 osc.stop(ctx.currentTime + duration);
-            } catch (e) {
-                // Ignore audio restriction errors
-            }
+            } catch (e) {}
         }
 
         function playTapSound() { playTone(580, 'sine', 0.06, 0.06); }
@@ -2080,6 +2188,10 @@
                 showToast('Audio Muted');
             }
             lucide.createIcons();
+
+            const prefs = FileManagerStore.getPrefs();
+            prefs.soundEnabled = soundEnabled;
+            FileManagerStore.savePrefs(prefs);
         }
 
         document.getElementById('soundToggleBtn').addEventListener('click', toggleSoundPreference);
@@ -2103,15 +2215,17 @@
             nav.style.setProperty('--pill-height', `${height}px`);
         }
 
-        function switchTab(tabId, clickedBtn) {
-            playTapSound();
+        function switchTab(tabId, clickedBtn, playSound = true) {
+            if (playSound) playTapSound();
             navItems.forEach(btn => {
                 btn.classList.remove('active');
                 btn.setAttribute('aria-selected', 'false');
             });
-            clickedBtn.classList.add('active');
-            clickedBtn.setAttribute('aria-selected', 'true');
-            requestAnimationFrame(() => updateActivePill(clickedBtn));
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+                clickedBtn.setAttribute('aria-selected', 'true');
+                requestAnimationFrame(() => updateActivePill(clickedBtn));
+            }
 
             // Switch views
             document.querySelectorAll('.tab-view').forEach(view => {
@@ -2121,12 +2235,10 @@
             if (targetView) {
                 targetView.classList.add('active');
             }
+
+            FileManagerStore.saveActiveTab(tabId);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const initialActive = document.querySelector('.nav-item.active');
-            setTimeout(() => updateActivePill(initialActive), 60);
-        });
         window.addEventListener('resize', () => {
             updateActivePill(document.querySelector('.nav-item.active'));
         });
@@ -2226,9 +2338,19 @@
             bar.className = 'bar-col';
             bar.style.height = `${h}%`;
             bar.title = `Activity: ${h}%`;
+            bar.tabIndex = 0;
+            bar.setAttribute('role', 'button');
+            bar.setAttribute('aria-label', `Telemetry bar: ${h}% load`);
             bar.addEventListener('click', () => {
                 playTapSound();
                 showToast(`Timestamp telemetry: ${h}% load`);
+            });
+            bar.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    playTapSound();
+                    showToast(`Timestamp telemetry: ${h}% load`);
+                }
             });
             activityBarsContainer.appendChild(bar);
         });
@@ -2249,6 +2371,13 @@
                 btnText.innerHTML = `<i data-lucide="check" style="width: 18px;"></i> System Optimized (2.4 GB Freed)`;
                 lucide.createIcons();
                 showToast('2.4 GB Junk and Cache successfully cleaned!');
+
+                FileManagerStore.saveStats({
+                    isCleaned: true,
+                    cacheVal: '0.0 MB',
+                    usedLabel: '67.7 GB',
+                    progressFill: '53%'
+                });
             }, 1200);
         }
 
@@ -2263,6 +2392,7 @@
         const wctx = work.getContext('2d', { willReadFrequently: true });
 
         let W = 0, H = 0, raf = 0, modalActive = false, t = 0, last = 0;
+        let lastFocusedTrigger = null;
 
         function resizeCanvas() {
             const d = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -2277,14 +2407,8 @@
             wctx.imageSmoothingEnabled = true;
         }
 
-        function roundRect(c, x, y, w, h, r) {
-            c.beginPath();
-            c.roundRect(x, y, w, h, r);
-        }
-
         function drawVirtualScene(c) {
             c.clearRect(0, 0, W, H);
-            const s = Math.min(window.devicePixelRatio || 1, 1.5);
             const g = c.createLinearGradient(0, 0, W, H);
             g.addColorStop(0, '#090A0E');
             g.addColorStop(0.48, '#0D1017');
@@ -2304,7 +2428,6 @@
             c.fillStyle = rg2;
             c.fillRect(0, 0, W, H);
 
-            // Subtle simulated grid lines
             c.strokeStyle = 'rgba(255, 255, 255, 0.05)';
             c.lineWidth = 1;
             c.beginPath();
@@ -2322,8 +2445,7 @@
             const out = ctx.createImageData(W, H);
             const dst = out.data;
 
-            // Two low-frequency wave fields + animated organic curl
-            for (let y = 0; y < H; y += 2) { // Step by 2 for high performance
+            for (let y = 0; y < H; y += 2) {
                 for (let x = 0; x < W; x += 2) {
                     const nx = x / W, ny = y / H;
                     const a = Math.sin(ny * 18 + time * 0.9) * 6 + Math.sin(ny * 40 - time * 0.35) * 2;
@@ -2336,7 +2458,6 @@
                     const sy = Math.max(0, Math.min(H - 1, y + dy));
                     const si = (sy * W + sx) * 4;
 
-                    // Fill 2x2 cluster
                     for (let oy = 0; oy < 2; oy++) {
                         for (let ox = 0; ox < 2; ox++) {
                             if (x + ox < W && y + oy < H) {
@@ -2366,8 +2487,9 @@
             raf = requestAnimationFrame(animationFrame);
         }
 
-        function openBottomSheet() {
+        function openBottomSheet(triggerElement) {
             playTapSound();
+            lastFocusedTrigger = triggerElement || document.activeElement;
             modalActive = true;
             document.body.classList.add('modal-open');
             resizeCanvas();
@@ -2388,6 +2510,10 @@
             setTimeout(() => {
                 ctx.clearRect(0, 0, W, H);
             }, 400);
+
+            if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') {
+                lastFocusedTrigger.focus();
+            }
         }
 
         function handleFolderInput() {
@@ -2408,43 +2534,87 @@
         }
 
         /* ----------------------------------------------------
-           6. Folder Creation & Sync Engine
+           6. Folder Creation & Dynamic Render Engine
            ---------------------------------------------------- */
+        function renderFoldersGrid() {
+            const grid = document.getElementById('foldersGrid');
+            if (!grid) return;
+            const folders = FileManagerStore.getFolders();
+            grid.innerHTML = '';
+
+            folders.forEach(f => {
+                const card = document.createElement('div');
+                card.className = 'folder-card';
+                card.tabIndex = 0;
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', `Folder ${f.name}, ${f.subtitle}`);
+                card.onclick = () => openFolderDetails(f.name, f.subtitle);
+                card.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openFolderDetails(f.name, f.subtitle);
+                    }
+                };
+
+                let iconMarkup = '';
+                if (f.isFigma) {
+                    iconMarkup = `
+                        <svg viewBox="0 0 38 57" fill="none" style="width: 20px; height: auto;" aria-hidden="true">
+                            <path d="M19 28.5C19 33.7467 14.7467 38 9.5 38C4.25329 38 0 33.7467 0 28.5C0 23.2533 4.25329 19 9.5 19H19V28.5Z" fill="#A259FF"/>
+                            <path d="M0 9.5C0 4.25329 4.25329 0 9.5 0H19V19H9.5C4.25329 19 0 14.7467 0 9.5Z" fill="#F24E1E"/>
+                            <path d="M38 9.5C38 14.7467 33.7467 19 28.5 19H19V0H28.5C33.7467 0 38 4.25329 38 9.5Z" fill="#FF7262"/>
+                            <path d="M38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5Z" fill="#1ABCFE"/>
+                            <path d="M9.5 57C14.7467 57 19 52.7467 19 47.5V38H9.5C4.25329 38 0 42.2533 0 47.5C0 52.7467 4.25329 57 9.5 57Z" fill="#0ACF83"/>
+                        </svg>
+                    `;
+                } else {
+                    const iconName = f.icon || 'folder';
+                    const color = f.iconColor || '#60A5FA';
+                    iconMarkup = `<i data-lucide="${iconName}" style="color: ${color}; width: 22px; height: 22px;"></i>`;
+                }
+
+                card.innerHTML = `
+                    <div class="glass-folder"></div>
+                    <svg class="glossy-border" viewBox="0 0 160 160" aria-hidden="true">
+                        <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="none" stroke="url(#gloss)" stroke-width="1.2"/>
+                    </svg>
+                    <div class="card-content">
+                        <div class="folder-icon-wrapper">
+                            ${iconMarkup}
+                        </div>
+                        <div class="folder-text-group">
+                            <div class="folder-title">${escapeHtml(f.name)}</div>
+                            <div class="folder-subtitle">${escapeHtml(f.subtitle)}</div>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
         function submitNewFolder() {
             const input = document.getElementById('folderInput');
             const folderName = input.value.trim();
             if (!folderName) return;
 
             playChimeSound();
-            const grid = document.getElementById('foldersGrid');
-            
-            // Generate New Frosted Glass Folder Card
-            const card = document.createElement('div');
-            card.className = 'folder-card';
-            card.style.animation = 'fadeIn 0.4s ease';
-            card.onclick = () => openFolderDetails(folderName, '0 files, 0 MB');
-
             const icons = ['folder', 'box', 'sparkles', 'globe', 'compass'];
-            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+            const colors = ['#60A5FA', '#A855F7', '#34D399', '#FBBF24', '#38BDF8'];
+            const randomIdx = Math.floor(Math.random() * icons.length);
 
-            card.innerHTML = `
-                <div class="glass-folder"></div>
-                <svg class="glossy-border" viewBox="0 0 160 160">
-                    <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="none" stroke="url(#gloss)" stroke-width="1.2"/>
-                </svg>
-                <div class="card-content">
-                    <div class="folder-icon-wrapper">
-                        <i data-lucide="${randomIcon}" style="color: #60A5FA; width: 22px; height: 22px;"></i>
-                    </div>
-                    <div class="folder-text-group">
-                        <div class="folder-title">${escapeHtml(folderName)}</div>
-                        <div class="folder-subtitle">0 files, 0 MB</div>
-                    </div>
-                </div>
-            `;
+            const newFolder = {
+                id: 'folder_' + Date.now(),
+                name: folderName,
+                subtitle: '0 files, 0 MB',
+                icon: icons[randomIdx],
+                iconColor: colors[randomIdx]
+            };
 
-            grid.prepend(card);
-            lucide.createIcons();
+            FileManagerStore.addFolder(newFolder);
+            renderFoldersGrid();
 
             // Clear & close modal
             input.value = '';
@@ -2452,7 +2622,7 @@
             closeBottomSheet();
 
             // Switch to folders tab if not already there
-            const foldersTabBtn = document.querySelector('[data-tab="folders"]');
+            const foldersTabBtn = document.getElementById('tab-folders');
             if (foldersTabBtn) switchTab('folders', foldersTabBtn);
 
             showToast(`Space "${folderName}" created!`);
@@ -2464,7 +2634,7 @@
         }
 
         function escapeHtml(str) {
-            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         // Global Keyboard Shortcuts
@@ -2499,21 +2669,78 @@
             const sw = document.getElementById('refractionToggleSwitch');
             sw.classList.toggle('on', refractionEnabled);
             showToast(refractionEnabled ? 'Swirl Refraction: 60fps Ultra' : 'Swirl Refraction: Power Saver');
+
+            const prefs = FileManagerStore.getPrefs();
+            prefs.refractionEnabled = refractionEnabled;
+            FileManagerStore.savePrefs(prefs);
         }
 
         function toggleBackgroundMotion() {
             playTapSound();
             const blobs = document.querySelectorAll('.ambient-blob');
             const sw = document.getElementById('auroraToggleSwitch');
-            const isPaused = blobs[0].style.animationPlayState === 'paused';
+            const isPaused = blobs[0] && blobs[0].style.animationPlayState === 'paused';
             blobs.forEach(b => b.style.animationPlayState = isPaused ? 'running' : 'paused');
             sw.classList.toggle('on', isPaused);
             showToast(isPaused ? 'Ambient Aurora: Running' : 'Ambient Aurora: Paused');
+
+            const prefs = FileManagerStore.getPrefs();
+            prefs.ambientMotion = isPaused;
+            FileManagerStore.savePrefs(prefs);
         }
 
         document.getElementById('menuBtn').addEventListener('click', () => {
-            const settingsBtn = document.querySelector('[data-tab="settings"]');
+            const settingsBtn = document.getElementById('tab-settings');
             if (settingsBtn) switchTab('settings', settingsBtn);
+        });
+
+        /* ----------------------------------------------------
+           8. Application Bootstrap & Persistence Restore
+           ---------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            // Restore preferences
+            const prefs = FileManagerStore.getPrefs();
+            soundEnabled = prefs.soundEnabled !== false;
+            const soundBtn = document.getElementById('soundToggleBtn');
+            const soundIcon = document.getElementById('soundIcon');
+            const soundSw = document.getElementById('soundToggleSwitch');
+            if (!soundEnabled) {
+                soundBtn.classList.remove('active-sound');
+                soundIcon.setAttribute('data-lucide', 'volume-x');
+                soundSw.classList.remove('on');
+            }
+
+            refractionEnabled = prefs.refractionEnabled !== false;
+            const refrSw = document.getElementById('refractionToggleSwitch');
+            if (refrSw) refrSw.classList.toggle('on', refractionEnabled);
+
+            const auroraSw = document.getElementById('auroraToggleSwitch');
+            if (prefs.ambientMotion === false) {
+                const blobs = document.querySelectorAll('.ambient-blob');
+                blobs.forEach(b => b.style.animationPlayState = 'paused');
+                if (auroraSw) auroraSw.classList.remove('on');
+            }
+
+            // Restore System Stats
+            const stats = FileManagerStore.getStats();
+            if (stats.isCleaned) {
+                document.getElementById('statCacheVal').textContent = stats.cacheVal || '0.0 MB';
+                document.getElementById('statCacheVal').style.color = '#4ADE80';
+                document.getElementById('storageUsedLabel').textContent = stats.usedLabel || '67.7 GB';
+                document.getElementById('storageProgressFill').style.width = stats.progressFill || '53%';
+                const cleanBtnText = document.getElementById('cleanBtnText');
+                if (cleanBtnText) cleanBtnText.innerHTML = `<i data-lucide="check" style="width: 18px;"></i> System Optimized`;
+            }
+
+            // Render Dynamic Folders from Store
+            renderFoldersGrid();
+
+            // Restore Active Tab
+            const savedTab = FileManagerStore.getActiveTab();
+            const targetBtn = document.getElementById('tab-' + savedTab) || document.getElementById('tab-home');
+            switchTab(savedTab, targetBtn, false);
+
+            lucide.createIcons();
         });
     </script>
 </body>

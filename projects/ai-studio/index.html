@@ -68,7 +68,29 @@
             box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
         }
         .brand-title h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
-        .brand-title p { font-size: 11.5px; color: var(--text-secondary); }
+        .brand-title p { font-size: 11.5px; color: var(--text-secondary); display: flex; align-items: center; }
+        .app-status-badge {
+            font-size: 9.5px; font-weight: 600; padding: 2px 7px; border-radius: 6px;
+            background: rgba(245, 158, 11, 0.15); color: #FBBF24;
+            border: 1px solid rgba(245, 158, 11, 0.3); margin-left: 6px;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .blob, .aurora-blob {
+                animation: none !important;
+            }
+        }
 
         .nav-actions { display: flex; align-items: center; gap: 8px; }
         .icon-btn {
@@ -412,7 +434,7 @@
                 </div>
                 <div class="brand-title">
                     <h2>AI Agent Studio</h2>
-                    <p>GlassOS Autonomous Agent Workspace</p>
+                    <p>GlassOS Autonomous Agent Workspace <span class="app-status-badge">Prototype</span></p>
                 </div>
             </div>
             <div class="nav-actions">
@@ -516,9 +538,144 @@
     </div>
 
     <script>
-        lucide.createIcons();
+        // ======================================================================
+        // GlassOS AI Studio State Store & Persistence Layer (Fase 3 Foundation)
+        // ======================================================================
+        const AIStudioStore = {
+            STORAGE_KEY: "glassos_ai_studio_v1",
+            state: {
+                activeModel: "K3-Pro Ultra",
+                reasoningEffort: "Tinggi (High)",
+                messages: []
+            },
 
-        let activeModelName = "K3-Pro Ultra";
+            init() {
+                this.load();
+                this.render();
+                this.bindKeyboardNav();
+                lucide.createIcons();
+            },
+
+            load() {
+                try {
+                    const raw = localStorage.getItem(this.STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (data.activeModel) this.state.activeModel = data.activeModel;
+                        if (data.reasoningEffort) this.state.reasoningEffort = data.reasoningEffort;
+                        if (Array.isArray(data.messages)) this.state.messages = data.messages;
+                    }
+                } catch(e) {
+                    console.warn("Storage load warning:", e);
+                }
+            },
+
+            save() {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
+                } catch(e) {
+                    console.warn("Storage save warning:", e);
+                }
+            },
+
+            setModel(name) {
+                this.state.activeModel = name;
+                this.save();
+                this.renderModel();
+            },
+
+            setEffort(val) {
+                this.state.reasoningEffort = val;
+                this.save();
+                this.renderEffort();
+            },
+
+            addMessage(role, text) {
+                this.state.messages.push({
+                    role,
+                    text,
+                    model: this.state.activeModel,
+                    timestamp: Date.now()
+                });
+                this.save();
+            },
+
+            reset() {
+                this.state.messages = [];
+                this.save();
+                const stream = document.getElementById('chatStream');
+                stream.innerHTML = `
+                    <div class="chat-bubble bubble-ai">
+                        <div class="bubble-ai-meta">
+                            <i data-lucide="bot"></i>
+                            <span>${this.state.activeModel} • Ready</span>
+                        </div>
+                        Sesi percakapan telah dibersihkan. Silakan ajukan pertanyaan atau pilih prompt cepat di bawah.
+                    </div>
+                `;
+                lucide.createIcons();
+            },
+
+            render() {
+                this.renderModel();
+                this.renderEffort();
+                this.renderMessages();
+            },
+
+            renderModel() {
+                document.querySelectorAll('.model-item').forEach(item => {
+                    const title = item.querySelector('.model-title')?.innerText?.trim();
+                    const isSelected = title === this.state.activeModel;
+                    item.classList.toggle('active', isSelected);
+                    item.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                });
+            },
+
+            renderEffort() {
+                document.getElementById('effortValue').innerText = this.state.reasoningEffort;
+                document.querySelectorAll('.effort-step-btn').forEach(btn => {
+                    const isSelected = this.state.reasoningEffort.includes(btn.innerText.trim());
+                    btn.classList.toggle('active', isSelected);
+                    btn.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                });
+            },
+
+            renderMessages() {
+                const stream = document.getElementById('chatStream');
+                if (this.state.messages.length === 0) return;
+
+                stream.innerHTML = "";
+                this.state.messages.forEach(msg => {
+                    const bubble = document.createElement('div');
+                    if (msg.role === 'user') {
+                        bubble.className = 'chat-bubble bubble-user';
+                        bubble.innerText = msg.text;
+                    } else {
+                        bubble.className = 'chat-bubble bubble-ai';
+                        bubble.innerHTML = `
+                            <div class="bubble-ai-meta">
+                                <i data-lucide="bot"></i>
+                                <span>${msg.model || this.state.activeModel}</span>
+                            </div>
+                            ${msg.text}
+                        `;
+                    }
+                    stream.appendChild(bubble);
+                });
+                stream.scrollTop = stream.scrollHeight;
+            },
+
+            bindKeyboardNav() {
+                document.querySelectorAll('.model-item, .effort-step-btn').forEach(el => {
+                    el.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            el.click();
+                        }
+                    });
+                });
+            }
+        };
 
         function playHapticSound(freq) {
             try {
@@ -537,24 +694,12 @@
         }
 
         function selectModel(row, name, desc) {
-            document.querySelectorAll('.model-item').forEach(r => {
-                r.classList.remove('active');
-                r.setAttribute('aria-checked', 'false');
-            });
-            row.classList.add('active');
-            row.setAttribute('aria-checked', 'true');
-            activeModelName = name;
+            AIStudioStore.setModel(name);
             playHapticSound(750);
         }
 
         function setEffort(btn, val) {
-            document.querySelectorAll('.effort-step-btn').forEach(b => {
-                b.classList.remove('active');
-                b.setAttribute('aria-checked', 'false');
-            });
-            btn.classList.add('active');
-            btn.setAttribute('aria-checked', 'true');
-            document.getElementById('effortValue').innerText = val;
+            AIStudioStore.setEffort(val);
             playHapticSound(520);
         }
 
@@ -581,6 +726,7 @@
             userBubble.className = 'chat-bubble bubble-user';
             userBubble.innerText = text;
             stream.appendChild(userBubble);
+            AIStudioStore.addMessage('user', text);
             input.value = "";
 
             // Simulate AI response
@@ -588,14 +734,16 @@
                 playHapticSound(820);
                 const aiBubble = document.createElement('div');
                 aiBubble.className = 'chat-bubble bubble-ai';
+                const responseText = `Menjalankan analisa mendalam untuk: "<em>${text}</em>". Seluruh token visual Glass Dark Premium dan state reaktif berhasil dioptimalkan.`;
                 aiBubble.innerHTML = `
                     <div class="bubble-ai-meta">
                         <i data-lucide="bot"></i>
-                        <span>${activeModelName}</span>
+                        <span>${AIStudioStore.state.activeModel}</span>
                     </div>
-                    Menjalankan analisa mendalam untuk: "<em>${text}</em>". Seluruh token visual Glass Dark Premium dan state reaktif berhasil dioptimalkan.
+                    ${responseText}
                 `;
                 stream.appendChild(aiBubble);
+                AIStudioStore.addMessage('ai', responseText);
                 lucide.createIcons();
                 stream.scrollTop = stream.scrollHeight;
             }, 600);
@@ -605,18 +753,13 @@
 
         function resetChat() {
             playHapticSound(440);
-            const stream = document.getElementById('chatStream');
-            stream.innerHTML = `
-                <div class="chat-bubble bubble-ai">
-                    <div class="bubble-ai-meta">
-                        <i data-lucide="bot"></i>
-                        <span>${activeModelName} • Ready</span>
-                    </div>
-                    Sesi percakapan telah dibersihkan. Silakan ajukan pertanyaan atau pilih prompt cepat di bawah.
-                </div>
-            `;
-            lucide.createIcons();
+            AIStudioStore.reset();
         }
+
+        // Initialize Store on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            AIStudioStore.init();
+        });
     </script>
 </body>
 </html>

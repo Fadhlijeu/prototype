@@ -4,6 +4,41 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.7.0] — 2026-09-08
+
+### ⚡ Fase 3: State Management, Data Persistence & Accessibility (P0 Foundation)
+
+#### 1. Arsitektur Store & Persistensi Reaktif (`localStorage`)
+- **`FileManagerStore` pada [`projects/file-manager/index.html`](projects/file-manager/index.html)**:
+  - **Dynamic Spaces Grid**: Folder yang dibuat pengguna melalui modal Bottom Sheet kini disimpan secara persisten di `localStorage` (`glassos_fm_folders_v1`).
+  - **Tab State Memory**: Tab aktif (`home`, `folders`, `clean`, `settings`) dipersistensikan (`glassos_fm_tab_v1`), sehingga reload halaman menjaga konteks navigasi pengguna.
+  - **Preference Sync**: Status toggle audio feedback, Canvas 2D swirl refraction, dan ambient aurora motion disimpan persisten (`glassos_fm_prefs_v1`).
+  - **Telemetry State**: Status deep clean (2.4 GB cache freed) dipersistensikan (`glassos_fm_stats_v1`).
+- **`AIStudioStore` pada [`projects/ai-studio/index.html`](projects/ai-studio/index.html)**:
+  - Persistensi active model selection (`K3-Pro Ultra`, `Swarm Agent 2.0`, `Flash Instant`).
+  - Persistensi reasoning effort (`Low`, `Med`, `High`, `Max`).
+  - Persistensi chat stream message bubbles secara kronologis (`glassos_ai_studio_v1`).
+
+#### 2. Peningkatan Standar Aksesibilitas (WCAG 2.1 AA & Keyboard Navigation)
+- **Keyboard Focus Rings (`:focus-visible`)**: Menambahkan styling cincin fokus cyan neon (`0 0 0 2px #08090C, 0 0 0 4px var(--accent-cyan)`) untuk seluruh elemen interaktif, tombol, tab, folder cards, dan input fields.
+- **Prefers Reduced Motion Compliance**: Menambahkan `@media (prefers-reduced-motion: reduce)` yang menonaktifkan pergerakan blob aurora dan mempercepat durasi transisi menjadi 0.01ms untuk pengguna dengan sensitivitas gerak.
+- **Semantik ARIA & Navigasi**:
+  - Dock navigasi bawah kini menggunakan `role="tablist"` dengan `role="tab"`, `aria-selected`, dan `aria-controls`.
+  - Seluruh 4 tab view dibungkus dengan `role="tabpanel"` dan `aria-labelledby`.
+  - Toast notification dilengkapi `role="status"` dan `aria-live="polite"`.
+  - Kartu folder interaktif dilengkapi `tabindex="0"`, `role="button"`, `aria-label`, serta aktivasi tombol `Enter` / `Space`.
+- **Modal Focus Management**: Menambahkan focus trap cerdas pada modal bottom sheet yang mengembalikan fokus ke tombol pemanggil saat ditutup via `Escape` atau klik scrim.
+
+#### 3. Re-skinning AI Studio & Pemulihan Ikon Dock
+- **AI Studio UI Upgrade**: Mengadopsi arsitektur komponen Glass sejati dari `ui/components/glass/ai-model-selector/` dan `ui/components/glass/thinking-effort-selector/` dengan multi-layer shadow, aurora mesh, noise overlay, dan tipografi modern `Inter`.
+- **Dock Icon Fix**: Memulihkan tautan Phosphor Icons CDN pada File Manager sehingga ikon tab dock (Home, Folders, Clean, Settings, FAB) kembali tampil tajam.
+
+#### 4. Hasil Pengujian & Quality Assurance Fase 3
+- **Automated Verification**: `npm run verify` (pengujian 68 link/iframe dan 71 link dokumentasi Markdown) lulus 100%.
+- **Browser Subagent E2E Test**: Pembuatan folder baru "Project Olympus 2026" dan pengiriman prompt AI Studio diverifikasi persisten 100% setelah reload halaman dengan 0 console error.
+
+---
+
 ## [Version 3.6.0] — 2026-09-08
 
 ### 💎 Fase 2: CSS Design Token Consolidation (Single Source of Truth)
