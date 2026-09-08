@@ -464,11 +464,49 @@
         .arch-links a:hover { color: #FFFFFF; }
 
         @media (max-width: 768px) {
-            .portal-header { padding: 14px 20px; }
-            .portal-main { padding: 24px 16px 60px; }
-            .hero-banner { padding: 28px 22px; }
-            .hero-title { font-size: 26px; }
-            .hub-grid { grid-template-columns: 1fr; }
+            .portal-header { padding: 14px 16px; }
+            .portal-main { padding: 20px 14px 60px; }
+            .hero-banner { padding: 24px 18px; }
+            .hero-title { font-size: 24px; }
+            .hero-desc { font-size: 13.5px; }
+            .hub-grid { grid-template-columns: 1fr; gap: 16px; }
+            .arch-banner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 18px; }
+            .arch-links { flex-wrap: wrap; width: 100%; gap: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .portal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 12px 14px;
+            }
+            .brand-cluster { gap: 10px; }
+            .brand-logo { width: 38px; height: 38px; border-radius: 11px; }
+            .brand-logo svg { width: 20px; height: 20px; }
+            .brand-text h1 { font-size: 16px; }
+            .brand-text p { font-size: 11px; }
+            .header-meta { width: 100%; }
+            .status-badge { width: 100%; justify-content: center; font-size: 11px; padding: 5px 10px; }
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
+                height: 48px;
+                box-sizing: border-box;
+                font-size: 13.5px;
+            }
+            .hub-card {
+                padding: 20px 16px;
+                border-radius: 20px;
+            }
+            .card-title { font-size: 16.5px; }
+            .card-desc { font-size: 13px; }
         }
     </style>
 </head>

@@ -77,7 +77,7 @@
             padding: 16px 32px 64px; display: grid; gap: 20px;
             transition: all 0.3s ease;
         }
-        .raw-grid.cols-auto { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+        .raw-grid.cols-auto { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
         .raw-grid.cols-1 { grid-template-columns: 1fr; max-width: 800px; margin: 0 auto; width: 100%; }
         .raw-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
         .raw-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -208,10 +208,61 @@
         .toast.active { transform: translateY(0); opacity: 1; }
 
         @media (max-width: 768px) {
-            .raw-header { padding: 12px 18px; }
-            .controls-bar { padding: 12px 18px; }
-            .raw-grid { padding: 12px 18px; }
-            .raw-grid.cols-2, .raw-grid.cols-3, .raw-grid.cols-4 { grid-template-columns: 1fr; }
+            .raw-header {
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .raw-header .header-actions {
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+            }
+            .controls-bar {
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .filter-tabs {
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .raw-grid,
+            .raw-grid.cols-auto,
+            .raw-grid.cols-1,
+            .raw-grid.cols-2,
+            .raw-grid.cols-3,
+            .raw-grid.cols-4 {
+                grid-template-columns: 1fr !important;
+                padding: 10px 14px 40px !important;
+                gap: 16px !important;
+            }
+            .modal-card {
+                height: 95vh;
+                margin: 0;
+                border-radius: 16px 16px 0 0;
+            }
+            .modal-overlay {
+                padding: 0;
+                align-items: flex-end;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card-slider-wrap,
+            .btn-preset:nth-child(2) {
+                display: none !important;
+            }
+            .layout-selector .btn-layout:nth-child(4),
+            .layout-selector .btn-layout:nth-child(5) {
+                display: none !important;
+            }
         }
     </style>
 </head>

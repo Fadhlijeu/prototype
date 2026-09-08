@@ -415,6 +415,74 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 12px;
+            }
+            .app-container {
+                padding-bottom: 24px;
+            }
+            .top-nav {
+                padding: 4px 0 12px;
+            }
+            .brand-title h2 {
+                font-size: 15px;
+            }
+            .brand-title p {
+                font-size: 11px;
+                flex-wrap: wrap;
+            }
+            .layer-2-glass {
+                padding: 6px;
+                border-radius: 20px;
+            }
+            .model-item {
+                padding: 10px 12px;
+                border-radius: 14px;
+            }
+            .model-title {
+                font-size: 13.5px;
+            }
+            .model-subtitle {
+                font-size: 11px;
+            }
+            .effort-glass-card {
+                padding: 14px 14px;
+                border-radius: 18px;
+            }
+            .effort-step-btn {
+                padding: 6px 3px;
+                font-size: 11px;
+            }
+            .chat-stream {
+                min-height: 200px;
+                max-height: 280px;
+                gap: 8px;
+            }
+            .chat-bubble {
+                max-width: 92%;
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+            .pills-bar {
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+            .pill-btn {
+                scroll-snap-align: start;
+                padding: 6px 11px;
+                font-size: 11.5px;
+            }
+            .input-bar {
+                padding: 6px 10px;
+                gap: 6px;
+            }
+            .chat-input {
+                min-width: 0;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>

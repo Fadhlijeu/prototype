@@ -299,7 +299,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             padding: 16px 32px 64px; display: grid; gap: 24px; z-index: 5;
             transition: all 0.3s ease;
         }}
-        .showcase-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }}
+        .showcase-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); }}
         .showcase-grid.cols-1 {{ grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; width: 100%; }}
         .showcase-grid.cols-2 {{ grid-template-columns: repeat(2, 1fr); }}
         .showcase-grid.cols-3 {{ grid-template-columns: repeat(3, 1fr); }}
@@ -555,12 +555,92 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .toast-notification svg {{ color: #4ADE80; width: 18px; height: 18px; }}
 
         @media (max-width: 768px) {{
-            .showcase-header {{ padding: 12px 18px; }}
-            .app-highlight-banner {{ margin: 16px 18px 0; flex-direction: column; align-items: flex-start; }}
-            .controls-bar {{ padding: 16px 18px 8px; }}
-            .showcase-grid {{ padding: 12px 18px 48px; }}
-            .showcase-grid.cols-2, .showcase-grid.cols-3, .showcase-grid.cols-4 {{ grid-template-columns: 1fr; }}
-            .modal-card {{ height: 92vh; margin: 12px; }}
+            .showcase-header {{
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }}
+            .header-actions {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+            }}
+            .app-highlight-banner {{
+                margin: 12px 14px 0;
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }}
+            .btn-banner-cta {{
+                width: 100%;
+                justify-content: center;
+            }}
+            .controls-bar {{
+                padding: 12px 14px 6px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }}
+            .filter-tabs {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }}
+            .controls-right {{
+                width: 100%;
+                justify-content: space-between;
+            }}
+            .search-box {{
+                width: 100%;
+            }}
+            .showcase-grid,
+            .showcase-grid.cols-auto,
+            .showcase-grid.cols-1,
+            .showcase-grid.cols-2,
+            .showcase-grid.cols-3,
+            .showcase-grid.cols-4 {{
+                grid-template-columns: 1fr !important;
+                padding: 10px 14px 48px !important;
+                gap: 16px !important;
+            }}
+            .component-card {{
+                min-height: 440px;
+                border-radius: 16px;
+            }}
+            .card-preview-zone {{
+                min-height: 320px;
+            }}
+            .modal-card {{
+                height: 95vh;
+                margin: 0;
+                border-radius: 18px 18px 0 0;
+            }}
+            .modal-overlay {{
+                padding: 0;
+                align-items: flex-end;
+            }}
+        }}
+
+        @media (max-width: 600px) {{
+            .card-resizer-toolbar {{
+                padding: 6px 12px;
+                flex-wrap: wrap;
+                gap: 6px;
+            }}
+            .card-slider-wrap,
+            .btn-preset:nth-child(2) {{
+                display: none !important;
+            }}
+            .layout-selector .btn-layout:nth-child(4),
+            .layout-selector .btn-layout:nth-child(5) {{
+                display: none !important;
+            }}
         }}
     </style>
 </head>
@@ -1124,7 +1204,7 @@ raw_showcase_content = f"""<!DOCTYPE html>
             padding: 16px 32px 64px; display: grid; gap: 20px;
             transition: all 0.3s ease;
         }}
-        .raw-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }}
+        .raw-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }}
         .raw-grid.cols-1 {{ grid-template-columns: 1fr; max-width: 800px; margin: 0 auto; width: 100%; }}
         .raw-grid.cols-2 {{ grid-template-columns: repeat(2, 1fr); }}
         .raw-grid.cols-3 {{ grid-template-columns: repeat(3, 1fr); }}
@@ -1255,10 +1335,61 @@ raw_showcase_content = f"""<!DOCTYPE html>
         .toast.active {{ transform: translateY(0); opacity: 1; }}
 
         @media (max-width: 768px) {{
-            .raw-header {{ padding: 12px 18px; }}
-            .controls-bar {{ padding: 12px 18px; }}
-            .raw-grid {{ padding: 12px 18px; }}
-            .raw-grid.cols-2, .raw-grid.cols-3, .raw-grid.cols-4 {{ grid-template-columns: 1fr; }}
+            .raw-header {{
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }}
+            .raw-header .header-actions {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+            }}
+            .controls-bar {{
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }}
+            .filter-tabs {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }}
+            .raw-grid,
+            .raw-grid.cols-auto,
+            .raw-grid.cols-1,
+            .raw-grid.cols-2,
+            .raw-grid.cols-3,
+            .raw-grid.cols-4 {{
+                grid-template-columns: 1fr !important;
+                padding: 10px 14px 40px !important;
+                gap: 16px !important;
+            }}
+            .modal-card {{
+                height: 95vh;
+                margin: 0;
+                border-radius: 16px 16px 0 0;
+            }}
+            .modal-overlay {{
+                padding: 0;
+                align-items: flex-end;
+            }}
+        }}
+
+        @media (max-width: 600px) {{
+            .card-slider-wrap,
+            .btn-preset:nth-child(2) {{
+                display: none !important;
+            }}
+            .layout-selector .btn-layout:nth-child(4),
+            .layout-selector .btn-layout:nth-child(5) {{
+                display: none !important;
+            }}
         }}
     </style>
 </head>
@@ -1883,7 +2014,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
 
         /* Gallery Grid View */
         .projects-gallery-grid {{
-            display: none; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            display: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
             gap: 24px; margin-bottom: 32px;
         }}
         .projects-gallery-grid.active {{ display: grid; }}
@@ -2050,10 +2181,111 @@ web_apps_html_content = f"""<!DOCTYPE html>
         .toast-notification svg {{ color: #4ADE80; width: 18px; height: 18px; }}
 
         @media (max-width: 768px) {{
-            .hub-header {{ padding: 12px 18px; }}
-            .hub-main {{ padding: 16px 18px; }}
-            .projects-gallery-grid {{ grid-template-columns: 1fr; }}
-            .app-live-stage {{ height: 540px; }}
+            .hub-header {{
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }}
+            .hub-header .header-actions {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+            }}
+            .hub-main {{
+                padding: 14px 14px 48px;
+            }}
+            .hero-banner {{
+                margin-bottom: 16px;
+            }}
+            .hero-title {{
+                font-size: 22px;
+            }}
+            .hero-desc {{
+                font-size: 13px;
+            }}
+            .projects-selection-bar {{
+                padding: 8px 10px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }}
+            .project-tabs-cluster {{
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }}
+            .app-showcase-box {{
+                padding: 14px;
+                border-radius: 18px;
+                margin-bottom: 20px;
+            }}
+            .app-card-topbar {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+                padding-bottom: 12px;
+            }}
+            .app-controls-cluster {{
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 8px;
+            }}
+            .viewport-selector,
+            .card-slider-wrap {{
+                display: none !important;
+            }}
+            .app-frame-wrapper {{
+                width: 100% !important;
+                max-width: 100% !important;
+            }}
+            .app-live-stage {{
+                height: 500px;
+                border-radius: 14px;
+            }}
+            .btn-launch-primary {{
+                flex: 1;
+                justify-content: center;
+            }}
+            .app-architecture-grid {{
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }}
+            .projects-gallery-grid,
+            .projects-gallery-grid.active {{
+                grid-template-columns: 1fr !important;
+                gap: 16px;
+            }}
+            .gallery-card {{
+                padding: 14px;
+                border-radius: 16px;
+            }}
+            .gallery-preview-frame {{
+                height: 260px;
+            }}
+            .gallery-card-bottom {{
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }}
+            .gallery-card-bottom .btn-card-action {{
+                width: 100%;
+                justify-content: center;
+            }}
+            .modal-card {{
+                width: 100%;
+                height: 95vh;
+                margin: 0;
+                border-radius: 18px 18px 0 0;
+            }}
+            .modal-overlay {{
+                padding: 0;
+                align-items: flex-end;
+            }}
         }}
     </style>
 </head>

@@ -1526,16 +1526,81 @@
         @media (max-width: 480px) {
             .app-shell {
                 max-width: 100%;
+                padding-bottom: 170px;
+            }
+            .views-wrapper {
+                padding: 0 12px;
+            }
+            .top-nav {
+                padding: 12px 14px 8px;
+            }
+            .brand-title {
+                font-size: 15px;
             }
             .bottom-nav-container {
-                padding: 0 12px;
-                gap: 10px;
+                padding: 0 8px;
+                bottom: calc(10px + env(safe-area-inset-bottom));
+                gap: 8px;
+            }
+            .glass-nav {
+                height: 66px;
+                border-radius: 33px;
             }
             .nav-item {
-                min-width: 58px;
+                min-width: 50px;
+                height: 52px;
+            }
+            .nav-item i {
+                font-size: 20px;
+            }
+            .nav-item .label {
+                font-size: 10px;
+            }
+            .fab {
+                width: 54px;
+                height: 54px;
+            }
+            .fab i {
+                font-size: 22px;
+            }
+            .pills-container {
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding: 4px 0 12px;
+            }
+            .pill {
+                scroll-snap-align: start;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .chat-input-bar {
+                padding: 4px 6px 4px 12px;
+                gap: 6px;
+            }
+            .chat-field {
+                font-size: 13px;
+                min-width: 0;
+            }
+            .layer-2-glass {
+                padding: 18px 14px;
+                border-radius: 20px;
             }
             .folders-grid {
                 gap: 10px;
+            }
+            .analytics-grid {
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 14px;
+                border-radius: 18px;
+            }
+            .stat-value {
+                font-size: 22px;
+            }
+            .sheet {
+                padding: 28px 16px 24px;
+                border-radius: 26px 26px 0 0;
             }
         }
 

@@ -258,3 +258,39 @@
             border-top: 1px solid rgba(255, 255, 255, 0.25);
             border-bottom: 1px solid rgba(0, 0, 0, 0.20);
         }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            .scenery-container {
+                max-width: 100%;
+            }
+            .glass-card {
+                border-radius: 20px;
+            }
+            .model-item {
+                padding: 10px 14px;
+            }
+            .model-title {
+                font-size: 13.5px;
+            }
+            .model-subtitle {
+                font-size: 11px;
+            }
+            .pills-scroll {
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+            .pill {
+                scroll-snap-align: start;
+            }
+            .chat-bar {
+                height: 48px;
+                padding: 4px 6px 4px 12px;
+            }
+            .chat-input {
+                min-width: 0;
+                font-size: 13px;
+            }
+        }
