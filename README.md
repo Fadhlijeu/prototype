@@ -26,78 +26,96 @@ Ekosistem ini memisahkan secara tegas antara **Anatomi Komponen Web Murni** (*Co
 
 ---
 
-## 📂 Struktur Direktori Proyek (V3 Decomposed Architecture)
+## 📂 Struktur Direktori Proyek (V3.2 Clean Root Architecture)
 
 ```text
 d:\PROJECT\prototype/
 ├── index.html                         # Master Gateway Portal (Bebas 404 saat akses / di server lokal)
 ├── showcase.html                      # Master Hub / Index yang memisahkan Web Apps & Komponen
 ├── web-apps.html                      # Halaman Khusus Showroom Aplikasi Web Utuh (Cloud File Manager OS)
+├── 404.html                           # Halaman error glassmorphism penangkap rute hilang
+├── favicon.svg                        # Favicon vektor SVG glow dark glass (Anti-404 /favicon.ico)
 ├── component.md                       # Kamus Master Taksonomi 120+ Komponen Web (100% Design-Agnostic)
 ├── README.md                          # Dokumentasi visi, moto, aturan update, dan arsitektur repositori
 ├── CHANGELOG.md                       # Catatan riwayat restrukturisasi & versi ekosistem
-├── package.json                       # Script `npm start` -> `serve .`
+├── package.json                       # Definisi script `npm start`, `npm run project`, `npm run showcase`, dll.
 │
-└── ui/
-    ├── README.md                      # UI Manifest: Konvensi penamaan & standar kualitas
-    │
-    ├── components/
-    │   ├── raw/                       # Gaya 0: Komponen Murni Tanpa CSS (Pure Semantic HTML)
-    │   │   ├── README.md              # Panduan edukasi anatomi web
-    │   │   ├── showcase.html          # Showroom komponen murni
-    │   │   ├── button/                # index.html, index.css, button.html
-    │   │   ├── input/                 # index.html, index.css, input.html
-    │   │   ├── checkbox-radio/        # index.html, index.css, checkbox-radio.html
-    │   │   ├── toggle-switch/         # index.html, index.css, toggle-switch.html
-    │   │   ├── select-dropdown/       # index.html, index.css, select-dropdown.html
-    │   │   ├── modal-dialog/          # index.html, index.css, modal-dialog.html
-    │   │   ├── table/                 # index.html, index.css, table.html
-    │   │   ├── progress-meter/        # index.html, index.css, progress-meter.html
-    │   │   └── details-accordion/     # index.html, index.css, details-accordion.html
-    │   │
-    │   └── glass/                     # Gaya 1: Glass Dark Premium
-    │       ├── STYLE_SPEC.md          # Spesifikasi teknis Glass Dark Premium
-    │       ├── css.css                # Master Shared CSS: Single source of truth token Glass
-    │       ├── showcase.html          # Showroom 21 komponen Glass (Resize, Code, Salin)
-    │       │
-    │       ├── button-glass/          # [NEW] Primary, Secondary, Danger, Ghost, FAB
-    │       ├── input-field-glass/     # [NEW] Text field, Password, Search, Status
-    │       ├── toggle-switch-glass/   # [NEW] Glass switch dengan spring physics
-    │       ├── checkbox-glass/        # [NEW] Glass checkbox interaktif
-    │       ├── dropdown-select-glass/ # [NEW] Floating dropdown select menu
-    │       ├── modal-dialog-glass/    # [NEW] Modal dialog pop-up tengah layar
-    │       ├── toast-notification-glass/ # [NEW] Floating status toast alerts
-    │       ├── tooltip-glass/         # [NEW] Micro-tooltip dengan panah
-    │       ├── avatar-badge-glass/    # [NEW] Glass avatar dengan status online/busy
-    │       ├── progress-bar-glass/    # [NEW] Linear glowing progress bar
-    │       │
-    │       ├── ai-model-selector/     # Kartu pemilih model AI (K3, Swarm, Instant)
-    │       ├── thinking-effort-selector/ # Segmented control tingkat penalaran AI
-    │       ├── chat-input-bar/        # Input chat bar kaca responsif
-    │       ├── prompt-pills-row/      # Baris pil aksi cepat anti-potong
-    │       ├── frosted-folder-card/   # Kartu folder kaca dengan siluet tab
-    │       ├── aurora-storage-card/   # Kartu telemetry storage aurora mesh
-    │       ├── swirl-bottom-sheet/    # Modal bottom sheet Canvas 2D swirl refraction
-    │       ├── telemetry-activity-chart/ # Histogram aktivitas 12 jam interaktif
-    │       ├── glass-dock-navigation/ # Dock navigasi bawah dengan spring active pill
-    │       ├── glass-sidepanel/       # Panel samping produktivitas desktop
-    │       └── ai-agent-scenery/      # Scenery lengkap antarmuka AI Assistant
-    │
-    └── file-manager_project/          # Proyek Aplikasi Komposit Utuh
-        ├── index.html                 # Aplikasi Cloud File Manager mandiri
-        └── PROJECT_SPEC.md            # Spesifikasi integrasi
+├── .github/workflows/
+│   └── deploy.yml                     # Otomatisasi GitHub Actions deploy langsung ke GitHub Pages
+│
+├── projects/                          # [ROOT LEVEL] Direktori Khusus Seluruh Aplikasi Web Utuh
+│   ├── README.md                      # Manifest portofolio aplikasi web & standar arsitektur
+│   ├── TEMPLATE.md                    # Blueprint cetak biru untuk pembuatan aplikasi web baru
+│   └── file-manager/                  # Proyek Aplikasi: GlassOS Cloud File Manager
+│       ├── index.html                 # Aplikasi Cloud File Manager mandiri (Production-Ready)
+│       └── PROJECT_SPEC.md            # Spesifikasi integrasi arsitektur & komponen
+│
+├── ui/                                # Pusat Desain, Token Visual, dan Komponen Modular
+│   ├── README.md                      # UI Manifest: Konvensi penamaan & standar kualitas
+│   └── components/
+│       ├── raw/                       # Gaya 0: Komponen Murni Tanpa CSS (Pure Semantic HTML)
+│       │   ├── README.md              # Panduan edukasi anatomi web baku
+│       │   ├── showcase.html          # Showroom komponen murni (9 komponen)
+│       │   ├── button/                # index.html, index.css, button.html
+│       │   ├── input/                 # index.html, index.css, input.html
+│       │   ├── checkbox-radio/        # index.html, index.css, checkbox-radio.html
+│       │   ├── toggle-switch/         # index.html, index.css, toggle-switch.html
+│       │   ├── select-dropdown/       # index.html, index.css, select-dropdown.html
+│       │   ├── modal-dialog/          # index.html, index.css, modal-dialog.html
+│       │   ├── table/                 # index.html, index.css, table.html
+│       │   ├── progress-meter/        # index.html, index.css, progress-meter.html
+│       │   └── details-accordion/     # index.html, index.css, details-accordion.html
+│       │
+│       └── glass/                     # Gaya 1: Glass Dark Premium
+│           ├── STYLE_SPEC.md          # Spesifikasi teknis Glass Dark Premium
+│           ├── css.css                # Master Shared CSS: Single source of truth token Glass
+│           ├── showcase.html          # Showroom 21 komponen Glass (Resize, Code, Salin)
+│           │
+│           ├── button-glass/          # Primary, Secondary, Danger, Ghost, FAB
+│           ├── input-field-glass/     # Text field, Password, Search, Status
+│           ├── toggle-switch-glass/   # Glass switch dengan spring physics
+│           ├── checkbox-glass/        # Glass checkbox interaktif
+│           ├── dropdown-select-glass/ # Floating dropdown select menu
+│           ├── modal-dialog-glass/    # Modal dialog pop-up tengah layar
+│           ├── toast-notification-glass/ # Floating status toast alerts
+│           ├── tooltip-glass/         # Micro-tooltip dengan panah
+│           ├── avatar-badge-glass/    # Glass avatar dengan status online/busy
+│           ├── progress-bar-glass/    # Linear glowing progress bar
+│           │
+│           ├── ai-model-selector/     # Kartu pemilih model AI (K3, Swarm, Instant)
+│           ├── thinking-effort-selector/ # Segmented control tingkat penalaran AI
+│           ├── chat-input-bar/        # Input chat bar kaca responsif
+│           ├── prompt-pills-row/      # Baris pil aksi cepat anti-potong
+│           ├── frosted-folder-card/   # Kartu folder kaca dengan siluet tab
+│           ├── aurora-storage-card/   # Kartu telemetry storage aurora mesh
+│           ├── swirl-bottom-sheet/    # Modal bottom sheet Canvas 2D swirl refraction
+│           ├── telemetry-activity-chart/ # Histogram aktivitas 12 jam interaktif
+│           ├── glass-dock-navigation/ # Dock navigasi bawah dengan spring active pill
+│           ├── glass-sidepanel/       # Panel samping produktivitas desktop
+│           └── ai-agent-scenery/      # Scenery lengkap antarmuka AI Assistant
+│
+└── scripts/                           # Perkakas Pemeliharaan & Pengujian Repositori
+    ├── rebuild_all.py                 # Generator master sinkronisasi seluruh showroom & web-apps
+    └── verify_links.py                # Pemeriksa integritas 100% tautan internal, iframe & aset
 ```
 
 ---
 
 ## 🚀 Panduan Menjalankan Preview Lokal (Bebas 404)
 
-Web server lokal **wajib dijalankan dari root direktori** (`d:\PROJECT\prototype`), BUKAN dengan menunjuk file HTML tertentu:
+Jalankan preview web server lokal langsung dari root direktori:
 
 ```bash
-# Jalankan dari folder root:
-npx serve .
-# ATAU:
+# Jalankan Master Gateway di port 3000:
 npm start
+
+# ATAU jalankan server langsung:
+npx serve . -p 3000
+
+# Perintah npm tambahan:
+npm run project       # Jalankan langsung Web App File Manager di port 3001
+npm run showcase      # Jalankan langsung Glass Showroom di port 3002
+npm run verify        # Verifikasi integritas tautan & iframe di seluruh berkas
+npm run rebuild       # Bangun ulang database kode dan halaman showcase
 ```
-Buka browser di **`http://localhost:3000/`**. Halaman Gateway akan langsung terbuka dan seluruh link komponen berfungsi sempurna.
+Buka browser di **`http://localhost:3000/`**. Halaman Gateway akan langsung terbuka dan seluruh tautan berfungsi sempurna.

@@ -4,6 +4,32 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.2.0] — 2026-09-08
+
+### 🚀 Elevated Root Projects Directory, CI/CD Automation & Anti-404 Resiliency
+
+#### 1. Pemindahan Proyek Aplikasi ke Root (`projects/`)
+- Memindahkan seluruh folder aplikasi web dari `ui/file-manager_project/` ke level root: [`projects/file-manager/`](file:///d:/PROJECT/prototype/projects/file-manager/).
+- Menetapkan batasan arsitektur yang bersih:
+  - `ui/`: Khusus untuk spesifikasi desain, token (`css.css`), dan katalog komponen modular (`ui/components/glass/`, `ui/components/raw/`).
+  - `projects/`: Didedikasikan untuk aplikasi web komposit utuh yang siap pakai di tingkat produksi.
+- Menambahkan [`projects/README.md`](file:///d:/PROJECT/prototype/projects/README.md) sebagai katalog portofolio aplikasi web.
+- Menambahkan [`projects/TEMPLATE.md`](file:///d:/PROJECT/prototype/projects/TEMPLATE.md) sebagai blueprint cetak biru standar arsitektur untuk proyek aplikasi web baru di masa depan.
+
+#### 2. Pencegahan 404 & Integrasi Global Favicon
+- Membuat [`favicon.svg`](file:///d:/PROJECT/prototype/favicon.svg) berkualitas tinggi berbasis SVG dengan pencahayaan neon kaca gelap dan mengintegrasikannya ke seluruh berkas portal (`index.html`, `showcase.html`, `web-apps.html`, `projects/file-manager/index.html`, serta showcase komponen). Mengeliminasi request error 404 pada browser untuk `/favicon.ico`.
+- Membuat [`404.html`](file:///d:/PROJECT/prototype/404.html) dengan visual glassmorphism gelap, ambient aurora blur, dan kluster navigasi satu klik ke seluruh ruang kerja penting.
+
+#### 3. Otomatisasi GitHub Actions Deployment
+- Menambahkan workflow [`.github/workflows/deploy.yml`](file:///d:/PROJECT/prototype/.github/workflows/deploy.yml) untuk melakukan auto-deploy static prototype langsung ke GitHub Pages setiap kali branch `main` diperbarui.
+
+#### 4. Perkakas Perawatan & Sinkronisasi Repositori (`scripts/`)
+- [`scripts/verify_links.py`](file:///d:/PROJECT/prototype/scripts/verify_links.py): Otomatisasi pengujian integritas 100% tautan relatif, iframe, skrip, dan style pada seluruh halaman web (82 tautan terverifikasi 0 broken link).
+- [`scripts/rebuild_all.py`](file:///d:/PROJECT/prototype/scripts/rebuild_all.py): Generator master satu perintah untuk menyinkronkan seluruh database kode embedded dan tampilan showroom.
+- Penambahan npm scripts di `package.json` (`npm start`, `npm run project`, `npm run showcase`, `npm run verify`, `npm run rebuild`).
+
+---
+
 ## [Version 3.1.0] — 2026-09-08
 
 ### 💎 Showcase Standalone Restoration & Dedicated Web Applications Page

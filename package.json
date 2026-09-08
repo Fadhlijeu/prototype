@@ -1,10 +1,23 @@
 {
   "name": "glassos-prototype",
-  "version": "1.0.0",
-  "description": "GlassOS UI/UX Component Prototype Ecosystem",
+  "version": "3.2.0",
+  "description": "GlassOS UI/UX Component Prototype Ecosystem & Web Applications",
   "scripts": {
-    "start": "serve .",
-    "dev": "serve .",
-    "serve": "serve ."
-  }
+    "start": "serve . -p 3000",
+    "dev": "serve . -p 3000",
+    "serve": "serve . -p 3000",
+    "project": "serve projects/file-manager -p 3001",
+    "showcase": "serve ui/components/glass -p 3002",
+    "verify": "python scripts/verify_links.py",
+    "rebuild": "python scripts/rebuild_all.py"
+  },
+  "keywords": [
+    "glassmorphism",
+    "dark-mode",
+    "ui-components",
+    "web-audio-synth",
+    "vanilla-js"
+  ],
+  "author": "Fadhli",
+  "license": "MIT"
 }

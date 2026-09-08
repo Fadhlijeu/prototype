@@ -3,331 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raw Semantic HTML Components Catalog — Pure Web Anatomy</title>
-    <meta name="description" content="Katalog komponen murni berbasis standar semantik web (HTML5) tanpa hiasan styling untuk mempelajari anatomi & nama resmi komponen web.">
+    <title>Raw Unstyled HTML Components Showcase</title>
+    <meta name="description" content="Katalog komponen web murni tanpa styling CSS untuk acuan taksonomi dan struktur anatomi HTML5 baku.">
+    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --bg-page: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --border-color: #E2E8F0;
-            --border-dark: #CBD5E1;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --accent-blue: #2563EB;
+            --bg-page: #0C0D12;
+            --card-bg: #141620;
+            --border-color: #242838;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --accent-blue: #3B82F6;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: var(--font-sans);
             background-color: var(--bg-page);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding-bottom: 80px;
-        }
-
-        header {
-            background: #FFFFFF;
-            border-bottom: 1px solid var(--border-color);
-            padding: 20px 32px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .raw-header {
+            padding: 16px 32px; background: #10121A; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
         }
-
-        .brand-text h1 { font-size: 18px; font-weight: 700; color: #0F172A; }
-        .brand-text p { font-size: 12px; color: var(--text-muted); }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .brand-cluster { display: flex; align-items: center; gap: 12px; }
+        .brand-icon {
+            width: 38px; height: 38px; border-radius: 10px; background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center;
+            color: #60A5FA;
         }
+        .brand-text h1 { font-size: 17px; font-weight: 700; }
+        .brand-text p { font-size: 12px; color: var(--text-secondary); }
 
+        .header-actions { display: flex; align-items: center; gap: 10px; }
         .nav-link {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            padding: 7px 14px; border-radius: 8px; font-size: 12.5px; text-decoration: none;
+            color: var(--text-secondary); background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color); transition: all 0.2s;
         }
+        .nav-link:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.08); }
 
-        .nav-link:hover {
-            background: #F1F5F9;
-            color: #0F172A;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px 24px;
-        }
-
-        .hero-box {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-        }
-
-        .hero-tag {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent-blue);
-            background: #EFF6FF;
-            padding: 3px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        .hero-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .hero-desc {
-            color: var(--text-muted);
-            font-size: 14.5px;
-            line-height: 1.6;
-            max-width: 800px;
-        }
-
-        .comp-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 24px;
+        .raw-grid {
+            padding: 24px 32px 64px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
         }
 
         .comp-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .comp-card:hover {
-            border-color: var(--border-dark);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden;
         }
 
         .comp-card-head {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #FAFAFA;
+            padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--border-color);
         }
-
-        .comp-card-title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
+        .comp-card-title { font-size: 14px; font-weight: 600; }
         .comp-card-tag {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            background: #F1F5F9;
-            color: var(--text-muted);
-            padding: 2px 6px;
-            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 2px 6px;
+            border-radius: 4px; background: rgba(255, 255, 255, 0.06); color: #93C5FD;
         }
 
         .comp-preview-zone {
-            padding: 20px;
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #FFFFFF;
+            height: 240px; background: #FFFFFF; display: flex; align-items: center; justify-content: center;
+            padding: 12px;
         }
-
-        .comp-preview-zone iframe {
-            width: 100%;
-            height: 160px;
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
-            background: #FFFFFF;
-        }
+        .comp-preview-zone iframe { width: 100%; height: 100%; border: none; }
 
         .comp-card-foot {
-            padding: 10px 16px;
-            border-top: 1px solid var(--border-color);
-            background: #FAFAFA;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3); border-top: 1px solid var(--border-color); font-size: 12px;
         }
+        .path-label { font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }
 
-        .path-label {
-            font-size: 11px;
-            font-family: var(--font-mono);
-            color: var(--text-muted);
-        }
-
-        .foot-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        .foot-actions { display: flex; align-items: center; gap: 6px; }
         .btn-act {
-            font-size: 11.5px;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            color: #334155;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            padding: 4px 10px; border-radius: 6px; font-size: 11.5px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color);
+            color: var(--text-primary); cursor: pointer; text-decoration: none;
             transition: all 0.2s;
         }
-
-        .btn-act:hover {
-            background: #F1F5F9;
-            color: var(--accent-blue);
-        }
+        .btn-act:hover { background: rgba(255, 255, 255, 0.12); }
 
         /* Modal */
-        .code-modal {
-            position: fixed; inset: 0; z-index: 1000;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 24px;
         }
+        .modal-overlay.active { display: flex; }
 
-        .code-modal.active { opacity: 1; pointer-events: auto; }
+        .modal-card {
+            width: 100%; max-width: 800px; height: 75vh; background: #0F1118; border-radius: 16px;
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden;
+        }
+        .modal-header {
+            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--border-color); background: #141722;
+        }
+        .modal-body { flex: 1; overflow: auto; padding: 18px 20px; background: #0B0D13; }
+        .code-pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #CBD5E1; }
 
-        .code-modal-box {
-            background: #FFFFFF;
-            width: 100%; max-width: 860px; max-height: 85vh;
-            border-radius: 14px;
-            display: flex; flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; z-index: 2000; padding: 10px 18px;
+            border-radius: 8px; background: #1E293B; border: 1px solid var(--border-color);
+            color: #FFFFFF; font-size: 13px; transform: translateY(60px); opacity: 0;
+            transition: all 0.25s; pointer-events: none;
         }
-
-        .code-modal-head {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; justify-content: space-between;
-            background: #F8FAFC;
-        }
-
-        .modal-tabs-bar {
-            display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
-            background: #F1F5F9; border-bottom: 1px solid var(--border-color);
-        }
-        .code-tab-btn {
-            padding: 6px 14px; border-radius: 8px 8px 0 0;
-            background: transparent; border: 1px solid transparent; border-bottom: none;
-            color: var(--text-muted); font-size: 12px; font-family: var(--font-mono);
-            cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
-        }
-        .code-tab-btn.active {
-            background: #FFFFFF; border-color: var(--border-color);
-            color: var(--text-main); font-weight: 600;
-        }
-
-        .code-modal-body {
-            padding: 18px;
-            overflow-y: auto;
-            background: #0F172A;
-            flex: 1;
-        }
-
-        .code-modal-body pre {
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: #F8FAFC;
-            white-space: pre-wrap;
-            word-break: break-all;
-            line-height: 1.6;
-        }
-
-        .toast-msg {
-            position: fixed; bottom: 24px; right: 24px; z-index: 2000;
-            background: #0F172A; color: #FFFFFF;
-            padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            transform: translateY(80px); opacity: 0; transition: all 0.25s ease;
-        }
-        .toast-msg.active { transform: translateY(0); opacity: 1; }
+        .toast.active { transform: translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-left">
-            <a href="../../../showcase.html" class="nav-link" title="Master Workbench Hub">
-                <i data-lucide="arrow-left"></i> Master Hub
-            </a>
+    <header class="raw-header">
+        <div class="brand-cluster">
+            <div class="brand-icon"><i data-lucide="code-2"></i></div>
             <div class="brand-text">
-                <h1>Raw Semantic HTML Catalog</h1>
-                <p>9 Komponen Murni Standar HTML5 (All-in-One Standalone)</p>
+                <h1>Raw Unstyled HTML Showcase</h1>
+                <p>9 Komponen Anatomi Dasar Web Semantic</p>
             </div>
         </div>
 
-        <nav class="nav-links">
-            <a href="../../../web-apps.html" class="nav-link">
-                <i data-lucide="folder-kanban"></i> Web App: File Manager
-            </a>
-            <a href="../../../showcase.html" class="nav-link">
-                <i data-lucide="layers"></i> Master Hub
-            </a>
-            <a href="../glass/showcase.html" class="nav-link">
-                <i data-lucide="gem"></i> Glass Showcase
-            </a>
-            <a href="../../../component.md" class="nav-link">
-                <i data-lucide="book-open"></i> component.md
-            </a>
-        </nav>
+        <div class="header-actions">
+            <a href="../../../index.html" class="nav-link"><i data-lucide="home"></i> Gateway</a>
+            <a href="../../../showcase.html" class="nav-link"><i data-lucide="layers"></i> Master Hub</a>
+            <a href="../../../web-apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps Studio</a>
+            <a href="../glass/showcase.html" class="nav-link"><i data-lucide="gem"></i> Glass Dark (21)</a>
+        </div>
     </header>
 
-    <div class="container">
-        
-        <section class="hero-box">
-            <span class="hero-tag">Design-Agnostic Anatomy (All-in-One Standalone)</span>
-            <h2 class="hero-title">Kenali Nama Baku & Struktur Komponen Web</h2>
-            <p class="hero-desc">
-                Sebelum diberi gaya visual, setiap komponen web memiliki anatomi dasar dan tag semantik resmi HTML5. Seluruh kartu di bawah memuat file standalone all-in-one murni untuk menjamin tampilan konsisten dan bebas error.
-            </p>
-        </section>
-
-        <div class="comp-grid">
+    <main class="raw-grid">
 
             <!-- Component: Buttons & Actions -->
             <article class="comp-card">
@@ -500,77 +310,41 @@
                 </div>
             </article>
 
-        </div>
-    </div>
+    </main>
 
-    <!-- Modal Code -->
-    <div class="code-modal" id="rawModal">
-        <div class="code-modal-box">
-            <div class="code-modal-head">
-                <div>
-                    <strong id="rawModalTitle">Nama Komponen</strong>
-                    <span id="rawModalPath" style="font-size:12px; color:var(--text-muted); display:block;">ui/components/raw/...</span>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-act" onclick="copyActiveRawCode()"><i data-lucide="copy"></i> Salin File Ini</button>
-                    <button class="btn-act" onclick="closeRawModal()"><i data-lucide="x"></i> Tutup</button>
-                </div>
+    <div class="modal-overlay" id="rawModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Kode Komponen Raw</h3>
+                <button class="btn-act" onclick="closeRawModal()">Tutup</button>
             </div>
-            <div class="modal-tabs-bar" id="rawTabsBar"></div>
-            <div class="code-modal-body">
-                <pre><code id="rawModalCode">Memuat kode...</code></pre>
+            <div class="modal-body">
+                <pre class="code-pre"><code id="modalCode">Memuat...</code></pre>
             </div>
         </div>
     </div>
 
-    <div class="toast-msg" id="rawToast">Kode berhasil disalin!</div>
+    <div class="toast" id="toastMsg">Kode disalin!</div>
+
+    <script type="application/json" id="rawDb">
+{"button": {"button.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button<\/button>\n    <button type=\"submit\">Submit Button<\/button>\n    <button type=\"reset\">Reset Button<\/button>\n    <button disabled>Disabled Button<\/button>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "input": {"input.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"><\/label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"><\/label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"><\/label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"><\/label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"><\/label>\n    <label>File: <input type=\"file\"><\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "checkbox-radio": {"checkbox-radio.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes<\/legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)<\/label><br>\n        <label><input type=\"checkbox\"> Option B<\/label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)<\/label>\n    <\/fieldset>\n    <fieldset>\n        <legend>Radio Group<\/legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2<\/label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3<\/label>\n    <\/fieldset>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "select-dropdown": {"select-dropdown.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account<\/option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace<\/option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization<\/option>\n        <\/select>\n    <\/label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha<\/option>\n            <option>Beta<\/option>\n            <option>Gamma<\/option>\n        <\/select>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "toggle-switch": {"toggle-switch.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)<\/span>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "details-accordion": {"details-accordion.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        <\/p>\n    <\/details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?<\/summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        <\/p>\n    <\/details>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "modal-dialog": {"modal-dialog.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;<\/button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog<\/h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.<\/p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close<\/button>\n        <\/div>\n    <\/dialog>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "progress-meter": {"progress-meter.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"><\/progress>\n        <small>68% complete<\/small>\n    <\/label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"><\/meter>\n        <small>85 GB / 100 GB<\/small>\n    <\/label>\n<\/div>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "table": {"table.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML (All-in-One)<\/title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    <\/style>\n<\/head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status<\/th>\n        <\/tr>\n    <\/thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n    <\/tbody>\n<\/table>\n<\/body>\n<\/html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML<\/title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n<\/head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category<\/th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status<\/th>\n        <\/tr>\n    <\/thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form<\/td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable<\/td>\n        <\/tr>\n    <\/tbody>\n<\/table>\n<\/body>\n<\/html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}}
+    </script>
 
     <script>
-        const RAW_DB = {"button": {"button.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button</button>\n    <button type=\"submit\">Submit Button</button>\n    <button type=\"reset\">Reset Button</button>\n    <button disabled>Disabled Button</button>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button</button>\n    <button type=\"submit\">Submit Button</button>\n    <button type=\"reset\">Reset Button</button>\n    <button disabled>Disabled Button</button>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "input": {"input.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"></label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"></label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"></label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"></label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"></label>\n    <label>File: <input type=\"file\"></label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"></label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"></label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"></label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"></label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"></label>\n    <label>File: <input type=\"file\"></label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "checkbox-radio": {"checkbox-radio.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes</legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)</label><br>\n        <label><input type=\"checkbox\"> Option B</label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)</label>\n    </fieldset>\n    <fieldset>\n        <legend>Radio Group</legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3</label>\n    </fieldset>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes</legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)</label><br>\n        <label><input type=\"checkbox\"> Option B</label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)</label>\n    </fieldset>\n    <fieldset>\n        <legend>Radio Group</legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3</label>\n    </fieldset>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "select-dropdown": {"select-dropdown.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account</option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace</option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization</option>\n        </select>\n    </label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha</option>\n            <option>Beta</option>\n            <option>Gamma</option>\n        </select>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Personal Account</option>\n            <option value=\"opt2\" selected>Option 2 - Team Workspace</option>\n            <option value=\"opt3\">Option 3 - Enterprise Organization</option>\n        </select>\n    </label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha</option>\n            <option>Beta</option>\n            <option>Gamma</option>\n        </select>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "toggle-switch": {"toggle-switch.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)</span>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)</span>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "details-accordion": {"details-accordion.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        </p>\n    </details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        </p>\n    </details>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes and styling.\n        </p>\n    </details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        </p>\n    </details>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "modal-dialog": {"modal-dialog.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;</button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog</h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.</p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close</button>\n        </div>\n    </dialog>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;</button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog</h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.</p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close</button>\n        </div>\n    </dialog>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "progress-meter": {"progress-meter.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"></progress>\n        <small>68% complete</small>\n    </label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"></meter>\n        <small>85 GB / 100 GB</small>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"></progress>\n        <small>68% complete</small>\n    </label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"></meter>\n        <small>85 GB / 100 GB</small>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "table": {"table.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n    </tbody>\n</table>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n    </tbody>\n</table>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}};
-        let activeRawFolder = "";
-        let activeRawFileName = "";
-        let activeRawContent = "";
+        let RAW_DB = {};
+        try {
+            RAW_DB = JSON.parse(document.getElementById('rawDb').textContent);
+        } catch(e) {
+            console.error('Failed to parse raw db:', e);
+        }
 
         lucide.createIcons();
 
         function openRawModal(folder, title) {
-            activeRawFolder = folder;
-            document.getElementById('rawModalTitle').innerText = title;
-            document.getElementById('rawModalPath').innerText = `ui/components/raw/${folder}/`;
-            
-            const folderFiles = RAW_DB[folder] || {};
-            const tabsBar = document.getElementById('rawTabsBar');
-            tabsBar.innerHTML = "";
-
-            const aio = `${folder}.html`;
-            const order = [aio, "index.html", "index.css"];
-            let first = "";
-
-            order.forEach(fn => {
-                if (folderFiles[fn] !== undefined) {
-                    if (!first) first = fn;
-                    const btn = document.createElement('button');
-                    btn.className = "code-tab-btn";
-                    btn.setAttribute('data-fn', fn);
-                    btn.innerText = fn;
-                    btn.onclick = () => switchRawTab(fn);
-                    tabsBar.appendChild(btn);
-                }
-            });
-
+            document.getElementById('modalTitle').innerText = `${title} (${folder}.html)`;
+            const code = (RAW_DB[folder] && RAW_DB[folder][`${folder}.html`]) || "";
+            document.getElementById('modalCode').innerText = code;
             document.getElementById('rawModal').classList.add('active');
-            if (first) switchRawTab(first);
-        }
-
-        function switchRawTab(fn) {
-            activeRawFileName = fn;
-            document.querySelectorAll('#rawTabsBar .code-tab-btn').forEach(b => {
-                b.classList.toggle('active', b.getAttribute('data-fn') === fn);
-            });
-
-            const code = (RAW_DB[activeRawFolder] && RAW_DB[activeRawFolder][fn]) || "";
-            activeRawContent = code;
-            document.getElementById('rawModalCode').innerText = code;
         }
 
         function closeRawModal() {
@@ -578,25 +352,18 @@
         }
 
         async function copyRawAio(folder) {
-            const aio = `${folder}.html`;
-            const code = (RAW_DB[folder] && RAW_DB[folder][aio]) || "";
+            const code = (RAW_DB[folder] && RAW_DB[folder][`${folder}.html`]) || "";
             if (code) {
                 await navigator.clipboard.writeText(code);
-                showRawToast(`Kode ${aio} berhasil disalin!`);
+                showToast(`Kode raw ${folder} disalin!`);
             }
         }
 
-        async function copyActiveRawCode() {
-            if (!activeRawContent) return;
-            await navigator.clipboard.writeText(activeRawContent);
-            showRawToast(`Kode ${activeRawFileName} berhasil disalin!`);
-        }
-
-        function showRawToast(msg) {
-            const t = document.getElementById('rawToast');
+        function showToast(msg) {
+            const t = document.getElementById('toastMsg');
             t.innerText = msg;
             t.classList.add('active');
-            setTimeout(() => t.classList.remove('active'), 2500);
+            setTimeout(() => t.classList.remove('active'), 2000);
         }
 
         document.getElementById('rawModal').addEventListener('click', (e) => {
