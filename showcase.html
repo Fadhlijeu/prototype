@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Master Component Workbench Hub — GlassOS</title>
-    <meta name="description" content="Master Hub & Index Laboratorium Komponen UI/UX GlassOS: Glass Dark Premium & Raw HTML">
+    <meta name="description" content="Master Hub & Index Laboratorium Komponen UI/UX GlassOS: Glass Dark Premium, Raw HTML, dan Web Applications.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -37,11 +37,10 @@
             position: relative;
         }
 
-        /* Ambient Aurora Mesh */
         .ambient-mesh {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 0; overflow: hidden;
-        }}
+        }
 
         .blob {
             position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.32;
@@ -57,7 +56,6 @@
             100% { transform: translate(60px, 40px) scale(1.08); }
         }
 
-        /* Header Bar */
         .hub-header {
             position: sticky; top: 0; z-index: 50; padding: 16px 32px;
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -74,8 +72,8 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
         }
-
         .brand-badge svg { width: 22px; height: 22px; stroke-width: 1.5px; color: #FFFFFF; }
+
         .brand-text h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
         .brand-text h1 span { color: var(--accent-cyan); }
         .brand-text p { font-size: 12px; color: var(--text-secondary); }
@@ -91,7 +89,11 @@
         .action-link-btn:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
         .action-link-btn svg { width: 14px; height: 14px; }
 
-        /* Main Workspace */
+        .action-link-btn.highlight {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25));
+            border-color: rgba(74, 158, 255, 0.35); color: #FFFFFF; font-weight: 600;
+        }
+
         .hub-main {
             position: relative; z-index: 1; flex: 1; max-width: 1300px;
             margin: 0 auto; width: 100%; padding: 40px 24px 80px;
@@ -117,14 +119,75 @@
             color: var(--accent-cyan); margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px;
         }
         .hero-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .hero-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.65; max-width: 840px; }
+        .hero-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.65; max-width: 860px; }
 
-        /* Style Directory Grid */
-        .section-title {
-            font-size: 18px; font-weight: 600; margin-bottom: 16px;
-            display: flex; align-items: center; gap: 8px;
+        /* Tier Title */
+        .tier-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 18px; margin-top: 20px;
+        }
+        .tier-title {
+            font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
+        .tier-badge {
+            font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+            background: rgba(74, 158, 255, 0.15); border: 1px solid rgba(74, 158, 255, 0.3);
+            color: var(--accent-cyan);
         }
 
+        /* TIER 1: SPOTLIGHT WEB APPLICATION CARD */
+        .webapp-spotlight-card {
+            border-radius: 26px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.06));
+            border: 1px solid transparent; border-top-color: rgba(255, 255, 255, 0.35);
+            border-left-color: rgba(255, 255, 255, 0.15); border-right-color: rgba(255, 255, 255, 0.15);
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(28px); box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
+            padding: 32px 36px; margin-bottom: 44px; display: flex; align-items: center;
+            justify-content: space-between; gap: 28px; flex-wrap: wrap; transition: transform 0.25s var(--ease-spring);
+        }
+        .webapp-spotlight-card:hover {
+            transform: translateY(-3px); box-shadow: 0 24px 54px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .spotlight-left { display: flex; align-items: flex-start; gap: 22px; max-width: 820px; }
+        .spotlight-icon-box {
+            width: 58px; height: 58px; border-radius: 18px;
+            background: linear-gradient(135deg, #06B6D4, #3B82F6);
+            display: flex; align-items: center; justify-content: center; color: #FFFFFF;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4); flex-shrink: 0;
+        }
+        .spotlight-icon-box svg { width: 30px; height: 30px; }
+
+        .spotlight-info h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+        .spotlight-info p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+
+        .spotlight-tags-cluster { display: flex; flex-wrap: wrap; gap: 8px; }
+        .spotlight-tag {
+            font-size: 11.5px; padding: 4px 10px; border-radius: 8px; background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-secondary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .spotlight-tag svg { width: 12px; height: 12px; }
+
+        .spotlight-actions { display: flex; flex-direction: column; gap: 10px; min-width: 220px; }
+        .btn-spotlight-cta {
+            padding: 12px 22px; border-radius: 14px;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: #FFFFFF; font-size: 13.5px; font-weight: 600; text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); transition: all 0.2s var(--ease-spring);
+        }
+        .btn-spotlight-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37, 99, 235, 0.55); }
+
+        .btn-spotlight-sec {
+            padding: 10px 18px; border-radius: 14px; background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-secondary);
+            font-size: 12.5px; font-weight: 500; text-decoration: none; display: inline-flex;
+            align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-spotlight-sec:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
+
+        /* TIER 2: COMPONENT LIBRARIES GRID */
         .style-cards-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px;
             margin-bottom: 44px;
@@ -139,7 +202,6 @@
             display: flex; flex-direction: column; justify-content: space-between;
             text-decoration: none; color: inherit; transition: all 0.25s var(--ease-spring);
         }
-
         .style-card:hover {
             transform: translateY(-4px); background: var(--glass-card-hover);
             box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(59, 130, 246, 0.15);
@@ -151,8 +213,6 @@
         }
         .card-icon.purple { background: rgba(139, 92, 246, 0.2); color: #C084FC; border: 1px solid rgba(139, 92, 246, 0.3); }
         .card-icon.blue { background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
-        .card-icon.cyan { background: rgba(6, 182, 212, 0.2); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.3); }
-
         .card-icon svg { width: 24px; height: 24px; }
 
         .style-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
@@ -166,7 +226,6 @@
         .card-enter svg { width: 14px; height: 14px; transition: transform 0.2s; }
         .style-card:hover .card-enter svg { transform: translateX(4px); }
 
-        /* Architecture Banner */
         .info-panel {
             padding: 24px 28px; border-radius: 20px; background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06); display: flex; align-items: center;
@@ -191,7 +250,7 @@
             </div>
             <div class="brand-text">
                 <h1>Glass<span>OS</span> Master Showcase Hub</h1>
-                <p>Pintu Masuk Ruang Pamer Komponen Per Gaya Desain</p>
+                <p>Pintu Masuk Ruang Pamer Komponen & Aplikasi Web</p>
             </div>
         </div>
 
@@ -199,14 +258,14 @@
             <a href="index.html" class="action-link-btn" title="Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
+            <a href="web-apps.html" class="action-link-btn highlight" title="Buka Showroom Web App">
+                <i data-lucide="folder-kanban"></i> Web Applications
+            </a>
             <a href="ui/components/glass/showcase.html" class="action-link-btn" title="Buka Glass Showcase">
-                <i data-lucide="gem"></i> Glass Showroom
+                <i data-lucide="gem"></i> Glass (21)
             </a>
             <a href="ui/components/raw/showcase.html" class="action-link-btn" title="Buka Raw Showcase">
-                <i data-lucide="code-2"></i> Raw HTML
-            </a>
-            <a href="ui/file-manager_project/index.html" class="action-link-btn" title="Buka File Manager App">
-                <i data-lucide="folder-kanban"></i> File Manager
+                <i data-lucide="code-2"></i> Raw HTML (9)
             </a>
         </div>
     </header>
@@ -214,14 +273,65 @@
     <main class="hub-main">
 
         <section class="hero-banner">
-            <span class="hero-tag"><i data-lucide="sparkles"></i> Modular Multi-Style Architecture</span>
+            <span class="hero-tag"><i data-lucide="sparkles"></i> Modular Multi-Tier Architecture</span>
             <h2 class="hero-title">Pusat Pameran & Laboratorium Desain UI/UX</h2>
             <p class="hero-desc">
-                Setiap gaya desain kini diisolasi sepenuhnya di dalam direktorinya sendiri dengan file CSS bersama (<code>css.css</code>), komponen mandiri (HTML/CSS/JS), serta showcase interaktif khusus. Pilih gaya desain di bawah untuk mulai menguji dan menyalin komponen.
+                Sistem ini memisahkan dua tingkatan utama: <strong>Aplikasi Web Utuh (Web Applications)</strong> yang merakit puluhan komponen menjadi sistem operasional mandiri pada halaman tersendiri, dan <strong>Showroom Komponen (Design Systems)</strong> yang mengkatalogkan setiap elemen UI/UX secara modular.
             </p>
         </section>
 
-        <h3 class="section-title"><i data-lucide="layout-grid"></i> Pilih Showroom Gaya Desain</h3>
+        <!-- TIER 1: WEB APPLICATIONS -->
+        <div class="tier-header">
+            <div class="tier-title">
+                <i data-lucide="folder-kanban" style="color: var(--accent-cyan);"></i>
+                <span>Tingkat 1: Aplikasi Web Utuh (Full Web Applications)</span>
+            </div>
+            <span class="tier-badge">Halaman Khusus Mandiri</span>
+        </div>
+
+        <article class="webapp-spotlight-card">
+            <div class="spotlight-left">
+                <div class="spotlight-icon-box">
+                    <i data-lucide="cloud"></i>
+                </div>
+                <div class="spotlight-info">
+                    <h3>
+                        <span>GlassOS Cloud File Manager OS</span>
+                        <span style="font-size:12px; font-weight:600; padding:2px 8px; border-radius:8px; background:rgba(59,130,246,0.2); color:#60A5FA;">v2.4 Ready</span>
+                    </h3>
+                    <p>
+                        Aplikasi web interaktif siap pakai yang dirakit utuh menggunakan komponen Glass Dark: manajemen berkas, storage telemetry circular gauge, navigasi dock bawah melayang dengan spring physics, dan modal sheet pembuatan folder. Berjalan pada halaman terpisah dengan simulator multi-viewport (Desktop, Tablet, Mobile).
+                    </p>
+                    <div class="spotlight-tags-cluster">
+                        <span class="spotlight-tag"><i data-lucide="compass"></i> Spring Dock Nav</span>
+                        <span class="spotlight-tag"><i data-lucide="gauge"></i> Storage Telemetry</span>
+                        <span class="spotlight-tag"><i data-lucide="layers"></i> Swirl Bottom Sheet</span>
+                        <span class="spotlight-tag"><i data-lucide="volume-2"></i> Audio Synthesizer</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spotlight-actions">
+                <a href="web-apps.html" class="btn-spotlight-cta">
+                    <i data-lucide="layers"></i> Buka Showroom Web App <i data-lucide="arrow-right"></i>
+                </a>
+                <a href="ui/file-manager_project/index.html" target="_blank" class="btn-spotlight-sec">
+                    <i data-lucide="external-link"></i> Jalankan Langsung
+                </a>
+                <a href="ui/file-manager_project/PROJECT_SPEC.md" class="btn-spotlight-sec">
+                    <i data-lucide="book-open"></i> Spesifikasi Arsitektur
+                </a>
+            </div>
+        </article>
+
+        <!-- TIER 2: COMPONENT LIBRARIES -->
+        <div class="tier-header">
+            <div class="tier-title">
+                <i data-lucide="layout-grid" style="color: #A78BFA;"></i>
+                <span>Tingkat 2: Laboratorium Komponen UI (Component Libraries)</span>
+            </div>
+            <span class="tier-badge" style="background:rgba(139,92,246,0.15); border-color:rgba(139,92,246,0.3); color:#C084FC;">2 Gaya Desain</span>
+        </div>
 
         <div class="style-cards-grid">
 
@@ -233,10 +343,10 @@
                     </div>
                     <h3>
                         <span>Glass Dark Premium</span>
-                        <span class="count-tag">21 Komponen</span>
+                        <span class="count-tag">21 Komponen All-in-One</span>
                     </h3>
                     <p>
-                        Sistem desain kaca gelap modern: multi-layer blur, border asimetris, noise shader optik, spring physics dock, bottom sheet swirl, dan seluruh komponen dasar yang telah terdekomposisi lengkap.
+                        Sistem desain kaca gelap modern: multi-layer blur, border asimetris, noise shader optik, spring physics dock, bottom sheet swirl, dan seluruh komponen dasar standalone bebas error dengan multi-file code modal.
                     </p>
                 </div>
                 <span class="card-enter">Buka Glass Showroom <i data-lucide="arrow-right"></i></span>
@@ -250,7 +360,7 @@
                     </div>
                     <h3>
                         <span>Raw Semantic HTML</span>
-                        <span class="count-tag">9 Komponen</span>
+                        <span class="count-tag">9 Komponen Baku</span>
                     </h3>
                     <p>
                         Katalog komponen murni tanpa CSS untuk mempelajari nama baku, anatomi resmi, dan tag HTML5 standar (button, input, checkbox, dialog, table, details, progress).
@@ -259,29 +369,12 @@
                 <span class="card-enter">Buka Raw Showroom <i data-lucide="arrow-right"></i></span>
             </a>
 
-            <!-- Card 3: Cloud File Manager App -->
-            <a href="ui/file-manager_project/index.html" class="style-card">
-                <div>
-                    <div class="card-icon cyan">
-                        <i data-lucide="folder-kanban"></i>
-                    </div>
-                    <h3>
-                        <span>Cloud File Manager</span>
-                        <span class="count-tag">Aplikasi Web</span>
-                    </h3>
-                    <p>
-                        Aplikasi web interaktif siap pakai yang dirakit utuh menggunakan komponen Glass Dark: manajemen berkas, storage telemetry, navigasi dock bawah, dan modal pembuatan folder.
-                    </p>
-                </div>
-                <span class="card-enter">Jalankan Web App <i data-lucide="arrow-right"></i></span>
-            </a>
-
         </div>
 
         <div class="info-panel">
             <div>
-                <h4>Cara Menjalankan Server Lokal (Bebas 404):</h4>
-                <p>Jalankan <code>npx serve .</code> atau <code>npm start</code> dari root folder proyek, lalu buka <code>http://localhost:3000/</code>.</p>
+                <h4>Arsitektur Terpisah & Bebas Error:</h4>
+                <p>Seluruh preview kartu komponen kini menggunakan file All-in-One mandiri (<code>[nama].html</code>) sehingga tidak akan kehilangan styling di lingkungan server atau browser mana pun.</p>
             </div>
             <a href="component.md" class="action-link-btn">
                 <i data-lucide="book-open"></i> Baca Kamus Taksonomi (component.md)

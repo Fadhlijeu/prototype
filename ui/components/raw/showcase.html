@@ -86,27 +86,40 @@
             background: #FFFFFF;
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 24px 28px;
+            padding: 32px;
             margin-bottom: 32px;
         }
 
         .hero-tag {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             color: var(--accent-blue);
-            margin-bottom: 6px;
+            background: #EFF6FF;
+            padding: 3px 8px;
+            border-radius: 6px;
             display: inline-block;
+            margin-bottom: 10px;
         }
 
-        .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-        .hero-desc { font-size: 14px; color: var(--text-muted); max-width: 800px; line-height: 1.6; }
+        .hero-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: 14.5px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
 
         .comp-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 20px;
+            gap: 24px;
         }
 
         .comp-card {
@@ -116,13 +129,12 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            transition: box-shadow 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .comp-card:hover {
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
             border-color: var(--border-dark);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
 
         .comp-card-head {
@@ -131,40 +143,44 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #F8FAFC;
+            background: #FAFAFA;
         }
 
-        .comp-card-title { font-size: 14.5px; font-weight: 600; }
+        .comp-card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
         .comp-card-tag {
-            font-size: 11px;
             font-family: var(--font-mono);
-            background: #E2E8F0;
-            color: #334155;
-            padding: 2px 7px;
-            border-radius: 6px;
+            font-size: 11px;
+            background: #F1F5F9;
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         .comp-preview-zone {
-            padding: 16px;
-            min-height: 160px;
-            background: #FFFFFF;
+            padding: 20px;
+            min-height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #FFFFFF;
         }
 
         .comp-preview-zone iframe {
             width: 100%;
-            height: 150px;
+            height: 160px;
             border: 1px dashed var(--border-color);
             border-radius: 8px;
-            background: #FAFAFA;
+            background: #FFFFFF;
         }
 
         .comp-card-foot {
             padding: 10px 16px;
             border-top: 1px solid var(--border-color);
-            background: #F8FAFC;
+            background: #FAFAFA;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -217,7 +233,7 @@
 
         .code-modal-box {
             background: #FFFFFF;
-            width: 100%; max-width: 800px; max-height: 85vh;
+            width: 100%; max-width: 860px; max-height: 85vh;
             border-radius: 14px;
             display: flex; flex-direction: column;
             overflow: hidden;
@@ -228,12 +244,29 @@
             padding: 16px 20px;
             border-bottom: 1px solid var(--border-color);
             display: flex; align-items: center; justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .modal-tabs-bar {
+            display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
+            background: #F1F5F9; border-bottom: 1px solid var(--border-color);
+        }
+        .code-tab-btn {
+            padding: 6px 14px; border-radius: 8px 8px 0 0;
+            background: transparent; border: 1px solid transparent; border-bottom: none;
+            color: var(--text-muted); font-size: 12px; font-family: var(--font-mono);
+            cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .code-tab-btn.active {
+            background: #FFFFFF; border-color: var(--border-color);
+            color: var(--text-main); font-weight: 600;
         }
 
         .code-modal-body {
             padding: 18px;
             overflow-y: auto;
             background: #0F172A;
+            flex: 1;
         }
 
         .code-modal-body pre {
@@ -242,32 +275,38 @@
             color: #F8FAFC;
             white-space: pre-wrap;
             word-break: break-all;
+            line-height: 1.6;
         }
 
         .toast-msg {
             position: fixed; bottom: 24px; right: 24px; z-index: 2000;
             background: #0F172A; color: #FFFFFF;
             padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
-            opacity: 0; transform: translateY(20px); transition: all 0.2s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(80px); opacity: 0; transition: all 0.25s ease;
         }
-        .toast-msg.active { opacity: 1; transform: translateY(0); }
+        .toast-msg.active { transform: translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-left">
-            <a href="../../../index.html" class="nav-link" title="Kembali ke Gateway Hub">
-                <i data-lucide="home"></i> Gateway
+            <a href="../../../showcase.html" class="nav-link" title="Master Workbench Hub">
+                <i data-lucide="arrow-left"></i> Master Hub
             </a>
             <div class="brand-text">
-                <h1>Raw Semantic HTML Components</h1>
-                <p>Kamus Anatomi & Tag Baku HTML5 Murni Tanpa Styling</p>
+                <h1>Raw Semantic HTML Catalog</h1>
+                <p>9 Komponen Murni Standar HTML5 (All-in-One Standalone)</p>
             </div>
         </div>
+
         <nav class="nav-links">
+            <a href="../../../web-apps.html" class="nav-link">
+                <i data-lucide="folder-kanban"></i> Web App: File Manager
+            </a>
             <a href="../../../showcase.html" class="nav-link">
-                <i data-lucide="layers"></i> Master Showcase
+                <i data-lucide="layers"></i> Master Hub
             </a>
             <a href="../glass/showcase.html" class="nav-link">
                 <i data-lucide="gem"></i> Glass Showcase
@@ -281,237 +320,288 @@
     <div class="container">
         
         <section class="hero-box">
-            <span class="hero-tag">Design-Agnostic Anatomy</span>
+            <span class="hero-tag">Design-Agnostic Anatomy (All-in-One Standalone)</span>
             <h2 class="hero-title">Kenali Nama Baku & Struktur Komponen Web</h2>
             <p class="hero-desc">
-                Sebelum diberi gaya desain visual (seperti Glass Dark, Neumorphism, atau Flat), setiap komponen web memiliki anatomi dasar dan tag semantik resmi HTML5. Gunakan katalog ini untuk memahami peran, atribut standar, dan hierarki elemen tanpa terdistraksi oleh kosmetik visual.
+                Sebelum diberi gaya visual, setiap komponen web memiliki anatomi dasar dan tag semantik resmi HTML5. Seluruh kartu di bawah memuat file standalone all-in-one murni untuk menjamin tampilan konsisten dan bebas error.
             </p>
         </section>
 
         <div class="comp-grid">
 
-            <!-- 1. Button -->
+            <!-- Component: Buttons & Actions -->
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Buttons & Actions</span>
-                    <span class="comp-card-tag">&lt;button&gt;</span>
+                    <span class="comp-card-tag"><button></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="button/index.html" title="Button Preview"></iframe>
+                    <iframe src="button/button.html" title="Buttons & Actions Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/button/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('button/button.html', 'HTML Buttons')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('button/button.html')">Salin</button>
-                        <a href="button/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('button', 'Buttons & Actions')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('button')">Salin</button>
+                        <a href="button/button.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
-            <!-- 2. Form Input -->
+            <!-- Component: Form Input Fields -->
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Form Input Fields</span>
-                    <span class="comp-card-tag">&lt;input type="..."&gt;</span>
+                    <span class="comp-card-tag"><input type="..."></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="input/index.html" title="Input Preview"></iframe>
+                    <iframe src="input/input.html" title="Form Input Fields Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/input/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('input/input.html', 'Form Inputs')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('input/input.html')">Salin</button>
-                        <a href="input/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('input', 'Form Input Fields')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('input')">Salin</button>
+                        <a href="input/input.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
-            <!-- 3. Checkbox & Radio -->
+            <!-- Component: Checkboxes & Radios -->
             <article class="comp-card">
                 <div class="comp-card-head">
-                    <span class="comp-card-title">Checkbox & Radio</span>
-                    <span class="comp-card-tag">&lt;fieldset&gt;, &lt;input&gt;</span>
+                    <span class="comp-card-title">Checkboxes & Radios</span>
+                    <span class="comp-card-tag"><input type="checkbox|radio"></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="checkbox-radio/index.html" title="Checkbox Radio Preview"></iframe>
+                    <iframe src="checkbox-radio/checkbox-radio.html" title="Checkboxes & Radios Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/checkbox-radio/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('checkbox-radio/checkbox-radio.html', 'Checkbox & Radio')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('checkbox-radio/checkbox-radio.html')">Salin</button>
-                        <a href="checkbox-radio/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('checkbox-radio', 'Checkboxes & Radios')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('checkbox-radio')">Salin</button>
+                        <a href="checkbox-radio/checkbox-radio.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
-            <!-- 4. Toggle Switch -->
-            <article class="comp-card">
-                <div class="comp-card-head">
-                    <span class="comp-card-title">Role Switch</span>
-                    <span class="comp-card-tag">role="switch"</span>
-                </div>
-                <div class="comp-preview-zone">
-                    <iframe src="toggle-switch/index.html" title="Toggle Switch Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/toggle-switch/</span>
-                    <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('toggle-switch/toggle-switch.html', 'Toggle Switch')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('toggle-switch/toggle-switch.html')">Salin</button>
-                        <a href="toggle-switch/index.html" target="_blank" class="btn-act">Solo</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 5. Select Dropdown -->
+            <!-- Component: Select Dropdown -->
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Select Dropdown</span>
-                    <span class="comp-card-tag">&lt;select&gt;, &lt;option&gt;</span>
+                    <span class="comp-card-tag"><select> & <option></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="select-dropdown/index.html" title="Select Dropdown Preview"></iframe>
+                    <iframe src="select-dropdown/select-dropdown.html" title="Select Dropdown Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/select-dropdown/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('select-dropdown/select-dropdown.html', 'Select Dropdown')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('select-dropdown/select-dropdown.html')">Salin</button>
-                        <a href="select-dropdown/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('select-dropdown', 'Select Dropdown')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('select-dropdown')">Salin</button>
+                        <a href="select-dropdown/select-dropdown.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
-            <!-- 6. Native Dialog Modal -->
+            <!-- Component: Toggle Switch (Raw) -->
             <article class="comp-card">
                 <div class="comp-card-head">
-                    <span class="comp-card-title">Native Dialog Modal</span>
-                    <span class="comp-card-tag">&lt;dialog&gt;</span>
+                    <span class="comp-card-title">Toggle Switch (Raw)</span>
+                    <span class="comp-card-tag"><input type="checkbox" role="switch"></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="modal-dialog/index.html" title="Modal Dialog Preview"></iframe>
+                    <iframe src="toggle-switch/toggle-switch.html" title="Toggle Switch (Raw) Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/modal-dialog/</span>
+                    <span class="path-label">ui/components/raw/toggle-switch/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('modal-dialog/modal-dialog.html', 'Modal Dialog')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('modal-dialog/modal-dialog.html')">Salin</button>
-                        <a href="modal-dialog/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('toggle-switch', 'Toggle Switch (Raw)')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('toggle-switch')">Salin</button>
+                        <a href="toggle-switch/toggle-switch.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
-            <!-- 7. Data Table -->
+            <!-- Component: Disclosure / Accordion -->
             <article class="comp-card">
                 <div class="comp-card-head">
-                    <span class="comp-card-title">Data Table</span>
-                    <span class="comp-card-tag">&lt;table&gt;, &lt;tbody&gt;</span>
+                    <span class="comp-card-title">Disclosure / Accordion</span>
+                    <span class="comp-card-tag"><details> & <summary></span>
                 </div>
                 <div class="comp-preview-zone">
-                    <iframe src="table/index.html" title="Table Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/table/</span>
-                    <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('table/table.html', 'Data Table')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('table/table.html')">Salin</button>
-                        <a href="table/index.html" target="_blank" class="btn-act">Solo</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 8. Progress & Meter -->
-            <article class="comp-card">
-                <div class="comp-card-head">
-                    <span class="comp-card-title">Progress & Meter</span>
-                    <span class="comp-card-tag">&lt;progress&gt;, &lt;meter&gt;</span>
-                </div>
-                <div class="comp-preview-zone">
-                    <iframe src="progress-meter/index.html" title="Progress Meter Preview"></iframe>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/progress-meter/</span>
-                    <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('progress-meter/progress-meter.html', 'Progress & Meter')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('progress-meter/progress-meter.html')">Salin</button>
-                        <a href="progress-meter/index.html" target="_blank" class="btn-act">Solo</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 9. Details Accordion -->
-            <article class="comp-card">
-                <div class="comp-card-head">
-                    <span class="comp-card-title">Details Accordion</span>
-                    <span class="comp-card-tag">&lt;details&gt;, &lt;summary&gt;</span>
-                </div>
-                <div class="comp-preview-zone">
-                    <iframe src="details-accordion/index.html" title="Details Accordion Preview"></iframe>
+                    <iframe src="details-accordion/details-accordion.html" title="Disclosure / Accordion Preview"></iframe>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/details-accordion/</span>
                     <div class="foot-actions">
-                        <button class="btn-act" onclick="showRawCode('details-accordion/details-accordion.html', 'Details Accordion')">Kode</button>
-                        <button class="btn-act" onclick="copyRawCode('details-accordion/details-accordion.html')">Salin</button>
-                        <a href="details-accordion/index.html" target="_blank" class="btn-act">Solo</a>
+                        <button class="btn-act" onclick="openRawModal('details-accordion', 'Disclosure / Accordion')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('details-accordion')">Salin</button>
+                        <a href="details-accordion/details-accordion.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Component: Native Modal Dialog -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Native Modal Dialog</span>
+                    <span class="comp-card-tag"><dialog></span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="modal-dialog/modal-dialog.html" title="Native Modal Dialog Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/modal-dialog/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="openRawModal('modal-dialog', 'Native Modal Dialog')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('modal-dialog')">Salin</button>
+                        <a href="modal-dialog/modal-dialog.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Component: Progress & Meter -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Progress & Meter</span>
+                    <span class="comp-card-tag"><progress> & <meter></span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="progress-meter/progress-meter.html" title="Progress & Meter Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/progress-meter/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="openRawModal('progress-meter', 'Progress & Meter')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('progress-meter')">Salin</button>
+                        <a href="progress-meter/progress-meter.html" target="_blank" class="btn-act">Solo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Component: Tabular Data Grid -->
+            <article class="comp-card">
+                <div class="comp-card-head">
+                    <span class="comp-card-title">Tabular Data Grid</span>
+                    <span class="comp-card-tag"><table>, <thead>, <tbody></span>
+                </div>
+                <div class="comp-preview-zone">
+                    <iframe src="table/table.html" title="Tabular Data Grid Preview"></iframe>
+                </div>
+                <div class="comp-card-foot">
+                    <span class="path-label">ui/components/raw/table/</span>
+                    <div class="foot-actions">
+                        <button class="btn-act" onclick="openRawModal('table', 'Tabular Data Grid')">Kode</button>
+                        <button class="btn-act" onclick="copyRawAio('table')">Salin</button>
+                        <a href="table/table.html" target="_blank" class="btn-act">Solo</a>
                     </div>
                 </div>
             </article>
 
         </div>
-
     </div>
 
-    <!-- Code Modal -->
-    <div class="code-modal" id="codeModal">
+    <!-- Modal Code -->
+    <div class="code-modal" id="rawModal">
         <div class="code-modal-box">
             <div class="code-modal-head">
-                <h3 id="modalTitle">Component Source Code</h3>
-                <button class="btn-act" onclick="closeModal()">Tutup</button>
+                <div>
+                    <strong id="rawModalTitle">Nama Komponen</strong>
+                    <span id="rawModalPath" style="font-size:12px; color:var(--text-muted); display:block;">ui/components/raw/...</span>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-act" onclick="copyActiveRawCode()"><i data-lucide="copy"></i> Salin File Ini</button>
+                    <button class="btn-act" onclick="closeRawModal()"><i data-lucide="x"></i> Tutup</button>
+                </div>
             </div>
+            <div class="modal-tabs-bar" id="rawTabsBar"></div>
             <div class="code-modal-body">
-                <pre><code id="codeText">Loading...</code></pre>
+                <pre><code id="rawModalCode">Memuat kode...</code></pre>
             </div>
         </div>
     </div>
 
-    <div class="toast-msg" id="toast">Kode berhasil disalin!</div>
+    <div class="toast-msg" id="rawToast">Kode berhasil disalin!</div>
 
     <script>
+        const RAW_DB = {"button": {"button.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button</button>\n    <button type=\"submit\">Submit Button</button>\n    <button type=\"reset\">Reset Button</button>\n    <button disabled>Disabled Button</button>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Buttons — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; gap: 10px; flex-wrap: wrap; align-items: center;\">\n    <button type=\"button\" onclick=\"alert('Button clicked!')\">Standard Button</button>\n    <button type=\"submit\">Submit Button</button>\n    <button type=\"reset\">Reset Button</button>\n    <button disabled>Disabled Button</button>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "input": {"input.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"></label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"></label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"></label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"></label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"></label>\n    <label>File: <input type=\"file\"></label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML Form Inputs — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 8px; max-width: 320px;\">\n    <label>Text: <input type=\"text\" placeholder=\"Text input...\"></label>\n    <label>Password: <input type=\"password\" placeholder=\"Password input...\"></label>\n    <label>Email: <input type=\"email\" placeholder=\"user@domain.com\"></label>\n    <label>Number: <input type=\"number\" min=\"1\" max=\"100\" value=\"25\"></label>\n    <label>Search: <input type=\"search\" placeholder=\"Search...\"></label>\n    <label>File: <input type=\"file\"></label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "checkbox-radio": {"checkbox-radio.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes</legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)</label><br>\n        <label><input type=\"checkbox\"> Option B</label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)</label>\n    </fieldset>\n    <fieldset>\n        <legend>Radio Group</legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3</label>\n    </fieldset>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox and Radio Controls — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px;\">\n    <fieldset>\n        <legend>Checkboxes</legend>\n        <label><input type=\"checkbox\" checked> Option A (checked)</label><br>\n        <label><input type=\"checkbox\"> Option B</label><br>\n        <label><input type=\"checkbox\" disabled> Option C (disabled)</label>\n    </fieldset>\n    <fieldset>\n        <legend>Radio Group</legend>\n        <label><input type=\"radio\" name=\"r1\" checked> Choice 1</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 2</label><br>\n        <label><input type=\"radio\" name=\"r1\"> Choice 3</label>\n    </fieldset>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "select-dropdown": {"select-dropdown.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Glass Dark</option>\n            <option value=\"opt2\" selected>Option 2 - Raw HTML</option>\n            <option value=\"opt3\">Option 3 - Neumorphism</option>\n        </select>\n    </label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha</option>\n            <option>Beta</option>\n            <option>Gamma</option>\n        </select>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Select Dropdown — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 10px; max-width: 300px;\">\n    <label>Standard Dropdown:\n        <select>\n            <option value=\"opt1\">Option 1 - Glass Dark</option>\n            <option value=\"opt2\" selected>Option 2 - Raw HTML</option>\n            <option value=\"opt3\">Option 3 - Neumorphism</option>\n        </select>\n    </label>\n    <label>Multiple Select:\n        <select multiple size=\"3\" style=\"width: 100%;\">\n            <option>Alpha</option>\n            <option>Beta</option>\n            <option>Gamma</option>\n        </select>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "toggle-switch": {"toggle-switch.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)</span>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Checkbox Switch Pattern — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n        <input type=\"checkbox\" role=\"switch\">\n        <span>Dark Mode Switch (Native Role Switch)</span>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "details-accordion": {"details-accordion.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes (e.g. Glass, Neumorphism).\n        </p>\n    </details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        </p>\n    </details>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Details Accordion — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"max-width: 340px;\">\n    <details>\n        <summary>What is Design-Agnostic Taxonomy?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            It separates semantic structure and interaction roles from specific visual themes (e.g. Glass, Neumorphism).\n        </p>\n    </details>\n    <details style=\"margin-top: 8px;\">\n        <summary>Why Decompose into Folders?</summary>\n        <p style=\"margin: 8px 0 0; font-size: 13px; color: #555;\">\n            To separate concerns into HTML structure, component CSS, and interactive JavaScript logic.\n        </p>\n    </details>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "modal-dialog": {"modal-dialog.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;</button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog</h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.</p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close</button>\n        </div>\n    </dialog>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Native HTML5 Dialog — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div>\n    <button type=\"button\" onclick=\"document.getElementById('nativeDialog').showModal()\">Open Native &lt;dialog&gt;</button>\n    <dialog id=\"nativeDialog\" style=\"border: 1px solid #ccc; border-radius: 8px; padding: 20px;\">\n        <h3 style=\"margin-top: 0;\">Native HTML5 Dialog</h3>\n        <p>This is unstyled &lt;dialog&gt; rendered natively by the browser engine.</p>\n        <div style=\"text-align: right; margin-top: 14px;\">\n            <button type=\"button\" onclick=\"document.getElementById('nativeDialog').close()\">Close</button>\n        </div>\n    </dialog>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "progress-meter": {"progress-meter.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"></progress>\n        <small>68% complete</small>\n    </label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"></meter>\n        <small>85 GB / 100 GB</small>\n    </label>\n</div>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Progress & Meter — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<div style=\"display: flex; flex-direction: column; gap: 12px; max-width: 320px;\">\n    <label>Task Progress:\n        <progress value=\"68\" max=\"100\" style=\"width: 100%;\"></progress>\n        <small>68% complete</small>\n    </label>\n    <label>Disk Usage (Meter):\n        <meter min=\"0\" max=\"100\" low=\"33\" high=\"66\" optimum=\"20\" value=\"85\" style=\"width: 100%;\"></meter>\n        <small>85 GB / 100 GB</small>\n    </label>\n</div>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}, "table": {"table.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML (All-in-One)</title>\n    <style>\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n    </style>\n</head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n    </tbody>\n</table>\n</body>\n</html>\n", "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Data Table — Raw Pure HTML</title>\n    <link rel=\"stylesheet\" href=\"index.css\">\n</head>\n<body>\n<table style=\"width: 100%; border-collapse: collapse; font-size: 13px;\">\n    <thead>\n        <tr style=\"background: #f0f0f0;\">\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">ID</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Component</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Category</th>\n            <th style=\"border: 1px solid #ccc; padding: 6px;\">Status</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">01</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Button</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Action</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n        <tr>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">02</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Input</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Form</td>\n            <td style=\"border: 1px solid #ccc; padding: 6px;\">Stable</td>\n        </tr>\n    </tbody>\n</table>\n</body>\n</html>\n", "index.css": "/* Raw unstyled component - minimal clean typography reset */\nbody {\n    font-family: system-ui, -apple-system, sans-serif;\n    padding: 16px;\n    margin: 0;\n    line-height: 1.5;\n}\n"}};
+        let activeRawFolder = "";
+        let activeRawFileName = "";
+        let activeRawContent = "";
+
         lucide.createIcons();
 
-        async function showRawCode(path, title) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('codeText').innerText = "Memuat...";
-            document.getElementById('codeModal').classList.add('active');
-            try {
-                const res = await fetch(path);
-                const text = await res.text();
-                document.getElementById('codeText').innerText = text;
-            } catch (e) {
-                document.getElementById('codeText').innerText = "Gagal memuat: " + e.message;
+        function openRawModal(folder, title) {
+            activeRawFolder = folder;
+            document.getElementById('rawModalTitle').innerText = title;
+            document.getElementById('rawModalPath').innerText = `ui/components/raw/${folder}/`;
+            
+            const folderFiles = RAW_DB[folder] || {};
+            const tabsBar = document.getElementById('rawTabsBar');
+            tabsBar.innerHTML = "";
+
+            const aio = `${folder}.html`;
+            const order = [aio, "index.html", "index.css"];
+            let first = "";
+
+            order.forEach(fn => {
+                if (folderFiles[fn] !== undefined) {
+                    if (!first) first = fn;
+                    const btn = document.createElement('button');
+                    btn.className = "code-tab-btn";
+                    btn.setAttribute('data-fn', fn);
+                    btn.innerText = fn;
+                    btn.onclick = () => switchRawTab(fn);
+                    tabsBar.appendChild(btn);
+                }
+            });
+
+            document.getElementById('rawModal').classList.add('active');
+            if (first) switchRawTab(first);
+        }
+
+        function switchRawTab(fn) {
+            activeRawFileName = fn;
+            document.querySelectorAll('#rawTabsBar .code-tab-btn').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-fn') === fn);
+            });
+
+            const code = (RAW_DB[activeRawFolder] && RAW_DB[activeRawFolder][fn]) || "";
+            activeRawContent = code;
+            document.getElementById('rawModalCode').innerText = code;
+        }
+
+        function closeRawModal() {
+            document.getElementById('rawModal').classList.remove('active');
+        }
+
+        async function copyRawAio(folder) {
+            const aio = `${folder}.html`;
+            const code = (RAW_DB[folder] && RAW_DB[folder][aio]) || "";
+            if (code) {
+                await navigator.clipboard.writeText(code);
+                showRawToast(`Kode ${aio} berhasil disalin!`);
             }
         }
 
-        function closeModal() {
-            document.getElementById('codeModal').classList.remove('active');
+        async function copyActiveRawCode() {
+            if (!activeRawContent) return;
+            await navigator.clipboard.writeText(activeRawContent);
+            showRawToast(`Kode ${activeRawFileName} berhasil disalin!`);
         }
 
-        async function copyRawCode(path) {
-            try {
-                const res = await fetch(path);
-                const text = await res.text();
-                await navigator.clipboard.writeText(text);
-                const toast = document.getElementById('toast');
-                toast.classList.add('active');
-                setTimeout(() => toast.classList.remove('active'), 2000);
-            } catch (e) {
-                alert('Gagal menyalin: ' + e.message);
-            }
+        function showRawToast(msg) {
+            const t = document.getElementById('rawToast');
+            t.innerText = msg;
+            t.classList.add('active');
+            setTimeout(() => t.classList.remove('active'), 2500);
         }
+
+        document.getElementById('rawModal').addEventListener('click', (e) => {
+            if (e.target.id === 'rawModal') closeRawModal();
+        });
     </script>
 </body>
 </html>

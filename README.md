@@ -31,7 +31,8 @@ Ekosistem ini memisahkan secara tegas antara **Anatomi Komponen Web Murni** (*Co
 ```text
 d:\PROJECT\prototype/
 ├── index.html                         # Master Gateway Portal (Bebas 404 saat akses / di server lokal)
-├── showcase.html                      # Master Hub / Index yang mengarahkan ke showroom per style
+├── showcase.html                      # Master Hub / Index yang memisahkan Web Apps & Komponen
+├── web-apps.html                      # Halaman Khusus Showroom Aplikasi Web Utuh (Cloud File Manager OS)
 ├── component.md                       # Kamus Master Taksonomi 120+ Komponen Web (100% Design-Agnostic)
 ├── README.md                          # Dokumentasi visi, moto, aturan update, dan arsitektur repositori
 ├── CHANGELOG.md                       # Catatan riwayat restrukturisasi & versi ekosistem

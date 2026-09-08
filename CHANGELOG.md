@@ -4,6 +4,37 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.1.0] — 2026-09-08
+
+### 💎 Showcase Standalone Restoration & Dedicated Web Applications Page
+
+#### 1. Perbaikan Preview Iframe Standalone (Bebas Hilang Style)
+- Seluruh kartu showcase (`ui/components/glass/showcase.html` dan `ui/components/raw/showcase.html`) kini memuat file **All-in-One Standalone** (`<nama>.html`) ke dalam `<iframe>`.
+- Mengeliminasi masalah hilangnya styling yang diakibatkan oleh pemblokiran lintas berkas `@import url('../css.css')` oleh browser saat dibuka di mode `file:///` atau server statis.
+- Tampilan 21 komponen Glass dan 9 komponen Raw HTML kini 100% konsisten, tajam, dan memancarkan efek kaca gelap aurora tanpa celah unstyled default browser.
+
+#### 2. Tab Bar Multi-Berkas di Modal Kode ("chat.html, index.html, index.css, ..")
+- Ketika pengguna menekan tombol **Kode** pada komponen mana pun, modal kini menampilkan **Top Bar File Tabs**:
+  - `[komponen].html` (Versi mandiri All-in-One)
+  - `index.html` (Struktur markup semantik)
+  - `index.css` (Gaya spesifik komponen)
+  - `index.js` (Skrip interaksi/animasi, jika ada)
+  - `css.css` (Koleksi token master Glass Dark)
+- Pengguna dapat beralih antar tab secara instan (0ms) dengan preview sintaks dan jumlah baris.
+- Tombol **Salin File Ini** menyalin berkas yang sedang aktif di tab tersebut.
+- Data di-embed menggunakan JSON data island aman (RFC 8259 solidus escape) sehingga berfungsi 100% offline dan siap pakai di lingkungan `file:///`.
+
+#### 3. Pemisahan Aplikasi Web ke Halaman Khusus (`web-apps.html`)
+- Proyek **Cloud File Manager OS** (`ui/file-manager_project/index.html`) kini dipisahkan dari tingkatan komponen atom/molekul, dan memiliki halaman showroom tersendiri: [`web-apps.html`](web-apps.html).
+- Dilengkapi dengan:
+  - Simulator viewport responsif: **Desktop (100% / 1280px)**, **Tablet (768px)**, dan **Mobile (375px)**.
+  - Peta integrasi 12+ komponen Glass yang dirakit di dalam aplikasi.
+  - Ringkasan arsitektur teknis (Web Audio Synthesizer, Canvas 2D swirl refraction, dsb.).
+  - Penampil kode sumber dan dokumen spesifikasi teknis (`PROJECT_SPEC.md`).
+- Master Hub (`showcase.html`) dan Gateway (`index.html`) diperbarui dengan seksi sorotan khusus untuk membedakan Tingkat Aplikasi (Web Applications) dan Tingkat Komponen (Design Systems).
+
+---
+
 ## [Version 3.0.0] — 2026-09-08
 
 ### 🚀 Major Architectural Overhaul & Component Decomposition
