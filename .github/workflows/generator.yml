@@ -83,7 +83,10 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "feat(generator): update autonomous queue and components"
-            git push origin main
+            for i in 1 2 3 4 5; do
+              echo "Git push attempt $i..."
+              git pull --rebase origin main && git push origin main && break || sleep 3
+            done
           fi
 
       - name: Setup GitHub Pages

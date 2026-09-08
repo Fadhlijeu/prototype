@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specular Floating Action Speed Dial — Dark Glass</title>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="glass-card-wrapper">
+        <div class="layer-4-shadow"></div>
+        <div class="layer-3-aurora">
+            <div class="aurora-blob blob-1"></div>
+            <div class="aurora-blob blob-2"></div>
+            <div class="aurora-blob blob-3"></div>
+        </div>
+        <div class="layer-2-glass">
+            
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Expandable Action Dial</span>
+                <span class="widget-badge active">Spring Physics</span>
+            </div>
+            <h2 class="widget-title">Specular Floating Action Speed Dial</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;">
+                <div style="display:flex;gap:8px;">
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Quick deploy triggered!')"><i data-lucide="rocket"></i> Deploy</button>
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Snapshot taken!')"><i data-lucide="camera"></i> Snapshot</button>
+                </div>
+                <button type="button" class="glass-btn-primary" id="btn-action" style="border-radius:9999px;width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "item_id": "1788895966-specular-floating-action-speed-dial",
+  "slug": "specular-floating-action-speed-dial",
+  "created_at": "2026-09-09 02:32:46",
+  "status": "PENDING_REVIEW",
+  "validation": {
+    "valid": true,
+    "score": 95,
+    "errors": [],
+    "warnings": [
+      "Contains inline onclick attribute; prefer addEventListener in index.js"
+    ],
+    "file_size_bytes": 11888
+  },
+  "router": {
+    "provider": "mock",
+    "model": "mock-glass-generator-v1",
+    "status": "success",
+    "cascaded_from": []
+  }
+}

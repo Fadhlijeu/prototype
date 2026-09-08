@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Slider Futuristik Magnetic — Dark Glass</title>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="glass-card-wrapper">
+        <div class="layer-4-shadow"></div>
+        <div class="layer-3-aurora">
+            <div class="aurora-blob blob-1"></div>
+            <div class="aurora-blob blob-2"></div>
+            <div class="aurora-blob blob-3"></div>
+        </div>
+        <div class="layer-2-glass">
+            
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sliders" style="width:14px;height:14px;"></i> Precision Controller</span>
+                <span class="widget-badge" id="slider-badge">74%</span>
+            </div>
+            <h2 class="widget-title">Glass Slider Futuristik Magnetic</h2>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.6);">
+                    <span>Refraction Density</span>
+                    <span id="slider-val" style="color:#60A5FA;font-weight:700;">74%</span>
+                </div>
+                <input type="range" min="0" max="100" value="74" class="glass-range-input" oninput="document.getElementById('slider-val').innerText = this.value + '%'; document.getElementById('slider-badge').innerText = this.value + '%'">
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) window.lucide.createIcons();
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>

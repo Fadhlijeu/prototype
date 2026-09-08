@@ -20,6 +20,7 @@ with open(os.path.join(GLASS_DIR, "css.css"), "r", encoding="utf-8") as f:
     shared_css_code = f.read()
 
 glass_components_metadata = [
+    ("glass-slider-futuristik-magnetic", "Glass Slider Futuristik Magnetic", "Sliders", "Molecule", "inputs"),
     ("aurora-floating-glass-input", "Aurora Floating Glass Input", "Inputs", "Molecule", "inputs"),
     ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "inputs"),
     ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs"),

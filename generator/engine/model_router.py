@@ -193,8 +193,8 @@ class ModelRouter:
         if category == "inputs":
             widget_inner = f"""
             <div class="widget-header">
-                <span class="widget-eyebrow"><i data-lucide="terminal" style="width:14px;height:14px;"></i> Interactive Input</span>
-                <span class="widget-badge active">Online</span>
+                <span class="widget-eyebrow"><i data-lucide="terminal" style="width:14px;height:14px;"></i> Intelligent AI Prompt Bar</span>
+                <span class="widget-badge active">Semantic v4</span>
             </div>
             <h2 class="widget-title">{title}</h2>
             <div class="glass-input-cluster">
@@ -203,6 +203,11 @@ class ModelRouter:
                 <button type="button" class="glass-btn-primary" aria-label="Submit">
                     <i data-lucide="arrow-right"></i>
                 </button>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);cursor:pointer;">#Specular</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);cursor:pointer;">#AuroraMesh</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);cursor:pointer;">#SpringPhysics</span>
             </div>
             """
         elif category == "sliders":
@@ -218,6 +223,54 @@ class ModelRouter:
                     <span id="slider-val" style="color:#60A5FA;font-weight:700;">74%</span>
                 </div>
                 <input type="range" min="0" max="100" value="74" class="glass-range-input" oninput="document.getElementById('slider-val').innerText = this.value + '%'; document.getElementById('slider-badge').innerText = this.value + '%'">
+            </div>
+            """
+        elif category == "buttons":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Expandable Action Dial</span>
+                <span class="widget-badge active">Spring Physics</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;">
+                <div style="display:flex;gap:8px;">
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Quick deploy triggered!')"><i data-lucide="rocket"></i> Deploy</button>
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Snapshot taken!')"><i data-lucide="camera"></i> Snapshot</button>
+                </div>
+                <button type="button" class="glass-btn-primary" id="btn-action" style="border-radius:9999px;width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            """
+        elif category == "controls":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="toggle-right" style="width:14px;height:14px;"></i> Segmented Capsule Switch</span>
+                <span class="widget-badge active" id="mode-badge">Balanced</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:4px;gap:4px;margin-top:10px;">
+                <button type="button" style="background:transparent;border:none;color:#9CA3AF;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;" onclick="document.querySelectorAll('.seg-btn').forEach(b=>b.style.background='transparent');this.style.background='rgba(255,255,255,0.12)';document.getElementById('mode-badge').innerText='Eco';" class="seg-btn">Eco</button>
+                <button type="button" style="background:rgba(255,255,255,0.12);border:none;color:#FFF;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;" onclick="document.querySelectorAll('.seg-btn').forEach(b=>b.style.background='transparent');this.style.background='rgba(255,255,255,0.12)';document.getElementById('mode-badge').innerText='Balanced';" class="seg-btn">Balanced</button>
+                <button type="button" style="background:transparent;border:none;color:#9CA3AF;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;" onclick="document.querySelectorAll('.seg-btn').forEach(b=>b.style.background='transparent');this.style.background='rgba(255,255,255,0.12)';document.getElementById('mode-badge').innerText='Performance';" class="seg-btn">Turbo</button>
+            </div>
+            """
+        elif category == "cards":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Holographic Security Beacon</span>
+                <span class="widget-badge active">Encrypted</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:8px;">
+                <div style="width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(167,139,250,0.2));border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#60A5FA;">
+                    <i data-lucide="cpu" style="width:26px;height:26px;"></i>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;color:#FFFFFF;">Autonomous Node v4</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;">Multi-Region Mesh Cluster</div>
+                    <div style="font-size:11.5px;color:#34D399;font-weight:600;margin-top:4px;">99.99% Hardware Uptime</div>
+                </div>
             </div>
             """
         elif category == "navigation":
@@ -236,20 +289,79 @@ class ModelRouter:
             </nav>
             """
         elif category == "telemetry":
+            if "audio" in title.lower() or "visualizer" in title.lower():
+                widget_inner = f"""
+                <div class="widget-header">
+                    <span class="widget-eyebrow"><i data-lucide="activity" style="width:14px;height:14px;"></i> Audio Frequency Visualizer</span>
+                    <span class="widget-badge active">-3.2 dB Peak</span>
+                </div>
+                <h2 class="widget-title">{title}</h2>
+                <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:6px;height:68px;padding:12px 16px;background:rgba(0,0,0,0.35);border-radius:16px;border:1px solid rgba(255,255,255,0.1);margin-top:10px;">
+                    <div style="flex:1;height:45%;background:linear-gradient(to top,#3B82F6,#60A5FA);border-radius:3px;"></div>
+                    <div style="flex:1;height:85%;background:linear-gradient(to top,#3B82F6,#A78BFA);border-radius:3px;"></div>
+                    <div style="flex:1;height:60%;background:linear-gradient(to top,#3B82F6,#60A5FA);border-radius:3px;"></div>
+                    <div style="flex:1;height:95%;background:linear-gradient(to top,#8B5CF6,#EC4899);border-radius:3px;"></div>
+                    <div style="flex:1;height:70%;background:linear-gradient(to top,#3B82F6,#60A5FA);border-radius:3px;"></div>
+                    <div style="flex:1;height:40%;background:linear-gradient(to top,#3B82F6,#34D399);border-radius:3px;"></div>
+                    <div style="flex:1;height:80%;background:linear-gradient(to top,#3B82F6,#A78BFA);border-radius:3px;"></div>
+                    <div style="flex:1;height:55%;background:linear-gradient(to top,#3B82F6,#60A5FA);border-radius:3px;"></div>
+                </div>
+                """
+            else:
+                widget_inner = f"""
+                <div class="widget-header">
+                    <span class="widget-eyebrow"><i data-lucide="gauge" style="width:14px;height:14px;"></i> Live Dual Telemetry Dial</span>
+                    <span class="widget-badge active">99.98%</span>
+                </div>
+                <h2 class="widget-title">{title}</h2>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+                    <div class="sub-stat-box">
+                        <span class="sub-stat-label"><i data-lucide="zap"></i> Throughput</span>
+                        <span class="sub-stat-val">2.8 GB/s</span>
+                    </div>
+                    <div class="sub-stat-box">
+                        <span class="sub-stat-label"><i data-lucide="clock"></i> Latency</span>
+                        <span class="sub-stat-val" style="color:#34D399;">6.2 ms</span>
+                    </div>
+                </div>
+                """
+        elif category == "feedback":
             widget_inner = f"""
             <div class="widget-header">
-                <span class="widget-eyebrow"><i data-lucide="activity" style="width:14px;height:14px;"></i> Live Telemetry Node</span>
-                <span class="widget-badge active">99.98%</span>
+                <span class="widget-eyebrow"><i data-lucide="lock" style="width:14px;height:14px;"></i> Segmented Password Strength</span>
+                <span class="widget-badge active">Ultra Secure</span>
             </div>
             <h2 class="widget-title">{title}</h2>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+                    <div style="height:6px;border-radius:9999px;background:#34D399;box-shadow:0 0 8px rgba(52,211,153,0.5);"></div>
+                    <div style="height:6px;border-radius:9999px;background:#34D399;box-shadow:0 0 8px rgba(52,211,153,0.5);"></div>
+                    <div style="height:6px;border-radius:9999px;background:#60A5FA;box-shadow:0 0 8px rgba(96,165,250,0.5);"></div>
+                    <div style="height:6px;border-radius:9999px;background:#A78BFA;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.6);">
+                    <span>256-Bit Hardware Enclave</span>
+                    <span style="color:#60A5FA;font-weight:600;">Optimal Entropy</span>
+                </div>
+            </div>
+            """
+        elif category == "dashboards":
+            widget_inner = f"""
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="layout-grid" style="width:14px;height:14px;"></i> Obsidian Command Center Matrix</span>
+                <span class="widget-badge active">Real-Time</span>
+            </div>
+            <h2 class="widget-title">{title}</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
                 <div class="sub-stat-box">
-                    <span class="sub-stat-label">Throughput</span>
-                    <span class="sub-stat-val">1.4 GB/s</span>
+                    <span class="sub-stat-label"><i data-lucide="cpu"></i> Compute Core</span>
+                    <span class="sub-stat-val">3.9 GHz</span>
+                    <div style="width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:9999px;margin-top:4px;overflow:hidden;"><div style="width:68%;height:100%;background:#60A5FA;"></div></div>
                 </div>
                 <div class="sub-stat-box">
-                    <span class="sub-stat-label">Latency</span>
-                    <span class="sub-stat-val" style="color:#34D399;">12 ms</span>
+                    <span class="sub-stat-label"><i data-lucide="wifi"></i> Network Ping</span>
+                    <span class="sub-stat-val" style="color:#34D399;">4.8 ms</span>
+                    <div style="width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:9999px;margin-top:4px;overflow:hidden;"><div style="width:94%;height:100%;background:#34D399;"></div></div>
                 </div>
             </div>
             """
@@ -278,17 +390,16 @@ class ModelRouter:
         else:
             widget_inner = f"""
             <div class="widget-header">
-                <span class="widget-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Creative UI Molecule</span>
-                <span class="widget-badge active">Ready</span>
+                <span class="widget-eyebrow"><i data-lucide="disc" style="width:14px;height:14px;"></i> Holographic Radial Command Wheel</span>
+                <span class="widget-badge active">Hotspot Active</span>
             </div>
             <h2 class="widget-title">{title}</h2>
-            <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
-                <button type="button" class="glass-btn-primary" id="btn-action">
-                    <i data-lucide="zap"></i> Trigger Action
-                </button>
-                <button type="button" class="glass-btn-secondary">
-                    <i data-lucide="sliders"></i> Configure
-                </button>
+            <div style="display:flex;align-items:center;justify-content:center;padding:12px 0;">
+                <div style="position:relative;width:110px;height:110px;border-radius:50%;border:2px dashed rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 20px rgba(96,165,250,0.2);">
+                    <div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,0.35) 0%,rgba(167,139,250,0.1) 80%);border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;color:#60A5FA;box-shadow:0 0 16px rgba(96,165,250,0.5);">
+                        <i data-lucide="target" style="width:22px;height:22px;"></i>
+                    </div>
+                </div>
             </div>
             """
 

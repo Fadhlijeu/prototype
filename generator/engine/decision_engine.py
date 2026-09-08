@@ -37,6 +37,22 @@ class DecisionEngine:
 
     ATOMIC_LEVELS = ["Atomic", "Molecule", "Organism"]
 
+    AUTONOMOUS_CONCEPTS = [
+        {"category": "telemetry", "title": "Obsidian Segmented Audio Visualizer", "variation": "ambient-pulse", "badge": "Organism"},
+        {"category": "sliders", "title": "Aurora Magnetic Precision Slider", "variation": "specular-frosted", "badge": "Molecule"},
+        {"category": "buttons", "title": "Specular Floating Action Speed Dial", "variation": "floating-elevated", "badge": "Molecule"},
+        {"category": "controls", "title": "Segmented Frosted Pill Switch", "variation": "segmented-glass", "badge": "Atomic"},
+        {"category": "cards", "title": "Holographic Glass Identity Beacon", "variation": "aurora-gradient-glow", "badge": "Molecule"},
+        {"category": "navigation", "title": "Liquid Frosted Spring Breadcrumb", "variation": "spring-interactive", "badge": "Molecule"},
+        {"category": "feedback", "title": "Glass Password Strength Glowing Meter", "variation": "ambient-pulse", "badge": "Molecule"},
+        {"category": "dashboards", "title": "Obsidian Telemetry Command Matrix", "variation": "minimal-obsidian", "badge": "Composite Scenery"},
+        {"category": "scenery", "title": "Glass Scenery Composite Workstation", "variation": "specular-frosted", "badge": "Composite Scenery"},
+        {"category": "other", "title": "Experimental Obsidian Command Wheel", "variation": "floating-elevated", "badge": "Creative Freeform"},
+        {"category": "inputs", "title": "Aurora Floating Command Prompt Bar", "variation": "aurora-gradient-glow", "badge": "Molecule"},
+        {"category": "telemetry", "title": "Dual Ring Telemetry Latency Gauge", "variation": "aurora-gradient-glow", "badge": "Molecule"},
+        {"category": "sliders", "title": "Obsidian Haptic Volume Stepper", "variation": "minimal-obsidian", "badge": "Molecule"}
+    ]
+
     def __init__(self, existing_slugs: List[str] = None):
         self.existing_slugs = existing_slugs or []
 
@@ -47,7 +63,42 @@ class DecisionEngine:
         """
         prompt_lower = prompt.lower()
 
-        # 1. Determine category
+        # Check if this is an open-ended autonomous directive (e.g. from Google Apps Script)
+        is_autonomous = any(kw in prompt_lower for kw in [
+            "anda adalah", "secara bebas", "ai web engineer", "creative frontend",
+            "autonomous ui", "lead design system", "bebas memilih", "beragam opsi",
+            "pilih secara bebas", "autonomous glass ui exploration"
+        ])
+
+        if is_autonomous:
+            # Pick a creative concept, prioritizing those not already in existing_slugs
+            candidates = [c for c in self.AUTONOMOUS_CONCEPTS if re.sub(r"[^a-z0-9]+", "-", c["title"].lower()).strip("-") not in self.existing_slugs]
+            chosen = random.choice(candidates) if candidates else random.choice(self.AUTONOMOUS_CONCEPTS)
+            
+            title = chosen["title"]
+            detected_category = chosen["category"]
+            variation = chosen["variation"]
+            atomic_level = chosen["badge"]
+            slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+            
+            counter = 2
+            orig = slug
+            while slug in self.existing_slugs:
+                slug = f"{orig}-v{counter}"
+                counter += 1
+                
+            return {
+                "title": title,
+                "slug": slug,
+                "category": detected_category,
+                "variation": variation,
+                "atomic_level": atomic_level,
+                "family": "glass",
+                "theme": "dark",
+                "icon": self.CATEGORIES.get(detected_category, ["sparkles"])[0]
+            }
+
+        # 1. Determine category for specific user prompts
         detected_category = "inputs"
         max_matches = 0
         for cat, keywords in self.CATEGORIES.items():
@@ -57,7 +108,6 @@ class DecisionEngine:
                 detected_category = cat
 
         if max_matches == 0:
-            # Autonomous random selection favoring underrepresented categories
             detected_category = random.choice(list(self.CATEGORIES.keys()))
 
         # 2. Determine variation style

@@ -1,0 +1,19 @@
+{
+  "item_id": "1788895958-aurora-floating-command-prompt-bar",
+  "slug": "aurora-floating-command-prompt-bar",
+  "created_at": "2026-09-09 02:32:38",
+  "status": "PENDING_REVIEW",
+  "validation": {
+    "valid": true,
+    "score": 100,
+    "errors": [],
+    "warnings": [],
+    "file_size_bytes": 12205
+  },
+  "router": {
+    "provider": "mock",
+    "model": "mock-glass-generator-v1",
+    "status": "success",
+    "cascaded_from": []
+  }
+}

@@ -965,8 +965,22 @@
                 // file:// protocol fallback to window.PROTOTYPE_CLOUD_QUEUE
             }
 
-            if (cloudData && Array.isArray(cloudData.pending) && cloudData.pending.length > 0) {
-                const store = getLabStore();
+            const store = getLabStore();
+            if (!store.rejected) store.rejected = [];
+            if (!store.approved) store.approved = [];
+            if (!store.pending) store.pending = [];
+
+            if (cloudData && Array.isArray(cloudData.pending)) {
+                const cloudPendingIds = new Set(cloudData.pending.map(x => x.id));
+                const cloudPendingSlugs = new Set(cloudData.pending.map(x => x.slug));
+
+                // 1. Bersihkan item pending lokal yang sudah tidak ada di cloud (dihapus/ditolak di server)
+                store.pending = store.pending.filter(item => {
+                    if (item.isLocalDirect) return true;
+                    return cloudPendingIds.has(item.id) || cloudPendingSlugs.has(item.slug);
+                });
+
+                // 2. Tambahkan item cloud baru yang belum pernah diapprove/direject
                 let addedCount = 0;
                 cloudData.pending.forEach(cItem => {
                     const inPending = store.pending.some(x => x.id === cItem.id || x.slug === cItem.slug);
@@ -977,9 +991,10 @@
                         addedCount++;
                     }
                 });
-                if (addedCount > 0) {
-                    saveLabStore(store);
-                    if (showNotification) showToast(`${addedCount} komponen baru dari Cloud berhasil masuk antrean!`);
+
+                saveLabStore(store);
+                if (addedCount > 0 && showNotification) {
+                    showToast(`${addedCount} komponen baru dari Cloud berhasil masuk antrean!`);
                 } else if (showNotification) {
                     showToast("Antrean cloud sudah sinkron dengan data lokal.");
                 }
@@ -1216,7 +1231,10 @@
             if (idx === -1) return;
 
             const item = store.pending.splice(idx, 1)[0];
-            // Hapus total dari antrean
+            item.status = "REJECTED";
+            item.rejectedAt = new Date().toLocaleString();
+            if (!store.rejected) store.rejected = [];
+            store.rejected.unshift(item);
             saveLabStore(store);
 
             // Jika terhubung ke Cloud GAS, dispatch sinyal penolakan (hapus total di server/git)
@@ -1233,7 +1251,7 @@
                 }).catch(() => {});
             }
 
-            showToast(`Kandidat "${item.title}" dihapus total dari sistem.`);
+            showToast(`Kandidat "${item.title}" ditolak & dipindahkan ke tab Ditolak.`);
         }
 
         function clearCurrentTab() {
