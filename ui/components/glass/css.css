@@ -14,6 +14,7 @@
 
     /* 2. Glass Surfaces (Multi-layer Opacities) */
     --glass-base: rgba(255, 255, 255, 0.04);
+    --glass-panel: rgba(36, 36, 38, 0.55);
     --glass-card: rgba(255, 255, 255, 0.06);
     --glass-card-hover: rgba(255, 255, 255, 0.09);
     --glass-elevated: rgba(255, 255, 255, 0.12);
@@ -31,6 +32,7 @@
 
     /* 5. Accent & Semantic Signal Colors */
     --accent-cyan: #4A9EFF;
+    --accent-blue: #4A7BF7;
     --accent-blue-1: #4A7BF7;
     --accent-blue-2: #2E5FD9;
     --accent-blue-3: #1E3A8A;
@@ -39,24 +41,45 @@
     --accent-amber: #F59E0B;
     --accent-red: #EF4444;
 
-    /* 6. Shadows & Optical Glows */
+    /* 6. Aurora Mesh Atmosphere */
+    --aurora-1: rgba(70, 110, 220, 0.7);
+    --aurora-2: rgba(40, 60, 160, 0.6);
+    --aurora-3: rgba(140, 70, 230, 0.5);
+    --aurora-cyan: rgba(0, 242, 254, 0.6);
+
+    /* 7. Border Radius Hierarchy */
+    --radius-xs: 6px;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 9999px;
+
+    /* 8. Shadows & Optical Glows */
     --shadow-glass: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
     --shadow-glass-hover: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(74, 158, 255, 0.15);
     --shadow-glow-cyan: 0 0 20px rgba(74, 158, 255, 0.35);
     --shadow-glow-blue: 0 6px 22px rgba(59, 130, 246, 0.4);
 
-    /* 7. Blur & Filter Standards */
+    /* 9. Blur & Filter Standards */
     --blur-glass-light: blur(16px) saturate(150%);
     --blur-glass-standard: blur(24px) saturate(160%);
     --blur-glass-heavy: blur(36px) saturate(180%);
 
-    /* 8. Physics & Timing Curves */
+    /* 10. Physics & Timing Curves */
     --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
     --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* 9. Typography Fonts */
+    /* 11. Typography Fonts */
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+
+    /* 12. Interoperability & Application Aliases */
+    --bg-main: var(--bg-page);
+    --panel: var(--bg-surface);
+    --divider: rgba(255, 255, 255, 0.08);
+    --spring: var(--ease-spring);
+    --ease: var(--ease-smooth);
 }
 
 /* Universal Reset */

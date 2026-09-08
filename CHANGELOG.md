@@ -4,6 +4,66 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.6.0] — 2026-09-08
+
+### 💎 Fase 2: CSS Design Token Consolidation (Single Source of Truth)
+
+#### 1. Konsolidasi Token Desain ke `ui/components/glass/css.css`
+- **Eliminasi Dualisme Token**: Menghapus deklarasi warna, opasitas kaca, dan kurva gerak yang sebelumnya terduplikasi dan terfragmentasi di setiap aplikasi (`projects/file-manager/`, `projects/ai-studio/`, `web-apps.html`, `index.html`, dan `ui/components/glass/showcase.html`).
+- **Penyempurnaan Token Master SSOT**:
+  - Menambahkan token atmosfer Aurora Mesh (`--aurora-1`, `--aurora-2`, `--aurora-3`, `--aurora-cyan`).
+  - Menambahkan token hierarki border radius (`--radius-xs` hingga `--radius-full`).
+  - Menambahkan token panel backing kaca gelap (`--glass-panel: rgba(36, 36, 38, 0.55)`).
+  - Menambahkan alias interoperabilitas aplikasi (`--bg-main`, `--panel`, `--divider`, `--spring`, `--ease`).
+
+#### 2. Migrasi Proyek ke Shared CSS Design Tokens
+- **`projects/file-manager/index.html`**:
+  - Menghubungkan langsung ke `<link rel="stylesheet" href="../../ui/components/glass/css.css">`.
+  - Menghapus 22 baris deklarasi lokal `:root`, kini 100% mengonsumsi token terpusat.
+- **`projects/ai-studio/index.html`**:
+  - Menghubungkan ke `<link rel="stylesheet" href="../../ui/components/glass/css.css">`.
+  - Menghapus 16 baris deklarasi lokal `:root`.
+- **`index.html` (Master Gateway)**:
+  - Menghubungkan ke `<link rel="stylesheet" href="ui/components/glass/css.css">`.
+- **`scripts/rebuild_all.py` (Showroom & Studio Generator)**:
+  - Memperbarui template generator `web-apps.html` dan `ui/components/glass/showcase.html` untuk memuat `css.css` terpusat dan membersihkan deklarasi token redundant.
+
+#### 3. Hasil Pengujian Sistem & Quality Assurance Fase 2
+- **Link & Asset Verification**: 68 tautan internal dan aset HTML terverifikasi 100% valid tanpa broken links.
+- **Browser State & Console Log Testing**: File Manager, AI Studio, dan Web Apps Studio diverifikasi di peramban riil dengan **0 console errors**.
+- **Visual Regression Testing**: Seluruh efek kaca, specular lighting, aurora mesh, dan kurva interaksi diverifikasi tetap tampil presisi dan elegan.
+
+---
+
+## [Version 3.5.0] — 2026-09-08
+
+### 🏛️ Fase 1: Restrukturisasi Dokumentasi & First-Class Agent Skills Hub
+
+#### 1. Pemisahan Tegas: Human Documentation (`docs/`) vs Agent Knowledge (`skills/`)
+- **Penghapusan "Documentation Fatigue"**: Menghilangkan duplikasi filosofi dan aturan coding di 5 berkas berbeda.
+- **Pusat Dokumentasi Manusia (`docs/`)**:
+  - [`docs/README.md`](file:///d:/PROJECT/prototype/docs/README.md): Hub navigasi terpadu seluruh dokumentasi.
+  - [`docs/principles.md`](file:///d:/PROJECT/prototype/docs/principles.md): Menggabungkan visi, moto, mindset arsitektur, filosofi material kaca optik (*optical glass*), dan fisika gerak (*motion physics*).
+  - [`docs/architecture.md`](file:///d:/PROJECT/prototype/docs/architecture.md): Mendefinisikan struktur 5-tier arsitektur, hierarki token tunggal (*single source of truth*), dan batas dependensi direktori (*layer boundaries*).
+- **First-Class Agent Skills Hub (`skills/`)**:
+  - [`skills/README.md`](file:///d:/PROJECT/prototype/skills/README.md): Indeks SOP untuk AI Agent.
+  - [`skills/glass-ui.md`](file:///d:/PROJECT/prototype/skills/glass-ui.md): Aturan ketat warna permukaan, border asimetris, level blur, noise SVG, dan token aksen neon.
+  - [`skills/component.md`](file:///d:/PROJECT/prototype/skills/component.md): Standar 4-file (`index.html`, `index.css`, `index.js`, `<name>.html`), scoped classes, pencegahan pemotongan flex layout, dan semantik aksesibilitas.
+  - [`skills/motion.md`](file:///d:/PROJECT/prototype/skills/motion.md): Kurva fisika spring `cubic-bezier`, micro-timing, kontinuitas spasial, dan kepatuhan `@media (prefers-reduced-motion)`.
+  - [`skills/workflow.md`](file:///d:/PROJECT/prototype/skills/workflow.md): Siklus kerja agent 5 tahap, pengujian otomatis non-interaktif, dan standar pencatatan riwayat.
+
+#### 2. Perampingan Root `README.md` & Perbaikan Documentation Drift
+- **Root `README.md` Bersih**: Dirampingkan menjadi entry point ringkas (~50 baris) dengan quick start preview lokal, diagram direktori, dan tautan langsung ke `docs/`, `skills/`, dan `projects/`.
+- **Klarifikasi Taksonomi di `component.md`**: Membedakan secara transparan antara Master Taxonomy 120+ komponen dengan implementasi aktual di disk (21 komponen Glass, 9 komponen Raw, 2 aplikasi web).
+- **Perbaikan Path Usang**: Memperbaiki link rute lama `ui/file-manager_project/index.html` menjadi `projects/file-manager/index.html` pada `projects/file-manager/PROJECT_SPEC.md` dan `component.md`.
+- **Perbaikan Link Desain**: Memperbaiki rujukan `ui/glass/STYLE_SPEC.md` menjadi `ui/components/glass/STYLE_SPEC.md`.
+
+#### 3. Otomatisasi Validasi Integritas Dokumentasi
+- **`scripts/verify_docs.py`**: Perkakas pemeriksa otomatis untuk memverifikasi 100% tautan Markdown internal di repositori.
+- **Integrasi `package.json`**: Menambahkan skrip `npm run verify:docs` dan memperbarui `npm run verify` untuk menguji link HTML sekaligus integritas Markdown.
+
+---
+
 ## [Version 3.4.0] — 2026-09-08
 
 ### 🎚️ Interactive Horizontal Sliders & Seamless Anti-Clipping Resolution

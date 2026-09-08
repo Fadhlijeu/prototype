@@ -15,29 +15,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <link rel="stylesheet" href="../../ui/components/glass/css.css">
 
     <style>
         :root {
-            --bg-main: #08090C;
-            --panel: #14151C;
-            --text-primary: #EDEDED;
-            --text-secondary: #8E8E93;
-            --text-muted: #636366;
-            --accent-cyan: #2D9CDB;
-            --accent-blue: #4A7BF7;
-            --accent-purple: #9D4EDD;
-            --glass-base: rgba(36, 36, 38, 0.55);
-            --glass-card: rgba(28, 30, 38, 0.65);
-            --divider: rgba(255, 255, 255, 0.07);
-            
-            /* Aurora Tokens */
-            --aurora-1: rgba(70, 110, 220, 0.7);
-            --aurora-2: rgba(40, 60, 160, 0.6);
-            --aurora-3: rgba(140, 70, 230, 0.5);
-
-            /* Timing */
-            --ease: cubic-bezier(0.32, 0.72, 0, 1);
-            --spring: cubic-bezier(0.34, 1.1, 0.64, 1);
+            /* Mapped to unified single source of truth tokens */
+            --glass-base: var(--glass-panel);
         }
 
         * {

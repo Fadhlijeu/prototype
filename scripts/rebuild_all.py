@@ -139,22 +139,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <link rel="stylesheet" href="css.css">
     <style>
-        :root {{
-            --bg-page: #08080C;
-            --glass-card: rgba(255, 255, 255, 0.05);
-            --glass-card-hover: rgba(255, 255, 255, 0.08);
-            --glass-border-top: rgba(255, 255, 255, 0.24);
-            --glass-border-side: rgba(255, 255, 255, 0.10);
-            --glass-border-bottom: rgba(255, 255, 255, 0.04);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.65);
-            --text-muted: rgba(255, 255, 255, 0.38);
-            --accent-cyan: #4A9EFF;
-            --accent-blue: #3B82F6;
-            --accent-purple: #8B5CF6;
-            --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
-        }}
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
@@ -1602,22 +1589,9 @@ web_apps_html_content = f"""<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <link rel="stylesheet" href="ui/components/glass/css.css">
     <style>
-        :root {{
-            --bg-page: #07070B;
-            --glass-card: rgba(255, 255, 255, 0.05);
-            --glass-card-hover: rgba(255, 255, 255, 0.08);
-            --glass-border-top: rgba(255, 255, 255, 0.25);
-            --glass-border-side: rgba(255, 255, 255, 0.10);
-            --glass-border-bottom: rgba(255, 255, 255, 0.04);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.68);
-            --text-muted: rgba(255, 255, 255, 0.40);
-            --accent-cyan: #4A9EFF;
-            --accent-blue: #3B82F6;
-            --accent-purple: #8B5CF6;
-            --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
-        }}
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 

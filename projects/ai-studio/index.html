@@ -7,24 +7,11 @@
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <link rel="stylesheet" href="../../ui/components/glass/css.css">
     <style>
-        :root {
-            --bg-page: #07080B;
-            --glass-card: rgba(255, 255, 255, 0.05);
-            --glass-card-hover: rgba(255, 255, 255, 0.08);
-            --glass-border-top: rgba(255, 255, 255, 0.24);
-            --glass-border-side: rgba(255, 255, 255, 0.10);
-            --glass-border-bottom: rgba(255, 255, 255, 0.04);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.65);
-            --text-muted: rgba(255, 255, 255, 0.38);
-            --accent-cyan: #38BDF8;
-            --accent-blue: #3B82F6;
-            --accent-purple: #8B5CF6;
-            --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
-        }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -92,56 +79,252 @@
         }
         .icon-btn:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
 
-        /* Glass Cards */
-        .glass-box {
-            background: var(--glass-card); border-radius: 20px;
-            border: 1px solid transparent; border-top-color: var(--glass-border-top);
-            border-left-color: var(--glass-border-side); border-right-color: var(--glass-border-side);
-            border-bottom-color: var(--glass-border-bottom);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px) saturate(150%);
-            -webkit-backdrop-filter: blur(24px) saturate(150%);
-            padding: 16px 18px; margin-bottom: 14px;
+        /* AI Model Selector (Glass Component Design System) */
+        .glass-card-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 16px;
         }
 
-        /* Model Selector */
-        .models-cluster { display: flex; flex-direction: column; gap: 8px; }
-        .model-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 14px; border-radius: 14px; cursor: pointer;
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+        .layer-4-shadow {
+            position: absolute;
+            top: 10px; left: 0; right: 0; bottom: -10px;
+            background: radial-gradient(ellipse at center, rgba(74, 123, 247, 0.4) 0%, rgba(139, 92, 246, 0.25) 50%, transparent 80%);
+            border-radius: 28px;
+            filter: blur(28px);
+            transform: scale(0.96) translateY(10px);
+            z-index: 0;
+            pointer-events: none;
+            transition: all 0.4s var(--ease-spring);
+        }
+
+        .layer-3-aurora {
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(36px);
+            border-radius: 50%;
+            animation: auroraMorph 12s infinite alternate ease-in-out;
+        }
+
+        .blob-card-1 {
+            top: -15%; left: -10%; width: 65%; height: 65%;
+            background: radial-gradient(circle, rgba(70, 110, 220, 0.45) 0%, transparent 70%);
+        }
+        .blob-card-2 {
+            bottom: -15%; right: -10%; width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(142, 45, 226, 0.35) 0%, transparent 70%);
+            animation-delay: -4s;
+        }
+
+        @keyframes auroraMorph {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 7%) scale(1.05); }
+            100% { transform: translate(-5%, -5%) scale(0.95); }
+        }
+
+        .layer-2-glass {
+            position: relative;
+            background: var(--glass-card);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border-radius: 24px;
+            padding: 8px;
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .layer-2-glass::before,
+        .effort-glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.038;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .model-list {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .model-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s var(--ease-spring);
+        }
+
+        .model-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .model-item.active {
+            background: rgba(74, 158, 255, 0.12);
+            border: 1px solid rgba(74, 158, 255, 0.38);
+            box-shadow: 0 4px 16px rgba(74, 158, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+
+        .model-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .model-title {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-subtitle {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        .checkmark {
+            color: var(--accent-cyan);
+            width: 18px;
+            height: 18px;
+            stroke-width: 2px;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 0.22s var(--ease-spring);
+        }
+
+        .model-item.active .checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Thinking Effort Card (Glass Component Design System) */
+        .effort-glass-card {
+            position: relative;
+            background: var(--glass-card);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border-radius: 22px;
+            padding: 16px 18px;
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .effort-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .effort-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .effort-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-cyan);
+        }
+
+        .effort-main-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+        }
+
+        .effort-sub-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .effort-active-pill {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(74, 158, 255, 0.12);
+            border: 1px solid rgba(74, 158, 255, 0.3);
+            border-radius: 8px;
+            padding: 4px 10px;
+            letter-spacing: -0.01em;
             transition: all 0.2s;
         }
-        .model-row:hover { background: rgba(255, 255, 255, 0.06); }
-        .model-row.active {
-            background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.35);
-        }
-        .model-meta h4 { font-size: 14px; font-weight: 600; color: #FFFFFF; }
-        .model-meta p { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
-        .check-badge {
-            width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: #38BDF8; opacity: 0; transition: opacity 0.2s;
-        }
-        .model-row.active .check-badge { opacity: 1; }
 
-        /* Thinking Effort Stepper */
-        .stepper-header {
-            display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+        .effort-segmented-bar {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 5px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .stepper-title { font-size: 13px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
-        .stepper-value { font-size: 12.5px; font-weight: 600; color: #38BDF8; font-family: 'JetBrains Mono', monospace; }
-        .stepper-segments {
-            display: flex; gap: 6px; padding: 4px; background: rgba(0, 0, 0, 0.25);
-            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06);
+
+        .effort-step-btn {
+            flex: 1;
+            padding: 8px 6px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.22s var(--ease-spring);
+            text-align: center;
         }
-        .step-btn {
-            flex: 1; padding: 8px 6px; border-radius: 8px; border: none; background: transparent;
-            color: var(--text-muted); font-size: 12px; font-weight: 500; cursor: pointer;
-            transition: all 0.2s; text-align: center;
+
+        .effort-step-btn:hover {
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
         }
-        .step-btn.active {
-            background: rgba(255, 255, 255, 0.14); color: #FFFFFF; font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+        .effort-step-btn.active {
+            background: rgba(255, 255, 255, 0.16);
+            color: #FFFFFF;
+            font-weight: 600;
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         /* Chat Messages Stream */
@@ -242,44 +425,59 @@
             </div>
         </header>
 
-        <!-- Model Selection -->
-        <div class="glass-box">
-            <div class="models-cluster">
-                <div class="model-row active" onclick="selectModel(this, 'K3-Pro Ultra', 'Penalaran dalam multi-langkah 128k context')">
-                    <div class="model-meta">
-                        <h4>K3-Pro Ultra</h4>
-                        <p>Penalaran dalam multi-langkah 128k context</p>
+        <!-- Model Selection (Direct from ui/components/glass/ai-model-selector/) -->
+        <div class="glass-card-wrapper" role="radiogroup" aria-label="AI Model Selection">
+            <div class="layer-4-shadow" aria-hidden="true"></div>
+            <div class="layer-3-aurora" aria-hidden="true">
+                <div class="aurora-blob blob-card-1"></div>
+                <div class="aurora-blob blob-card-2"></div>
+            </div>
+            <div class="layer-2-glass">
+                <div class="model-list">
+                    <div class="model-item active" role="radio" aria-checked="true" tabindex="0" onclick="selectModel(this, 'K3-Pro Ultra', 'Penalaran dalam multi-langkah 128k context')">
+                        <div class="model-info">
+                            <span class="model-title">K3-Pro Ultra</span>
+                            <span class="model-subtitle">Penalaran dalam multi-langkah 128k context</span>
+                        </div>
+                        <i data-lucide="check" class="checkmark"></i>
                     </div>
-                    <div class="check-badge"><i data-lucide="check-circle-2"></i></div>
-                </div>
-                <div class="model-row" onclick="selectModel(this, 'Swarm Agent 2.0', 'Kolaborasi multi-agent otonom terspesialisasi')">
-                    <div class="model-meta">
-                        <h4>Swarm Agent 2.0</h4>
-                        <p>Kolaborasi multi-agent otonom terspesialisasi</p>
+                    <div class="model-item" role="radio" aria-checked="false" tabindex="0" onclick="selectModel(this, 'Swarm Agent 2.0', 'Kolaborasi multi-agent otonom terspesialisasi')">
+                        <div class="model-info">
+                            <span class="model-title">Swarm Agent 2.0</span>
+                            <span class="model-subtitle">Kolaborasi multi-agent otonom terspesialisasi</span>
+                        </div>
+                        <i data-lucide="check" class="checkmark"></i>
                     </div>
-                    <div class="check-badge"><i data-lucide="check-circle-2"></i></div>
-                </div>
-                <div class="model-row" onclick="selectModel(this, 'Flash Instant', 'Respon ultra-cepat sub-100ms streaming')">
-                    <div class="model-meta">
-                        <h4>Flash Instant</h4>
-                        <p>Respon ultra-cepat sub-100ms streaming</p>
+                    <div class="model-item" role="radio" aria-checked="false" tabindex="0" onclick="selectModel(this, 'Flash Instant', 'Respon ultra-cepat sub-100ms streaming')">
+                        <div class="model-info">
+                            <span class="model-title">Flash Instant</span>
+                            <span class="model-subtitle">Respon ultra-cepat sub-100ms streaming</span>
+                        </div>
+                        <i data-lucide="check" class="checkmark"></i>
                     </div>
-                    <div class="check-badge"><i data-lucide="check-circle-2"></i></div>
                 </div>
             </div>
         </div>
 
-        <!-- Stepper Effort -->
-        <div class="glass-box">
-            <div class="stepper-header">
-                <span class="stepper-title"><i data-lucide="brain"></i> Reasoning Effort</span>
-                <span class="stepper-value" id="effortValue">Tinggi (High)</span>
-            </div>
-            <div class="stepper-segments">
-                <button class="step-btn" onclick="setEffort(this, 'Rendah (Low)')">Low</button>
-                <button class="step-btn" onclick="setEffort(this, 'Sedang (Medium)')">Med</button>
-                <button class="step-btn active" onclick="setEffort(this, 'Tinggi (High)')">High</button>
-                <button class="step-btn" onclick="setEffort(this, 'Maksimal (Deep)')">Max</button>
+        <!-- Thinking Effort Stepper (Direct from Glass Component Design) -->
+        <div class="glass-card-wrapper" style="margin-top: 2px; margin-bottom: 16px;">
+            <div class="effort-glass-card">
+                <div class="effort-header">
+                    <div class="effort-title-wrap">
+                        <i data-lucide="brain" class="effort-icon"></i>
+                        <div>
+                            <div class="effort-main-title">Reasoning Effort</div>
+                            <div class="effort-sub-title">Tingkat kedalaman penalaran agen</div>
+                        </div>
+                    </div>
+                    <span class="effort-active-pill" id="effortValue">Tinggi (High)</span>
+                </div>
+                <div class="effort-segmented-bar" role="radiogroup" aria-label="Reasoning Effort">
+                    <button type="button" class="effort-step-btn" role="radio" aria-checked="false" onclick="setEffort(this, 'Rendah (Low)')">Low</button>
+                    <button type="button" class="effort-step-btn" role="radio" aria-checked="false" onclick="setEffort(this, 'Sedang (Medium)')">Med</button>
+                    <button type="button" class="effort-step-btn active" role="radio" aria-checked="true" onclick="setEffort(this, 'Tinggi (High)')">High</button>
+                    <button type="button" class="effort-step-btn" role="radio" aria-checked="false" onclick="setEffort(this, 'Maksimal (Deep)')">Max</button>
+                </div>
             </div>
         </div>
 
@@ -339,15 +537,23 @@
         }
 
         function selectModel(row, name, desc) {
-            document.querySelectorAll('.model-row').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.model-item').forEach(r => {
+                r.classList.remove('active');
+                r.setAttribute('aria-checked', 'false');
+            });
             row.classList.add('active');
+            row.setAttribute('aria-checked', 'true');
             activeModelName = name;
             playHapticSound(750);
         }
 
         function setEffort(btn, val) {
-            document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.effort-step-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-checked', 'false');
+            });
             btn.classList.add('active');
+            btn.setAttribute('aria-checked', 'true');
             document.getElementById('effortValue').innerText = val;
             playHapticSound(520);
         }

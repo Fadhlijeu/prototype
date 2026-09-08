@@ -8,7 +8,9 @@
     "serve": "serve . -p 3000",
     "project": "serve projects/file-manager -p 3001",
     "showcase": "serve ui/components/glass -p 3002",
-    "verify": "python scripts/verify_links.py",
+    "verify": "python scripts/verify_links.py && python scripts/verify_docs.py",
+    "verify:links": "python scripts/verify_links.py",
+    "verify:docs": "python scripts/verify_docs.py",
     "rebuild": "python scripts/rebuild_all.py"
   },
   "keywords": [

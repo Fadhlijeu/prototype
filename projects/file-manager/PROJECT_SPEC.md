@@ -6,7 +6,7 @@
 
 ## 1. Ikhtisar Proyek
 - **Nama Proyek**: GlassOS Cloud File Manager
-- **File Utama**: [`index.html`](file:///d:/PROJECT/prototype/ui/file-manager_project/index.html)
+- **File Utama**: [`index.html`](file:///d:/PROJECT/prototype/projects/file-manager/index.html)
 - **Tema Desain**: Glass Dark Premium (Multi-layered Glass, Symmetrical Lighting, Aurora Mesh, Noise Textures)
 - **Target Perangkat**: Responsif (Mobile-first 375px–480px, Tablet & Desktop Widescreen)
 
