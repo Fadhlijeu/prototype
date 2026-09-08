@@ -1,0 +1,24 @@
+{
+  "title": "Aurora Floating Glass Input",
+  "slug": "aurora-floating-glass-input",
+  "category": "inputs",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "pill",
+    "aurora",
+    "interactive"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Molecule",
+  "icons": [
+    "sparkles",
+    "search",
+    "send",
+    "at-sign",
+    "lock"
+  ],
+  "raw_prompt": "Aurora Floating Glass Input"
+}

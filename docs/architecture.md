@@ -49,6 +49,7 @@ Repositori ini menerapkan pembagian tugas yang tegas untuk setiap folder:
 |---|---|---|
 | **`docs/`** | **Dokumentasi Global untuk Manusia**. Visi, prinsip, arsitektur, dan keputusan teknis. | Jangan masukkan instruksi langkah demi langkah agentik atau cuplikan kode ad-hoc di sini. |
 | **`skills/`** | **SOP Operasional untuk AI Agent**. Aturan teknis pembuatan komponen, motion, glass styling, dan workflow. | Ditulis dalam bentuk constraint ketat, checklist, dan panduan eksekusi yang langsung dapat dibaca AI. |
+| **`generator/`** | **Subsistem Generator Otonom & Kurasi**. Mesin generasi UI berbasis model cascade (Gemini/9Router/Mock), decompiler, dan antrean kurasi manusia. | Tidak boleh menyimpan API keys; wajib validasi token glass; mengalirkan komponen baru ke `ui/components/glass/`. |
 | **`ui/`** | **Pusat Desain & Komponen**. Berisi token CSS global dan paket komponen modular (`raw/` & `glass/`). | Setiap komponen wajib memiliki folder mandiri yang didekomposisi. |
 | **`projects/`** | **Aplikasi Web Utuh & Ruang Kerja**. Implementasi nyata yang memadukan komponen menjadi produk. | Mengonsumsi komponen dan token bersama; memiliki `PROJECT_SPEC.md` sendiri. |
 | **`scripts/`** | **Otomatisasi & Pengujian**. Script verifikasi tautan, sinkronisasi showcase, dan audit kualitas. | Wajib dapat dijalankan secara non-interaktif (`python scripts/...`). |
