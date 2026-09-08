@@ -4,6 +4,45 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 ---
 
+## [Version 3.3.0] — 2026-09-08
+
+### 🛠️ Showcase Bugfixes, Grid Layout Selector, Multi-Project Web Apps Studio & Hub Deduplication
+
+#### 1. Perbaikan Bug Layout Kartu (Gambar 1 & Gambar 2)
+- **Gambar 1 (Glass Card Memanjang Kosong)**:
+  - *Penyebab*: Kartu `glass-sidepanel` memiliki tinggi eksplisit 560px, sedangkan kartu lain 380px. Ketika dirender dalam CSS grid dengan `align-items: stretch`, kartu lain ditarik ke bawah menghasilkan ruang gelap kosong yang tidak terisi preview.
+  - *Solusi*: Mengubah struktur pembungkus kartu menjadi flex column terpadu dengan `.card-preview-zone { flex: 1; min-height: 400px; display: flex; align-items: center; justify-content: center; background: #050508; }`. Seluruh kartu kini mengisi grid secara seragam tanpa celah kosong.
+- **Gambar 2 (Raw Showcase Unstyled & Blank Terdistorsi)**:
+  - *Penyebab*: Badge tag teknis pada kartu Raw merender string mentah seperti `<select> & <option>` dan `<table>, <thead>, <tbody>`. Parser HTML browser mengeksekusi tag `<select>` yang tidak tertutup, sehingga menelan sisa kartu berikutnya ke dalam dropdown, serta memicu *table foster parenting*.
+  - *Solusi*: Menerapkan sanitasi `html.escape(tag)` pada generator `scripts/rebuild_all.py` dan `ui/components/raw/showcase.html`. Semua badge tag dirender aman (`&lt;select&gt;`, `&lt;table&gt;`), memulihkan tampilan 9 komponen Raw dengan sempurna.
+
+#### 2. Fitur Pengatur Tampilan Grid (1, 2, 3, 4 Kolom & Auto)
+- Menambahkan toolbar pengatur kolom interaktif pada `ui/components/glass/showcase.html` dan `ui/components/raw/showcase.html`:
+  - `[ 1 ]` : Single Column View (cocok untuk inspeksi detail per komponen)
+  - `[ 2 ]` : Two Column View (seimbang dan leluasa)
+  - `[ 3 ]` : Three Column View (optimal pada layar widescreen)
+  - `[ 4 ]` : Four Column View (tinjauan cepat padat)
+  - `[ Auto ]` : Responsif fluid (`repeat(auto-fill, minmax(420px, 1fr))`)
+- Pilihan pengguna disimpan secara persisten di `localStorage` per showcase.
+
+#### 3. Eliminasi Redundansi Master Hub (`showcase.html`)
+- Menghilangkan link redundan menuju `showcase.html` dari navigasi header di seluruh halaman (`index.html`, `web-apps.html`, `ui/components/glass/showcase.html`, `ui/components/raw/showcase.html`, `404.html`).
+- Menjadikan `index.html` sebagai satu-satunya Master Gateway utama.
+- `showcase.html` dikonfigurasi dengan pengalihan otomatis instan (0ms client-side redirect) ke `index.html`.
+
+#### 4. Transformasi Web Applications Menjadi Multi-Project Portfolio Dinamis
+- `web-apps.html` diubah dari sekadar satu spotlight demo menjadi studio multi-proyek yang merepresentasikan seluruh folder di `projects/`:
+  - **Dua Aplikasi Produksi Aktif**:
+    1. `Cloud File Manager OS` (v2.4) di [`projects/file-manager/`](projects/file-manager/)
+    2. `AI Agent Studio` (v1.0) di [`projects/ai-studio/`](projects/ai-studio/) — interactive AI workspace lengkap dengan model switching, reasoning trace stepper, chat stream, dan Web Audio synthesizer haptik.
+  - **Dua Mode Tampilan**:
+    - **Stage View**: Simulator interaktif viewport Desktop, Tablet, dan Mobile dengan audio controller dan switch aplikasi.
+    - **Gallery View**: Tampilan kartu portofolio berdampingan dengan live iframe preview, metadata arsitektur, dan tombol peluncur instan.
+  - **Blueprint Penambahan Proyek Baru**:
+    - Kartu panduan khusus `+ Tambah Proyek Web App Baru` yang menjelaskan alur pembuatan folder di `projects/<nama-proyek>/` dan pendaftaran otomatis via `scripts/rebuild_all.py`.
+
+---
+
 ## [Version 3.2.0] — 2026-09-08
 
 ### 🚀 Elevated Root Projects Directory, CI/CD Automation & Anti-404 Resiliency

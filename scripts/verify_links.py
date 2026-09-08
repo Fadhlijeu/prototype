@@ -9,6 +9,7 @@ pages_to_check = [
     os.path.join(ROOT, "web-apps.html"),
     os.path.join(ROOT, "404.html"),
     os.path.join(ROOT, "projects", "file-manager", "index.html"),
+    os.path.join(ROOT, "projects", "ai-studio", "index.html"),
     os.path.join(ROOT, "ui", "components", "glass", "showcase.html"),
     os.path.join(ROOT, "ui", "components", "raw", "showcase.html"),
 ]
@@ -40,8 +41,8 @@ for p in pages_to_check:
             found_links.add(match)
 
     for link in sorted(found_links):
-        # Skip external, inline anchors, data URIs, and javascript
-        if link.startswith(('http://', 'https://', '#', 'data:', 'javascript:', 'mailto:')):
+        # Skip external, inline anchors, data URIs, javascript, and JS template variables
+        if link.startswith(('http://', 'https://', '#', 'data:', 'javascript:', 'mailto:')) or '${' in link:
             continue
         
         # Strip query parameters and anchors

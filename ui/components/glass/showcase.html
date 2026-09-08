@@ -62,7 +62,7 @@
             position: sticky; top: 0; z-index: 50; padding: 14px 32px;
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(8, 8, 12, 0.75); display: flex; align-items: center; justify-content: space-between;
+            background: rgba(8, 8, 12, 0.78); display: flex; align-items: center; justify-content: space-between;
         }
 
         .brand-cluster { display: flex; align-items: center; gap: 12px; }
@@ -101,32 +101,31 @@
 
         /* App Banner */
         .app-highlight-banner {
-            margin: 24px 32px 0; padding: 18px 24px; border-radius: 16px;
-            background: linear-gradient(90deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.12));
-            border: 1px solid rgba(6, 182, 212, 0.3);
+            margin: 20px 32px 0; padding: 16px 24px; border-radius: 16px;
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.10), rgba(59, 130, 246, 0.10));
+            border: 1px solid rgba(6, 182, 212, 0.25);
             display: flex; align-items: center; justify-content: space-between; gap: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
         }
         .banner-info { display: flex; align-items: center; gap: 14px; }
         .banner-icon-badge {
-            width: 44px; height: 44px; border-radius: 12px; background: rgba(6, 182, 212, 0.2);
-            border: 1px solid rgba(6, 182, 212, 0.4); display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 12px; background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.35); display: flex; align-items: center; justify-content: center;
             color: #22D3EE; flex-shrink: 0;
         }
-        .banner-text h3 { font-size: 15px; font-weight: 600; color: #FFFFFF; }
-        .banner-text p { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+        .banner-text h3 { font-size: 14.5px; font-weight: 600; color: #FFFFFF; }
+        .banner-text p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 
         .btn-banner-cta {
-            display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px;
-            border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+            border-radius: 10px; font-size: 12.5px; font-weight: 600; text-decoration: none;
             background: linear-gradient(135deg, #06B6D4, #3B82F6); color: #FFFFFF;
             box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35); transition: transform 0.2s; white-space: nowrap;
         }
         .btn-banner-cta:hover { transform: scale(1.02); }
 
-        /* Filter Controls */
+        /* Controls Bar with Layout Switcher */
         .controls-bar {
-            padding: 20px 32px 10px; display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 32px 10px; display: flex; align-items: center; justify-content: space-between;
             gap: 16px; flex-wrap: wrap; z-index: 10;
         }
         .filter-tabs {
@@ -142,12 +141,36 @@
         .filter-tab:hover { color: var(--text-primary); }
         .filter-tab.active { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; font-weight: 600; }
 
-        .search-box {
-            display: flex; align-items: center; gap: 10px; padding: 8px 14px;
-            border-radius: 12px; background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08); width: 260px;
+        .controls-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        /* Layout Switcher (1, 2, 3, 4, Auto Kolom) */
+        .layout-selector {
+            display: flex; align-items: center; gap: 4px; padding: 4px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
         }
-        .search-box svg { color: var(--text-muted); width: 16px; height: 16px; }
+        .layout-label {
+            font-size: 11.5px; font-weight: 600; color: var(--text-muted); padding: 0 8px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .layout-label svg { width: 14px; height: 14px; }
+        .btn-layout {
+            padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-layout:hover { color: var(--text-primary); }
+        .btn-layout.active {
+            background: rgba(56, 189, 248, 0.18); color: #38BDF8; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            display: flex; align-items: center; gap: 10px; padding: 7px 14px;
+            border-radius: 12px; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08); width: 220px;
+        }
+        .search-box svg { color: var(--text-muted); width: 15px; height: 15px; }
         .search-box input {
             background: transparent; border: none; outline: none; font-size: 13px;
             color: #FFFFFF; width: 100%; font-family: inherit;
@@ -155,11 +178,16 @@
 
         /* Grid */
         .showcase-grid {
-            padding: 16px 32px 64px; display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-            gap: 24px; z-index: 5;
+            padding: 16px 32px 64px; display: grid; gap: 24px; z-index: 5;
+            transition: all 0.3s ease;
         }
+        .showcase-grid.cols-auto { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+        .showcase-grid.cols-1 { grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; width: 100%; }
+        .showcase-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .showcase-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .showcase-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
 
-        /* Component Card */
+        /* Component Card - Unified Seamless Flex (No Blank Stretched Space) */
         .component-card {
             position: relative; background: var(--glass-card); border-radius: 20px;
             border: 1px solid transparent; border-top-color: var(--glass-border-top);
@@ -167,6 +195,7 @@
             border-bottom-color: var(--glass-border-bottom);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             display: flex; flex-direction: column; overflow: hidden;
+            height: 100%; min-height: 520px;
             transition: border-color 0.25s, box-shadow 0.25s;
         }
         .component-card:hover {
@@ -178,6 +207,7 @@
         .card-top {
             padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06); background: rgba(255, 255, 255, 0.02);
+            flex-shrink: 0;
         }
         .card-name { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; }
         .card-category { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
@@ -193,6 +223,7 @@
         .card-resizer-toolbar {
             padding: 8px 18px; display: flex; align-items: center; justify-content: space-between;
             background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            flex-shrink: 0;
         }
         .viewport-presets { display: flex; align-items: center; gap: 4px; }
         .btn-preset {
@@ -224,26 +255,27 @@
             background: rgba(74, 158, 255, 0.25); color: #FFFFFF;
         }
 
+        /* Preview Zone - Seamless Flex Fill without detached gap */
         .card-preview-zone {
-            height: 380px; width: 100%; display: flex; align-items: center; justify-content: center;
-            background: #050508; position: relative; overflow: hidden; padding: 12px;
+            flex: 1; width: 100%; min-height: 400px;
+            display: flex; align-items: center; justify-content: center;
+            background: #050508; position: relative; overflow: hidden; padding: 0;
         }
-        .card-preview-zone.tall { height: 560px; }
 
         .preview-resizer-wrapper {
-            width: 100%; height: 100%; transition: max-width 0.35s var(--ease-spring);
+            width: 100%; height: 100%; min-height: 100%; transition: max-width 0.35s var(--ease-spring);
             display: flex; align-items: center; justify-content: center; margin: 0 auto;
         }
 
         .preview-resizer-wrapper iframe {
-            width: 100%; height: 100%; border: none; border-radius: 12px; background: #07070A;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
+            display: block;
         }
 
         .card-bottom {
             padding: 10px 18px; display: flex; align-items: center; justify-content: space-between;
-            border-top: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.015);
-            font-size: 11.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02);
+            font-size: 11.5px; flex-shrink: 0;
         }
         .file-link-tag { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }
 
@@ -284,7 +316,6 @@
         }
         .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }
 
-        /* Top Bar Tabs */
         .modal-tabs-bar {
             display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
             background: #0B0B10; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -349,7 +380,8 @@
             .showcase-header { padding: 12px 18px; }
             .app-highlight-banner { margin: 16px 18px 0; flex-direction: column; align-items: flex-start; }
             .controls-bar { padding: 16px 18px 8px; }
-            .showcase-grid { padding: 12px 18px 48px; grid-template-columns: 1fr; }
+            .showcase-grid { padding: 12px 18px 48px; }
+            .showcase-grid.cols-2, .showcase-grid.cols-3, .showcase-grid.cols-4 { grid-template-columns: 1fr; }
             .modal-card { height: 92vh; margin: 12px; }
         }
     </style>
@@ -377,11 +409,8 @@
             <a href="../../../index.html" class="btn-top-link" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
-            <a href="../../../showcase.html" class="btn-top-link" title="Master Component Hub">
-                <i data-lucide="layers"></i> Master Hub
-            </a>
             <a href="../../../web-apps.html" class="btn-top-link btn-highlight-webapp" title="Buka Halaman Khusus Web Applications">
-                <i data-lucide="folder-kanban"></i> Web Applications Studio
+                <i data-lucide="folder-kanban"></i> Web Applications
             </a>
             <a href="../raw/showcase.html" class="btn-top-link" title="Buka Showcase Raw HTML">
                 <i data-lucide="code-2"></i> Raw HTML (9)
@@ -393,11 +422,11 @@
     <div class="app-highlight-banner">
         <div class="banner-info">
             <div class="banner-icon-badge">
-                <i data-lucide="cloud"></i>
+                <i data-lucide="folder-kanban"></i>
             </div>
             <div class="banner-text">
-                <h3>Sedang Mencari Aplikasi Web Jadi (Project Scenery)?</h3>
-                <p>Proyek komposit utuh (seperti <strong>Cloud File Manager OS</strong>) telah dipisahkan ke halaman khusus Web Applications Studio agar tidak tercampur dengan komponen atom/molekul.</p>
+                <h3>Koleksi Aplikasi Web Utuh (Projects Workspace)</h3>
+                <p>Seluruh aplikasi web utuh berada di dalam folder <code>projects/</code> dan ditampilkan pada halaman studio tersendiri.</p>
             </div>
         </div>
         <a href="../../../web-apps.html" class="btn-banner-cta">
@@ -405,25 +434,37 @@
         </a>
     </div>
 
-    <!-- Controls Bar -->
+    <!-- Controls Bar with Filter and Layout Grid Switcher -->
     <div class="controls-bar">
         <div class="filter-tabs">
             <button class="filter-tab active" onclick="filterCategory('all', this)">Semua (21)</button>
-            <button class="filter-tab" onclick="filterCategory('inputs', this)">Inputs & Forms</button>
-            <button class="filter-tab" onclick="filterCategory('cards', this)">Cards & Gauges</button>
+            <button class="filter-tab" onclick="filterCategory('inputs', this)">Inputs</button>
+            <button class="filter-tab" onclick="filterCategory('cards', this)">Cards</button>
             <button class="filter-tab" onclick="filterCategory('navigation', this)">Navigation</button>
-            <button class="filter-tab" onclick="filterCategory('overlays', this)">Modals & Overlays</button>
-            <button class="filter-tab" onclick="filterCategory('scenery', this)">Scenery (Full View)</button>
+            <button class="filter-tab" onclick="filterCategory('overlays', this)">Overlays</button>
+            <button class="filter-tab" onclick="filterCategory('scenery', this)">Scenery</button>
         </div>
 
-        <div class="search-box">
-            <i data-lucide="search"></i>
-            <input type="text" id="searchInput" placeholder="Cari komponen glass..." oninput="handleSearch(this.value)">
+        <div class="controls-right">
+            <!-- Grid Layout Selector -->
+            <div class="layout-selector">
+                <span class="layout-label"><i data-lucide="grid"></i> Tampilan:</span>
+                <button class="btn-layout" data-cols="1" onclick="setGridLayout('1', this)" title="1 Kolom">1</button>
+                <button class="btn-layout" data-cols="2" onclick="setGridLayout('2', this)" title="2 Kolom">2</button>
+                <button class="btn-layout" data-cols="3" onclick="setGridLayout('3', this)" title="3 Kolom">3</button>
+                <button class="btn-layout" data-cols="4" onclick="setGridLayout('4', this)" title="4 Kolom">4</button>
+                <button class="btn-layout active" data-cols="auto" onclick="setGridLayout('auto', this)" title="Auto Kolom">Auto</button>
+            </div>
+
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="searchInput" placeholder="Cari komponen..." oninput="handleSearch(this.value)">
+            </div>
         </div>
     </div>
 
     <!-- Main Grid -->
-    <main class="showcase-grid" id="componentsGrid">
+    <main class="showcase-grid cols-auto" id="componentsGrid">
 
             <!-- Component: Glass Buttons Collection -->
             <article class="component-card" data-cat="inputs" id="card-button-glass">
@@ -448,7 +489,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('button-glass', 'Glass Buttons Collection')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('button-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -491,7 +532,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('chat-input-bar', 'Glass Chat Input Bar')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('chat-input-bar')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -534,7 +575,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('input-field-glass', 'Glass Form Input Fields')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('input-field-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -577,7 +618,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('prompt-pills-row', 'Prompt Pills Quick Scroller')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('prompt-pills-row')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -620,7 +661,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('thinking-effort-selector', 'Thinking Effort Selector')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('thinking-effort-selector')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -663,7 +704,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('toggle-switch-glass', 'Glass Toggle Switch')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('toggle-switch-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -706,7 +747,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('checkbox-glass', 'Glass Checkbox & Radio')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('checkbox-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -749,7 +790,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('dropdown-select-glass', 'Glass Floating Dropdown')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('dropdown-select-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -792,7 +833,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('ai-model-selector', 'AI Model Selector Card')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('ai-model-selector')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -835,7 +876,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('frosted-folder-card', 'Frosted Folder Card')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('frosted-folder-card')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -878,7 +919,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('aurora-storage-card', 'Aurora Storage Card')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('aurora-storage-card')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -921,7 +962,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('progress-bar-glass', 'Glass Glowing Progress Bar')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('progress-bar-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -964,7 +1005,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('avatar-badge-glass', 'Glass Avatar with Status')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('avatar-badge-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1007,7 +1048,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('glass-dock-navigation', 'Floating Glass Dock')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('glass-dock-navigation')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1050,14 +1091,14 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('glass-sidepanel', 'Productivity Glass Sidepanel')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('glass-sidepanel')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
                         </button>
                     </div>
                 </div>
-                <div class="card-preview-zone tall">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="glass-sidepanel/glass-sidepanel.html" title="Productivity Glass Sidepanel Preview"></iframe>
                     </div>
@@ -1093,14 +1134,14 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('swirl-bottom-sheet')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
                         </button>
                     </div>
                 </div>
-                <div class="card-preview-zone tall">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="swirl-bottom-sheet/swirl-bottom-sheet.html" title="Swirl Refraction Bottom Sheet Preview"></iframe>
                     </div>
@@ -1136,7 +1177,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('modal-dialog-glass', 'Glass Modal Dialog')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('modal-dialog-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1179,7 +1220,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('toast-notification-glass', 'Glass Toast Notification')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('toast-notification-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1222,7 +1263,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('tooltip-glass', 'Glass Micro Tooltip')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('tooltip-glass')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1265,7 +1306,7 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('telemetry-activity-chart', 'Telemetry Activity Chart')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('telemetry-activity-chart')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
@@ -1308,14 +1349,14 @@
                     </div>
                     <div class="toolbar-right">
                         <button class="btn-action-tool" onclick="openComponentModal('ai-agent-scenery', 'AI Agent Studio Scenery')">
-                            <i data-lucide="code"></i> Kode Sumber
+                            <i data-lucide="code"></i> Kode
                         </button>
                         <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('ai-agent-scenery')" title="Salin kode file mandiri">
                             <i data-lucide="copy"></i> Salin
                         </button>
                     </div>
                 </div>
-                <div class="card-preview-zone tall">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="ai-agent-scenery/ai-agent-scenery.html" title="AI Agent Studio Scenery Preview"></iframe>
                     </div>
@@ -1349,9 +1390,7 @@
             </div>
 
             <!-- Multi-file Tabs Bar -->
-            <div class="modal-tabs-bar" id="modalTabsBar">
-                <!-- Tabs dynamically rendered -->
-            </div>
+            <div class="modal-tabs-bar" id="modalTabsBar"></div>
 
             <!-- Subbar details -->
             <div class="modal-tab-subbar">
@@ -1389,6 +1428,21 @@
         let activeFile = "";
 
         lucide.createIcons();
+
+        // Restore layout preference
+        const savedCols = localStorage.getItem('glass-grid-layout') || 'auto';
+        const savedBtn = document.querySelector(`.btn-layout[data-cols="${savedCols}"]`);
+        if (savedBtn) setGridLayout(savedCols, savedBtn);
+
+        function setGridLayout(cols, btn) {
+            document.querySelectorAll('.btn-layout').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            const grid = document.getElementById('componentsGrid');
+            if (!grid) return;
+            grid.classList.remove('cols-1', 'cols-2', 'cols-3', 'cols-4', 'cols-auto');
+            grid.classList.add(`cols-${cols}`);
+            localStorage.setItem('glass-grid-layout', cols);
+        }
 
         function filterCategory(cat, btn) {
             document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));

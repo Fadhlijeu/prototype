@@ -11,9 +11,13 @@ projects/
 ├── README.md                  # Manifest & panduan direktori proyek
 ├── TEMPLATE.md                # Cetak biru standar spesifikasi proyek baru
 │
-└── file-manager/              # Proyek: GlassOS Cloud File Manager OS
-    ├── index.html             # Aplikasi web utuh mandiri (Single-File Architecture)
-    └── PROJECT_SPEC.md        # Spesifikasi arsitektur & komponen terintegrasi
+├── file-manager/              # Proyek: GlassOS Cloud File Manager OS
+│   ├── index.html             # Aplikasi web utuh mandiri (Single-File Architecture)
+│   └── PROJECT_SPEC.md        # Spesifikasi arsitektur & komponen terintegrasi
+│
+└── ai-studio/                 # Proyek: GlassOS AI Agent Studio Workspace
+    ├── index.html             # Ruang kerja agentik AI interaktif
+    └── PROJECT_SPEC.md        # Spesifikasi arsitektur AI studio
 ```
 
 ---
@@ -22,7 +26,8 @@ projects/
 
 | Nama Proyek | Versi | Status | Direktori | Live Showroom |
 |---|---|---|---|---|
-| **GlassOS Cloud File Manager OS** | v2.4 | `[production-ready]` | [`projects/file-manager/`](file-manager/) | [`web-apps.html`](../web-apps.html#project-file-manager) |
+| **GlassOS Cloud File Manager OS** | v2.4 | `[production-ready]` | [`projects/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../web-apps.html#project-file-manager) |
+| **GlassOS AI Agent Studio** | v1.0 | `[production-ready]` | [`projects/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../web-apps.html#project-ai-studio) |
 
 ---
 

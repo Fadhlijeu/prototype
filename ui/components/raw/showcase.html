@@ -50,19 +50,48 @@
         }
         .nav-link:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.08); }
 
-        .raw-grid {
-            padding: 24px 32px 64px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 20px;
+        /* Controls Bar */
+        .controls-bar {
+            padding: 18px 32px 6px; display: flex; align-items: center; justify-content: space-between;
         }
+        .layout-selector {
+            display: flex; align-items: center; gap: 4px; padding: 4px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+        .layout-label {
+            font-size: 11.5px; font-weight: 600; color: var(--text-secondary); padding: 0 8px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .btn-layout {
+            padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: transparent; border: none; color: var(--text-secondary); cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-layout:hover { color: #FFFFFF; }
+        .btn-layout.active {
+            background: rgba(59, 130, 246, 0.2); color: #60A5FA; font-weight: 600;
+        }
+
+        .raw-grid {
+            padding: 16px 32px 64px; display: grid; gap: 20px;
+            transition: all 0.3s ease;
+        }
+        .raw-grid.cols-auto { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+        .raw-grid.cols-1 { grid-template-columns: 1fr; max-width: 800px; margin: 0 auto; width: 100%; }
+        .raw-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .raw-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .raw-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
 
         .comp-card {
             background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-color);
-            display: flex; flex-direction: column; overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden; height: 100%; min-height: 380px;
         }
 
         .comp-card-head {
             padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
             background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
         .comp-card-title { font-size: 14px; font-weight: 600; }
         .comp-card-tag {
@@ -71,14 +100,15 @@
         }
 
         .comp-preview-zone {
-            height: 240px; background: #FFFFFF; display: flex; align-items: center; justify-content: center;
-            padding: 12px;
+            flex: 1; min-height: 280px; background: #FFFFFF; display: flex; align-items: center; justify-content: center;
+            padding: 0; overflow: hidden;
         }
-        .comp-preview-zone iframe { width: 100%; height: 100%; border: none; }
+        .comp-preview-zone iframe { width: 100%; height: 100%; min-height: 100%; border: none; display: block; }
 
         .comp-card-foot {
             padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
             background: rgba(0, 0, 0, 0.3); border-top: 1px solid var(--border-color); font-size: 12px;
+            flex-shrink: 0;
         }
         .path-label { font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }
 
@@ -116,6 +146,13 @@
             transition: all 0.25s; pointer-events: none;
         }
         .toast.active { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .raw-header { padding: 12px 18px; }
+            .controls-bar { padding: 12px 18px; }
+            .raw-grid { padding: 12px 18px; }
+            .raw-grid.cols-2, .raw-grid.cols-3, .raw-grid.cols-4 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -131,19 +168,30 @@
 
         <div class="header-actions">
             <a href="../../../index.html" class="nav-link"><i data-lucide="home"></i> Gateway</a>
-            <a href="../../../showcase.html" class="nav-link"><i data-lucide="layers"></i> Master Hub</a>
-            <a href="../../../web-apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps Studio</a>
+            <a href="../../../web-apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps</a>
             <a href="../glass/showcase.html" class="nav-link"><i data-lucide="gem"></i> Glass Dark (21)</a>
         </div>
     </header>
 
-    <main class="raw-grid">
+    <div class="controls-bar">
+        <div></div>
+        <div class="layout-selector">
+            <span class="layout-label"><i data-lucide="grid"></i> Tampilan:</span>
+            <button class="btn-layout" data-cols="1" onclick="setRawGridLayout('1', this)" title="1 Kolom">1</button>
+            <button class="btn-layout" data-cols="2" onclick="setRawGridLayout('2', this)" title="2 Kolom">2</button>
+            <button class="btn-layout" data-cols="3" onclick="setRawGridLayout('3', this)" title="3 Kolom">3</button>
+            <button class="btn-layout" data-cols="4" onclick="setRawGridLayout('4', this)" title="4 Kolom">4</button>
+            <button class="btn-layout active" data-cols="auto" onclick="setRawGridLayout('auto', this)" title="Auto Kolom">Auto</button>
+        </div>
+    </div>
+
+    <main class="raw-grid cols-auto" id="rawGrid">
 
             <!-- Component: Buttons & Actions -->
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Buttons & Actions</span>
-                    <span class="comp-card-tag"><button></span>
+                    <span class="comp-card-tag">&lt;button&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="button/button.html" title="Buttons & Actions Preview"></iframe>
@@ -162,7 +210,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Form Input Fields</span>
-                    <span class="comp-card-tag"><input type="..."></span>
+                    <span class="comp-card-tag">&lt;input type=&quot;...&quot;&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="input/input.html" title="Form Input Fields Preview"></iframe>
@@ -181,7 +229,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Checkboxes & Radios</span>
-                    <span class="comp-card-tag"><input type="checkbox|radio"></span>
+                    <span class="comp-card-tag">&lt;input type=&quot;checkbox|radio&quot;&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="checkbox-radio/checkbox-radio.html" title="Checkboxes & Radios Preview"></iframe>
@@ -200,7 +248,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Select Dropdown</span>
-                    <span class="comp-card-tag"><select> & <option></span>
+                    <span class="comp-card-tag">&lt;select&gt; &amp; &lt;option&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="select-dropdown/select-dropdown.html" title="Select Dropdown Preview"></iframe>
@@ -219,7 +267,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Toggle Switch (Raw)</span>
-                    <span class="comp-card-tag"><input type="checkbox" role="switch"></span>
+                    <span class="comp-card-tag">&lt;input type=&quot;checkbox&quot; role=&quot;switch&quot;&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="toggle-switch/toggle-switch.html" title="Toggle Switch (Raw) Preview"></iframe>
@@ -238,7 +286,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Disclosure / Accordion</span>
-                    <span class="comp-card-tag"><details> & <summary></span>
+                    <span class="comp-card-tag">&lt;details&gt; &amp; &lt;summary&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="details-accordion/details-accordion.html" title="Disclosure / Accordion Preview"></iframe>
@@ -257,7 +305,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Native Modal Dialog</span>
-                    <span class="comp-card-tag"><dialog></span>
+                    <span class="comp-card-tag">&lt;dialog&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="modal-dialog/modal-dialog.html" title="Native Modal Dialog Preview"></iframe>
@@ -276,7 +324,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Progress & Meter</span>
-                    <span class="comp-card-tag"><progress> & <meter></span>
+                    <span class="comp-card-tag">&lt;progress&gt; &amp; &lt;meter&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="progress-meter/progress-meter.html" title="Progress & Meter Preview"></iframe>
@@ -295,7 +343,7 @@
             <article class="comp-card">
                 <div class="comp-card-head">
                     <span class="comp-card-title">Tabular Data Grid</span>
-                    <span class="comp-card-tag"><table>, <thead>, <tbody></span>
+                    <span class="comp-card-tag">&lt;table&gt;, &lt;thead&gt;, &lt;tbody&gt;</span>
                 </div>
                 <div class="comp-preview-zone">
                     <iframe src="table/table.html" title="Tabular Data Grid Preview"></iframe>
@@ -339,6 +387,21 @@
         }
 
         lucide.createIcons();
+
+        // Restore layout preference
+        const savedRawCols = localStorage.getItem('raw-grid-layout') || 'auto';
+        const savedRawBtn = document.querySelector(`.btn-layout[data-cols="${savedRawCols}"]`);
+        if (savedRawBtn) setRawGridLayout(savedRawCols, savedRawBtn);
+
+        function setRawGridLayout(cols, btn) {
+            document.querySelectorAll('.btn-layout').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            const grid = document.getElementById('rawGrid');
+            if (!grid) return;
+            grid.classList.remove('cols-1', 'cols-2', 'cols-3', 'cols-4', 'cols-auto');
+            grid.classList.add(`cols-${cols}`);
+            localStorage.setItem('raw-grid-layout', cols);
+        }
 
         function openRawModal(folder, title) {
             document.getElementById('modalTitle').innerText = `${title} (${folder}.html)`;
