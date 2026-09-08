@@ -264,7 +264,7 @@ function dispatchRejectToGitHub(itemId) {
  */
 function generateWithGeminiDirect(prompt) {
   var apiKey = getSecret("GEMINI_API_KEY");
-  var model = "gemini-1.5-flash";
+  var model = "gemini-3.5-flash-lite";
   var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey;
 
   var systemInstruction = "You are the UI Component Architect for this design system. Generate complete single-file dark glassmorphism component HTML referencing ../css.css tokens and Lucide icons.";
