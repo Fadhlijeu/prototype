@@ -147,16 +147,37 @@ function generateWithGeminiDirect(prompt) {
 
 /**
  * Trigger Otomatis Berulang (Cron Trigger)
- * Dapat dipasang di Apps Script: Triggers > Add Trigger > Time-driven > Every 1 hour / day.
+ * Frekuensi bisa diatur di Triggers (Ikon Jam):
+ * - Minutes timer: Every 1 minute, Every 5 minutes, Every 10 minutes
+ * - Hour timer: Every hour
+ *
+ * Tiap kali jalan, fungsi ini bisa men-dispatch beberapa variasi (batch) sekaligus!
  */
 function autonomousCronTrigger() {
   Logger.log("Menjalankan siklus otonom cloud GlassOS...");
-  var seeds = [
+  
+  // Koleksi seed ide komponen untuk variasi otonom tanpa batas
+  var seedPool = [
     "Floating glass telemetry dial gauge with specular illumination",
     "Liquid frosted breadcrumb navigation with spring pill indicators",
     "Obsidian glass segmented audio visualizer bar with live meter",
-    "Aurora ambient gradient notification card with glass glow"
+    "Aurora ambient gradient notification card with glass glow",
+    "Frosted glass toggle switch with glowing micro-thumb",
+    "Glass interactive slider with magnetic haptic feedback",
+    "Aurora glass tab bar with liquid active indicator",
+    "Compact dark glass telemetry status pill with pulsing indicator",
+    "Specular glass file upload dropzone with blur refraction",
+    "Glass password strength meter with animated glowing segments"
   ];
-  var randomPrompt = seeds[Math.floor(Math.random() * seeds.length)];
-  dispatchToGitHub(randomPrompt, "autonomous", "Explore fresh glass interaction paradigms");
+  
+  // Acak dan kirim Batch (misal 2-3 komponen sekaligus per trigger)
+  var BATCH_COUNT = 2; // Ubah sesuai kebutuhan (1, 2, 3, dst.)
+  var shuffled = seedPool.sort(function() { return 0.5 - Math.random(); });
+  
+  for (var i = 0; i < Math.min(BATCH_COUNT, shuffled.length); i++) {
+    var prompt = shuffled[i];
+    Logger.log("Dispatching batch item #" + (i + 1) + ": " + prompt);
+    dispatchToGitHub(prompt, "autonomous", "Explore fresh glass interaction paradigms");
+    Utilities.sleep(1000); // jeda 1 detik antar dispatch
+  }
 }
