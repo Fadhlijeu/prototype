@@ -31,7 +31,9 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
   - Peta integrasi 12+ komponen Glass yang dirakit di dalam aplikasi.
   - Ringkasan arsitektur teknis (Web Audio Synthesizer, Canvas 2D swirl refraction, dsb.).
   - Penampil kode sumber dan dokumen spesifikasi teknis (`PROJECT_SPEC.md`).
-- Master Hub (`showcase.html`) dan Gateway (`index.html`) diperbarui dengan seksi sorotan khusus untuk membedakan Tingkat Aplikasi (Web Applications) dan Tingkat Komponen (Design Systems).
+#### 4. Pembersihan Placeholder Dummy & Gaya yang Belum Dibuat
+- Menghapus seluruh opsi/teks dummy (`Neumorphism Soft`, `Cyberpunk Neon`) dari komponen dropdown (`dropdown-select-glass` dan `raw/select-dropdown`), komponen accordion (`details-accordion`), dan catatan arsitektur di `index.html`, `component.md`, dan `ui/components/raw/README.md`.
+- Menggantinya dengan data realistis yang relevan dengan konteks proyek saat ini (`Personal Workspace`, `Design System Lab`, `Cloud File Manager`, `Production Archive`).
 
 ---
 

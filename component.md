@@ -1,7 +1,7 @@
 # Master Directory & Taxonomy: Web UI/UX Components
 
 > **Dokumen Master Audit Komponen Web Universal (Design-Agnostic)**  
-> Direktori komprehensif seluruh komponen antarmuka pengguna web (dari level primitif atomik hingga scenery komposit), independen dari gaya visual atau tema tertentu. Dokumen ini menjadi acuan tunggal fungsi, anatomi, dan taksonomi komponen sebelum gaya desain spesifik (seperti Glass, Neumorphism, Brutalism, atau Minimal Flat) diterapkan di subfolder gaya masing-masing (misal: `ui/glass/`).
+> Direktori komprehensif seluruh komponen antarmuka pengguna web (dari level primitif atomik hingga scenery komposit), independen dari gaya visual atau tema tertentu. Dokumen ini menjadi acuan tunggal fungsi, anatomi, dan taksonomi komponen sebelum gaya desain spesifik (seperti Glass Dark atau tema visual lainnya) diterapkan di subfolder gaya masing-masing (misal: `ui/components/<style>/`).
 
 ---
 
