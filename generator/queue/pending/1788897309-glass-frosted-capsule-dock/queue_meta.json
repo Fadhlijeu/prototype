@@ -1,14 +1,14 @@
 {
-  "item_id": "1788895958-aurora-floating-command-prompt-bar",
-  "slug": "aurora-floating-command-prompt-bar",
-  "created_at": "2026-09-09 02:32:38",
+  "item_id": "1788897309-glass-frosted-capsule-dock",
+  "slug": "glass-frosted-capsule-dock",
+  "created_at": "2026-09-09 02:55:09",
   "status": "PENDING_REVIEW",
   "validation": {
     "valid": true,
     "score": 100,
     "errors": [],
     "warnings": [],
-    "file_size_bytes": 12205
+    "file_size_bytes": 11760
   },
   "router": {
     "provider": "mock",

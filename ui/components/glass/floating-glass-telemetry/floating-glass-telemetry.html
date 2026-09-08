@@ -1,4 +1,14 @@
-:root {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Glass Telemetry — Glass Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
             --bg-page: #0A0A0A;
             --glass-card: rgba(255, 255, 255, 0.06);
             --glass-border-top: rgba(255, 255, 255, 0.22);
@@ -272,3 +282,58 @@
                 transition: none !important;
             }
         }
+    </style>
+</head>
+<body>
+    <div class="glass-card-wrapper">
+        <div class="layer-4-shadow"></div>
+        <div class="layer-3-aurora">
+            <div class="aurora-blob blob-1"></div>
+            <div class="aurora-blob blob-2"></div>
+            <div class="aurora-blob blob-3"></div>
+        </div>
+        <div class="layer-2-glass">
+            
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="activity" style="width:14px;height:14px;"></i> Live Telemetry Node</span>
+                <span class="widget-badge active">99.98%</span>
+            </div>
+            <h2 class="widget-title">Floating Glass Telemetry</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label">Throughput</span>
+                    <span class="sub-stat-val">1.4 GB/s</span>
+                </div>
+                <div class="sub-stat-box">
+                    <span class="sub-stat-label">Latency</span>
+                    <span class="sub-stat-val" style="color:#34D399;">12 ms</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script id="component-manifest" type="application/json">
+    {
+        "title": "Floating Glass Telemetry",
+        "slug": "floating-glass-telemetry",
+        "category": "telemetry",
+        "badge": "Molecule",
+        "variation": "aurora-gradient-glow",
+        "tags": ["glass", "telemetry", "interactive", "specular-depth"]
+    }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) window.lucide.createIcons();
+            const btn = document.getElementById('btn-action');
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

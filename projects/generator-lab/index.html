@@ -862,6 +862,14 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label class="form-label" for="githubTokenInput">
+                        <span>GitHub Personal Access Token (Direct Cloud Deploy)</span>
+                    </label>
+                    <input type="password" class="form-input" id="githubTokenInput" placeholder="ghp_... atau github_pat_...">
+                    <span style="font-size:11.5px;color:#9CA3AF;">Opsional: Jika diisi, klik "Setujui" akan langsung memicu GitHub Actions untuk mem-build &amp; deploy ke <code>showcase.html</code> dan GitHub Pages secara otomatis. Disimpan aman di sessionStorage browser Anda.</span>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="gasUrlInput">
                         <span>Google Apps Script Web App URL</span>
                     </label>
@@ -893,6 +901,20 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Deploy to Showcase Modal -->
+    <div class="modal-overlay" id="deployModal" role="dialog" aria-modal="true" aria-label="Status Deploy Showcase">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i data-lucide="rocket" style="color:#22D3EE;"></i> Status Deploy Showcase</h3>
+                <button type="button" class="modal-close" onclick="closeDeployModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="deployModalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
     <!-- Toast Notification -->
     <div class="toast-notification" id="toast">
         <div class="toast-icon"><i data-lucide="sparkles"></i></div>
@@ -908,6 +930,7 @@
         // ======================================================================
         const STORE_KEY = "prototype_generator_lab_v1";
         const SESSION_PASSKEY_KEY = "prototype_lab_passkey";
+        const SESSION_GITHUB_TOKEN_KEY = "prototype_lab_github_token";
         const LOCAL_GAS_URL_KEY = "prototype_gas_url";
 
         // Murni kosong secara default sesuai instruksi user
@@ -1196,7 +1219,7 @@
             document.getElementById('promptInput').value = text;
         }
 
-        function approveCandidate(id) {
+        async function approveCandidate(id) {
             const store = getLabStore();
             const idx = store.pending.findIndex(x => x.id === id);
             if (idx === -1) return;
@@ -1204,16 +1227,50 @@
             const item = store.pending.splice(idx, 1)[0];
             item.status = "APPROVED";
             item.approvedAt = new Date().toLocaleString();
+            if (!store.approved) store.approved = [];
             store.approved.unshift(item);
 
             saveLabStore(store);
 
-            // Jika terhubung ke Cloud GAS, dispatch sinyal persetujuan
+            const githubToken = sessionStorage.getItem(SESSION_GITHUB_TOKEN_KEY) || "";
             const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
             const passkey = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
+
+            let deployedViaGitHub = false;
+
+            if (githubToken) {
+                try {
+                    const ghRes = await fetch("https://api.github.com/repos/Fadhlijeu/prototype/dispatches", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${githubToken}`,
+                            "Accept": "application/vnd.github.v3+json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            event_type: "approve_task",
+                            client_payload: {
+                                action: "approve",
+                                item_id: id,
+                                timestamp: new Date().toISOString()
+                            }
+                        })
+                    });
+                    if (ghRes.ok || ghRes.status === 204) {
+                        deployedViaGitHub = true;
+                        showToast(`🚀 Persetujuan dikirim ke GitHub Actions! Workflow sedang mendeploy "${item.title}".`);
+                        openDeployModal(item, "github_dispatched");
+                        return;
+                    }
+                } catch(e) {
+                    console.warn("GitHub PAT dispatch failed:", e);
+                }
+            }
+
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({
                         action: "approve_item",
                         item_id: id,
@@ -1222,27 +1279,49 @@
                 }).catch(() => {});
             }
 
-            showToast(`"${item.title}" berhasil disetujui & masuk ke Showroom!`);
+            // Tampilkan modal panduan deploy & perintah CLI 1-klik
+            openDeployModal(item, "manual_or_gas");
         }
 
-        function rejectCandidate(id) {
+        async function rejectCandidate(id) {
             const store = getLabStore();
             const idx = store.pending.findIndex(x => x.id === id);
             if (idx === -1) return;
 
             const item = store.pending.splice(idx, 1)[0];
-            item.status = "REJECTED";
-            item.rejectedAt = new Date().toLocaleString();
-            if (!store.rejected) store.rejected = [];
-            store.rejected.unshift(item);
+            // Langsung hapus total: tidak disimpan ke tab rejected!
+            if (store.rejected) {
+                store.rejected = store.rejected.filter(x => x.id !== id);
+            }
             saveLabStore(store);
 
-            // Jika terhubung ke Cloud GAS, dispatch sinyal penolakan (hapus total di server/git)
+            const githubToken = sessionStorage.getItem(SESSION_GITHUB_TOKEN_KEY) || "";
             const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
             const passkey = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
+
+            if (githubToken) {
+                fetch("https://api.github.com/repos/Fadhlijeu/prototype/dispatches", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${githubToken}`,
+                        "Accept": "application/vnd.github.v3+json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        event_type: "reject_task",
+                        client_payload: {
+                            action: "reject",
+                            item_id: id,
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                }).catch(() => {});
+            }
+
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({
                         action: "reject_item",
                         item_id: id,
@@ -1251,7 +1330,84 @@
                 }).catch(() => {});
             }
 
-            showToast(`Kandidat "${item.title}" ditolak & dipindahkan ke tab Ditolak.`);
+            showToast(`🗑️ Kandidat "${item.title}" langsung dihapus permanen.`);
+        }
+
+        function openDeployModal(item, mode) {
+            const modal = document.getElementById('deployModal');
+            const body = document.getElementById('deployModalBody');
+            if (!modal || !body) return;
+
+            const cmd = `python -m generator.runner curate --approve ${item.id}`;
+
+            if (mode === "github_dispatched") {
+                body.innerHTML = `
+                    <div style="text-align:center;padding:12px 0;">
+                        <div style="width:54px;height:54px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);display:inline-flex;align-items:center;justify-content:center;color:#34D399;font-size:24px;margin-bottom:12px;">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <h4 style="color:#FFFFFF;font-size:16px;font-weight:700;margin-bottom:6px;">Persetujuan Dikirim ke GitHub Actions!</h4>
+                        <p style="color:#9CA3AF;font-size:13px;line-height:1.6;margin-bottom:16px;">
+                            Workflow <code>Autonomous Cloud Generator</code> sedang memindahkan file ke <code>ui/components/glass/${escapeHtml(item.slug)}</code>, mendaftarkannya di <code>showcase.html</code>, dan mempublikasikan ke GitHub Pages secara otomatis.
+                        </p>
+                        <div style="display:flex;justify-content:center;gap:10px;">
+                            <a href="https://github.com/Fadhlijeu/prototype/actions" target="_blank" rel="noopener" class="btn-decision btn-accept" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                                <i data-lucide="external-link"></i> Pantau Workflow di GitHub
+                            </a>
+                            <button type="button" class="btn-decision btn-reject" onclick="closeDeployModal()">Tutup</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                body.innerHTML = `
+                    <div style="padding:8px 0;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                            <div style="width:44px;height:44px;border-radius:12px;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);display:flex;align-items:center;justify-content:center;color:#22D3EE;">
+                                <i data-lucide="sparkles"></i>
+                            </div>
+                            <div>
+                                <h4 style="color:#FFFFFF;font-size:15px;font-weight:700;margin:0;">Disetujui: ${escapeHtml(item.title)}</h4>
+                                <span style="color:#9CA3AF;font-size:12px;">ID Antrean: <code>${escapeHtml(item.id)}</code></span>
+                            </div>
+                        </div>
+
+                        <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;margin-bottom:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                                <span style="font-size:12px;color:#A5B4FC;font-weight:600;"><i data-lucide="terminal" style="width:14px;height:14px;"></i> Perintah Deploy CLI (1-Klik Salin):</span>
+                                <button type="button" class="btn-tool" onclick="copyText('${cmd}')" style="padding:4px 10px;font-size:11.5px;">
+                                    <i data-lucide="copy"></i> Salin Perintah
+                                </button>
+                            </div>
+                            <code style="display:block;background:rgba(15,23,42,0.8);color:#38BDF8;padding:10px 12px;border-radius:8px;font-size:12.5px;font-family:monospace;word-break:break-all;">
+                                ${cmd}
+                            </code>
+                        </div>
+
+                        <div style="padding:12px;border-radius:10px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);font-size:12px;color:#D1D5DB;line-height:1.6;margin-bottom:16px;">
+                            <strong style="color:#60A5FA;">Deploy Otomatis Langsung dari Browser:</strong><br>
+                            Buka <a href="#" onclick="closeDeployModal();openSettingsModal();return false;" style="color:#22D3EE;text-decoration:underline;">Pengaturan Cloud</a> dan masukkan <strong>GitHub Token (PAT)</strong> Anda. Dengan token terpasang, setiap kali Anda klik "Setujui", komponen akan langsung dipublikasikan ke <code>showcase.html</code> &amp; GitHub Pages secara instan!
+                        </div>
+
+                        <div style="display:flex;justify-content:flex-end;gap:10px;">
+                            <button type="button" class="btn-decision btn-accept" onclick="closeDeployModal()">Selesai</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.classList.add('active');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeDeployModal() {
+            const modal = document.getElementById('deployModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast("Perintah deploy berhasil disalin ke clipboard!");
+            });
         }
 
         function clearCurrentTab() {
@@ -1393,6 +1549,7 @@
         }
 
         function openSettingsModal() {
+            document.getElementById('githubTokenInput').value = sessionStorage.getItem(SESSION_GITHUB_TOKEN_KEY) || "";
             document.getElementById('gasUrlInput').value = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
             document.getElementById('passkeyInput').value = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
             document.getElementById('settingsModal').classList.add('active');
@@ -1404,14 +1561,21 @@
         }
 
         function saveSettings() {
+            const token = document.getElementById('githubTokenInput').value.trim();
             const url = document.getElementById('gasUrlInput').value.trim();
             const pass = document.getElementById('passkeyInput').value.trim();
+
+            if (token) sessionStorage.setItem(SESSION_GITHUB_TOKEN_KEY, token);
+            else sessionStorage.removeItem(SESSION_GITHUB_TOKEN_KEY);
+
             if (url) localStorage.setItem(LOCAL_GAS_URL_KEY, url);
             else localStorage.removeItem(LOCAL_GAS_URL_KEY);
 
             if (pass) sessionStorage.setItem(SESSION_PASSKEY_KEY, pass);
+            else sessionStorage.removeItem(SESSION_PASSKEY_KEY);
+
             closeSettingsModal();
-            showToast("Pengaturan Cloud & Passkey berhasil disimpan!");
+            showToast("Pengaturan Cloud, GitHub Token & Passkey berhasil disimpan!");
         }
 
         function showToast(msg) {

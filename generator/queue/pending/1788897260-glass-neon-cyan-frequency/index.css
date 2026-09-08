@@ -6,30 +6,35 @@
             --glass-border-bottom: rgba(255, 255, 255, 0.04);
             --text-primary: #FFFFFF;
             --text-secondary: rgba(255, 255, 255, 0.65);
-            --aurora-1: rgba(70, 110, 220, 0.65);
-            --aurora-2: rgba(40, 60, 160, 0.55);
-            --aurora-3: rgba(140, 70, 230, 0.45);
+            --aurora-1: rgba(236, 72, 153, 0.75);
+            --aurora-2: rgba(139, 92, 246, 0.65);
+            --aurora-3: rgba(244, 114, 182, 0.45);
+            --accent: #F472B6;
+            --shadow-custom: rgba(219, 39, 119, 0.4);
+            --radius-custom: 28px;
             --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: var(--bg-page);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
             min-height: 100vh;
+            background-color: var(--bg-page);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 24px;
+            position: relative;
+            overflow-x: hidden;
         }
 
         /* 5-LAYER GLASS CARD ARCHITECTURE (from STYLE_SPEC.md) */
         .glass-card-wrapper {
             position: relative;
             width: 100%;
-            max-width: 440px;
+            max-width: 380px;
             transition: transform 0.3s var(--ease-spring);
         }
 
@@ -41,8 +46,8 @@
         .layer-4-shadow {
             position: absolute;
             top: 12px; left: 0; right: 0; bottom: -12px;
-            background: rgba(25, 45, 110, 0.5);
-            border-radius: 32px;
+            background: var(--shadow-custom);
+            border-radius: var(--radius-custom);
             filter: blur(30px);
             transform: scale(0.96) translateY(12px);
             z-index: -2;
@@ -58,7 +63,7 @@
         .layer-3-aurora {
             position: absolute;
             inset: 0;
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             overflow: hidden;
             z-index: -1;
             contain: layout style paint;
@@ -88,7 +93,7 @@
             background: var(--glass-card);
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);

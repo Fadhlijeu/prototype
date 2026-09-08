@@ -288,20 +288,60 @@ function generateWithGeminiDirect(prompt) {
 }
 
 /**
- * Menghasilkan instruksi otonom kreatif umum (Dynamic Creative Directives).
- * AI Web Engineer diberi kebebasan penuh memilih tipe komponen (input field, slider,
- * button, dock, scenery composite, telemetry visualizer, dashboard, atau konsep orisinal bebas).
+ * Menghasilkan instruksi otonom kreatif beragam (Category-Aware Creative Directives).
+ * AI Web Engineer diarahkan untuk menghasilkan variasi bentuk, palet warna, dan mekanisme interaktif
+ * yang berbeda di tiap kategori (sliders, telemetry, controls, navigation, buttons, scenery, dashboards, etc).
  */
-function generateAutonomousPrompt() {
-  var creativeDirectives = [
-    "Anda adalah Senior AI Web Engineer & Glassmorphism Design Technologist. Secara bebas dan mandiri, ciptakan sebuah komponen web dark glass premium atau layout scenery interaktif. Ada beragam opsi yang bisa kamu eksplorasi: input field futuristik, interactive slider/stepper, specular action button, telemetry dial gauge, navigation dock, segmented controller, status monitor card, dashboard matrix, atau konsep orisinal baru di kategori 'other'. Tentukan sendiri nama, konsep, dan interaksi uniknya dengan standar estetika tertinggi.",
-    "Anda adalah Creative Frontend Architect. Buatlah sebuah komponen UI dark glassmorphism yang memukau dan fungsional. Kamu bebas memilih opsi apa pun: bisa berupa single molecule (seperti dynamic toggle, floating input, button), compound organism (seperti audio visualizer, file dropzone, filter cluster), scenery composite (kumpulan widget dalam satu workstation view), atau inovasi interaktif bebas. Desain dengan asymmetric border, ambient aurora glow, dan physics spring yang halus.",
-    "Sebagai autonomous UI Engineer, rancang sebuah komponen atau pemandangan antarmuka (scenery/dashboard) bertema Dark Obsidian Glass. Kamu memiliki kebebasan penuh: pilih apakah ingin membuat kontrol formulir, telemetry data dial, navigation stepper, floating widget, atau screenery layout terpadu. Bebas berinovasi di kategori apa pun termasuk 'other'.",
-    "Anda bertindak sebagai Lead Design System Engineer. Eksplorasi paradigma antarmuka baru untuk Prototype Design System. Ciptakan komponen web dark glass yang elegan dan interaktif. Silakan pilih secara bebas dari taksonomi: inputs, sliders, controls, cards, navigation, telemetry, scenery, dashboards, atau other. Prioritaskan kebaruan interaksi, depth layering, dan micro-animations."
-  ];
+function generateAutonomousPrompt(category) {
+  var categoryDirectives = {
+    "sliders": [
+      "Ciptakan komponen Aurora Magnetic Precision Slider bertema Dark Glass. Rancang track presisi dengan magnetic tick marks haptic, numeric badge HUD, dan thumb slider bersinar biru elektrik (#60A5FA). Wajib interaktif dengan JavaScript.",
+      "Desain Refraction Density Optical Scrubber untuk kontrol visual. Gunakan glass slider horizontal dengan nilai persentase live, efek liquid refraction, dan specular top border."
+    ],
+    "telemetry": [
+      "Rancang komponen Neon Cyan & Emerald Live Telemetry Dial Gauge atau Audio Visualizer. Buat indikator visual gelombang/meter aktif dengan palet cyan (#22D3EE) dan emerald (#10B981) yang menyala di atas canvas obsidian gelap.",
+      "Ciptakan Dual Arc Specular Latency Monitor dengan metrik live ping, status node mesh, dan animasi fluctuating graph mikro yang elegan."
+    ],
+    "controls": [
+      "Ciptakan Segmented Frosted Capsule Switch (border-radius: 9999px) dengan pilihan mode Eco / Balanced / Turbo. Tombol aktif berpindah dengan spring animation halus dan aksen warna mint green (#34D399).",
+      "Rancang Tactile Obsidian Power Toggle dengan indikator glowing LED status dan efek glass click interaktif."
+    ],
+    "buttons": [
+      "Desain Specular Action Speed Dial / Floating Action Button dengan expandable speed dial options, aksen hot pink / violet glow (#F472B6), dan spring elevation saat dihover.",
+      "Ciptakan Micro-Elevation Action Trigger Group dengan tombol snapshot & deploy berlatar frosted glass specular."
+    ],
+    "navigation": [
+      "Rancang Frosted Capsule Dock Bar (border-radius: 9999px) dengan icon Lucide floating, pill indicator aktif berbahan liquid glass, dan transisi spring physics.",
+      "Ciptakan Breadcrumb Stepper Navigation dengan pill status interaktif dan specular light highlight di tiap node antarmuka."
+    ],
+    "dashboards": [
+      "Desain Obsidian Telemetry Command Matrix (max-width: 720px) dengan dual-column telemetry grid, CPU core live bar, dan network ping readout.",
+      "Rancang Realtime System Cockpit dengan mini sparklines, status cluster server, dan depth glass border asimetris."
+    ],
+    "scenery": [
+      "Ciptakan Glass Scenery Workstation Viewport (max-width: 820px) berisi komposit panel multi-widget: compute metrics, memory status, dan quick command dock.",
+      "Desain Cybernetic Multi-Widget Viewport dengan layout komposit pemandangan antarmuka yang memukau."
+    ],
+    "inputs": [
+      "Rancang Intelligent Semantic Prompt Bar dengan tag pencarian interaktif (#Specular, #AuroraMesh), icon Lucide terminal, dan glowing focus ring.",
+      "Ciptakan Floating Command Input Cluster dengan tombol submit terintegrasi dan ambient depth blur."
+    ],
+    "feedback": [
+      "Ciptakan Glass Password Strength Glowing Meter dengan bar segmen 4-warna bercahaya (Emerald, Solar Amber, Ruby) dan feedback enkripsi.",
+      "Rancang Solar Amber Notification Pill dengan refractive glass blur dan auto-dismiss spring interaction."
+    ],
+    "other": [
+      "Ciptakan Experimental Radial Command Wheel dengan circular touch hotspots dan holographic optic target di tengah.",
+      "Rancang Prismatic Glass Resonance Orb dengan kontrol interaktif orisinal bebas di kategori 'other'."
+    ]
+  };
 
-  var idx = Math.floor(Math.random() * creativeDirectives.length);
-  return creativeDirectives[idx];
+  var prompts = categoryDirectives[category];
+  if (!prompts || prompts.length === 0) {
+    prompts = categoryDirectives["other"];
+  }
+  var idx = Math.floor(Math.random() * prompts.length);
+  return prompts[idx];
 }
 
 /**
@@ -309,17 +349,27 @@ function generateAutonomousPrompt() {
  * Frekuensi bisa diatur di Triggers (Ikon Jam):
  * - Minutes timer: Every 5 minutes, Every 10 minutes, Every 15 minutes, Every hour
  *
- * Tiap kali jalan, fungsi ini men-dispatch variasi batch otonom ke GitHub Actions.
+ * Tiap kali jalan, fungsi ini men-dispatch variasi batch otonom dengan kategori berbeda ke GitHub Actions.
  */
 function autonomousCronTrigger() {
   Logger.log("Menjalankan siklus otonom cloud Prototype...");
   
+  var CATEGORIES = ["sliders", "telemetry", "controls", "navigation", "buttons", "dashboards", "scenery", "inputs", "feedback", "other"];
+  // Acak urutan kategori agar tiap siklus menghasilkan variasi baru
+  for (var i = CATEGORIES.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = CATEGORIES[i];
+    CATEGORIES[i] = CATEGORIES[j];
+    CATEGORIES[j] = temp;
+  }
+
   var BATCH_COUNT = 2; // Jumlah batch per siklus
-  for (var i = 0; i < BATCH_COUNT; i++) {
-    var prompt = generateAutonomousPrompt();
-    Logger.log("Dispatching autonomous batch item #" + (i + 1) + ": " + prompt.substring(0, 75) + "...");
-    dispatchToGitHub(prompt, "other", "Rujuk ui/components/glass/STYLE_SPEC.md dan css.css untuk menghasilkan UI Dark Glass berkualitas tinggi");
-    if (i < BATCH_COUNT - 1) {
+  for (var k = 0; k < BATCH_COUNT; k++) {
+    var cat = CATEGORIES[k % CATEGORIES.length];
+    var prompt = generateAutonomousPrompt(cat);
+    Logger.log("Dispatching autonomous batch item #" + (k + 1) + " (" + cat + "): " + prompt.substring(0, 75) + "...");
+    dispatchToGitHub(prompt, cat, "Rujuk ui/components/glass/STYLE_SPEC.md dan css.css. Pastikan bentuk form factor unik sesuai kategori dan bukan sekadar kotak generik!");
+    if (k < BATCH_COUNT - 1) {
       Utilities.sleep(1500); // jeda antar dispatch
     }
   }

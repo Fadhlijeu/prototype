@@ -199,6 +199,27 @@ Study these existing high-quality components from the repository to match their 
 === ADDITIONAL SKILL REFERENCES ===
 {extra_skills_str if extra_skills_str else '(no additional skills loaded)'}
 
+=== ARCHITECTURAL & VISUAL DIVERSITY DIRECTIVE (ANTI-REPETITION) ===
+DO NOT generate another generic 440px rectangular card with the same blue-violet aurora blobs!
+Every component MUST express distinct visual geometry, unique color harmonies, and tailored layout:
+1. FORM FACTOR & GEOMETRY TAILORED TO CATEGORY:
+   - `controls` / `toggles`: Pill capsules (border-radius: 9999px), segmented rocker switches, floating toggles.
+   - `sliders`: Precision track with magnetic tick marks, numeric HUD badge, glowing slider thumb.
+   - `buttons`: Radial speed dial, expandable floating action button (FAB), or spring-action trigger pill.
+   - `telemetry`: Circular arc dial meters, SVG sparklines, live fluctuating telemetry data matrices (min-width: 520px).
+   - `navigation`: Horizontal capsule dock (border-radius: 9999px), frosted segmented breadcrumb trail.
+   - `dashboards` / `scenery`: Wide multi-pane layout (max-width: 720px - 860px) with telemetry nodes and quick docks.
+   - `inputs`: Multi-part prompt bar, search cluster with semantic action tags and glowing focus ring.
+2. DIVERSE COLOR PALETTES (AVOID ONLY BLUE/PURPLE):
+   - Telemetry: Neon Cyan (#22D3EE) and Emerald (#10B981) glowing auroras.
+   - Controls / Switches: Mint Green (#34D399) and Electric Teal.
+   - Feedback: Solar Amber (#FBBF24) and Crimson Ruby (#EF4444).
+   - Buttons: Hot Pink / Magenta (#F472B6) with Deep Violet glow.
+   - Dashboards: Obsidian Deep Navy (#38BDF8) and Steel Blue.
+   - Navigation: Indigo and Periwinkle (#A5B4FC).
+3. REAL WORKING INTERACTIVITY:
+   - Provide working interactive JavaScript: clicking tabs changes active state, sliders update live values, buttons trigger micro-animations or state changes.
+
 === IMMUTABLE GENERATION RULES ===
 1. Always output a single complete HTML file containing embedded <style>, semantic HTML, manifest JSON in <script id="component-manifest" type="application/json">, and interactive <script>.
 2. Do NOT use external CSS frameworks (no Tailwind, no Bootstrap). Only Vanilla CSS.
@@ -220,7 +241,7 @@ Study these existing high-quality components from the repository to match their 
 
 {memory_str}
 
-Ensure the component is interactive, visually stunning, with subtle specular borders, ambient depth, and spring transitions. Include the component manifest JSON script tag.
+Ensure the component is interactive, visually unique (not a repetitive card), with subtle specular borders, ambient depth, tailored color palette, and spring transitions. Include the component manifest JSON script tag.
 """
         return system_prompt, user_prompt
 

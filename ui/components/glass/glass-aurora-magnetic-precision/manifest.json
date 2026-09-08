@@ -1,0 +1,23 @@
+{
+  "title": "Glass Aurora Magnetic Precision",
+  "slug": "glass-aurora-magnetic-precision",
+  "category": "sliders",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "sliders",
+    "interactive",
+    "specular-depth"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Molecule",
+  "icons": [
+    "sliders",
+    "sliders-horizontal",
+    "gauge",
+    "disc"
+  ],
+  "raw_prompt": "Aurora Magnetic Precision Slider with magnetic tick marks"
+}

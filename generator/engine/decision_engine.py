@@ -37,24 +37,71 @@ class DecisionEngine:
 
     ATOMIC_LEVELS = ["Atomic", "Molecule", "Organism"]
 
-    AUTONOMOUS_CONCEPTS = [
-        {"category": "telemetry", "title": "Obsidian Segmented Audio Visualizer", "variation": "ambient-pulse", "badge": "Organism"},
-        {"category": "sliders", "title": "Aurora Magnetic Precision Slider", "variation": "specular-frosted", "badge": "Molecule"},
-        {"category": "buttons", "title": "Specular Floating Action Speed Dial", "variation": "floating-elevated", "badge": "Molecule"},
-        {"category": "controls", "title": "Segmented Frosted Pill Switch", "variation": "segmented-glass", "badge": "Atomic"},
-        {"category": "cards", "title": "Holographic Glass Identity Beacon", "variation": "aurora-gradient-glow", "badge": "Molecule"},
-        {"category": "navigation", "title": "Liquid Frosted Spring Breadcrumb", "variation": "spring-interactive", "badge": "Molecule"},
-        {"category": "feedback", "title": "Glass Password Strength Glowing Meter", "variation": "ambient-pulse", "badge": "Molecule"},
-        {"category": "dashboards", "title": "Obsidian Telemetry Command Matrix", "variation": "minimal-obsidian", "badge": "Composite Scenery"},
-        {"category": "scenery", "title": "Glass Scenery Composite Workstation", "variation": "specular-frosted", "badge": "Composite Scenery"},
-        {"category": "other", "title": "Experimental Obsidian Command Wheel", "variation": "floating-elevated", "badge": "Creative Freeform"},
-        {"category": "inputs", "title": "Aurora Floating Command Prompt Bar", "variation": "aurora-gradient-glow", "badge": "Molecule"},
-        {"category": "telemetry", "title": "Dual Ring Telemetry Latency Gauge", "variation": "aurora-gradient-glow", "badge": "Molecule"},
-        {"category": "sliders", "title": "Obsidian Haptic Volume Stepper", "variation": "minimal-obsidian", "badge": "Molecule"}
-    ]
+    AUTONOMOUS_THEMES = {
+        "telemetry": [
+            ("Neon Cyan Frequency Visualizer", "ambient-pulse", "Molecule"),
+            ("Dual Arc Specular Latency Gauge", "specular-frosted", "Molecule"),
+            ("Fluctuating Mesh Server Telemetry", "aurora-gradient-glow", "Organism"),
+            ("Bioluminescent Hardware Radar", "ambient-pulse", "Molecule"),
+            ("Obsidian High-Precision Dial Meter", "minimal-obsidian", "Molecule")
+        ],
+        "sliders": [
+            ("Magnetic Haptic Precision Slider", "spring-interactive", "Molecule"),
+            ("Refraction Density Optical Scrubber", "liquid-refraction", "Molecule"),
+            ("Specular Dual Range Fader", "specular-frosted", "Molecule"),
+            ("Quantum Level Stepper Control", "minimal-obsidian", "Molecule"),
+            ("Electric Blue Ambient Slider", "aurora-gradient-glow", "Molecule")
+        ],
+        "controls": [
+            ("Segmented Frosted Capsule Switch", "segmented-glass", "Atomic"),
+            ("Tactile Obsidian Power Rocker", "minimal-obsidian", "Atomic"),
+            ("Spring Pill Mode Switcher", "spring-interactive", "Atomic"),
+            ("Biometric Holographic Toggle", "aurora-gradient-glow", "Atomic"),
+            ("Liquid State Segmented Pill", "liquid-refraction", "Atomic")
+        ],
+        "buttons": [
+            ("Specular Action Speed Dial", "floating-elevated", "Molecule"),
+            ("Expandable Frosted Glass FAB", "spring-interactive", "Molecule"),
+            ("Micro-Elevation Action Pill", "specular-frosted", "Atomic"),
+            ("Magenta Ambient Trigger Dial", "aurora-gradient-glow", "Molecule"),
+            ("Holographic Radial Launch Button", "floating-elevated", "Molecule")
+        ],
+        "navigation": [
+            ("Frosted Capsule Dock Bar", "floating-elevated", "Molecule"),
+            ("Liquid Spring Breadcrumb Trail", "spring-interactive", "Molecule"),
+            ("Segmented Obsidian Tab Rail", "segmented-glass", "Molecule"),
+            ("Radial Compass Navigation Node", "floating-elevated", "Molecule"),
+            ("Specular Horizontal Pill Nav", "specular-frosted", "Molecule")
+        ],
+        "dashboards": [
+            ("Obsidian Telemetry Command Matrix", "minimal-obsidian", "Composite Scenery"),
+            ("Realtime Mesh Metrics Cockpit", "aurora-gradient-glow", "Composite Scenery"),
+            ("Multi-Cluster System Dashboard", "segmented-glass", "Composite Scenery")
+        ],
+        "scenery": [
+            ("Glass Scenery Workstation Viewport", "specular-frosted", "Composite Scenery"),
+            ("Cybernetic Multi-Widget Viewport", "liquid-refraction", "Composite Scenery"),
+            ("Modular Environment Scenery Hub", "floating-elevated", "Composite Scenery")
+        ],
+        "feedback": [
+            ("Glass Password Strength Glowing Meter", "ambient-pulse", "Molecule"),
+            ("Solar Amber Notification Pill", "aurora-gradient-glow", "Molecule"),
+            ("Refractive Glass Banner Alert", "specular-frosted", "Molecule")
+        ],
+        "inputs": [
+            ("Intelligent Semantic Prompt Bar", "specular-frosted", "Molecule"),
+            ("Aurora Floating Command Search Bar", "aurora-gradient-glow", "Molecule"),
+            ("Tag-Clustered Glass Input Field", "spring-interactive", "Molecule")
+        ],
+        "other": [
+            ("Experimental Radial Command Wheel", "floating-elevated", "Creative Freeform"),
+            ("Holographic Zero-Gravity Dial", "aurora-gradient-glow", "Creative Freeform"),
+            ("Prismatic Glass Resonance Orb", "liquid-refraction", "Creative Freeform")
+        ]
+    }
 
     def __init__(self, existing_slugs: List[str] = None):
-        self.existing_slugs = existing_slugs or []
+        self.existing_slugs = set(existing_slugs or [])
 
     def classify_intent(self, prompt: str) -> Dict[str, Any]:
         """
@@ -71,22 +118,41 @@ class DecisionEngine:
         ])
 
         if is_autonomous:
-            # Pick a creative concept, prioritizing those not already in existing_slugs
-            candidates = [c for c in self.AUTONOMOUS_CONCEPTS if re.sub(r"[^a-z0-9]+", "-", c["title"].lower()).strip("-") not in self.existing_slugs]
-            chosen = random.choice(candidates) if candidates else random.choice(self.AUTONOMOUS_CONCEPTS)
-            
-            title = chosen["title"]
-            detected_category = chosen["category"]
-            variation = chosen["variation"]
-            atomic_level = chosen["badge"]
+            # Check if prompt targets a category
+            target_cat = None
+            for cat in self.CATEGORIES.keys():
+                if f"kategori '{cat}'" in prompt_lower or f"kategori {cat}" in prompt_lower or f"category '{cat}'" in prompt_lower:
+                    target_cat = cat
+                    break
+
+            if not target_cat:
+                # Rotate across categories to guarantee variety
+                all_cats = list(self.AUTONOMOUS_THEMES.keys())
+                random.shuffle(all_cats)
+                target_cat = all_cats[0]
+
+            pool = self.AUTONOMOUS_THEMES.get(target_cat, self.AUTONOMOUS_THEMES["other"])
+            # Filter pool to items not yet in existing_slugs
+            candidates = [
+                c for c in pool
+                if re.sub(r"[^a-z0-9]+", "-", c[0].lower()).strip("-") not in self.existing_slugs
+            ]
+            chosen = random.choice(candidates) if candidates else random.choice(pool)
+
+            title = chosen[0]
+            variation = chosen[1]
+            atomic_level = chosen[2]
+            detected_category = target_cat
             slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
-            
+
             counter = 2
             orig = slug
             while slug in self.existing_slugs:
                 slug = f"{orig}-v{counter}"
                 counter += 1
-                
+
+            self.existing_slugs.add(slug)
+
             return {
                 "title": title,
                 "slug": slug,
@@ -95,7 +161,8 @@ class DecisionEngine:
                 "atomic_level": atomic_level,
                 "family": "glass",
                 "theme": "dark",
-                "icon": self.CATEGORIES.get(detected_category, ["sparkles"])[0]
+                "icon": self.CATEGORIES.get(detected_category, ["sparkles"])[0],
+                "raw_prompt": prompt
             }
 
         # 1. Determine category for specific user prompts

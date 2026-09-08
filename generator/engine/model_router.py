@@ -147,7 +147,7 @@ class ModelRouter:
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"}
         )
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
@@ -173,7 +173,7 @@ class ModelRouter:
             data=json.dumps(payload).encode("utf-8"),
             headers=headers
         )
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return data["choices"][0]["message"]["content"]
 
@@ -186,9 +186,118 @@ class ModelRouter:
         title = title_match.group(1).strip() if title_match else "Glass Dynamic Widget"
         slug = slug_match.group(1).strip() if slug_match else re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
         category = cat_match.group(1).strip().lower() if cat_match else "other"
+        is_scenery = "scenery" in category or "scenery" in title.lower() or "dashboard" in category
 
-        is_scenery = category in ["scenery", "dashboards"]
-        container_width = "680px" if is_scenery else "440px"
+        PALETTES = {
+            "telemetry": {
+                "aurora_1": "rgba(6, 182, 212, 0.75)",      # Neon Cyan
+                "aurora_2": "rgba(16, 185, 129, 0.65)",    # Emerald
+                "aurora_3": "rgba(14, 116, 144, 0.5)",     # Deep Teal
+                "shadow": "rgba(6, 182, 212, 0.4)",
+                "accent": "#22D3EE",
+                "width": "540px",
+                "radius": "22px"
+            },
+            "sliders": {
+                "aurora_1": "rgba(59, 130, 246, 0.75)",     # Electric Blue
+                "aurora_2": "rgba(99, 102, 241, 0.65)",    # Indigo
+                "aurora_3": "rgba(147, 197, 253, 0.45)",   # Sky
+                "shadow": "rgba(37, 99, 235, 0.4)",
+                "accent": "#60A5FA",
+                "width": "460px",
+                "radius": "24px"
+            },
+            "buttons": {
+                "aurora_1": "rgba(236, 72, 153, 0.75)",     # Hot Pink
+                "aurora_2": "rgba(139, 92, 246, 0.65)",    # Purple
+                "aurora_3": "rgba(244, 114, 182, 0.45)",   # Rose
+                "shadow": "rgba(219, 39, 119, 0.4)",
+                "accent": "#F472B6",
+                "width": "380px",
+                "radius": "28px"
+            },
+            "controls": {
+                "aurora_1": "rgba(16, 185, 129, 0.75)",     # Emerald
+                "aurora_2": "rgba(52, 211, 153, 0.55)",    # Mint
+                "aurora_3": "rgba(6, 182, 212, 0.45)",     # Cyan
+                "shadow": "rgba(16, 185, 129, 0.4)",
+                "accent": "#34D399",
+                "width": "420px",
+                "radius": "26px"
+            },
+            "navigation": {
+                "aurora_1": "rgba(99, 102, 241, 0.75)",    # Indigo
+                "aurora_2": "rgba(168, 85, 247, 0.65)",    # Violet
+                "aurora_3": "rgba(129, 140, 248, 0.45)",   # Periwinkle
+                "shadow": "rgba(79, 70, 229, 0.4)",
+                "accent": "#A5B4FC",
+                "width": "580px",
+                "radius": "9999px" # Capsule dock!
+            },
+            "feedback": {
+                "aurora_1": "rgba(245, 158, 11, 0.75)",    # Amber
+                "aurora_2": "rgba(239, 68, 68, 0.6)",      # Ruby
+                "aurora_3": "rgba(251, 191, 36, 0.45)",    # Solar
+                "shadow": "rgba(217, 119, 6, 0.4)",
+                "accent": "#FBBF24",
+                "width": "450px",
+                "radius": "22px"
+            },
+            "dashboards": {
+                "aurora_1": "rgba(30, 58, 138, 0.85)",     # Deep Obsidian Navy
+                "aurora_2": "rgba(14, 165, 233, 0.65)",    # Sky Blue
+                "aurora_3": "rgba(79, 70, 229, 0.5)",      # Indigo
+                "shadow": "rgba(30, 58, 138, 0.5)",
+                "accent": "#38BDF8",
+                "width": "720px",
+                "radius": "24px"
+            },
+            "scenery": {
+                "aurora_1": "rgba(76, 29, 149, 0.8)",      # Void Violet
+                "aurora_2": "rgba(14, 116, 144, 0.7)",     # Cyan Mesh
+                "aurora_3": "rgba(67, 56, 202, 0.55)",     # Royal Blue
+                "shadow": "rgba(76, 29, 149, 0.5)",
+                "accent": "#C084FC",
+                "width": "820px",
+                "radius": "28px"
+            },
+            "cards": {
+                "aurora_1": "rgba(124, 58, 237, 0.75)",    # Purple
+                "aurora_2": "rgba(59, 130, 246, 0.65)",    # Blue
+                "aurora_3": "rgba(192, 132, 252, 0.45)",   # Lavender
+                "shadow": "rgba(109, 40, 217, 0.4)",
+                "accent": "#C084FC",
+                "width": "460px",
+                "radius": "24px"
+            },
+            "inputs": {
+                "aurora_1": "rgba(6, 182, 212, 0.75)",     # Cyan
+                "aurora_2": "rgba(59, 130, 246, 0.65)",    # Blue
+                "aurora_3": "rgba(147, 197, 253, 0.4)",    # Light Blue
+                "shadow": "rgba(6, 182, 212, 0.4)",
+                "accent": "#22D3EE",
+                "width": "460px",
+                "radius": "20px"
+            },
+            "other": {
+                "aurora_1": "rgba(13, 148, 136, 0.8)",     # Deep Teal
+                "aurora_2": "rgba(124, 58, 237, 0.65)",    # Violet
+                "aurora_3": "rgba(20, 184, 166, 0.45)",    # Seafoam
+                "shadow": "rgba(13, 148, 136, 0.45)",
+                "accent": "#2DD4BF",
+                "width": "400px",
+                "radius": "26px"
+            }
+        }
+
+        pal = PALETTES.get(category, PALETTES["other"])
+        container_width = pal["width"]
+        container_radius = pal["radius"]
+        aurora_1 = pal["aurora_1"]
+        aurora_2 = pal["aurora_2"]
+        aurora_3 = pal["aurora_3"]
+        shadow_color = pal["shadow"]
+        accent_color = pal["accent"]
 
         if category == "inputs":
             widget_inner = f"""
@@ -412,8 +521,7 @@ class ModelRouter:
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {{
+    <style>        :root {{
             --bg-page: #0A0A0A;
             --glass-card: rgba(255, 255, 255, 0.06);
             --glass-border-top: rgba(255, 255, 255, 0.22);
@@ -421,23 +529,28 @@ class ModelRouter:
             --glass-border-bottom: rgba(255, 255, 255, 0.04);
             --text-primary: #FFFFFF;
             --text-secondary: rgba(255, 255, 255, 0.65);
-            --aurora-1: rgba(70, 110, 220, 0.65);
-            --aurora-2: rgba(40, 60, 160, 0.55);
-            --aurora-3: rgba(140, 70, 230, 0.45);
+            --aurora-1: {aurora_1};
+            --aurora-2: {aurora_2};
+            --aurora-3: {aurora_3};
+            --accent: {accent_color};
+            --shadow-custom: {shadow_color};
+            --radius-custom: {container_radius};
             --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
         }}
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
         body {{
-            background: var(--bg-page);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
             min-height: 100vh;
+            background-color: var(--bg-page);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 24px;
+            position: relative;
+            overflow-x: hidden;
         }}
 
         /* 5-LAYER GLASS CARD ARCHITECTURE (from STYLE_SPEC.md) */
@@ -456,8 +569,8 @@ class ModelRouter:
         .layer-4-shadow {{
             position: absolute;
             top: 12px; left: 0; right: 0; bottom: -12px;
-            background: rgba(25, 45, 110, 0.5);
-            border-radius: 32px;
+            background: var(--shadow-custom);
+            border-radius: var(--radius-custom);
             filter: blur(30px);
             transform: scale(0.96) translateY(12px);
             z-index: -2;
@@ -473,7 +586,7 @@ class ModelRouter:
         .layer-3-aurora {{
             position: absolute;
             inset: 0;
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             overflow: hidden;
             z-index: -1;
             contain: layout style paint;
@@ -503,7 +616,7 @@ class ModelRouter:
             background: var(--glass-card);
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);

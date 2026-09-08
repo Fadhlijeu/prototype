@@ -1,0 +1,24 @@
+{
+  "title": "Glass Neon Cyan Frequency",
+  "slug": "glass-neon-cyan-frequency",
+  "category": "buttons",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "buttons",
+    "interactive",
+    "specular-depth"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Atomic",
+  "icons": [
+    "sparkles",
+    "zap",
+    "check",
+    "play",
+    "plus"
+  ],
+  "raw_prompt": "Neon Cyan Frequency Visualizer"
+}

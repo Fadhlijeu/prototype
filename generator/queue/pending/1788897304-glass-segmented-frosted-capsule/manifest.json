@@ -1,0 +1,24 @@
+{
+  "title": "Glass Segmented Frosted Capsule",
+  "slug": "glass-segmented-frosted-capsule",
+  "category": "controls",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "controls",
+    "interactive",
+    "specular-depth"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Atomic",
+  "icons": [
+    "toggle-right",
+    "check",
+    "play",
+    "circle",
+    "power"
+  ],
+  "raw_prompt": "Segmented Frosted Capsule Switch"
+}

@@ -1,8 +1,8 @@
 {
-  "item_id": "1788895962-dual-ring-telemetry-latency-gauge",
-  "slug": "dual-ring-telemetry-latency-gauge",
-  "created_at": "2026-09-09 02:32:42",
-  "status": "PENDING_REVIEW",
+  "item_id": "1788895445-floating-glass-telemetry",
+  "slug": "floating-glass-telemetry",
+  "created_at": "2026-09-08 19:24:05",
+  "status": "APPROVED",
   "validation": {
     "valid": true,
     "score": 90,
@@ -10,12 +10,13 @@
     "warnings": [
       "Interactive elements should include ARIA labels or semantic roles"
     ],
-    "file_size_bytes": 11726
+    "file_size_bytes": 11569
   },
   "router": {
     "provider": "mock",
     "model": "mock-glass-generator-v1",
     "status": "success",
     "cascaded_from": []
-  }
+  },
+  "approved_at": "2026-09-09 02:47:26"
 }

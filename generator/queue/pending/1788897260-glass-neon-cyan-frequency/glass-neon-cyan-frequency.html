@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dual Ring Telemetry Latency Gauge — Glass Dark Premium</title>
+    <title>Glass Neon Cyan Frequency — Glass Dark Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
+    <style>        :root {
             --bg-page: #0A0A0A;
             --glass-card: rgba(255, 255, 255, 0.06);
             --glass-border-top: rgba(255, 255, 255, 0.22);
@@ -16,30 +15,35 @@
             --glass-border-bottom: rgba(255, 255, 255, 0.04);
             --text-primary: #FFFFFF;
             --text-secondary: rgba(255, 255, 255, 0.65);
-            --aurora-1: rgba(70, 110, 220, 0.65);
-            --aurora-2: rgba(40, 60, 160, 0.55);
-            --aurora-3: rgba(140, 70, 230, 0.45);
+            --aurora-1: rgba(236, 72, 153, 0.75);
+            --aurora-2: rgba(139, 92, 246, 0.65);
+            --aurora-3: rgba(244, 114, 182, 0.45);
+            --accent: #F472B6;
+            --shadow-custom: rgba(219, 39, 119, 0.4);
+            --radius-custom: 28px;
             --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: var(--bg-page);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
             min-height: 100vh;
+            background-color: var(--bg-page);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 24px;
+            position: relative;
+            overflow-x: hidden;
         }
 
         /* 5-LAYER GLASS CARD ARCHITECTURE (from STYLE_SPEC.md) */
         .glass-card-wrapper {
             position: relative;
             width: 100%;
-            max-width: 440px;
+            max-width: 380px;
             transition: transform 0.3s var(--ease-spring);
         }
 
@@ -51,8 +55,8 @@
         .layer-4-shadow {
             position: absolute;
             top: 12px; left: 0; right: 0; bottom: -12px;
-            background: rgba(25, 45, 110, 0.5);
-            border-radius: 32px;
+            background: var(--shadow-custom);
+            border-radius: var(--radius-custom);
             filter: blur(30px);
             transform: scale(0.96) translateY(12px);
             z-index: -2;
@@ -68,7 +72,7 @@
         .layer-3-aurora {
             position: absolute;
             inset: 0;
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             overflow: hidden;
             z-index: -1;
             contain: layout style paint;
@@ -98,7 +102,7 @@
             background: var(--glass-card);
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 28px;
+            border-radius: var(--radius-custom);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);
@@ -294,33 +298,32 @@
         </div>
         <div class="layer-2-glass">
             
-                <div class="widget-header">
-                    <span class="widget-eyebrow"><i data-lucide="gauge" style="width:14px;height:14px;"></i> Live Dual Telemetry Dial</span>
-                    <span class="widget-badge active">99.98%</span>
+            <div class="widget-header">
+                <span class="widget-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Expandable Action Dial</span>
+                <span class="widget-badge active">Spring Physics</span>
+            </div>
+            <h2 class="widget-title">Glass Neon Cyan Frequency</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;">
+                <div style="display:flex;gap:8px;">
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Quick deploy triggered!')"><i data-lucide="rocket"></i> Deploy</button>
+                    <button type="button" class="glass-btn-secondary" onclick="alert('Snapshot taken!')"><i data-lucide="camera"></i> Snapshot</button>
                 </div>
-                <h2 class="widget-title">Dual Ring Telemetry Latency Gauge</h2>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
-                    <div class="sub-stat-box">
-                        <span class="sub-stat-label"><i data-lucide="zap"></i> Throughput</span>
-                        <span class="sub-stat-val">2.8 GB/s</span>
-                    </div>
-                    <div class="sub-stat-box">
-                        <span class="sub-stat-label"><i data-lucide="clock"></i> Latency</span>
-                        <span class="sub-stat-val" style="color:#34D399;">6.2 ms</span>
-                    </div>
-                </div>
-                
+                <button type="button" class="glass-btn-primary" id="btn-action" style="border-radius:9999px;width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            
         </div>
     </div>
 
     <script id="component-manifest" type="application/json">
     {
-        "title": "Dual Ring Telemetry Latency Gauge",
-        "slug": "dual-ring-telemetry-latency-gauge",
-        "category": "telemetry",
+        "title": "Glass Neon Cyan Frequency",
+        "slug": "glass-neon-cyan-frequency",
+        "category": "buttons",
         "badge": "Molecule",
         "variation": "aurora-gradient-glow",
-        "tags": ["glass", "telemetry", "interactive", "specular-depth"]
+        "tags": ["glass", "buttons", "interactive", "specular-depth"]
     }
     </script>
 
