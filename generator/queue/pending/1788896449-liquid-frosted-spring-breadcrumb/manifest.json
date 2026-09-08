@@ -1,0 +1,17 @@
+{
+  "title": "Liquid Frosted Spring Breadcrumb",
+  "slug": "liquid-frosted-spring-breadcrumb",
+  "category": "navigation",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "navigation",
+    "interactive",
+    "specular-depth"
+  ],
+  "atomic_level": "Molecule",
+  "family": "glass",
+  "theme": "dark",
+  "icon": "dock"
+}
