@@ -4,7 +4,7 @@ from typing import Dict, Any
 
 class Decompiler:
     """
-    Decompiles a single generated HTML artifact into standardized GlassOS component files:
+    Decompiles a single generated HTML artifact into standardized component files:
     1. {slug}.html (Full standalone)
     2. index.html (Clean demo linking external CSS/JS)
     3. index.css (Extracted CSS rules)
@@ -43,7 +43,7 @@ class Decompiler:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} — GlassOS Dark</title>
+    <title>{title} — Dark Glass</title>
     <link rel="stylesheet" href="../css.css">
     <link rel="stylesheet" href="index.css">
     <script src="https://unpkg.com/lucide@latest"></script>

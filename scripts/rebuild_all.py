@@ -2,7 +2,7 @@ import os
 import json
 import html
 
-ROOT = r"d:\PROJECT\prototype"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GLASS_DIR = os.path.join(ROOT, "ui", "components", "glass")
 RAW_DIR = os.path.join(ROOT, "ui", "components", "raw")
 PROJECTS_DIR = os.path.join(ROOT, "projects")
@@ -140,7 +140,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="css.css">
     <style>
 
@@ -1574,7 +1574,7 @@ print("3/3. Building Dynamic Web Applications Portfolio Studio (web-apps.html)..
 projects_registry = [
     {
         "id": "file-manager",
-        "title": "GlassOS Cloud File Manager",
+        "title": "Cloud File Manager",
         "version": "v2.4",
         "status": "Production Ready",
         "desc": "Sistem Operasi Manajemen Berkas Awan & Produktivitas AI Berbasis Glass Dark Premium dengan Web Audio synthesizer procedur, Canvas 2D swirl refraction, dan spring dock navigasi.",
@@ -1603,7 +1603,7 @@ projects_registry = [
     },
     {
         "id": "ai-studio",
-        "title": "GlassOS AI Agent Studio",
+        "title": "AI Agent Studio",
         "version": "v1.0",
         "status": "Interactive Prototype",
         "desc": "Ruang kerja agentik AI otonom interaktif dengan pemilihan model reaktif (K3-Pro Ultra, Swarm Agent, Flash Instant), pengatur penalaran bergradasi, respon streaming interaktif, dan sound haptik.",
@@ -1625,7 +1625,7 @@ projects_registry = [
     },
     {
         "id": "generator-lab",
-        "title": "GlassOS Autonomous Generator Lab",
+        "title": "Autonomous Generator Lab",
         "version": "v1.0",
         "status": "Production Ready",
         "desc": "Ruang kerja visual otonom untuk memantau siklus generasi AI, menguji prompt on-demand, meninjau antrean kandidat (Review Queue), dan mengeksekusi keputusan kurasi manusia (Accept/Reject).",
@@ -1738,12 +1738,12 @@ web_apps_html_content = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlassOS Web Applications Studio — Production Projects</title>
+    <title>Web Applications Studio — Production Projects</title>
     <meta name="description" content="Showroom & Workbench sekumpulan Aplikasi Web Utuh dari folder projects/ berbasis tema Glass Dark Premium.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="ui/components/glass/css.css">
     <style>
 
@@ -2392,7 +2392,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
                     </div>
                     <div class="app-title-group">
                         <h2>
-                            <span id="stageTitle">GlassOS Cloud File Manager</span>
+                            <span id="stageTitle">Cloud File Manager</span>
                             <span class="app-version-badge" id="stageVersionBadge">v2.4 Production Ready</span>
                         </h2>
                         <p id="stageDesc">Sistem Operasi Manajemen Berkas Awan & Produktivitas AI Berbasis Glass Dark Premium</p>
@@ -2433,7 +2433,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             <!-- Live Interactive Stage -->
             <div class="app-live-stage">
                 <div class="app-frame-wrapper" id="appFrameWrapper">
-                    <iframe id="stageIframe" src="projects/file-manager/index.html" title="GlassOS Live Preview"></iframe>
+                    <iframe id="stageIframe" src="projects/file-manager/index.html" title="Live Preview"></iframe>
                 </div>
             </div>
 

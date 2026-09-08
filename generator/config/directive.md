@@ -1,7 +1,7 @@
 # Autonomous Continuous Generation Directive
 
 ## Primary Objective
-Read `skills/glass-ui.md` and `skills/component.md`. Continuously generate creative, high-fidelity UI variations that strictly follow the defined GlassOS Dark Glass aesthetic. Explore diverse component categories, ergonomic micro-interactions, optical glass material physics, dynamic animations, and state representations. 
+Read `skills/glass-ui.md` and `skills/component.md`. Continuously generate creative, high-fidelity UI variations that strictly follow the defined Dark Glass aesthetic. Explore diverse component categories, ergonomic micro-interactions, optical glass material physics, dynamic animations, and state representations. 
 
 Avoid duplicates with the existing collection in `ui/components/glass/`. Prioritize fresh concepts, compound components, and accessibility-compliant interactive widgets.
 
@@ -11,7 +11,7 @@ Avoid duplicates with the existing collection in `ui/components/glass/`. Priorit
 
 1. **Strict Constraints (Immutable)**:
    - Must belong to the `glass` family on a deep obsidian/space-black canvas (`#030712` / `var(--bg-main)`).
-   - Must consume GlassOS design tokens from `../css.css` (`var(--glass-surface-*)`, `var(--glass-border-specular)`, `var(--radius-*)`, etc.).
+   - Must consume design tokens from `../css.css` (`var(--glass-surface-*)`, `var(--glass-border-specular)`, `var(--radius-*)`, etc.).
    - Pure Vanilla CSS & Vanilla JavaScript. Zero external frameworks.
    - Accessible keyboard focus (`:focus-visible`), ARIA roles, and `@media (prefers-reduced-motion: reduce)` support.
    - Use Lucide icons (`<i data-lucide="..."></i>`) initialized via `lucide.createIcons()`.
@@ -29,7 +29,7 @@ Avoid duplicates with the existing collection in `ui/components/glass/`. Priorit
 
 ## Output Contract
 Every generation cycle must output a self-contained HTML document containing:
-- Embedded `<style>` block (pure CSS referencing GlassOS tokens)
+- Embedded `<style>` block (pure CSS referencing design system tokens)
 - Semantic HTML markup (`<button>`, `<input>`, `<article>`, `<dialog>`, etc.)
 - Embedded `<script>` block for interactive logic, state toggling, and keyboard bindings
 - JSON Metadata Manifest block inside `<script type="application/json" id="component-manifest">`

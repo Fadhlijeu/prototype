@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>GlassOS — Unified AI & Cloud Workspace</title>
+    <title>File Manager — Unified AI & Cloud Workspace</title>
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     
     <!-- Google Fonts: Inter -->
@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="../../ui/components/glass/css.css">
 
     <style>
@@ -1887,7 +1887,7 @@
 
                     <!-- Personalized Greeting -->
                     <div class="greeting">
-                        Hi <strong>Muhammad Fadhli</strong>, what would<br>you like to do with GlassOS today?
+                        Hi <strong>Muhammad Fadhli</strong>, what would<br>you like to do today?
                     </div>
 
                     <!-- Interactive AI Output Bubble -->
@@ -2168,12 +2168,12 @@
                 </div>
 
                 <div class="settings-card glass-card glass-edge">
-                    <div class="setting-row" onclick="showToast('GlassOS v2.4.0 — All prototypes unified successfully!')">
+                    <div class="setting-row" onclick="showToast('Cloud File Manager v2.4.0 — All prototypes unified successfully!')">
                         <div class="setting-info">
                             <div class="setting-icon"><i data-lucide="info"></i></div>
                             <div class="setting-text">
                                 <h4>Version & Build</h4>
-                                <p>GlassOS 2.4.0 Unified Hybrid (Production)</p>
+                                <p>Cloud File Manager 2.4.0 Unified Hybrid (Production)</p>
                             </div>
                         </div>
                         <i data-lucide="chevron-right" style="color: #8E8E93; width: 18px;"></i>
@@ -2621,7 +2621,7 @@
                 } else if (text.toLowerCase().includes('web') || text.toLowerCase().includes('design')) {
                     reply = `Generated 3 glassmorphic design token variants. Border lighting and backdrop-filters calibrated to 28px blur.`;
                 } else {
-                    reply = `Processed request with <strong>${activeModel}</strong> model (Thinking effort: ${thinkingLevels[currentThinkingIdx]}). All operations synchronized with your GlassOS cloud drive.`;
+                    reply = `Processed request with <strong>${activeModel}</strong> model (Thinking effort: ${thinkingLevels[currentThinkingIdx]}). All operations synchronized with your cloud drive.`;
                 }
                 aiText.innerHTML = reply;
             }, 750);

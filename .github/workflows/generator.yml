@@ -1,8 +1,8 @@
-name: GlassOS Autonomous Cloud Generator
+name: Autonomous Cloud Generator
 
 on:
   repository_dispatch:
-    types: [glassos_generate_task]
+    types: [generate_task, glassos_generate_task]
   workflow_dispatch:
     inputs:
       prompt:
@@ -48,9 +48,9 @@ jobs:
 
       - name: Commit and Push to Main
         run: |
-          git config --global user.name "GlassOS Autonomous Bot"
-          git config --global user.email "bot@glassos.local"
-          git add ui/components/glass/ scripts/rebuild_all.py
+          git config --global user.name "Prototype Autonomous Bot"
+          git config --global user.email "bot@prototype.local"
+          git add ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
           if git diff --staged --quiet; then
             echo "No new components to commit."
           else

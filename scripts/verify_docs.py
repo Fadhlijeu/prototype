@@ -2,7 +2,7 @@ import os
 import re
 import urllib.parse
 
-ROOT = os.path.abspath(r"d:\PROJECT\prototype")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 print("Verifying link integrity across all Markdown documentation...")
 

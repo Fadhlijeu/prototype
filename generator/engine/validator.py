@@ -39,7 +39,7 @@ class Validator:
             "--glass-", "backdrop-filter", "blur(", "rgba(255, 255, 255,", "--bg-main"
         ])
         if not has_glass_token:
-            errors.append("Component does not use GlassOS tokens or glassmorphism attributes")
+            errors.append("Component does not use design system tokens or glassmorphism attributes")
             score -= 35
 
         # 4. Forbidden Libraries

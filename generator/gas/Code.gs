@@ -1,14 +1,15 @@
 /**
  * ==============================================================================
- * GlassOS Autonomous Generator — Google Apps Script (GAS) Cloud Gateway
+ * Prototype Autonomous Generator — Google Apps Script (GAS) Cloud Gateway
  * ==============================================================================
  * 
  * ARSITEKTUR & KEAMANAN:
- * 1. JANGAN PERNAH menuliskan API key langsung di file kode ini.
+ * 1. JANGAN PERNAH menuliskan API key atau kata sandi langsung di file kode ini.
  * 2. Simpan semua kredensial di:
  *    Apps Script Editor > Project Settings (Ikon Gear) > Script Properties.
  *
- * SCRIPT PROPERTIES YANG DIBUTUHKAN:
+ * SCRIPT PROPERTIES YANG DIDUKUNG:
+ * - ADMIN_PASSKEY         : Kata sandi rahasia untuk memproteksi Generator Lab (Mencegah publik memicu bot)
  * - GEMINI_API_KEY        : Google AI Studio API Key (untuk model gemini-3.*)
  * - TOKENROUTER_API_KEY   : TokenRouter API Key (https://api.tokenrouter.com/v1)
  * - ROUTER_API_KEY        : 9Router / OpenAI Gateway Token (jika cloud)
@@ -36,25 +37,71 @@ function getSecret(key, defaultValue) {
  */
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    }
+
+    var adminPasskey = "";
+    try {
+      adminPasskey = getSecret("ADMIN_PASSKEY", "");
+    } catch(err) {
+      adminPasskey = "";
+    }
+
+    // Aksi 1: Verifikasi Auth / Passkey dari UI Generator Lab
+    if (data.action === "verify_passkey" || data.action === "verify_auth") {
+      if (!adminPasskey) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "AUTHENTICATED",
+          ok: true,
+          unconfigured: true,
+          message: "Passkey diterima. (Catatan: ADMIN_PASSKEY belum diset di Script Properties)."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      if (data.passkey === adminPasskey) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "AUTHENTICATED",
+          ok: true,
+          message: "Autentikasi berhasil. Akses cloud terbuka."
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "UNAUTHORIZED",
+          ok: false,
+          error: "Passkey salah. Akses ditolak."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
+    // Aksi 2: Eksekusi Generator / Dispatch — Wajib validasi Passkey jika ADMIN_PASSKEY diset
+    if (adminPasskey && data.passkey !== adminPasskey) {
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "UNAUTHORIZED",
+        ok: false,
+        error: "Akses ditolak: Passkey salah atau tidak valid."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     var prompt = data.prompt || "Aurora Glass Floating Input with Glow";
     var category = data.category || "inputs";
-    var directive = data.directive || "Explore new creative glass variations adhering to GlassOS tokens";
+    var directive = data.directive || "Explore new creative dark glass variations adhering to design tokens";
     var mode = data.mode || "dispatch"; // 'dispatch' (ke GitHub Actions) atau 'direct' (generate langsung di GAS)
 
     if (mode === "direct") {
-      // Generate langsung di serverless Apps Script menggunakan Gemini API
       var generatedOutput = generateWithGeminiDirect(prompt);
       return ContentService.createTextOutput(JSON.stringify({
         status: "GENERATED",
+        ok: true,
         prompt: prompt,
         output_snippet: generatedOutput.substring(0, 300) + "..."
       })).setMimeType(ContentService.MimeType.JSON);
     } else {
-      // Default: Dispatch ke GitHub Actions runner
       var dispatchResult = dispatchToGitHub(prompt, category, directive);
       return ContentService.createTextOutput(JSON.stringify({
         status: "QUEUED",
+        ok: true,
         message: "Tugas berhasil diteruskan ke antrean GitHub Actions",
         dispatch: dispatchResult
       })).setMimeType(ContentService.MimeType.JSON);
@@ -64,6 +111,7 @@ function doPost(e) {
     Logger.log("Error in doPost: " + err.toString());
     return ContentService.createTextOutput(JSON.stringify({
       status: "ERROR",
+      ok: false,
       error: err.toString()
     })).setMimeType(ContentService.MimeType.JSON);
   }
@@ -74,10 +122,16 @@ function doPost(e) {
  * Menampilkan status ketersediaan gateway saat diakses via browser.
  */
 function doGet() {
+  var hasPasskey = false;
+  try {
+    hasPasskey = !!getSecret("ADMIN_PASSKEY", "");
+  } catch(e) {}
+
   return ContentService.createTextOutput(JSON.stringify({
     status: "ONLINE",
-    service: "GlassOS Autonomous Generator Gateway (GAS)",
+    service: "Prototype Autonomous Generator Gateway (GAS)",
     timestamp: new Date().toISOString(),
+    passkey_protection_active: hasPasskey,
     supported_providers: ["gemini", "9router", "tokenrouter"]
   })).setMimeType(ContentService.MimeType.JSON);
 }
@@ -91,7 +145,7 @@ function dispatchToGitHub(prompt, category, directive) {
   
   var url = "https://api.github.com/repos/" + repo + "/dispatches";
   var payload = {
-    event_type: "glassos_generate_task",
+    event_type: "generate_task",
     client_payload: {
       prompt: prompt,
       category: category,
@@ -125,7 +179,7 @@ function generateWithGeminiDirect(prompt) {
   var model = "gemini-1.5-flash"; // atau gemini-2.5-flash
   var url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey;
 
-  var systemInstruction = "You are GlassOS UI Architect. Generate complete single-file dark glassmorphism component HTML referencing ../css.css tokens and Lucide icons.";
+  var systemInstruction = "You are the UI Component Architect for this design system. Generate complete single-file dark glassmorphism component HTML referencing ../css.css tokens and Lucide icons.";
   
   var payload = {
     systemInstruction: { parts: [{ text: systemInstruction }] },
@@ -154,7 +208,7 @@ function generateWithGeminiDirect(prompt) {
  * Tiap kali jalan, fungsi ini bisa men-dispatch beberapa variasi (batch) sekaligus!
  */
 function autonomousCronTrigger() {
-  Logger.log("Menjalankan siklus otonom cloud GlassOS...");
+  Logger.log("Menjalankan siklus otonom cloud Prototype...");
   
   // Koleksi seed ide komponen untuk variasi otonom tanpa batas
   var seedPool = [

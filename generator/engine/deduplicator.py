@@ -5,7 +5,7 @@ from typing import Dict, Any, List, Tuple
 class Deduplicator:
     """
     Similarity & Novelty Gate:
-    Compares candidate component against existing GlassOS corpus to prevent
+    Compares candidate component against existing design system corpus to prevent
     generating duplicate or near-identical UI components.
     """
 

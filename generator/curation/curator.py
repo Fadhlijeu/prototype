@@ -10,7 +10,7 @@ class Curator:
     """
     Human Decision & Curation Gateway:
     Provides review, approval, rejection, and automated deployment
-    of generated components into the core GlassOS design system.
+    of generated components into the core design system.
     """
 
     def __init__(self, root_dir: str = None, queue_manager: QueueManager = None):

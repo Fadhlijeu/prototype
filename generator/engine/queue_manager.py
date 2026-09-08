@@ -129,9 +129,14 @@ class QueueManager:
                 json.dump(meta, f, indent=2)
         return dest
 
+    def _count_valid_items(self, folder: str) -> int:
+        if not os.path.exists(folder):
+            return 0
+        return len([e for e in os.listdir(folder) if os.path.isdir(os.path.join(folder, e))])
+
     def get_stats(self) -> Dict[str, int]:
         return {
-            "pending": len(os.listdir(self.pending_dir)) if os.path.exists(self.pending_dir) else 0,
-            "approved": len(os.listdir(self.approved_dir)) if os.path.exists(self.approved_dir) else 0,
-            "rejected": len(os.listdir(self.rejected_dir)) if os.path.exists(self.rejected_dir) else 0,
+            "pending": self._count_valid_items(self.pending_dir),
+            "approved": self._count_valid_items(self.approved_dir),
+            "rejected": self._count_valid_items(self.rejected_dir),
         }

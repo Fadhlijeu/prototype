@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>GlassOS AI Agent Studio — Interactive Workspace</title>
+    <title>AI Agent Studio — Interactive Workspace</title>
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Shared GlassOS Design System Tokens (Single Source of Truth) -->
+    <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="../../ui/components/glass/css.css">
     <style>
 
@@ -557,7 +557,7 @@
                 </div>
                 <div class="brand-title">
                     <h2>AI Agent Studio</h2>
-                    <p>GlassOS Autonomous Agent Workspace <span class="app-status-badge">Interactive Prototype</span></p>
+                    <p>Autonomous Agent Workspace <span class="app-status-badge">Interactive Prototype</span></p>
                 </div>
             </div>
             <div class="nav-actions">
@@ -639,7 +639,7 @@
 
         <!-- Action Pills -->
         <div class="pills-bar">
-            <button class="pill-btn" onclick="sendPrompt('Analisis arsitektur komponen GlassOS')">
+            <button class="pill-btn" onclick="sendPrompt('Analisis arsitektur komponen UI')">
                 <i data-lucide="layout"></i> Audit UI Komponen
             </button>
             <button class="pill-btn" onclick="sendPrompt('Optimalkan shader glass blur 60 FPS')">
@@ -662,10 +662,10 @@
 
     <script>
         // ======================================================================
-        // GlassOS AI Studio State Store & Persistence Layer (Fase 3 Foundation)
+        // AI Studio State Store & Persistence Layer (Fase 3 Foundation)
         // ======================================================================
         const AIStudioStore = {
-            STORAGE_KEY: "glassos_ai_studio_v1",
+            STORAGE_KEY: "prototype_ai_studio_v1",
             state: {
                 activeModel: "K3-Pro Ultra",
                 reasoningEffort: "Tinggi (High)",
@@ -890,7 +890,7 @@
 
             // Contextual dynamic response synthesis
             if (lower.includes('login') || lower.includes('input') || lower.includes('form')) {
-                responseContent = `Berikut rancangan arsitektur Glass Login & Form Input berbasis <strong>GlassOS Design System</strong>:<br><br>
+                responseContent = `Berikut rancangan arsitektur Glass Login & Form Input berbasis <strong>Dark Glass Design System</strong>:<br><br>
 1. <strong>Struktur Komponen</strong>: Menggunakan <code>input-field-glass</code> dengan backdrop-filter blur 28px dan asymmetric border lighting (top 0.28, bottom 0.05).<br>
 2. <strong>Haptic Feedback</strong>: Integrasikan procedural Web Audio pada saat focus dan validasi input.<br>
 3. <strong>Semantik & A11y</strong>: Input dilengkapi <code>aria-describedby</code> dan fokus indikator <code>:focus-visible</code> cyan glow ring.`;
@@ -900,7 +900,7 @@
 • <strong>Lighting Border</strong>: <code>--glass-border-top</code> (rgba 0.22-0.35) mensimulasikan sumber cahaya fisik dari sudut atas-kiri.<br>
 • <strong>Surfaces</strong>: <code>--glass-card</code> (rgba 0.06), <code>--glass-card-hover</code> (rgba 0.10) memberikan kedalaman visual natural tanpa over-saturation.`;
             } else if (lower.includes('state') || lower.includes('arsitektur') || lower.includes('store')) {
-                responseContent = `Rekomendasi <strong>State Architecture GlassOS</strong>:<br><br>
+                responseContent = `Rekomendasi <strong>State Architecture</strong>:<br><br>
 • Gunakan modular store <code>AIStudioStore</code> dan <code>FileManagerStore</code>.<br>
 • Data di-cache dalam <code>localStorage</code> secara deterministik.<br>
 • Aksi UI tidak lagi langsung merusak DOM, melainkan melalui mutation cycle: <code>Intent -> Store Action -> State Change -> DOM Render</code>.`;

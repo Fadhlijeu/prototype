@@ -105,7 +105,7 @@ class GeneratorEngine:
         for skill in ctx.get("extra_skills", []):
             extra_skills_str += f"\n### Skill Reference: {skill['name']}\n{skill['content']}\n"
 
-        system_prompt = f"""You are the GlassOS Autonomous UI Component Architect.
+        system_prompt = f"""You are the Autonomous UI Component Architect for this Prototype design system.
 Your mission is to generate production-grade, accessible, dark glassmorphic web components.
 
 === GENERATION DIRECTIVE ===
@@ -132,14 +132,14 @@ Reference this to understand existing components and avoid duplication. Pick fro
 === IMMUTABLE GENERATION RULES ===
 1. Always output a single complete HTML file containing embedded <style>, semantic HTML, manifest JSON in <script id="component-manifest" type="application/json">, and interactive <script>.
 2. Do NOT use external CSS frameworks (no Tailwind, no Bootstrap). Only Vanilla CSS.
-3. Reference GlassOS tokens from `../css.css` using EXACT variable names from the CSS Tokens section above (e.g. `var(--glass-surface-1)`, `var(--glass-border-specular)`, `var(--text-primary)`, `var(--accent-cyan)`).
+3. Reference design system tokens from `../css.css` using EXACT variable names from the CSS Tokens section above (e.g. `var(--glass-surface-1)`, `var(--glass-border-specular)`, `var(--text-primary)`, `var(--accent-cyan)`).
 4. Use Lucide icons: `<i data-lucide="..."></i>` and call `lucide.createIcons()`.
 5. Implement `@media (prefers-reduced-motion: reduce)` to disable heavy animations.
 6. Provide accessible ARIA attributes (`aria-label`, `role`, etc.).
 7. Return pure HTML without unnecessary markdown explanations or conversational filler.
 """
 
-        user_prompt = f"""Generate a new GlassOS component with the following specifications:
+        user_prompt = f"""Generate a new dark glassmorphic component for the Prototype design system with the following specifications:
 - Title: {spec.get('title')}
 - Slug: {spec.get('slug')}
 - Category: {spec.get('category')}

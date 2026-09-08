@@ -1,7 +1,7 @@
 import os
 import re
 
-ROOT = r"d:\PROJECT\prototype"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pages_to_check = [
     os.path.join(ROOT, "index.html"),

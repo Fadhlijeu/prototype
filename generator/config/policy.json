@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "name": "GlassOS Generator System Policy",
+  "name": "Autonomous Generator System Policy",
   "version": "1.0.0",
-  "description": "Hard governance constraints for autonomous and assisted Glass UI generation in GlassOS ecosystem",
+  "description": "Hard governance constraints for autonomous and assisted Glass UI generation in the design system",
   "hard_constraints": {
     "family": "glass",
     "theme": "dark",

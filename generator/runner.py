@@ -88,7 +88,7 @@ def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = Fals
     return item_id
 
 def main():
-    parser = argparse.ArgumentParser(description="GlassOS Autonomous UI Generator & Curation Pipeline")
+    parser = argparse.ArgumentParser(description="Prototype Autonomous UI Generator & Curation Pipeline")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Command: generate
@@ -119,7 +119,7 @@ def main():
         run_single_generation(args.prompt, pipeline, auto_approve=args.auto_approve, force_provider=args.provider)
 
     elif args.command == "run":
-        print("=== GlassOS Continuous Autonomous Generator Loop Starting ===")
+        print("=== Autonomous Generator Loop Starting ===")
         seeds = [
             "Floating glass telemetry dial gauge with specular illumination",
             "Specular frosted breadcrumb navigation with spring pill indicators",
@@ -147,7 +147,7 @@ def main():
     elif args.command == "curate":
         if args.stats or (not args.list and not args.approve and not args.reject):
             stats = pipeline["queue"].get_stats()
-            print("\n=== GlassOS Curation Queue Statistics ===")
+            print("\n=== Curation Queue Statistics ===")
             print(f"  Pending Review : {stats['pending']}")
             print(f"  Approved       : {stats['approved']}")
             print(f"  Rejected       : {stats['rejected']}")

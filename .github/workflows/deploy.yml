@@ -1,4 +1,4 @@
-name: Deploy GlassOS Prototype to GitHub Pages
+name: Deploy Prototype to GitHub Pages
 
 on:
   push:
