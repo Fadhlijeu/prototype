@@ -111,14 +111,42 @@ class QueueManager:
         return dest
 
     def reject(self, item_id: str, reason: str = "Human curator decision") -> Optional[str]:
-        """Completely deletes/purges item from pending queue (hapus total)."""
+        """Archives item from pending queue into rejected/ (audit trail, not purge).
+
+        Moves the whole item directory pending/<id> -> rejected/<id> and writes
+        queue_meta.json status=REJECTED with reason + rejected_at timestamp.
+        Returns destination path, or None if item was not found in pending.
+        """
+        import datetime
         src = os.path.join(self.pending_dir, item_id)
-        if os.path.exists(src):
-            shutil.rmtree(src, ignore_errors=True)
-        rej_path = os.path.join(self.rejected_dir, item_id)
-        if os.path.exists(rej_path):
-            shutil.rmtree(rej_path, ignore_errors=True)
-        return "purged"
+        if not os.path.isdir(src):
+            return None
+        dest = os.path.join(self.rejected_dir, item_id)
+        if os.path.exists(dest):
+            shutil.rmtree(dest, ignore_errors=True)
+        shutil.move(src, dest)
+        meta_path = os.path.join(dest, "queue_meta.json")
+        try:
+            meta = {}
+            if os.path.exists(meta_path):
+                with open(meta_path, "r", encoding="utf-8") as f:
+                    meta = json.load(f)
+            meta["status"] = "REJECTED"
+            meta["rejected_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            meta["reject_reason"] = reason
+            with open(meta_path, "w", encoding="utf-8") as f:
+                json.dump(meta, f, indent=2)
+        except Exception:
+            pass
+        # Persist audit note alongside the archived files
+        try:
+            with open(os.path.join(dest, "rejection.json"), "w", encoding="utf-8") as f:
+                json.dump({"item_id": item_id, "reason": reason,
+                           "rejected_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")},
+                          f, indent=2)
+        except Exception:
+            pass
+        return dest
 
     def _count_valid_items(self, folder: str) -> int:
         if not os.path.exists(folder):

@@ -138,7 +138,8 @@ class ModelRouter:
             "systemInstruction": {"parts": [{"text": system_prompt}]},
             "contents": [{"parts": [{"text": user_prompt}]}],
             "generationConfig": {
-                "temperature": 0.7,
+                "temperature": 0.95,
+                "topP": 0.95,
                 "maxOutputTokens": 4096,
             }
         }
@@ -162,7 +163,8 @@ class ModelRouter:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            "temperature": 0.7
+            "temperature": 0.95,
+            "top_p": 0.95
         }
         headers = {"Content-Type": "application/json"}
         if api_key:
@@ -179,14 +181,19 @@ class ModelRouter:
 
     def _call_mock(self, system_prompt: str, user_prompt: str) -> str:
         """High-fidelity generator conforming strictly to STYLE_SPEC.md 5-layer Dark Glass architecture."""
+        import random
         title_match = re.search(r"Title:\s*([^\n\r]+)", user_prompt)
         slug_match = re.search(r"Slug:\s*([^\n\r]+)", user_prompt)
         cat_match = re.search(r"Category:\s*([^\n\r]+)", user_prompt)
+        nonce_match = re.search(r"Diversity Nonce[^\d]*(\d+)", user_prompt)
 
         title = title_match.group(1).strip() if title_match else "Glass Dynamic Widget"
         slug = slug_match.group(1).strip() if slug_match else re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
         category = cat_match.group(1).strip().lower() if cat_match else "other"
         is_scenery = "scenery" in category or "scenery" in title.lower() or "dashboard" in category
+        # Deterministic-but-varied seed: nonce if present, else hash of slug+title
+        seed_src = nonce_match.group(1) if nonce_match else f"{slug}:{title}"
+        rng = random.Random(str(seed_src))
 
         PALETTES = {
             "telemetry": {
@@ -293,11 +300,24 @@ class ModelRouter:
         pal = PALETTES.get(category, PALETTES["other"])
         container_width = pal["width"]
         container_radius = pal["radius"]
-        aurora_1 = pal["aurora_1"]
-        aurora_2 = pal["aurora_2"]
-        aurora_3 = pal["aurora_3"]
+        # Jitter aurora blob opacity per-generation so mock outputs are not pixel-identical
+        def _jitter_rgba(base: str) -> str:
+            m = re.match(r"rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)", base)
+            if not m:
+                return base
+            r, g, b, a = int(m.group(1)), int(m.group(2)), int(m.group(3)), float(m.group(4))
+            j = rng.uniform(-0.12, 0.12)
+            a2 = min(0.85, max(0.30, round(a + j, 2)))
+            return f"rgba({r}, {g}, {b}, {a2})"
+        aurora_1 = _jitter_rgba(pal["aurora_1"])
+        aurora_2 = _jitter_rgba(pal["aurora_2"])
+        aurora_3 = _jitter_rgba(pal["aurora_3"])
         shadow_color = pal["shadow"]
         accent_color = pal["accent"]
+        # Randomized blob positions per generation (consumed by template below)
+        blob1_x = rng.randint(12, 55); blob1_y = rng.randint(25, 70)
+        blob2_x = rng.randint(55, 90); blob2_y = rng.randint(45, 90)
+        blob3_x = rng.randint(25, 75); blob3_y = rng.randint(8, 45)
 
         if category == "inputs":
             widget_inner = f"""

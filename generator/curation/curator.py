@@ -104,8 +104,14 @@ class Curator:
 
     def reject(self, item_id: str, reason: str = "Human rejection") -> Dict[str, Any]:
         res = self.queue.reject(item_id, reason)
+        if res is None:
+            return {
+                "success": False,
+                "item_id": item_id,
+                "error": f"Item {item_id} not found in pending queue — nothing rejected (state may be stale, pull latest main first).",
+            }
         return {
-            "success": res is not None,
+            "success": True,
             "item_id": item_id,
             "rejected_dir": res
         }

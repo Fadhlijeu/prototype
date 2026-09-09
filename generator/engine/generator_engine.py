@@ -1,4 +1,5 @@
 import os
+import random
 import re
 from typing import Dict, Any, List, Tuple
 from .model_router import ModelRouter
@@ -238,9 +239,14 @@ Every component MUST express distinct visual geometry, unique color harmonies, a
 - Hierarchy Level: {spec.get('atomic_level', 'Molecule')}
 - Suggested Icons: {', '.join(spec.get('icons', []))}
 - User Prompt Intent: {spec.get('raw_prompt')}
+- Diversity Nonce (MUST influence your palette/geometry choices): {random.randint(100000, 999999)}
 
 {memory_str}
 
+CRITICAL DIVERSITY RULES (values in STYLE_SPEC are MOOD ILLUSTRATIONS ONLY — NEVER copy them literally):
+1. Do NOT reuse these exact hex codes: #4A7BF7, #2E5FD9, #1E3A8A, #3B82F6. Invent NEW hex values in the category palette family.
+2. Do NOT reuse these exact aurora positions: 30% 50%, 80% 80%, 50% 20%. Randomize blob positions (X: 10-90%, Y: 10-90%) and opacities (0.35-0.75).
+3. Do NOT repeat the layout/geometry of the negative examples above — pick a different form factor listed in the diversity directive.
 Ensure the component is interactive, visually unique (not a repetitive card), with subtle specular borders, ambient depth, tailored color palette, and spring transitions. Include the component manifest JSON script tag.
 """
         return system_prompt, user_prompt

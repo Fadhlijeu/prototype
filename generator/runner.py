@@ -77,6 +77,20 @@ def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = Fals
         print("      [ALERT] Pending review queue is FULL (>= 100 items). Generation paused.")
         return None
 
+    if not decompiled.get("standalone_content", "").strip():
+        print("      [FAILED] Generator produced empty output — nothing enqueued.")
+        print(f"      Router meta: {router_meta}")
+        return None
+
+    # Never silently enqueue deterministic mock output as if it were a real AI result.
+    # Tag it explicitly so the UI / curation layer can see it came from fallback.
+    provider_tag = str(router_meta.get("provider", ""))
+    if "mock" in provider_tag and not force_provider == "mock":
+        print(f"      [WARN] Output came from '{provider_tag}' fallback (all real providers failed).")
+        print(f"      Cascaded errors: {router_meta.get('cascaded_from', [])}")
+        router_meta = dict(router_meta)
+        router_meta["mock_fallback"] = True
+
     item_id = pipeline["queue"].enqueue_pending(decompiled, val, router_meta)
     print(f"      Successfully enqueued to: generator/queue/pending/{item_id}")
 
@@ -185,6 +199,12 @@ def main():
                 print(f"[SUCCESS] Approved and deployed to: {res.get('deployed_to')}")
             else:
                 print(f"[FAILED] {res.get('error')}")
+                try:
+                    manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
+                    pipeline["queue"].export_web_manifest(manifest_out)
+                except Exception:
+                    pass
+                sys.exit(2)
             try:
                 manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
                 pipeline["queue"].export_web_manifest(manifest_out)
@@ -195,9 +215,15 @@ def main():
             print(f"\nRejecting item '{args.reject}'...")
             res = pipeline["curator"].reject(args.reject, reason=args.reason)
             if res.get("success"):
-                print(f"[SUCCESS] Item moved to rejected queue.")
+                print(f"[SUCCESS] Item archived to rejected queue: {res.get('rejected_dir')}")
             else:
-                print(f"[FAILED] Could not reject item.")
+                print(f"[FAILED] {res.get('error', 'Could not reject item.')}")
+                try:
+                    manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
+                    pipeline["queue"].export_web_manifest(manifest_out)
+                except Exception:
+                    pass
+                sys.exit(2)
             try:
                 manifest_out = os.path.join(pipeline["root_dir"], "projects", "generator-lab", "queue.json")
                 pipeline["queue"].export_web_manifest(manifest_out)
