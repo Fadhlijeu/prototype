@@ -35,6 +35,54 @@ class DecisionEngine:
         "ambient-pulse",
     ]
 
+    GENOME_OPTIONS = {
+        "geometry": [
+            "radial-orbital", "asymmetric-split", "horizontal-dock", "vertical-rail",
+            "floating-orb", "segmented-capsule", "multi-pane-matrix", "concentric-rings",
+            "curved-arc-meter", "hexagonal-cluster", "origami-layered", "minimal-ribbon",
+            "expanded-workstation", "staggered-columns", "pill-island"
+        ],
+        "composition": [
+            "split-pane", "nested-cluster", "radial-hotspots", "stacked-cards",
+            "fluid-stream", "compact-pill", "modular-grid", "offset-asymmetric",
+            "floating-dock", "layered-viewfinder"
+        ],
+        "density": ["compact", "balanced", "spacious", "dense-telemetry", "ultra-minimal"],
+        "orientation": ["horizontal", "vertical", "circular", "matrix", "diagonal", "bilateral"],
+        "interaction": [
+            "spring-physics", "magnetic-drag", "segmented-toggle", "haptic-stepper",
+            "radial-speed-dial", "multi-state-hover", "scrubber-drag", "expandable-drawer",
+            "reactive-sparkline-hover", "tactile-rocker"
+        ],
+        "depth": [
+            "deep-3d-shadow", "layered-refraction", "swirl-lens", "subtle-recessed",
+            "floating-elevation", "specular-backplate"
+        ],
+        "motion": [
+            "spring-morph", "breathing-glow", "orbit-rotation", "stagger-reveal",
+            "shimmer-specular", "fluid-wave", "haptic-bounce"
+        ],
+        "material": [
+            "frosted-crystal", "obsidian-glass", "liquid-quartz", "ultramarine-glass",
+            "prismatic-refraction", "smoky-acrylic", "bioluminescent-glass"
+        ],
+        "palettes": [
+            {"name": "cyan-emerald", "primary": "#22D3EE", "secondary": "#10B981", "glow": "rgba(6, 182, 212, 0.65)", "aurora_blobs": ["rgba(6, 182, 212, 0.7)", "rgba(16, 185, 129, 0.55)", "rgba(14, 116, 144, 0.45)"]},
+            {"name": "electric-amber", "primary": "#FBBF24", "secondary": "#F59E0B", "glow": "rgba(245, 158, 11, 0.65)", "aurora_blobs": ["rgba(245, 158, 11, 0.7)", "rgba(217, 119, 6, 0.55)", "rgba(251, 191, 36, 0.45)"]},
+            {"name": "rose-violet", "primary": "#F472B6", "secondary": "#8B5CF6", "glow": "rgba(244, 114, 182, 0.65)", "aurora_blobs": ["rgba(244, 114, 182, 0.7)", "rgba(139, 92, 246, 0.6)", "rgba(236, 72, 153, 0.45)"]},
+            {"name": "mint-teal", "primary": "#34D399", "secondary": "#14B8A6", "glow": "rgba(52, 211, 153, 0.65)", "aurora_blobs": ["rgba(52, 211, 153, 0.7)", "rgba(20, 184, 166, 0.55)", "rgba(6, 182, 212, 0.4)"]},
+            {"name": "sapphire-sky", "primary": "#60A5FA", "secondary": "#38BDF8", "glow": "rgba(59, 130, 246, 0.65)", "aurora_blobs": ["rgba(59, 130, 246, 0.7)", "rgba(56, 189, 248, 0.55)", "rgba(99, 102, 241, 0.45)"]},
+            {"name": "amethyst-indigo", "primary": "#A78BFA", "secondary": "#6366F1", "glow": "rgba(167, 139, 250, 0.65)", "aurora_blobs": ["rgba(167, 139, 250, 0.7)", "rgba(99, 102, 241, 0.6)", "rgba(129, 140, 248, 0.4)"]},
+            {"name": "solar-ruby", "primary": "#FB7185", "secondary": "#EF4444", "glow": "rgba(239, 68, 68, 0.65)", "aurora_blobs": ["rgba(251, 113, 133, 0.7)", "rgba(239, 68, 68, 0.55)", "rgba(244, 63, 94, 0.4)"]},
+            {"name": "spectral-prismatic", "primary": "#38BDF8", "secondary": "#C084FC", "glow": "rgba(192, 132, 252, 0.65)", "aurora_blobs": ["rgba(56, 189, 248, 0.65)", "rgba(192, 132, 252, 0.6)", "rgba(244, 114, 182, 0.45)"]}
+        ],
+        "lighting": ["top-directional-specular", "dual-rim-edge", "bottom-up-aurora", "central-glow-optic"],
+        "border": ["asymmetric-specular", "thin-crystalline", "segmented-dashed", "dual-edge-highlight"],
+        "shape_language": ["pill-capsule", "rounded-organic", "precision-chamfered", "concentric-circular", "sculpted-monolith"],
+        "surface": ["semi-transparent-dark", "ultra-dense-obsidian", "milky-frosted", "iridescent-sheen"],
+        "information_architecture": ["metric-cluster", "action-row", "data-stream", "status-hub", "control-cluster", "full-composite-scenery"]
+    }
+
     ATOMIC_LEVELS = ["Atomic", "Molecule", "Organism"]
 
     AUTONOMOUS_THEMES = {
@@ -103,7 +151,49 @@ class DecisionEngine:
     def __init__(self, existing_slugs: List[str] = None):
         self.existing_slugs = set(existing_slugs or [])
 
-    def classify_intent(self, prompt: str) -> Dict[str, Any]:
+    def generate_genome(self, category: str, negative_memory: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Generates a unique Variation Genome for a component, explicitly selecting
+        divergent geometry, composition, interaction, lighting, and palette parameters.
+        Filters against negative memory (rejected components) to avoid repeating failed patterns.
+        """
+        recent_geometries = set()
+        recent_palettes = set()
+        if negative_memory:
+            for sig in negative_memory:
+                if isinstance(sig, dict):
+                    if "geometry" in sig:
+                        recent_geometries.add(sig["geometry"])
+                    if "palette" in sig:
+                        recent_palettes.add(sig["palette"])
+
+        geom_choices = [g for g in self.GENOME_OPTIONS["geometry"] if g not in recent_geometries] or self.GENOME_OPTIONS["geometry"]
+        palette_choices = [p for p in self.GENOME_OPTIONS["palettes"] if p["name"] not in recent_palettes] or self.GENOME_OPTIONS["palettes"]
+
+        palette = random.choice(palette_choices)
+        return {
+            "geometry": random.choice(geom_choices),
+            "composition": random.choice(self.GENOME_OPTIONS["composition"]),
+            "density": random.choice(self.GENOME_OPTIONS["density"]),
+            "orientation": random.choice(self.GENOME_OPTIONS["orientation"]),
+            "interaction": random.choice(self.GENOME_OPTIONS["interaction"]),
+            "depth": random.choice(self.GENOME_OPTIONS["depth"]),
+            "motion": random.choice(self.GENOME_OPTIONS["motion"]),
+            "material": random.choice(self.GENOME_OPTIONS["material"]),
+            "palette": palette["name"],
+            "primary_accent": palette["primary"],
+            "secondary_accent": palette["secondary"],
+            "glow_color": palette["glow"],
+            "aurora_blobs": palette["aurora_blobs"],
+            "lighting": random.choice(self.GENOME_OPTIONS["lighting"]),
+            "border": random.choice(self.GENOME_OPTIONS["border"]),
+            "shape_language": random.choice(self.GENOME_OPTIONS["shape_language"]),
+            "surface": random.choice(self.GENOME_OPTIONS["surface"]),
+            "information_architecture": random.choice(self.GENOME_OPTIONS["information_architecture"]),
+            "novelty_target": round(random.uniform(0.78, 0.95), 2)
+        }
+
+    def classify_intent(self, prompt: str, negative_memory: List[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Classifies prompt into structured generation parameters.
         Enforces system policy constraints (family='glass', theme='dark').
@@ -153,6 +243,8 @@ class DecisionEngine:
 
             self.existing_slugs.add(slug)
 
+            genome = self.generate_genome(detected_category, negative_memory)
+
             return {
                 "title": title,
                 "slug": slug,
@@ -162,7 +254,8 @@ class DecisionEngine:
                 "family": "glass",
                 "theme": "dark",
                 "icon": self.CATEGORIES.get(detected_category, ["sparkles"])[0],
-                "raw_prompt": prompt
+                "raw_prompt": prompt,
+                "genome": genome
             }
 
         # 1. Determine category for specific user prompts
@@ -252,6 +345,8 @@ class DecisionEngine:
             if tag_candidate not in tags and len(tag_candidate) > 2:
                 tags.append(tag_candidate)
 
+        genome = self.generate_genome(detected_category, negative_memory)
+
         return {
             "family": "glass",
             "theme": "dark",
@@ -263,4 +358,5 @@ class DecisionEngine:
             "icons": icons,
             "tags": tags,
             "raw_prompt": prompt,
+            "genome": genome
         }

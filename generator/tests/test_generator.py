@@ -35,10 +35,24 @@ class TestGeneratorPipeline(unittest.TestCase):
         self.assertIsInstance(spec["tags"], list)
 
     def test_model_router_fallback(self):
-        # Without real keys set, cascade should successfully resolve to mock provider
-        output, meta = self.router.call_with_cascade("System instruction", "Create glass widget")
+        # 1. In production (allow_mock=False), failure without API keys raises RuntimeError
+        with self.assertRaises(RuntimeError):
+            self.router.call_with_cascade("System instruction", "Create glass widget", allow_mock=False)
+
+        # 2. When allow_mock=True or force_provider="mock", cascade resolves to mock
+        output, meta = self.router.call_with_cascade("System instruction", "Create glass widget", allow_mock=True)
         self.assertIn("<html", output.lower())
         self.assertIn("mock", meta["provider"].lower())
+
+    def test_variation_genome_generation(self):
+        decision = DecisionEngine()
+        spec = decision.classify_intent("desain slider presisi haptic")
+        self.assertIn("genome", spec)
+        genome = spec["genome"]
+        self.assertIn("geometry", genome)
+        self.assertIn("palette", genome)
+        self.assertIn("interaction", genome)
+        self.assertIn("novelty_target", genome)
 
     def test_decompiler_modularization(self):
         mock_html = """<!DOCTYPE html>
@@ -119,6 +133,46 @@ class TestGeneratorPipeline(unittest.TestCase):
         stats = self.queue_mgr.get_stats()
         self.assertEqual(stats["approved"], 1)
         self.assertEqual(stats["pending"], 0)
+
+    def test_rejection_archiving_and_manifest_export(self):
+        decompiled = {
+            "slug": "test-rejected-widget",
+            "standalone_file": "test-rejected-widget.html",
+            "standalone_content": "<html><body>Bad Widget</body></html>",
+            "index_html": "<html><body>Bad Widget Demo</body></html>",
+            "index_css": "/* css */",
+            "index_js": "// js",
+            "manifest_json": '{"title": "Test Rejected Widget", "slug": "test-rejected-widget"}'
+        }
+        val = {"valid": True, "score": 75, "errors": [], "warnings": []}
+        router_meta = {"provider": "mock", "model": "mock-v1"}
+
+        item_id = self.queue_mgr.enqueue_pending(decompiled, val, router_meta)
+        self.assertEqual(len(self.queue_mgr.get_pending_items()), 1)
+
+        # Reject item
+        rej_dir = self.queue_mgr.reject(item_id, reason="Too repetitive")
+        self.assertTrue(os.path.isdir(rej_dir))
+        self.assertTrue(os.path.exists(os.path.join(rej_dir, "rejection.json")))
+        self.assertEqual(len(self.queue_mgr.get_pending_items()), 0)
+        self.assertEqual(len(self.queue_mgr.get_rejected_items()), 1)
+
+        # Test negative memory
+        neg_sigs = self.queue_mgr.get_rejected_signatures()
+        self.assertEqual(len(neg_sigs), 1)
+        self.assertEqual(neg_sigs[0]["slug"], "test-rejected-widget")
+
+        # Test export web manifest with all 3 states
+        manifest_path = os.path.join(self.test_dir, "queue.json")
+        self.queue_mgr.export_web_manifest(manifest_path)
+        import json
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        self.assertIn("pending", data)
+        self.assertIn("approved", data)
+        self.assertIn("rejected", data)
+        self.assertIn("stats", data)
+        self.assertEqual(len(data["rejected"]), 1)
 
 if __name__ == "__main__":
     unittest.main()

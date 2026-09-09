@@ -65,40 +65,51 @@ class ModelRouter:
         m_key = f"{provider_id}:{model_id}"
         self.cooldowns[m_key] = time.time() + seconds
 
-    def call_with_cascade(self, system_prompt: str, user_prompt: str) -> Tuple[str, Dict[str, Any]]:
+    def call_with_cascade(self, system_prompt: str, user_prompt: str, allow_mock: bool = False, force_provider: Optional[str] = None) -> Tuple[str, Dict[str, Any]]:
         """
         Attempts execution using the priority cascade.
         If a model fails or is rate limited, falls back to the next available provider.
+        Silent mock fallback is strictly disabled unless allow_mock=True or force_provider='mock'.
         """
+        if force_provider == "mock":
+            output = self._call_mock(system_prompt, user_prompt)
+            return output, {
+                "provider": "mock",
+                "model": "mock-glass-generator-v1",
+                "status": "forced_mock",
+                "cascaded_from": []
+            }
+
         available_models = self.get_available_models()
 
+        # If a specific provider was requested (e.g. gemini, tokenrouter, 9router), filter candidates
+        if force_provider:
+            available_models = [m for m in available_models if m["provider_id"] == force_provider]
+
+        # Filter out mock from automatic candidates
+        available_models = [m for m in available_models if m["provider_id"] != "mock"]
+
         if not available_models:
-            # Absolute fallback to mock provider
-            available_models = [{
-                "provider_id": "mock",
-                "provider_name": "Offline Simulation Provider",
-                "model_id": "mock-glass-generator-v1",
-                "endpoint": "local",
-                "api_key": None,
-                "cooldown_seconds": 0,
-                "priority": 9999
-            }]
+            if allow_mock:
+                output = self._call_mock(system_prompt, user_prompt)
+                return output, {
+                    "provider": "mock-emergency-fallback",
+                    "model": "mock-glass-generator-v1",
+                    "status": "fallback",
+                    "cascaded_from": ["No eligible providers found"]
+                }
+            raise RuntimeError(
+                f"No eligible LLM providers available (check GEMINI_API_KEY, TOKENROUTER_API_KEY, or ROUTER_API_KEY). "
+                f"Silent mock fallback is disabled in production to prevent monotonic output. "
+                f"To explicitly run offline mock, specify --provider mock."
+            )
 
         errors = []
         for model in available_models:
             provider_id = model["provider_id"]
             model_id = model["model_id"]
             try:
-                if provider_id == "mock":
-                    output = self._call_mock(system_prompt, user_prompt)
-                    return output, {
-                        "provider": provider_id,
-                        "model": model_id,
-                        "status": "success",
-                        "cascaded_from": errors
-                    }
-
-                elif provider_id == "gemini":
+                if provider_id == "gemini":
                     output = self._call_gemini(model["endpoint"], model["model_id"], model["api_key"], system_prompt, user_prompt)
                     return output, {
                         "provider": provider_id,
@@ -123,14 +134,20 @@ class ModelRouter:
                 self.mark_cooldown(provider_id, model_id, model.get("cooldown_seconds", 60))
                 continue
 
-        # If all failed, use deterministic mock generator
-        fallback_output = self._call_mock(system_prompt, user_prompt)
-        return fallback_output, {
-            "provider": "mock-emergency-fallback",
-            "model": "mock-glass-generator-v1",
-            "status": "fallback",
-            "cascaded_from": errors
-        }
+        # If all real providers failed
+        if allow_mock:
+            fallback_output = self._call_mock(system_prompt, user_prompt)
+            return fallback_output, {
+                "provider": "mock-emergency-fallback",
+                "model": "mock-glass-generator-v1",
+                "status": "fallback",
+                "cascaded_from": errors
+            }
+
+        raise RuntimeError(
+            f"All configured LLM providers failed: {'; '.join(errors)}. "
+            f"Silent mock fallback is disabled in production to prevent monotonic output."
+        )
 
     def _call_gemini(self, endpoint: str, model_id: str, api_key: str, system_prompt: str, user_prompt: str) -> str:
         url = f"{endpoint}/{model_id}:generateContent?key={api_key}"

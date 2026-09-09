@@ -66,7 +66,7 @@ class Curator:
         # Copy component files (ignore queue_meta.json)
         copied_files = []
         for file_name in os.listdir(item_path):
-            if file_name in ["queue_meta.json"]:
+            if file_name in ["queue_meta.json", "rejection.json"]:
                 continue
             src_file = os.path.join(item_path, file_name)
             if file_name.endswith(".html") and file_name != "index.html":
@@ -77,20 +77,34 @@ class Curator:
             shutil.copy2(src_file, dst_file)
             copied_files.append(dst_name)
 
-        # 2. Transition state in queue
-        approved_dir = self.queue.approve(item_id)
-
-        # 3. Register in scripts/rebuild_all.py
+        # 2. Register in scripts/rebuild_all.py
         self._register_in_rebuild_script(slug, title, category, badge)
 
-        # 4. Optional Rebuild
+        # 3. Transactional Rebuild: verify before marking state as approved
         rebuild_output = ""
         if auto_rebuild and os.path.exists(self.rebuild_script):
             try:
                 res = subprocess.run(["python", self.rebuild_script], capture_output=True, text=True, cwd=self.root_dir, check=True)
                 rebuild_output = res.stdout
             except Exception as e:
-                rebuild_output = f"Rebuild warning: {str(e)}"
+                # Rollback on rebuild failure: do not approve incomplete deployment!
+                shutil.rmtree(target_dir, ignore_errors=True)
+                return {
+                    "success": False,
+                    "item_id": item_id,
+                    "slug": slug,
+                    "error": f"Rebuild failed — deployment rolled back: {str(e)}"
+                }
+
+        # 4. Transition state in queue ONLY after successful deployment & rebuild
+        approved_dir = self.queue.approve(item_id, published_path=f"ui/components/glass/{slug}")
+
+        # 5. Automatically refresh web manifest so Generator Lab UI is immediately in sync
+        try:
+            manifest_out = os.path.join(self.root_dir, "projects", "generator-lab", "queue.json")
+            self.queue.export_web_manifest(manifest_out)
+        except Exception:
+            pass
 
         return {
             "success": True,
@@ -110,6 +124,14 @@ class Curator:
                 "item_id": item_id,
                 "error": f"Item {item_id} not found in pending queue — nothing rejected (state may be stale, pull latest main first).",
             }
+
+        # Refresh web manifest so rejected state immediately reflects across UI
+        try:
+            manifest_out = os.path.join(self.root_dir, "projects", "generator-lab", "queue.json")
+            self.queue.export_web_manifest(manifest_out)
+        except Exception:
+            pass
+
         return {
             "success": True,
             "item_id": item_id,

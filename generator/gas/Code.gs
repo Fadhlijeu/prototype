@@ -32,14 +32,34 @@ function getSecret(key, defaultValue) {
 }
 
 /**
+ * CORS Preflight Handler (doOptions)
+ * Menangani permintaan preflight OPTIONS dari browser secara elegan.
+ */
+function doOptions(e) {
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+
+/**
  * Webhook Entrypoint (doPost)
  * Menerima request HTTP POST dari Webhook eksternal, cURL, atau form remote.
+ * Mampu mem-parsing payload application/json maupun text/plain (CORS-safe).
  */
 function doPost(e) {
   try {
     var data = {};
     if (e && e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch(parseErr) {
+        try {
+          data = JSON.parse(decodeURIComponent(e.postData.contents));
+        } catch(decodeErr) {
+          data = {};
+        }
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
     }
 
     var adminPasskey = "";
@@ -296,43 +316,68 @@ function generateAutonomousPrompt(category) {
   var categoryDirectives = {
     "sliders": [
       "Ciptakan komponen Aurora Magnetic Precision Slider bertema Dark Glass. Rancang track presisi dengan magnetic tick marks haptic, numeric badge HUD, dan thumb slider bersinar biru elektrik (#60A5FA). Wajib interaktif dengan JavaScript.",
-      "Desain Refraction Density Optical Scrubber untuk kontrol visual. Gunakan glass slider horizontal dengan nilai persentase live, efek liquid refraction, dan specular top border."
+      "Desain Refraction Density Optical Scrubber untuk kontrol visual. Gunakan glass slider horizontal dengan nilai persentase live, efek liquid refraction, dan specular top border.",
+      "Rancang Radial Arc Fader Slider dengan thumb melengkung interaktif, angka persentase di tengah, dan ambient purple-rose glow (#F472B6).",
+      "Ciptakan Vertical Glass Equalizer Slider Strip dengan skala desibel numerik dan efek haptic dragging halus.",
+      "Desain Bi-Directional Dual Balance Slider berkepala ganda dengan titik nol di tengah dan aksen neon cyan."
     ],
     "telemetry": [
       "Rancang komponen Neon Cyan & Emerald Live Telemetry Dial Gauge atau Audio Visualizer. Buat indikator visual gelombang/meter aktif dengan palet cyan (#22D3EE) dan emerald (#10B981) yang menyala di atas canvas obsidian gelap.",
-      "Ciptakan Dual Arc Specular Latency Monitor dengan metrik live ping, status node mesh, dan animasi fluctuating graph mikro yang elegan."
+      "Ciptakan Dual Arc Specular Latency Monitor dengan metrik live ping, status node mesh, dan animasi fluctuating graph mikro yang elegan.",
+      "Desain Concentric Radar System Topology Meter dengan orbit status node berputar dan metrik throughput live.",
+      "Ciptakan Hexagonal Hardware Stat Cluster dengan pembacaan suhu CPU, memory pressure, dan bus IO berlapis kaca frosted.",
+      "Rancang Bioluminescent Audio Frequency Bar Chart dengan 12 batang spektrum suara teranimasi dan glow reaktif."
     ],
     "controls": [
       "Ciptakan Segmented Frosted Capsule Switch (border-radius: 9999px) dengan pilihan mode Eco / Balanced / Turbo. Tombol aktif berpindah dengan spring animation halus dan aksen warna mint green (#34D399).",
-      "Rancang Tactile Obsidian Power Toggle dengan indikator glowing LED status dan efek glass click interaktif."
+      "Rancang Tactile Obsidian Power Toggle dengan indikator glowing LED status dan efek glass click interaktif.",
+      "Desain Rotary Multi-Step Selector Wheel dengan indikator klik sudut diskrit dan specular top rim highlight.",
+      "Ciptakan Quad-State Glass Rocker Switch bergaya kontrol kokpit luar angkasa dengan haptic feedback visual.",
+      "Rancang Floating Minimalist Pill Checkbox Matrix dengan animasi checkmark liquid dan glowing focus ring."
     ],
     "buttons": [
       "Desain Specular Action Speed Dial / Floating Action Button dengan expandable speed dial options, aksen hot pink / violet glow (#F472B6), dan spring elevation saat dihover.",
-      "Ciptakan Micro-Elevation Action Trigger Group dengan tombol snapshot & deploy berlatar frosted glass specular."
+      "Ciptakan Micro-Elevation Action Trigger Group dengan tombol snapshot & deploy berlatar frosted glass specular.",
+      "Rancang Prismatic Radial Launch Trigger dengan pulsing optic ring dan countdown confirmation state.",
+      "Ciptakan Magnetic Split Button Pill dengan tombol aksi utama dan trigger menu dropdown terintegrasi.",
+      "Desain Floating Crystal Pill FAB dengan transisi rotasi icon saat diklik dan expand ke status dock."
     ],
     "navigation": [
       "Rancang Frosted Capsule Dock Bar (border-radius: 9999px) dengan icon Lucide floating, pill indicator aktif berbahan liquid glass, dan transisi spring physics.",
-      "Ciptakan Breadcrumb Stepper Navigation dengan pill status interaktif dan specular light highlight di tiap node antarmuka."
+      "Ciptakan Breadcrumb Stepper Navigation dengan pill status interaktif dan specular light highlight di tiap node antarmuka.",
+      "Desain Vertical Glass Rail Drawer dengan icon hover expansion, badge counter live, dan aksen amethyst glow.",
+      "Ciptakan Radial Satellite Navigation Ring dengan menu melingkar yang mengorbit node pusat.",
+      "Rancang Segmented Horizontal Tab Strip dengan moving glass highlight indicator di bawah tab aktif."
     ],
     "dashboards": [
       "Desain Obsidian Telemetry Command Matrix (max-width: 720px) dengan dual-column telemetry grid, CPU core live bar, dan network ping readout.",
-      "Rancang Realtime System Cockpit dengan mini sparklines, status cluster server, dan depth glass border asimetris."
+      "Rancang Realtime System Cockpit dengan mini sparklines, status cluster server, dan depth glass border asimetris.",
+      "Ciptakan Multi-Pane Analytics Workbench dengan kartu metrik modular, filter rentang waktu, dan chart preview.",
+      "Desain Cloud Infrastructure Overview Board dengan peta node server global dan latency gauge."
     ],
     "scenery": [
       "Ciptakan Glass Scenery Workstation Viewport (max-width: 820px) berisi komposit panel multi-widget: compute metrics, memory status, dan quick command dock.",
-      "Desain Cybernetic Multi-Widget Viewport dengan layout komposit pemandangan antarmuka yang memukau."
+      "Desain Cybernetic Multi-Widget Viewport dengan layout komposit pemandangan antarmuka yang memukau.",
+      "Rancang Autonomous Studio Viewport dengan split panel editor visual, status terminal, dan inspector kaca.",
+      "Ciptakan Modular Environment Scenery Hub dengan grid workstation responsif bertingkat kedalaman optik."
     ],
     "inputs": [
       "Rancang Intelligent Semantic Prompt Bar dengan tag pencarian interaktif (#Specular, #AuroraMesh), icon Lucide terminal, dan glowing focus ring.",
-      "Ciptakan Floating Command Input Cluster dengan tombol submit terintegrasi dan ambient depth blur."
+      "Ciptakan Floating Command Input Cluster dengan tombol submit terintegrasi dan ambient depth blur.",
+      "Desain Dual Token Input Bar dengan selector model AI dropdown di dalam form dan counter karakter live.",
+      "Ciptakan Glass Expandable Search Omnibox dengan auto-complete suggestions panel yang muncul mengapung."
     ],
     "feedback": [
       "Ciptakan Glass Password Strength Glowing Meter dengan bar segmen 4-warna bercahaya (Emerald, Solar Amber, Ruby) dan feedback enkripsi.",
-      "Rancang Solar Amber Notification Pill dengan refractive glass blur dan auto-dismiss spring interaction."
+      "Rancang Solar Amber Notification Pill dengan refractive glass blur dan auto-dismiss spring interaction.",
+      "Desain Floating Specular Glass Toast Alert dengan progress countdown bar dan dismiss swipe gesture.",
+      "Ciptakan Prismatic Status Badge Group dengan pulsating status beacons dan tooltip micro-overlay."
     ],
     "other": [
       "Ciptakan Experimental Radial Command Wheel dengan circular touch hotspots dan holographic optic target di tengah.",
-      "Rancang Prismatic Glass Resonance Orb dengan kontrol interaktif orisinal bebas di kategori 'other'."
+      "Rancang Prismatic Glass Resonance Orb dengan kontrol interaktif orisinal bebas di kategori 'other'.",
+      "Desain Kinetic Gyroscope Data Sphere dengan rotasi interaktif 3D dan optic lens focus.",
+      "Ciptakan Holographic Quantum Coordinate Matrix dengan aksen spectral-prismatic dan interaktivitas unik."
     ]
   };
 

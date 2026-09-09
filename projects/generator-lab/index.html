@@ -976,7 +976,7 @@
 
         async function syncCloudQueue(showNotification = false) {
             let cloudData = null;
-            if (window.PROTOTYPE_CLOUD_QUEUE && Array.isArray(window.PROTOTYPE_CLOUD_QUEUE.pending)) {
+            if (window.PROTOTYPE_CLOUD_QUEUE && typeof window.PROTOTYPE_CLOUD_QUEUE === 'object') {
                 cloudData = window.PROTOTYPE_CLOUD_QUEUE;
             }
             try {
@@ -993,19 +993,47 @@
             if (!store.approved) store.approved = [];
             if (!store.pending) store.pending = [];
 
-            if (cloudData && Array.isArray(cloudData.pending)) {
-                const cloudPendingIds = new Set(cloudData.pending.map(x => x.id));
-                const cloudPendingSlugs = new Set(cloudData.pending.map(x => x.slug));
+            if (cloudData) {
+                const cloudPending = Array.isArray(cloudData.pending) ? cloudData.pending : [];
+                const cloudApproved = Array.isArray(cloudData.approved) ? cloudData.approved : [];
+                const cloudRejected = Array.isArray(cloudData.rejected) ? cloudData.rejected : [];
 
-                // 1. Bersihkan item pending lokal yang sudah tidak ada di cloud (dihapus/ditolak di server)
+                const cloudPendingIds = new Set(cloudPending.map(x => x.id));
+                const cloudPendingSlugs = new Set(cloudPending.map(x => x.slug));
+
+                const cloudApprovedIds = new Set(cloudApproved.map(x => x.id));
+                const cloudApprovedSlugs = new Set(cloudApproved.map(x => x.slug));
+
+                const cloudRejectedIds = new Set(cloudRejected.map(x => x.id));
+                const cloudRejectedSlugs = new Set(cloudRejected.map(x => x.slug));
+
+                // 1. Sync Approved items from cloud
+                cloudApproved.forEach(cItem => {
+                    const exists = store.approved.some(x => x.id === cItem.id || x.slug === cItem.slug);
+                    if (!exists) {
+                        store.approved.unshift(cItem);
+                    }
+                });
+
+                // 2. Sync Rejected items from cloud
+                cloudRejected.forEach(cItem => {
+                    const exists = store.rejected.some(x => x.id === cItem.id || x.slug === cItem.slug);
+                    if (!exists) {
+                        store.rejected.unshift(cItem);
+                    }
+                });
+
+                // 3. Clean pending: if an item is already approved or rejected in cloud, remove from local pending
                 store.pending = store.pending.filter(item => {
+                    if (cloudApprovedIds.has(item.id) || cloudApprovedSlugs.has(item.slug)) return false;
+                    if (cloudRejectedIds.has(item.id) || cloudRejectedSlugs.has(item.slug)) return false;
                     if (item.isLocalDirect) return true;
                     return cloudPendingIds.has(item.id) || cloudPendingSlugs.has(item.slug);
                 });
 
-                // 2. Tambahkan item cloud baru yang belum pernah diapprove/direject
+                // 4. Ingest new cloud pending items
                 let addedCount = 0;
-                cloudData.pending.forEach(cItem => {
+                cloudPending.forEach(cItem => {
                     const inPending = store.pending.some(x => x.id === cItem.id || x.slug === cItem.slug);
                     const inApproved = store.approved.some(x => x.id === cItem.id || x.slug === cItem.slug);
                     const inRejected = store.rejected.some(x => x.id === cItem.id || x.slug === cItem.slug);
@@ -1016,13 +1044,15 @@
                 });
 
                 saveLabStore(store);
+                renderCurrentView();
+
                 if (addedCount > 0 && showNotification) {
                     showToast(`${addedCount} komponen baru dari Cloud berhasil masuk antrean!`);
                 } else if (showNotification) {
-                    showToast("Antrean cloud sudah sinkron dengan data lokal.");
+                    showToast(`Sinkronisasi selesai (${store.pending.length} Pending, ${store.approved.length} Disetujui, ${store.rejected.length} Ditolak).`);
                 }
             } else if (showNotification) {
-                showToast("Antrean cloud kosong (0 pending).");
+                showToast("Antrean cloud tidak dapat diakses.");
             }
         }
 
@@ -1167,6 +1197,16 @@
                                     <span class="meta-pill cat-badge">${escapeHtml(item.category || 'inputs')}</span>
                                     <span class="meta-pill">${escapeHtml(item.variation || 'frosted')}</span>
                                     <span class="meta-pill score"><i data-lucide="shield-check"></i> Score ${item.score || 95}/100</span>
+                                    ${item.novelty && item.novelty.novelty_score !== undefined ? `
+                                        <span class="meta-pill" style="background:rgba(168,85,247,0.15);color:#C084FC;border:1px solid rgba(168,85,247,0.3);">
+                                            <i data-lucide="sparkles"></i> Novelty ${Math.round(item.novelty.novelty_score * 100)}%
+                                        </span>
+                                    ` : ''}
+                                    ${item.genome && item.genome.geometry ? `
+                                        <span class="meta-pill" style="background:rgba(20,184,166,0.12);color:#2DD4BF;border:1px solid rgba(20,184,166,0.25);">
+                                            ${escapeHtml(item.genome.geometry)}
+                                        </span>
+                                    ` : ''}
                                 </div>
                             </div>
                         </div>
@@ -1191,8 +1231,8 @@
                                         <i data-lucide="check"></i> Setujui & Deploy
                                     </button>
                                 ` : `
-                                    <span class="meta-pill score" style="margin-left:auto;">
-                                        ${activeFilter.toUpperCase()}
+                                    <span class="meta-pill score" style="margin-left:auto;${activeFilter === 'rejected' ? 'background:rgba(239,68,68,0.15);color:#EF4444;border:1px solid rgba(239,68,68,0.3);' : ''}">
+                                        ${activeFilter === 'rejected' ? `<i data-lucide="archive"></i> DITOLAK: ${escapeHtml(item.rejectReason || item.reason || 'Ditolak saat kurasi')}` : `<i data-lucide="check-check"></i> DISETUJUI DI SHOWROOM`}
                                     </span>
                                 `}
                             </div>
@@ -1270,7 +1310,7 @@
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: "approve_item",
                         item_id: id,
@@ -1289,11 +1329,16 @@
             if (idx === -1) return;
 
             const item = store.pending.splice(idx, 1)[0];
-            // Langsung hapus total: tidak disimpan ke tab rejected!
-            if (store.rejected) {
-                store.rejected = store.rejected.filter(x => x.id !== id);
+            item.status = "REJECTED";
+            item.rejectedAt = new Date().toLocaleString();
+            item.rejectReason = "Ditolak dari Generator Lab";
+
+            if (!store.rejected) store.rejected = [];
+            if (!store.rejected.some(x => x.id === id)) {
+                store.rejected.unshift(item);
             }
             saveLabStore(store);
+            renderCurrentView();
 
             const githubToken = sessionStorage.getItem(SESSION_GITHUB_TOKEN_KEY) || "";
             const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
@@ -1321,7 +1366,7 @@
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: "reject_item",
                         item_id: id,
@@ -1330,7 +1375,7 @@
                 }).catch(() => {});
             }
 
-            showToast(`🗑️ Kandidat "${item.title}" langsung dihapus permanen.`);
+            showToast(`📦 Kandidat "${item.title}" berhasil diarsipkan ke Arsip Penolakan.`);
         }
 
         function openDeployModal(item, mode) {

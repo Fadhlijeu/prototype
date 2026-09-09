@@ -1,0 +1,49 @@
+{
+  "title": "Glass Dynamic Widget",
+  "slug": "glass-dynamic-widget",
+  "category": "other",
+  "badge": "Molecule",
+  "variation": "aurora-gradient-glow",
+  "tags": [
+    "glass",
+    "other",
+    "interactive",
+    "specular-depth"
+  ],
+  "family": "glass",
+  "theme": "dark",
+  "atomic_level": "Molecule",
+  "icons": [
+    "compass",
+    "grid",
+    "home",
+    "menu",
+    "arrow-right"
+  ],
+  "raw_prompt": "Cybernetic Obsidian Telemetry Dial with Live Spectrum",
+  "genome": {
+    "geometry": "pill-island",
+    "composition": "nested-cluster",
+    "density": "ultra-minimal",
+    "orientation": "vertical",
+    "interaction": "scrubber-drag",
+    "depth": "specular-backplate",
+    "motion": "stagger-reveal",
+    "material": "prismatic-refraction",
+    "palette": "spectral-prismatic",
+    "primary_accent": "#38BDF8",
+    "secondary_accent": "#C084FC",
+    "glow_color": "rgba(192, 132, 252, 0.65)",
+    "aurora_blobs": [
+      "rgba(56, 189, 248, 0.65)",
+      "rgba(192, 132, 252, 0.6)",
+      "rgba(244, 114, 182, 0.45)"
+    ],
+    "lighting": "central-glow-optic",
+    "border": "segmented-dashed",
+    "shape_language": "concentric-circular",
+    "surface": "milky-frosted",
+    "information_architecture": "status-hub",
+    "novelty_target": 0.87
+  }
+}

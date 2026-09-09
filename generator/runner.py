@@ -37,15 +37,19 @@ def build_pipeline(root_dir: str = None):
         "curator": curator
     }
 
-def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = False, force_provider: str = None):
+def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = False, force_provider: str = None, allow_mock: bool = False):
+    negative_memory = pipeline["queue"].get_rejected_signatures()
     print(f"\n[1/5] Decision Layer: Analyzing prompt -> '{prompt}'...")
-    spec = pipeline["decision"].classify_intent(prompt)
+    spec = pipeline["decision"].classify_intent(prompt, negative_memory=negative_memory)
+    genome = spec.get("genome", {})
     print(f"      Identified: Title='{spec['title']}', Category='{spec['category']}', Variation='{spec['variation']}'")
+    if genome:
+        print(f"      Variation Genome: Geometry='{genome.get('geometry')}', Palette='{genome.get('palette')}', Interaction='{genome.get('interaction')}'")
 
-    # Deduplication Check
+    # Lexical Deduplication Check
     is_dup, sim, dup_matched = pipeline["dedup"].check_similarity(spec["slug"], spec["title"])
     if is_dup:
-        print(f"      [WARNING] Detected high similarity ({sim*100:.1f}%) with existing '{dup_matched}'. Adjusting slug...")
+        print(f"      [WARNING] Detected high lexical similarity ({sim*100:.1f}%) with existing '{dup_matched}'. Adjusting slug...")
         spec["slug"] = f"{spec['slug']}-alt-{int(time.time()) % 1000}"
 
     print(f"\n[2/5] Model Router & Generation Engine: Invoking active model cascade...")
@@ -54,12 +58,29 @@ def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = Fals
         raw_html = pipeline["router"]._call_mock("system", prompt)
         router_meta = {"provider": "mock", "model": "mock-glass-generator-v1", "status": "forced_mock"}
     else:
-        raw_html, router_meta = pipeline["engine"].generate(spec, pipeline["dedup"].get_existing_names())
+        raw_html, router_meta = pipeline["engine"].generate(
+            spec,
+            pipeline["dedup"].get_existing_names(),
+            allow_mock=allow_mock,
+            force_provider=force_provider,
+            negative_memory=negative_memory
+        )
 
     print(f"      Generated {len(raw_html)} bytes via {router_meta.get('provider')}:{router_meta.get('model')}")
 
+    # Structural Novelty Analysis
+    novelty = pipeline["dedup"].compute_novelty_score(spec["slug"], spec["title"], candidate_html=raw_html)
+    print(f"      Novelty Analysis: Score={novelty['novelty_score']:.2f} | Status={novelty['status']}")
+    if not novelty["is_novel"]:
+        print(f"      [WARNING] Structural similarity high with '{novelty['most_similar_component']}' ({novelty['similarity_score']*100:.1f}%). Flagging for human review.")
+
     print(f"\n[3/5] Decompiler: Extracting modular files & manifest...")
     decompiled = pipeline["decompiler"].decompile(raw_html, spec)
+    if "manifest" in decompiled:
+        if genome:
+            decompiled["manifest"]["genome"] = genome
+        decompiled["manifest"]["novelty"] = novelty
+
     print(f"      Decompiled into: {decompiled['standalone_file']}, index.html, index.css, index.js, manifest.json")
 
     print(f"\n[4/5] Validator: Running quality and token compliance checks...")
@@ -108,11 +129,8 @@ def run_single_generation(prompt: str, pipeline: dict, auto_approve: bool = Fals
         if deploy_res.get("success"):
             print(f"      Deployed to: {deploy_res.get('deployed_to')}")
             print(f"      Rebuild status: OK")
-            # Update web manifest after approval
-            try:
-                pipeline["queue"].export_web_manifest(manifest_out)
-            except Exception:
-                pass
+        else:
+            print(f"      [FAILED] {deploy_res.get('error')}")
 
     return item_id
 
@@ -123,7 +141,7 @@ def main():
     # Command: generate
     gen_parser = subparsers.add_parser("generate", help="Generate a single UI component")
     gen_parser.add_argument("--prompt", type=str, default="Aurora Glass Segmented Stepper", help="Component prompt instruction")
-    gen_parser.add_argument("--provider", type=str, choices=["gemini", "9router", "mock"], help="Force specific provider")
+    gen_parser.add_argument("--provider", type=str, choices=["gemini", "tokenrouter", "9router", "mock"], help="Force specific provider")
     gen_parser.add_argument("--auto-approve", action="store_true", help="Automatically approve and install to design system")
 
     # Command: run (autonomous loop)
@@ -131,7 +149,7 @@ def main():
     run_parser.add_argument("--continuous", action="store_true", help="Keep running indefinitely until queue full or stopped")
     run_parser.add_argument("--max-iterations", type=int, default=3, help="Max iterations before pausing")
     run_parser.add_argument("--delay", type=int, default=2, help="Seconds delay between cycles")
-    run_parser.add_argument("--provider", type=str, choices=["gemini", "9router", "mock"], default="mock", help="Provider to use")
+    run_parser.add_argument("--provider", type=str, choices=["gemini", "tokenrouter", "9router", "mock"], default=None, help="Provider to use (default: cascade real providers)")
 
     # Command: curate
     cur_parser = subparsers.add_parser("curate", help="Manage review queue and curation decisions")
@@ -145,16 +163,15 @@ def main():
     pipeline = build_pipeline()
 
     if args.command == "generate":
-        run_single_generation(args.prompt, pipeline, auto_approve=args.auto_approve, force_provider=args.provider)
+        run_single_generation(args.prompt, pipeline, auto_approve=args.auto_approve, force_provider=args.provider, allow_mock=(args.provider == "mock"))
 
     elif args.command == "run":
         print("=== Autonomous Generator Loop Starting ===")
-        seeds = [
-            "Floating glass telemetry dial gauge with specular illumination",
-            "Specular frosted breadcrumb navigation with spring pill indicators",
-            "Obsidian glass segmented audio visualizer bar",
-            "Aurora ambient gradient notification banner",
-            "Glass interactive slider with magnetic haptic feedback"
+        categories = list(pipeline["decision"].CATEGORIES.keys())
+        adjectives = [
+            "Specular Frosted", "Liquid Refractive", "Aurora Glowing",
+            "Minimal Obsidian", "Segmented Haptic", "Floating Elevated",
+            "Ambient Pulse", "Prismatic Quartz"
         ]
         iterations = 0
         while True:
@@ -162,9 +179,12 @@ def main():
                 print("[ALERT] Pending queue reached capacity limit. Stopping autonomous loop.")
                 break
 
-            seed_prompt = seeds[iterations % len(seeds)]
-            print(f"\n--- [Cycle #{iterations+1}] Autonomous Pulse: '{seed_prompt}' ---")
-            run_single_generation(seed_prompt, pipeline, auto_approve=False, force_provider=args.provider)
+            cat = categories[iterations % len(categories)]
+            adj = adjectives[iterations % len(adjectives)]
+            dynamic_prompt = f"{adj} {cat.replace('-', ' ').title()} Component with Dark Glassmorphism"
+
+            print(f"\n--- [Cycle #{iterations+1}] Autonomous Pulse ({cat}): '{dynamic_prompt}' ---")
+            run_single_generation(dynamic_prompt, pipeline, auto_approve=False, force_provider=args.provider, allow_mock=(args.provider == "mock"))
             iterations += 1
 
             if not args.continuous and iterations >= args.max_iterations:

@@ -78,21 +78,24 @@ jobs:
         run: |
           git config --global user.name "Prototype Autonomous Bot"
           git config --global user.email "bot@prototype.local"
-          git add -A generator/queue/ projects/generator-lab/ ui/components/glass/ scripts/rebuild_all.py component.md web-apps.html
+          git add -A generator/queue/ projects/generator-lab/ ui/components/glass/ ui/components/raw/ scripts/rebuild_all.py component.md web-apps.html
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "feat(generator): update autonomous queue and components"
-            PUSH_OK=0
+            git commit -m "feat(generator): update component lifecycle and autonomous queue"
+            PUSH_SUCCESS=0
             for i in 1 2 3 4 5; do
-              echo "Git push attempt $i..."
-              if git pull --rebase origin main && git push origin main; then
-                PUSH_OK=1
+              echo "Git push attempt $i of 5..."
+              git fetch origin main
+              git rebase origin/main || git rebase --abort
+              if git push origin HEAD:main; then
+                echo "Push succeeded on attempt $i."
+                PUSH_SUCCESS=1
                 break
               fi
-              sleep 3
+              sleep $((i * 3))
             done
-            if [ "$PUSH_OK" != "1" ]; then
+            if [ "$PUSH_SUCCESS" != "1" ]; then
               echo "::error::All 5 push attempts failed — state was NOT persisted to main. Failing workflow so UI never shows false Success."
               exit 1
             fi

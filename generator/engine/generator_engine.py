@@ -138,13 +138,47 @@ class GeneratorEngine:
 
         return ctx
 
-    def build_prompts(self, spec: Dict[str, Any], existing_memory: list = None) -> Tuple[str, str]:
-        """Constructs system prompt (with full project context) and detailed user generation instruction."""
+    def build_prompts(self, spec: Dict[str, Any], existing_memory: list = None, negative_memory: list = None) -> Tuple[str, str]:
+        """Constructs system prompt (with full project context, Master Design Directive, Variation Genome) and detailed user generation instruction."""
         ctx = self._load_project_context()
 
         memory_str = ""
         if existing_memory:
             memory_str = "Existing collection names (AVOID generating duplicates of these):\n" + "\n".join(f"- {name}" for name in existing_memory[:25])
+
+        negative_str = ""
+        if negative_memory:
+            negative_items = []
+            for item in negative_memory[:10]:
+                if isinstance(item, dict):
+                    slug = item.get("slug", "unknown")
+                    reason = item.get("reason", "Monotonic/Repetitive design")
+                    negative_items.append(f"- `{slug}`: Rejected reason: {reason}")
+                elif isinstance(item, str):
+                    negative_items.append(f"- `{item}`")
+            if negative_items:
+                negative_str = "\n=== REJECTED PAST DESIGNS (NEGATIVE MEMORY — DELIBERATELY AVOID) ===\n" + "\n".join(negative_items) + "\nDo NOT generate designs resembling the rejected patterns above.\n"
+
+        genome = spec.get("genome", {})
+        genome_str = ""
+        if genome:
+            import json
+            genome_str = f"""
+=== ASSIGNED VARIATION GENOME (MANDATORY STRUCTURAL IDENTITY) ===
+You MUST construct this component according to this unique architectural DNA:
+```json
+{json.dumps(genome, indent=2)}
+```
+- Geometry: {genome.get('geometry')} (Do NOT use a generic 440px rectangular card!)
+- Composition: {genome.get('composition')}
+- Density & Orientation: {genome.get('density')}, {genome.get('orientation')}
+- Interaction Model: {genome.get('interaction')} (Provide REAL working JS interaction!)
+- Material & Depth: {genome.get('material')}, {genome.get('depth')}
+- Palette: {genome.get('palette')} (Primary: {genome.get('primary_accent')}, Secondary: {genome.get('secondary_accent')}, Glow: {genome.get('glow_color')})
+- Lighting & Border: {genome.get('lighting')}, {genome.get('border')}
+- Information Architecture: {genome.get('information_architecture')}
+- Target Novelty Score: {genome.get('novelty_target', 0.85)} (Must feel completely different from previous creations)
+"""
 
         # Build extra skills section
         extra_skills_str = ""
@@ -154,44 +188,72 @@ class GeneratorEngine:
         system_prompt = f"""You are the Autonomous Senior UI/UX Engineer & Glassmorphism Design Technologist for this Prototype design system.
 Your mission is to invent and generate production-grade, accessible, dark glassmorphic web components.
 
+=== MASTER DESIGN DIRECTIVE (ANTI-SLOP & RADICAL NOVELTY) ===
+Read and understand the project's design references before generating anything:
+- `ui/components/glass/STYLE_SPEC.md`
+- `ui/components/glass/css.css`
+- existing components inside `ui/components/glass/`
+
+The references define the visual language, material quality, interaction quality, and design-system constraints.
+DO NOT copy an existing component.
+DO NOT produce a near-duplicate.
+DO NOT simply rename, recolor, resize, or rearrange an existing component.
+
+Your task is to create a NEW design direction that belongs to the same design family.
+
+PRESERVE:
+- Material language (frosted dark glass, specular light, ambient depth)
+- Visual polish and high aesthetic standards
+- Glass quality and realistic optical refraction
+- Lighting logic (directional top highlight, darker bottom)
+- Typography discipline (Inter font, tabular numbers for metrics)
+- Interaction quality (spring physics, haptic feedback feeling)
+- Accessibility (ARIA labels, focus states, prefers-reduced-motion)
+- Design-system compatibility (css.css tokens)
+
+VARY AGGRESSIVELY:
+- Silhouette and outer contours (NOT always a rectangle!)
+- Geometry (radial, capsule dock, curved arc, modular split, floating nodes)
+- Spatial composition and layout flow
+- Information hierarchy and anatomy
+- Interaction model (gestural, stepper, scrub, speed-dial, drag, flip)
+- Control placement and control clusters
+- Layering strategy and depth model
+- Edge treatment and specular border accents
+- Motion language and micro-animations
+- Proportions, aspect ratio, density, and orientation
+
+A generated component may be:
+horizontal, vertical, radial, floating, nested, asymmetric, modular, split-pane, stacked, orbital, timeline-like, dial-like, ribbon-like, mesh-like, spatial, compact, or oversized.
+DO NOT assume the component must be a rectangular card.
+Use existing components as STYLE REFERENCES, not STRUCTURAL TEMPLATES.
+
+Before writing code, internally decide:
+1. What makes this component visually distinct?
+2. What is its unique geometry?
+3. What is its unique interaction model?
+4. What is its unique spatial composition?
+5. What is its unique color strategy?
+6. What existing components does it resemble?
+7. How will you deliberately avoid resembling them?
+
+The final result must feel like: "same design universe, completely different invention."
+
 === GENERATION DIRECTIVE ===
 {ctx.get('directive', 'Generate creative, high-fidelity glass UI components.')}
 
-=== GLASS DARK PREMIUM STYLE SPECIFICATION (STYLE_SPEC.md) ===
-You MUST adhere strictly to the rules in STYLE_SPEC.md:
-1. 5-Layer Glass Card Architecture:
-   - Layer 4: 3D Shadow Card (colored deep shadow glow with blur: 30px)
-   - Layer 3: Dynamic Aurora Mesh Gradient (radial-gradient blobs animated with @keyframes auroraMorph)
-   - Layer 2: Main Glass Card (backdrop-filter: blur(30px) saturate(160%), asymmetric specular border lighting)
-   - Layer 1: Noise Texture Overlay (SVG feTurbulence overlay, opacity 0.04)
-   - Layer 0: Content Layout & Typography
-2. Asymmetric Glass Borders (Simulate directional top specular light):
-   - border-top-color: var(--glass-border-top, rgba(255, 255, 255, 0.22)); (Brightest)
-   - border-left-color: var(--glass-border-side, rgba(255, 255, 255, 0.10));
-   - border-right-color: var(--glass-border-side, rgba(255, 255, 255, 0.10));
-   - border-bottom-color: var(--glass-border-bottom, rgba(255, 255, 255, 0.04)); (Darkest)
-3. Iconography:
-   - Outline / stroke only, uniform 1.5px stroke-width (NEVER filled). Lucide icons.
-4. Color Harmony:
-   - Deep void canvas (#0A0A0A / #030712 / var(--bg-main)).
-   - Cyan/Electric blue/violet glowing accents.
-
+=== GLASS DARK PREMIUM STYLE SPECIFICATION ===
 {ctx.get('style_spec', '')}
 
 === CSS DESIGN TOKENS (css.css - SINGLE SOURCE OF TRUTH) ===
-The following is the ACTUAL css.css file from this project. Use these EXACT variable names in your generated components:
-
-```css
 {ctx.get('css_tokens', '/* css.css not found - use standard glass tokens */')}
-```
 
 === REPOSITORY DIRECTORY CATALOGUE (ui/components/glass/) ===
-The following components and core system files already exist in `ui/components/glass/`:
+The following components already exist in `ui/components/glass/`:
 {ctx.get('glass_index', '')}
 
-=== REAL REPOSITORY EXEMPLAR COMPONENTS (FROM ui/components/glass/) ===
-Study these existing high-quality components from the repository to match their structural elegance and polish:
-
+=== REAL REPOSITORY EXEMPLAR COMPONENTS ===
+Study these existing components from the repository to match their polish, but create a NEW structural invention:
 {ctx.get('exemplars', '')}
 
 === MASTER COMPONENT TAXONOMY ===
@@ -199,27 +261,6 @@ Study these existing high-quality components from the repository to match their 
 
 === ADDITIONAL SKILL REFERENCES ===
 {extra_skills_str if extra_skills_str else '(no additional skills loaded)'}
-
-=== ARCHITECTURAL & VISUAL DIVERSITY DIRECTIVE (ANTI-REPETITION) ===
-DO NOT generate another generic 440px rectangular card with the same blue-violet aurora blobs!
-Every component MUST express distinct visual geometry, unique color harmonies, and tailored layout:
-1. FORM FACTOR & GEOMETRY TAILORED TO CATEGORY:
-   - `controls` / `toggles`: Pill capsules (border-radius: 9999px), segmented rocker switches, floating toggles.
-   - `sliders`: Precision track with magnetic tick marks, numeric HUD badge, glowing slider thumb.
-   - `buttons`: Radial speed dial, expandable floating action button (FAB), or spring-action trigger pill.
-   - `telemetry`: Circular arc dial meters, SVG sparklines, live fluctuating telemetry data matrices (min-width: 520px).
-   - `navigation`: Horizontal capsule dock (border-radius: 9999px), frosted segmented breadcrumb trail.
-   - `dashboards` / `scenery`: Wide multi-pane layout (max-width: 720px - 860px) with telemetry nodes and quick docks.
-   - `inputs`: Multi-part prompt bar, search cluster with semantic action tags and glowing focus ring.
-2. DIVERSE COLOR PALETTES (AVOID ONLY BLUE/PURPLE):
-   - Telemetry: Neon Cyan (#22D3EE) and Emerald (#10B981) glowing auroras.
-   - Controls / Switches: Mint Green (#34D399) and Electric Teal.
-   - Feedback: Solar Amber (#FBBF24) and Crimson Ruby (#EF4444).
-   - Buttons: Hot Pink / Magenta (#F472B6) with Deep Violet glow.
-   - Dashboards: Obsidian Deep Navy (#38BDF8) and Steel Blue.
-   - Navigation: Indigo and Periwinkle (#A5B4FC).
-3. REAL WORKING INTERACTIVITY:
-   - Provide working interactive JavaScript: clicking tabs changes active state, sliders update live values, buttons trigger micro-animations or state changes.
 
 === IMMUTABLE GENERATION RULES ===
 1. Always output a single complete HTML file containing embedded <style>, semantic HTML, manifest JSON in <script id="component-manifest" type="application/json">, and interactive <script>.
@@ -239,22 +280,27 @@ Every component MUST express distinct visual geometry, unique color harmonies, a
 - Hierarchy Level: {spec.get('atomic_level', 'Molecule')}
 - Suggested Icons: {', '.join(spec.get('icons', []))}
 - User Prompt Intent: {spec.get('raw_prompt')}
-- Diversity Nonce (MUST influence your palette/geometry choices): {random.randint(100000, 999999)}
+- Diversity Nonce: {random.randint(100000, 999999)}
+
+{genome_str}
 
 {memory_str}
 
+{negative_str}
+
 CRITICAL DIVERSITY RULES (values in STYLE_SPEC are MOOD ILLUSTRATIONS ONLY — NEVER copy them literally):
-1. Do NOT reuse these exact hex codes: #4A7BF7, #2E5FD9, #1E3A8A, #3B82F6. Invent NEW hex values in the category palette family.
-2. Do NOT reuse these exact aurora positions: 30% 50%, 80% 80%, 50% 20%. Randomize blob positions (X: 10-90%, Y: 10-90%) and opacities (0.35-0.75).
-3. Do NOT repeat the layout/geometry of the negative examples above — pick a different form factor listed in the diversity directive.
-Ensure the component is interactive, visually unique (not a repetitive card), with subtle specular borders, ambient depth, tailored color palette, and spring transitions. Include the component manifest JSON script tag.
+1. Invent fresh, vivid hex values conforming to the genome palette ({genome.get('palette', 'custom')}).
+2. Randomize aurora blob positions (X: 15-85%, Y: 15-85%) and opacities (0.35-0.75).
+3. Strictly implement the assigned geometry ('{genome.get('geometry', 'unique-form')}') — do NOT default to a generic 440px box.
+4. Provide working interactive JavaScript so the component feels alive and responsive to clicks/drags/toggles.
+Ensure the component includes the component manifest JSON script tag.
 """
         return system_prompt, user_prompt
 
-    def generate(self, spec: Dict[str, Any], existing_memory: list = None) -> Tuple[str, Dict[str, Any]]:
+    def generate(self, spec: Dict[str, Any], existing_memory: list = None, allow_mock: bool = False, force_provider: str = None, negative_memory: list = None) -> Tuple[str, Dict[str, Any]]:
         """Executes generation pipeline and strips surrounding formatting."""
-        system_prompt, user_prompt = self.build_prompts(spec, existing_memory)
-        raw_output, router_meta = self.router.call_with_cascade(system_prompt, user_prompt)
+        system_prompt, user_prompt = self.build_prompts(spec, existing_memory, negative_memory=negative_memory)
+        raw_output, router_meta = self.router.call_with_cascade(system_prompt, user_prompt, allow_mock=allow_mock, force_provider=force_provider)
 
         # Clean markdown codeblocks if model enclosed output in ```html
         cleaned_html = self._clean_output(raw_output)

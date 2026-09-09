@@ -4,41 +4,31 @@
 
 ---
 
-## 1. Color Palette (Token Warna)
+## 1. Parametric Color Palettes (Sistem Palet Rentang Dinamis)
+
+> [!IMPORTANT]
+> **PERINGATAN UNTUK AI / GENERATOR**: Nilai hex di bawah adalah **CONTOH ARTIKULASI MOOD**, BUKAN nilai statis untuk disalin persis (*copy-paste*). AI WAJIB memilih salah satu dari 8 keluarga palet warna di bawah atau meracik kombinasi hex segar yang harmonis. Jangan pernah menghasilkan komponen dengan skema biru-ungu yang itu-itu saja!
 
 ```css
 :root {
-    /* Backgrounds */
-    --bg-page: #0A0A0A;                  /* Pure deep black */
-    --bg-void: #050508;                  /* Ultra-deep void */
+    /* Background Canvas (Deep Void Dark Mode) */
+    --bg-page: #0A0A0A;                  /* Pure deep black canvas */
+    --bg-void: #030712;                  /* Ultra-deep void container */
 
-    /* Glass Surfaces */
-    --glass-base: rgba(255, 255, 255, 0.05);
+    /* Glass Surfaces (Standard Opacities) */
+    --glass-base: rgba(255, 255, 255, 0.04);
     --glass-card: rgba(255, 255, 255, 0.06);
-    --glass-elevated: rgba(255, 255, 255, 0.08);
+    --glass-elevated: rgba(255, 255, 255, 0.09);
 
     /* Asymmetric Glass Borders (Simulasi Cahaya dari Atas) */
-    --glass-border-top: rgba(255, 255, 255, 0.22);    /* 0.18 - 0.25 (Paling Terang) */
-    --glass-border-side: rgba(255, 255, 255, 0.10);   /* 0.08 - 0.12 (Sedang) */
-    --glass-border-bottom: rgba(255, 255, 255, 0.04); /* 0.03 - 0.05 (Paling Gelap) */
+    --glass-border-top: rgba(255, 255, 255, 0.20);    /* Rentang 0.18 - 0.26 (Paling Terang / Specular) */
+    --glass-border-side: rgba(255, 255, 255, 0.09);   /* Rentang 0.07 - 0.12 (Pencahayaan Samping) */
+    --glass-border-bottom: rgba(255, 255, 255, 0.03); /* Rentang 0.02 - 0.05 (Paling Gelap / Shadowed) */
 
     /* Typography */
     --text-primary: #FFFFFF;
     --text-secondary: rgba(255, 255, 255, 0.65);
-    --text-muted: rgba(255, 255, 255, 0.35);
-
-    /* Accents & Signals */
-    --accent-blue-1: #4A7BF7;
-    --accent-blue-2: #3B82F6;
-    --accent-blue-3: #2E5FD9;
-    --accent-cyan-glow: #4A9EFF;
-    --success-green: #4ADE80;
-    --danger-red: #EF4444;
-
-    /* Aurora Colors */
-    --aurora-1: rgba(70, 110, 220, 0.65);
-    --aurora-2: rgba(40, 60, 160, 0.55);
-    --aurora-3: rgba(140, 70, 230, 0.45);
+    --text-muted: rgba(255, 255, 255, 0.38);
 
     /* Springs & Easings */
     --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,6 +36,32 @@
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 ```
+
+### 8 Pilihan Spektrum Palet Aksen (Pilih 1 secara acak per generation):
+1. **Neon Cyan & Emerald** (Telemetry, Sensors, Data Matrix):
+   - Primary: `#22D3EE` | Secondary: `#10B981` | Glow: `rgba(6, 182, 212, 0.65)`
+   - Aurora Blobs: `rgba(6, 182, 212, 0.70)`, `rgba(16, 185, 129, 0.55)`, `rgba(14, 116, 144, 0.40)`
+2. **Electric Amber & Solar Gold** (Feedback, Gauges, Warnings, Metrics):
+   - Primary: `#FBBF24` | Secondary: `#F59E0B` | Glow: `rgba(245, 158, 11, 0.65)`
+   - Aurora Blobs: `rgba(245, 158, 11, 0.70)`, `rgba(217, 119, 6, 0.55)`, `rgba(251, 191, 36, 0.40)`
+3. **Hot Pink & Violet** (Action Buttons, FABs, Speed Dials, Triggers):
+   - Primary: `#F472B6` | Secondary: `#8B5CF6` | Glow: `rgba(244, 114, 182, 0.65)`
+   - Aurora Blobs: `rgba(244, 114, 182, 0.70)`, `rgba(139, 92, 246, 0.60)`, `rgba(236, 72, 153, 0.45)`
+4. **Mint Green & Electric Teal** (Switches, Segmented Controls, Health Nodes):
+   - Primary: `#34D399` | Secondary: `#14B8A6` | Glow: `rgba(52, 211, 153, 0.65)`
+   - Aurora Blobs: `rgba(52, 211, 153, 0.70)`, `rgba(20, 184, 166, 0.55)`, `rgba(6, 182, 212, 0.40)`
+5. **Sapphire Blue & Sky** (Form Inputs, Prompt Bars, Search Clusters):
+   - Primary: `#60A5FA` | Secondary: `#38BDF8` | Glow: `rgba(59, 130, 246, 0.65)`
+   - Aurora Blobs: `rgba(59, 130, 246, 0.70)`, `rgba(56, 189, 248, 0.55)`, `rgba(99, 102, 241, 0.45)`
+6. **Amethyst & Deep Indigo** (Navigation Docks, Breadcrumbs, Rails):
+   - Primary: `#A78BFA` | Secondary: `#6366F1` | Glow: `rgba(167, 139, 250, 0.65)`
+   - Aurora Blobs: `rgba(167, 139, 250, 0.70)`, `rgba(99, 102, 241, 0.60)`, `rgba(129, 140, 248, 0.40)`
+7. **Solar Ruby & Coral** (Security Nodes, Alerts, Status Badges):
+   - Primary: `#FB7185` | Secondary: `#EF4444` | Glow: `rgba(239, 68, 68, 0.65)`
+   - Aurora Blobs: `rgba(251, 113, 133, 0.70)`, `rgba(239, 68, 68, 0.55)`, `rgba(244, 63, 94, 0.40)`
+8. **Spectral Prismatic** (Composite Workstations, Dashboards, Scenery):
+   - Primary: `#38BDF8` | Secondary: `#C084FC` | Glow: `rgba(192, 132, 252, 0.65)`
+   - Aurora Blobs: `rgba(56, 189, 248, 0.65)`, `rgba(192, 132, 252, 0.60)`, `rgba(244, 114, 182, 0.45)`
 
 ---
 
@@ -137,12 +153,17 @@ Tanpa tekstur noise, kaca terlihat seperti plastik digital murahan.
 
 ---
 
-## 4. Aurora Mesh Gradient Specification
+## 4. Aurora Mesh Gradient Specification (Formula Rentang Dinamis)
 
-DILARANG menggunakan gradien linier sederhana untuk latar belakang kaca. Gunakan multi-blob radial gradient yang bergerak:
-- Blob 1: `radial-gradient(circle at 30% 50%, rgba(70,110,220,0.6), transparent 60%)`
-- Blob 2: `radial-gradient(circle at 80% 80%, rgba(40,60,150,0.5), transparent 50%)`
-- Blob 3: `radial-gradient(circle at 50% 20%, rgba(90,130,240,0.4), transparent 40%)`
+DILARANG menggunakan gradien linier sederhana. Gunakan multi-blob radial gradient yang diposisikan dan dianimasikan secara unik:
+- **Formula Penempatan Blob (WAJIB acak per komponen, BUKAN menyalin koordinat contoh)**:
+  - Blob 1 (Utama): `radial-gradient(circle at [X: 15%–45%] [Y: 30%–65%], var(--aurora-1, rgba(...)), transparent 60%–70%)`
+  - Blob 2 (Sekunder): `radial-gradient(circle at [X: 55%–85%] [Y: 50%–85%], var(--aurora-2, rgba(...)), transparent 50%–65%)`
+  - Blob 3 (Aksen Sorot): `radial-gradient(circle at [X: 25%–75%] [Y: 10%–40%], var(--aurora-3, rgba(...)), transparent 40%–55%)`
+  - Opasitas Blob: Rentang `0.35` hingga `0.75` (disesuaikan dengan kontras teks di atasnya).
+
+> [!TIP]
+> Nilai koordinat `30% 50%` atau `80% 80%` di atas adalah contoh acuan mood. AI Generator WAJIB memberikan angka koordinat unik di dalam rentang tersebut agar bentuk pencahayaan setiap komponen berbeda.
 
 ### Keyframes Animasi:
 ```css
