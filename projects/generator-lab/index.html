@@ -110,7 +110,8 @@
         #auth-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         #auth-error-msg {
             font-size: 12.5px; color: #FB7185; min-height: 18px;
-            font-weight: 500; display: none; margin-top: -12px;
+            font-weight: 500; display: none; line-height: 1.4; text-align: center;
+            margin-top: -8px; margin-bottom: 2px; word-break: break-word;
         }
         #auth-error-msg.visible { display: block; }
         .auth-hint {
@@ -629,6 +630,11 @@
 
             <button type="button" id="auth-submit-btn">Buka Workspace</button>
 
+            <div class="auth-gate-actions" style="display:flex;justify-content:space-between;align-items:center;width:100%;font-size:11.5px;margin-top:-4px;">
+                <button type="button" id="auth-local-btn" style="background:none;border:none;color:#38BDF8;cursor:pointer;text-decoration:underline;font-size:11.5px;font-family:inherit;padding:2px 4px;">Masuk Mode Lokal (Bypass)</button>
+                <button type="button" id="auth-reset-url-btn" style="background:none;border:none;color:#FB7185;cursor:pointer;text-decoration:underline;font-size:11.5px;font-family:inherit;padding:2px 4px;display:none;">Hapus URL Cloud</button>
+            </div>
+
             <p class="auth-hint">Akses sesi browser aman — tersimpan hanya di tab Anda (sessionStorage).</p>
         </div>
     </div>
@@ -895,9 +901,16 @@
                     </ol>
                 </div>
 
-                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px;">
-                    <button type="button" class="btn-decision btn-reject" onclick="closeSettingsModal()">Batal</button>
-                    <button type="button" class="btn-decision btn-accept" onclick="saveSettings()">Simpan Pengaturan</button>
+                <div id="gasTestStatus" style="font-size:12px;min-height:18px;line-height:1.5;margin-top:-2px;"></div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;">
+                    <button type="button" class="btn-decision" style="background:rgba(255,255,255,0.06);color:#E2E8F0;border:1px solid rgba(255,255,255,0.15);" onclick="testGasConnection()">
+                        <i data-lucide="activity"></i> Tes Koneksi & Passkey
+                    </button>
+                    <div style="display:flex;gap:10px;">
+                        <button type="button" class="btn-decision btn-reject" onclick="closeSettingsModal()">Batal</button>
+                        <button type="button" class="btn-decision btn-accept" onclick="saveSettings()">Simpan Pengaturan</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1310,11 +1323,12 @@
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
+                    mode: 'cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: "approve_item",
                         item_id: id,
-                        passkey: passkey
+                        passkey: (passkey || '').trim()
                     })
                 }).catch(() => {});
             }
@@ -1366,11 +1380,12 @@
             if (gasUrl) {
                 fetch(gasUrl, {
                     method: 'POST',
+                    mode: 'cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: "reject_item",
                         item_id: id,
-                        passkey: passkey
+                        passkey: (passkey || '').trim()
                     })
                 }).catch(() => {});
             }
@@ -1489,17 +1504,20 @@
                 try {
                     const res = await fetch(gasUrl, {
                         method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify({
                             prompt: prompt,
                             category: category,
                             variation: variation,
-                            passkey: passkey,
+                            passkey: (passkey || "").trim(),
                             mode: "dispatch"
                         })
                     });
                     const json = await res.json();
                     if (json.ok) {
                         showToast("Tugas berhasil dikirim ke antrean Cloud Generator!");
+                        document.getElementById('promptInput').value = "";
                     } else if (json.status === "UNAUTHORIZED") {
                         showToast("Akses Cloud Ditolak: Passkey tidak cocok dengan Script Properties!");
                     } else {
@@ -1597,6 +1615,8 @@
             document.getElementById('githubTokenInput').value = sessionStorage.getItem(SESSION_GITHUB_TOKEN_KEY) || "";
             document.getElementById('gasUrlInput').value = localStorage.getItem(LOCAL_GAS_URL_KEY) || "";
             document.getElementById('passkeyInput').value = sessionStorage.getItem(SESSION_PASSKEY_KEY) || "";
+            const testStatus = document.getElementById('gasTestStatus');
+            if (testStatus) testStatus.innerHTML = '';
             document.getElementById('settingsModal').classList.add('active');
             if (window.lucide) lucide.createIcons();
         }
@@ -1621,6 +1641,50 @@
 
             closeSettingsModal();
             showToast("Pengaturan Cloud, GitHub Token & Passkey berhasil disimpan!");
+        }
+
+        async function testGasConnection() {
+            const url = (document.getElementById('gasUrlInput').value || '').trim();
+            const pass = (document.getElementById('passkeyInput').value || '').trim();
+            const statusEl = document.getElementById('gasTestStatus');
+            if (!statusEl) return;
+
+            if (!url) {
+                statusEl.innerHTML = '<span style="color:#F87171;">⚠️ Masukkan Google Apps Script Web App URL terlebih dahulu.</span>';
+                return;
+            }
+
+            statusEl.innerHTML = '<span style="color:#22D3EE;">Menguji koneksi & validasi passkey...</span>';
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: "verify_passkey",
+                        passkey: pass
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const json = await res.json();
+                if (json.ok) {
+                    if (json.unconfigured) {
+                        statusEl.innerHTML = '<span style="color:#FBBF24;">⚠️ Terhubung, namun ADMIN_PASSKEY belum diset di Script Properties (Akses terbuka).</span>';
+                    } else {
+                        statusEl.innerHTML = '<span style="color:#34D399;">✅ Berhasil! Passkey valid dan terhubung dengan Google Apps Script.</span>';
+                    }
+                } else {
+                    statusEl.innerHTML = `<span style="color:#F87171;">❌ Ditolak: ${json.error || 'Passkey tidak cocok dengan ADMIN_PASSKEY di Script Properties.'}</span>`;
+                }
+            } catch(e) {
+                statusEl.innerHTML = `<span style="color:#F87171;">❌ Gagal: ${e.name === 'AbortError' ? 'Koneksi timeout (8 detik).' : 'Tidak dapat terhubung. Pastikan Web App diset ke "Anyone" dan URL berakhiran /exec.'}</span>`;
+            }
         }
 
         function showToast(msg) {
@@ -1649,13 +1713,13 @@
                 const errEl = document.getElementById('auth-error-msg');
                 if (input) {
                     input.classList.add('auth-error');
-                    input.value = '';
                     setTimeout(() => input.classList.remove('auth-error'), 400);
+                    input.focus();
                 }
                 if (errEl) {
                     errEl.textContent = msg;
                     errEl.classList.add('visible');
-                    setTimeout(() => errEl.classList.remove('visible'), 3500);
+                    setTimeout(() => errEl.classList.remove('visible'), 6000);
                 }
             }
 
@@ -1673,28 +1737,44 @@
                 btn.disabled = true;
                 btn.textContent = 'Memverifikasi...';
 
-                const gasUrl = localStorage.getItem(LOCAL_GAS_URL_KEY);
+                const gasUrl = (localStorage.getItem(LOCAL_GAS_URL_KEY) || '').trim();
                 if (gasUrl) {
                     try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
                         const res = await fetch(gasUrl, {
                             method: 'POST',
+                            mode: 'cors',
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                             body: JSON.stringify({
                                 action: "verify_passkey",
                                 passkey: passkey
-                            })
+                            }),
+                            signal: controller.signal
                         });
+                        clearTimeout(timeoutId);
+
                         const json = await res.json();
                         if (json.ok) {
                             sessionStorage.setItem(SESSION_PASSKEY_KEY, passkey);
                             unlockGate();
+                            return;
                         } else {
                             showError(json.error || 'Passkey ditolak oleh Google Apps Script.');
                             btn.disabled = false;
                             btn.textContent = 'Buka Workspace';
+                            return;
                         }
-                        return;
                     } catch(e) {
-                        // Jika offline atau jaringan terhambat
+                        console.warn("GAS verification network/timeout error:", e);
+                        const isTimeout = e.name === 'AbortError';
+                        showError(isTimeout 
+                            ? 'Waktu verifikasi habis (timeout). Gunakan Masuk Mode Lokal jika server sibuk.' 
+                            : 'Gagal menghubungi Google Apps Script. Periksa URL atau gunakan Masuk Mode Lokal.');
+                        btn.disabled = false;
+                        btn.textContent = 'Buka Workspace';
+                        return;
                     }
                 }
 
@@ -1713,6 +1793,25 @@
                 const btn = document.getElementById('auth-submit-btn');
                 const input = document.getElementById('auth-password-input');
                 const eyeBtn = document.getElementById('auth-eye-toggle');
+                const localBtn = document.getElementById('auth-local-btn');
+                const resetBtn = document.getElementById('auth-reset-url-btn');
+
+                if (resetBtn && localStorage.getItem(LOCAL_GAS_URL_KEY)) {
+                    resetBtn.style.display = 'inline-block';
+                    resetBtn.addEventListener('click', () => {
+                        localStorage.removeItem(LOCAL_GAS_URL_KEY);
+                        resetBtn.style.display = 'none';
+                        showError('URL Cloud telah direset. Silakan masuk menggunakan passkey lokal.');
+                    });
+                }
+
+                if (localBtn) {
+                    localBtn.addEventListener('click', () => {
+                        const pass = (input && input.value.trim()) ? input.value.trim() : "local_admin";
+                        sessionStorage.setItem(SESSION_PASSKEY_KEY, pass);
+                        unlockGate();
+                    });
+                }
 
                 if (btn) btn.addEventListener('click', handleAuth);
                 if (input) {

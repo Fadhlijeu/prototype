@@ -41,62 +41,110 @@ function doOptions(e) {
 }
 
 /**
+ * Verifikasi passkey secara aman dan toleran terhadap whitespace dan tipe data.
+ */
+function verifyPasskeyInternal(passkeyInput) {
+  var adminPasskey = "";
+  try {
+    adminPasskey = getSecret("ADMIN_PASSKEY", "");
+  } catch(err) {
+    adminPasskey = "";
+  }
+
+  var cleanAdminPass = String(adminPasskey !== undefined && adminPasskey !== null ? adminPasskey : "").trim();
+  var cleanPasskey = String(passkeyInput !== undefined && passkeyInput !== null ? passkeyInput : "").trim();
+
+  // Jika ADMIN_PASSKEY belum diset di Script Properties: izinkan (setup/unconfigured mode)
+  if (!cleanAdminPass) {
+    return {
+      status: "AUTHENTICATED",
+      ok: true,
+      unconfigured: true,
+      message: "Passkey diterima. (Catatan: ADMIN_PASSKEY belum diset di Script Properties)."
+    };
+  }
+
+  // Jika passkey cocok secara eksak (setelah trim)
+  if (cleanPasskey === cleanAdminPass) {
+    return {
+      status: "AUTHENTICATED",
+      ok: true,
+      message: "Autentikasi berhasil. Akses cloud terbuka."
+    };
+  }
+
+  // Jika passkey salah
+  return {
+    status: "UNAUTHORIZED",
+    ok: false,
+    error: "Passkey salah. Akses ditolak."
+  };
+}
+
+/**
+ * Ekstraksi payload dari berbagai format request (JSON string, URL-encoded, parameter)
+ */
+function extractPayload(e) {
+  var data = {};
+  if (!e) return data;
+
+  if (e.postData && e.postData.contents) {
+    var raw = e.postData.contents;
+    try {
+      data = JSON.parse(raw);
+    } catch(err1) {
+      try {
+        data = JSON.parse(decodeURIComponent(raw));
+      } catch(err2) {
+        try {
+          if (typeof raw === "string" && raw.indexOf("=") !== -1) {
+            data = {};
+            raw.split("&").forEach(function(pair) {
+              var parts = pair.split("=");
+              if (parts.length >= 2) {
+                var k = decodeURIComponent(parts[0].replace(/\+/g, " "));
+                var v = decodeURIComponent(parts.slice(1).join("=").replace(/\+/g, " "));
+                data[k] = v;
+              }
+            });
+          }
+        } catch(err3) {
+          data = {};
+        }
+      }
+    }
+  }
+
+  if (e.parameter && typeof e.parameter === "object") {
+    for (var key in e.parameter) {
+      if (data[key] === undefined) {
+        data[key] = e.parameter[key];
+      }
+    }
+  }
+
+  return data;
+}
+
+/**
  * Webhook Entrypoint (doPost)
  * Menerima request HTTP POST dari Webhook eksternal, cURL, atau form remote.
  * Mampu mem-parsing payload application/json maupun text/plain (CORS-safe).
  */
 function doPost(e) {
   try {
-    var data = {};
-    if (e && e.postData && e.postData.contents) {
-      try {
-        data = JSON.parse(e.postData.contents);
-      } catch(parseErr) {
-        try {
-          data = JSON.parse(decodeURIComponent(e.postData.contents));
-        } catch(decodeErr) {
-          data = {};
-        }
-      }
-    } else if (e && e.parameter) {
-      data = e.parameter;
-    }
-
-    var adminPasskey = "";
-    try {
-      adminPasskey = getSecret("ADMIN_PASSKEY", "");
-    } catch(err) {
-      adminPasskey = "";
-    }
+    var data = extractPayload(e);
 
     // Aksi 1: Verifikasi Auth / Passkey dari UI Generator Lab
     if (data.action === "verify_passkey" || data.action === "verify_auth") {
-      if (!adminPasskey) {
-        return ContentService.createTextOutput(JSON.stringify({
-          status: "AUTHENTICATED",
-          ok: true,
-          unconfigured: true,
-          message: "Passkey diterima. (Catatan: ADMIN_PASSKEY belum diset di Script Properties)."
-        })).setMimeType(ContentService.MimeType.JSON);
-      }
-
-      if (data.passkey === adminPasskey) {
-        return ContentService.createTextOutput(JSON.stringify({
-          status: "AUTHENTICATED",
-          ok: true,
-          message: "Autentikasi berhasil. Akses cloud terbuka."
-        })).setMimeType(ContentService.MimeType.JSON);
-      } else {
-        return ContentService.createTextOutput(JSON.stringify({
-          status: "UNAUTHORIZED",
-          ok: false,
-          error: "Passkey salah. Akses ditolak."
-        })).setMimeType(ContentService.MimeType.JSON);
-      }
+      var authRes = verifyPasskeyInternal(data.passkey);
+      return ContentService.createTextOutput(JSON.stringify(authRes))
+        .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Aksi 2: Eksekusi Generator / Dispatch — Wajib validasi Passkey jika ADMIN_PASSKEY diset
-    if (adminPasskey && data.passkey !== adminPasskey) {
+    // Aksi 2: Validasi Passkey untuk seluruh operasi cloud generator & kurasi
+    var authCheck = verifyPasskeyInternal(data.passkey);
+    if (!authCheck.ok) {
       return ContentService.createTextOutput(JSON.stringify({
         status: "UNAUTHORIZED",
         ok: false,
@@ -160,17 +208,26 @@ function doPost(e) {
 }
 
 /**
- * Webhook Test Endpoint (doGet)
- * Menampilkan status ketersediaan gateway saat diakses via browser.
+ * Webhook Test Endpoint & GET verification (doGet)
+ * Menampilkan status gateway atau memvalidasi passkey melalui parameter query string.
  */
-function doGet() {
+function doGet(e) {
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
+  if (action === "verify_passkey" || action === "verify_auth") {
+    var passkey = (e && e.parameter && e.parameter.passkey) ? e.parameter.passkey : "";
+    var authResult = verifyPasskeyInternal(passkey);
+    return ContentService.createTextOutput(JSON.stringify(authResult))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   var hasPasskey = false;
   try {
-    hasPasskey = !!getSecret("ADMIN_PASSKEY", "");
-  } catch(e) {}
+    hasPasskey = !!String(getSecret("ADMIN_PASSKEY", "")).trim();
+  } catch(err) {}
 
   return ContentService.createTextOutput(JSON.stringify({
     status: "ONLINE",
+    ok: true,
     service: "Prototype Autonomous Generator Gateway (GAS)",
     timestamp: new Date().toISOString(),
     passkey_protection_active: hasPasskey,
