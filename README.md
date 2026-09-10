@@ -15,9 +15,9 @@ npm start
 
 Buka **`http://localhost:3000/`** di peramban. Seluruh modul dan navigasi siap digunakan:
 - 🌐 [**Master Gateway Portal**](file:///d:/PROJECT/prototype/index.html) (`/index.html`)
-- 🚀 [**Web Applications Showcase**](file:///d:/PROJECT/prototype/web-apps.html) (`/web-apps.html`)
-- 💎 [**Glass Component Showroom**](file:///d:/PROJECT/prototype/ui/components/glass/showcase.html) (`/ui/components/glass/showcase.html`)
-- 🔲 [**Raw Semantic Component Showroom**](file:///d:/PROJECT/prototype/ui/components/raw/showcase.html) (`/ui/components/raw/showcase.html`)
+- 🚀 [**Web Applications Showcase**](file:///d:/PROJECT/prototype/ui/web/apps.html) (`/ui/web/apps.html`)
+- 💎 [**Glass Component Showroom**](file:///d:/PROJECT/prototype/ui/web/components/glass/showcase.html) (`/ui/web/components/glass/showcase.html`)
+- 🔲 [**Raw Semantic Component Showroom**](file:///d:/PROJECT/prototype/ui/web/components/raw/showcase.html) (`/ui/web/components/raw/showcase.html`)
 
 ---
 
@@ -45,7 +45,7 @@ Untuk menjaga kerapian dan mencegah duplikasi informasi, dokumentasi dipisahkan 
 | [**`docs/`**](file:///d:/PROJECT/prototype/docs/README.md) | **Pemahaman Manusia**: Visi produk, filosofi optik & fisika gerak, serta 5-layer arsitektur sistem. | [`principles.md`](file:///d:/PROJECT/prototype/docs/principles.md), [`architecture.md`](file:///d:/PROJECT/prototype/docs/architecture.md) |
 | [**`skills/`**](file:///d:/PROJECT/prototype/skills/README.md) | **Eksekusi AI Agent**: SOP pembuatan glass UI, standar dekomposisi berkas, kurva gerak, dan workflow. | [`glass-ui.md`](file:///d:/PROJECT/prototype/skills/glass-ui.md), [`component.md`](file:///d:/PROJECT/prototype/skills/component.md), [`motion.md`](file:///d:/PROJECT/prototype/skills/motion.md), [`workflow.md`](file:///d:/PROJECT/prototype/skills/workflow.md) |
 | [**`component.md`**](file:///d:/PROJECT/prototype/component.md) | **Kamus Master Komponen**: Taksonomi 120+ komponen universal dan inventarisasi berkas aktual di disk. | [`component.md`](file:///d:/PROJECT/prototype/component.md) |
-| [**`projects/`**](file:///d:/PROJECT/prototype/projects/README.md) | **Portofolio Aplikasi Web**: Manifest dan cetak biru aplikasi terintegrasi. | [`README.md`](file:///d:/PROJECT/prototype/projects/README.md), [`TEMPLATE.md`](file:///d:/PROJECT/prototype/projects/TEMPLATE.md) |
+| [**`projects/`**](file:///d:/PROJECT/prototype/ui/web/apps/README.md) | **Portofolio Aplikasi Web**: Manifest dan cetak biru aplikasi terintegrasi. | [`README.md`](file:///d:/PROJECT/prototype/ui/web/apps/README.md), [`TEMPLATE.md`](file:///d:/PROJECT/prototype/ui/web/apps/TEMPLATE.md) |
 
 ---
 

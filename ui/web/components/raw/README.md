@@ -10,7 +10,7 @@ Folder ini berisi implementasi komponen antarmuka web dalam bentuk **paling murn
 Tujuannya adalah:
 1. **Memahami Nama Baku & Anatomi Standar**: Mengetahui nama resmi dan tag elemen setiap komponen web sebelum dipoles oleh tema visual.
 2. **Sebagai Fondasi (Canvas Kosong)**: Menjadi cetak biru struktur fungsional yang siap dibungkus oleh gaya desain apa pun (seperti Glass Dark atau tema visual lainnya).
-3. **Showcase Edukasi & Pengujian**: Dapat dicoba langsung di [ui/components/raw/showcase.html](file:///d:/PROJECT/prototype/ui/components/raw/showcase.html).
+3. **Showcase Edukasi & Pengujian**: Dapat dicoba langsung di [ui/components/raw/showcase.html](file:///d:/PROJECT/prototype/ui/web/components/raw/showcase.html).
 
 ---
 

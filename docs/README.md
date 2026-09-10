@@ -22,6 +22,6 @@ Direktori `docs/` dirancang khusus untuk **pemahaman manusia** (arsitektur, filo
 - Ingin memahami **bagaimana AI Agent harus bekerja dan membuat komponen?**  
   👉 Baca [**`skills/README.md`**](file:///d:/PROJECT/prototype/skills/README.md).
 - Ingin melihat **aplikasi web utuh?**  
-  👉 Kunjungi [**`projects/README.md`**](file:///d:/PROJECT/prototype/projects/README.md) atau buka [`web-apps.html`](file:///d:/PROJECT/prototype/web-apps.html).
+  👉 Kunjungi [**`projects/README.md`**](file:///d:/PROJECT/prototype/ui/web/apps/README.md) atau buka [`apps.html`](file:///d:/PROJECT/prototype/ui/web/apps.html).
 - Ingin melihat **katalog komponen Glass atau Raw?**  
-  👉 Buka [`ui/components/glass/showcase.html`](file:///d:/PROJECT/prototype/ui/components/glass/showcase.html) atau [`ui/components/raw/showcase.html`](file:///d:/PROJECT/prototype/ui/components/raw/showcase.html).
+  👉 Buka [`ui/components/glass/showcase.html`](file:///d:/PROJECT/prototype/ui/web/components/glass/showcase.html) atau [`ui/components/raw/showcase.html`](file:///d:/PROJECT/prototype/ui/web/components/raw/showcase.html).

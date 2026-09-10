@@ -26,8 +26,8 @@ projects/
 
 | Nama Proyek | Versi | Status | Direktori | Live Showroom |
 |---|---|---|---|---|
-| **Cloud File Manager** | v2.4 | `[production-ready]` | [`projects/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../web-apps.html#project-file-manager) |
-| **AI Agent Studio** | v1.0 | `[production-ready]` | [`projects/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../web-apps.html#project-ai-studio) |
+| **Cloud File Manager** | v2.4 | `[production-ready]` | [`ui/web/apps/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../apps.html#project-file-manager) |
+| **AI Agent Studio** | v1.0 | `[production-ready]` | [`ui/web/apps/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../apps.html#project-ai-studio) |
 
 ---
 
@@ -41,4 +41,4 @@ Setiap kali Anda membuat atau menambahkan proyek aplikasi baru:
    └── PROJECT_SPEC.md         # Spesifikasi arsitektur (salin dari TEMPLATE.md)
    ```
 2. Pastikan aplikasi mengimpor dan merakit komponen dari `ui/components/glass/` atau menyematkan token desain dari `ui/components/glass/css.css`.
-3. Daftarkan proyek ke dalam [`web-apps.html`](../web-apps.html) dan [`projects/README.md`](README.md).
+3. Daftarkan proyek ke dalam [`apps.html`](../apps.html) dan [`projects/README.md`](README.md).

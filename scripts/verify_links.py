@@ -8,10 +8,11 @@ pages_to_check = [
     os.path.join(ROOT, "showcase.html"),
     os.path.join(ROOT, "web-apps.html"),
     os.path.join(ROOT, "404.html"),
-    os.path.join(ROOT, "projects", "file-manager", "index.html"),
-    os.path.join(ROOT, "projects", "ai-studio", "index.html"),
-    os.path.join(ROOT, "ui", "components", "glass", "showcase.html"),
-    os.path.join(ROOT, "ui", "components", "raw", "showcase.html"),
+    os.path.join(ROOT, "ui", "web", "apps.html"),
+    os.path.join(ROOT, "ui", "web", "apps", "file-manager", "index.html"),
+    os.path.join(ROOT, "ui", "web", "apps", "ai-studio", "index.html"),
+    os.path.join(ROOT, "ui", "web", "components", "glass", "showcase.html"),
+    os.path.join(ROOT, "ui", "web", "components", "raw", "showcase.html"),
 ]
 
 link_patterns = [

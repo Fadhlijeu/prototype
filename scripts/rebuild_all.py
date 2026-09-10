@@ -3,9 +3,9 @@ import json
 import html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GLASS_DIR = os.path.join(ROOT, "ui", "components", "glass")
-RAW_DIR = os.path.join(ROOT, "ui", "components", "raw")
-PROJECTS_DIR = os.path.join(ROOT, "projects")
+GLASS_DIR = os.path.join(ROOT, "ui", "web", "components", "glass")
+RAW_DIR = os.path.join(ROOT, "ui", "web", "components", "raw")
+APPS_DIR = os.path.join(ROOT, "ui", "web", "apps")
 
 def safe_json_embed(data):
     s = json.dumps(data, ensure_ascii=False)
@@ -119,7 +119,7 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
                     </div>
                 </div>
                 <div class="card-bottom">
-                    <span class="file-link-tag">ui/components/glass/{folder}/</span>
+                    <span class="file-link-tag">ui/web/components/glass/{folder}/</span>
                     <a href="{folder}/{aio_file}" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
                         <i data-lucide="external-link"></i> Solo File
                     </a>
@@ -136,7 +136,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glass Dark Premium Showroom — 21 All-in-One Components</title>
     <meta name="description" content="Koleksi 21 Komponen UI/UX Glass Dark Premium all-in-one mandiri dengan resize preview, multi-file code tabs, dan copy instant.">
-    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Shared Design System Tokens (Single Source of Truth) -->
@@ -664,10 +664,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
-            <a href="../../../index.html" class="btn-top-link" title="Master Gateway Portal">
+            <a href="../../../../index.html" class="btn-top-link" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
-            <a href="../../../web-apps.html" class="btn-top-link btn-highlight-webapp" title="Buka Halaman Khusus Web Applications">
+            <a href="../../../../ui/web/apps.html" class="btn-top-link btn-highlight-webapp" title="Buka Halaman Khusus Web Applications">
                 <i data-lucide="folder-kanban"></i> Web Applications
             </a>
             <a href="../raw/showcase.html" class="btn-top-link" title="Buka Showcase Raw HTML">
@@ -684,10 +684,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
             </div>
             <div class="banner-text">
                 <h3>Koleksi Aplikasi Web Utuh (Projects Workspace)</h3>
-                <p>Seluruh aplikasi web utuh berada di dalam folder <code>projects/</code> dan ditampilkan pada halaman studio tersendiri.</p>
+                <p>Seluruh aplikasi web utuh berada di dalam folder <code>apps/</code> dan ditampilkan pada halaman studio tersendiri.</p>
             </div>
         </div>
-        <a href="../../../web-apps.html" class="btn-banner-cta">
+        <a href="../../../../ui/web/apps.html" class="btn-banner-cta">
             <i data-lucide="folder-kanban"></i> Buka Web Applications Studio <i data-lucide="arrow-right"></i>
         </a>
     </div>
@@ -1132,7 +1132,7 @@ raw_showcase_content = f"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raw Unstyled HTML Components Showcase</title>
     <meta name="description" content="Katalog komponen web murni tanpa styling CSS untuk acuan taksonomi dan struktur anatomi HTML5 baku.">
-    <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -1405,8 +1405,8 @@ raw_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
-            <a href="../../../index.html" class="nav-link"><i data-lucide="home"></i> Gateway</a>
-            <a href="../../../web-apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps</a>
+            <a href="../../../../index.html" class="nav-link"><i data-lucide="home"></i> Gateway</a>
+            <a href="../../../../ui/web/apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps</a>
             <a href="../glass/showcase.html" class="nav-link"><i data-lucide="gem"></i> Glass Dark (21)</a>
         </div>
     </header>
@@ -1569,7 +1569,7 @@ print("Raw showcase built successfully!")
 # ======================================================================
 print("3/3. Building Dynamic Web Applications Portfolio Studio (web-apps.html)...")
 
-# Discover all projects in projects/
+# Discover all projects in apps/
 projects_registry = [
     {
         "id": "file-manager",
@@ -1578,20 +1578,20 @@ projects_registry = [
         "status": "Production Ready",
         "desc": "Sistem Operasi Manajemen Berkas Awan & Produktivitas AI Berbasis Glass Dark Premium dengan Web Audio synthesizer procedur, Canvas 2D swirl refraction, dan spring dock navigasi.",
         "icon": "cloud",
-        "folder": "projects/file-manager",
+        "folder": "apps/file-manager",
         "components": [
-            ("Floating Glass Dock", "compass", "ui/components/glass/showcase.html#card-glass-dock-navigation"),
-            ("Swirl Refraction Bottom Sheet", "layers", "ui/components/glass/showcase.html#card-swirl-bottom-sheet"),
-            ("Aurora Storage Card", "gauge", "ui/components/glass/showcase.html#card-aurora-storage-card"),
-            ("Frosted Folder Card", "folder", "ui/components/glass/showcase.html#card-frosted-folder-card"),
-            ("Telemetry Activity Chart", "bar-chart-2", "ui/components/glass/showcase.html#card-telemetry-activity-chart"),
-            ("Glass Buttons Collection", "sparkles", "ui/components/glass/showcase.html#card-button-glass"),
-            ("Form Input Fields", "text-cursor-input", "ui/components/glass/showcase.html#card-input-field-glass"),
-            ("Glass Toggle Switch", "toggle-left", "ui/components/glass/showcase.html#card-toggle-switch-glass"),
-            ("Glass Chat Input Bar", "message-square", "ui/components/glass/showcase.html#card-chat-input-bar"),
-            ("Prompt Pills Quick Scroller", "tag", "ui/components/glass/showcase.html#card-prompt-pills-row"),
-            ("AI Model Selector Card", "cpu", "ui/components/glass/showcase.html#card-ai-model-selector"),
-            ("Thinking Effort Selector", "sliders", "ui/components/glass/showcase.html#card-thinking-effort-selector"),
+            ("Floating Glass Dock", "compass", "components/glass/showcase.html#card-glass-dock-navigation"),
+            ("Swirl Refraction Bottom Sheet", "layers", "components/glass/showcase.html#card-swirl-bottom-sheet"),
+            ("Aurora Storage Card", "gauge", "components/glass/showcase.html#card-aurora-storage-card"),
+            ("Frosted Folder Card", "folder", "components/glass/showcase.html#card-frosted-folder-card"),
+            ("Telemetry Activity Chart", "bar-chart-2", "components/glass/showcase.html#card-telemetry-activity-chart"),
+            ("Glass Buttons Collection", "sparkles", "components/glass/showcase.html#card-button-glass"),
+            ("Form Input Fields", "text-cursor-input", "components/glass/showcase.html#card-input-field-glass"),
+            ("Glass Toggle Switch", "toggle-left", "components/glass/showcase.html#card-toggle-switch-glass"),
+            ("Glass Chat Input Bar", "message-square", "components/glass/showcase.html#card-chat-input-bar"),
+            ("Prompt Pills Quick Scroller", "tag", "components/glass/showcase.html#card-prompt-pills-row"),
+            ("AI Model Selector Card", "cpu", "components/glass/showcase.html#card-ai-model-selector"),
+            ("Thinking Effort Selector", "sliders", "components/glass/showcase.html#card-thinking-effort-selector"),
         ],
         "features": [
             "Native Web Audio Procedural Sound (AudioContext)",
@@ -1607,13 +1607,13 @@ projects_registry = [
         "status": "Interactive Prototype",
         "desc": "Ruang kerja agentik AI otonom interaktif dengan pemilihan model reaktif (K3-Pro Ultra, Swarm Agent, Flash Instant), pengatur penalaran bergradasi, respon streaming interaktif, dan sound haptik.",
         "icon": "sparkles",
-        "folder": "projects/ai-studio",
+        "folder": "apps/ai-studio",
         "components": [
-            ("AI Model Selector Card", "cpu", "ui/components/glass/showcase.html#card-ai-model-selector"),
-            ("Thinking Effort Selector", "brain", "ui/components/glass/showcase.html#card-thinking-effort-selector"),
-            ("Prompt Pills Quick Scroller", "tag", "ui/components/glass/showcase.html#card-prompt-pills-row"),
-            ("Glass Chat Input Bar", "send", "ui/components/glass/showcase.html#card-chat-input-bar"),
-            ("Status Badge & Sound Synthesizer", "volume-2", "ui/components/glass/showcase.html#card-avatar-badge-glass"),
+            ("AI Model Selector Card", "cpu", "components/glass/showcase.html#card-ai-model-selector"),
+            ("Thinking Effort Selector", "brain", "components/glass/showcase.html#card-thinking-effort-selector"),
+            ("Prompt Pills Quick Scroller", "tag", "components/glass/showcase.html#card-prompt-pills-row"),
+            ("Glass Chat Input Bar", "send", "components/glass/showcase.html#card-chat-input-bar"),
+            ("Status Badge & Sound Synthesizer", "volume-2", "components/glass/showcase.html#card-avatar-badge-glass"),
         ],
         "features": [
             "Reactive Model Context & State Switcher",
@@ -1628,7 +1628,7 @@ projects_registry = [
 web_apps_db = {}
 for p in projects_registry:
     pid = p["id"]
-    pdir = os.path.join(ROOT, "projects", pid)
+    pdir = os.path.join(APPS_DIR, pid)
     web_apps_db[pid] = {}
     
     idx_p = os.path.join(pdir, "index.html")
@@ -1697,13 +1697,13 @@ gallery_cards_html += """
                 </div>
                 <h3>Tambah Proyek Web App Baru</h3>
                 <p>
-                    Semua folder di bawah direktori <code>projects/</code> akan otomatis menjadi bagian dari koleksi Web Applications ini.
+                    Semua folder di bawah direktori <code>apps/</code> akan otomatis menjadi bagian dari koleksi Web Applications ini.
                 </p>
                 <div class="add-instructions">
-                    <div class="code-line">mkdir projects/nama-aplikasi</div>
-                    <div class="code-line">cp projects/TEMPLATE.md projects/nama-aplikasi/PROJECT_SPEC.md</div>
+                    <div class="code-line">mkdir apps/nama-aplikasi</div>
+                    <div class="code-line">cp apps/TEMPLATE.md apps/nama-aplikasi/PROJECT_SPEC.md</div>
                 </div>
-                <a href="projects/TEMPLATE.md" target="_blank" class="btn-blueprint">
+                <a href="apps/TEMPLATE.md" target="_blank" class="btn-blueprint">
                     <i data-lucide="file-text"></i> Baca Blueprint TEMPLATE.md
                 </a>
             </div>
@@ -1716,12 +1716,12 @@ web_apps_html_content = f"""<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Applications Studio — Production Projects</title>
-    <meta name="description" content="Showroom & Workbench sekumpulan Aplikasi Web Utuh dari folder projects/ berbasis tema Glass Dark Premium.">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Showroom & Workbench sekumpulan Aplikasi Web Utuh dari folder apps/ berbasis tema Glass Dark Premium.">
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Shared Design System Tokens (Single Source of Truth) -->
-    <link rel="stylesheet" href="ui/components/glass/css.css">
+    <link rel="stylesheet" href="components/glass/css.css">
     <style>
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -2304,18 +2304,18 @@ web_apps_html_content = f"""<!DOCTYPE html>
             </div>
             <div class="brand-text">
                 <h1>Proto<span>type</span> Web Applications</h1>
-                <p>Portofolio & Workbench Seluruh Proyek di <code>projects/</code></p>
+                <p>Portofolio & Workbench Seluruh Proyek di <code>apps/</code></p>
             </div>
         </div>
 
         <div class="header-actions">
-            <a href="index.html" class="action-link-btn" title="Master Gateway Portal">
+            <a href="../../index.html" class="action-link-btn" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
-            <a href="ui/components/glass/showcase.html" class="action-link-btn" title="Koleksi Komponen Kaca">
+            <a href="components/glass/showcase.html" class="action-link-btn" title="Koleksi Komponen Kaca">
                 <i data-lucide="gem"></i> Glass Components (21)
             </a>
-            <a href="ui/components/raw/showcase.html" class="action-link-btn" title="Koleksi Komponen Baku">
+            <a href="components/raw/showcase.html" class="action-link-btn" title="Koleksi Komponen Baku">
                 <i data-lucide="code-2"></i> Raw HTML (9)
             </a>
         </div>
@@ -2328,7 +2328,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             <span class="hero-tag"><i data-lucide="boxes"></i> Projects Collection Layer</span>
             <h2 class="hero-title">Koleksi Aplikasi Web Mandiri</h2>
             <p class="hero-desc">
-                Ruang kerja terpusat untuk menguji dan mengeksplorasi seluruh aplikasi web utuh yang berada di dalam folder <code>projects/</code>. Setiap proyek siap dijalankan dalam simulator multi-viewport atau diluncurkan penuh ke tab browser baru.
+                Ruang kerja terpusat untuk menguji dan mengeksplorasi seluruh aplikasi web utuh yang berada di dalam folder <code>apps/</code>. Setiap proyek siap dijalankan dalam simulator multi-viewport atau diluncurkan penuh ke tab browser baru.
             </p>
         </section>
 
@@ -2397,7 +2397,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
                     <button class="btn-tool-secondary" onclick="openActiveAppModal('index.html')">
                         <i data-lucide="code"></i> Kode Sumber
                     </button>
-                    <a href="projects/file-manager/index.html" target="_blank" class="btn-launch-primary" id="stageLaunchBtn">
+                    <a href="apps/file-manager/index.html" target="_blank" class="btn-launch-primary" id="stageLaunchBtn">
                         <i data-lucide="external-link"></i> Jalankan Layar Penuh
                     </a>
                 </div>
@@ -2406,7 +2406,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             <!-- Live Interactive Stage -->
             <div class="app-live-stage">
                 <div class="app-frame-wrapper" id="appFrameWrapper">
-                    <iframe id="stageIframe" src="projects/file-manager/index.html" title="Live Preview"></iframe>
+                    <iframe id="stageIframe" src="apps/file-manager/index.html" title="Live Preview"></iframe>
                 </div>
             </div>
 
@@ -2449,7 +2449,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             <div class="modal-header">
                 <div class="modal-title-wrap">
                     <h3 id="modalProjectTitle">Project Source & Specs</h3>
-                    <p id="modalProjectPath">projects/...</p>
+                    <p id="modalProjectPath">apps/...</p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <button class="btn-tool-secondary" onclick="copyAppCode()">
@@ -2471,7 +2471,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             </div>
 
             <div class="modal-tab-subbar">
-                <span class="subbar-file-path" id="modalActiveFilePath">projects/.../index.html</span>
+                <span class="subbar-file-path" id="modalActiveFilePath">apps/.../index.html</span>
                 <span id="modalActiveFileStats">0 baris</span>
             </div>
 
@@ -2633,7 +2633,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             modalProjectId = pid;
             const p = PROJECTS_META.find(x => x.id === pid) || {{}};
             document.getElementById('modalProjectTitle').innerText = `${{p.title || pid}} Source & Specs`;
-            document.getElementById('modalProjectPath').innerText = `projects/${{pid}}/`;
+            document.getElementById('modalProjectPath').innerText = `apps/${{pid}}/`;
             document.getElementById('appModal').classList.add('active');
             switchAppTab(filename || 'index.html');
         }}
@@ -2645,7 +2645,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
 
             const projFiles = APPS_DB[modalProjectId] || {{}};
             const code = projFiles[filename] || "";
-            document.getElementById('modalActiveFilePath').innerText = `projects/${{modalProjectId}}/${{filename}}`;
+            document.getElementById('modalActiveFilePath').innerText = `apps/${{modalProjectId}}/${{filename}}`;
             
             const lines = code ? code.split('\\n').length : 0;
             const kb = (new Blob([code]).size / 1024).toFixed(1);
@@ -2682,7 +2682,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
 </html>
 """
 
-with open(os.path.join(ROOT, "web-apps.html"), "w", encoding="utf-8") as f:
+with open(os.path.join(ROOT, "ui", "web", "apps.html"), "w", encoding="utf-8") as f:
     f.write(web_apps_html_content)
 
 print("web-apps.html rebuilt as multi-project collection successfully!")

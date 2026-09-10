@@ -32,9 +32,9 @@ Untuk membedakan secara tegas antara **peta perancangan konseptual** dan **kompo
 | Kategori Inventarisasi | Jumlah Komponen | Status & Lokasi Berkas |
 |---|---|---|
 | **Master Component Taxonomy** | **120+ Komponen** | Cetak biru arsitektur universal web (daftar lengkap di Kategori 1–12). |
-| **Implemented Glass Components** | **21 Komponen** | Selesai didekomposisi (4 berkas: `index.html`, `index.css`, `index.js`, `<name>.html`) di [`ui/components/glass/`](file:///d:/PROJECT/prototype/ui/components/glass/). |
-| **Implemented Raw Semantic** | **9 Komponen** | Selesai didekomposisi (HTML murni tanpa CSS) di [`ui/components/raw/`](file:///d:/PROJECT/prototype/ui/components/raw/). |
-| **Integrated Web Applications** | **2 Aplikasi** | Terintegrasi penuh di [`projects/file-manager/`](file:///d:/PROJECT/prototype/projects/file-manager/) & [`projects/ai-studio/`](file:///d:/PROJECT/prototype/projects/ai-studio/). |
+| **Implemented Glass Components** | **21 Komponen** | Selesai didekomposisi (4 berkas: `index.html`, `index.css`, `index.js`, `<name>.html`) di [`ui/components/glass/`](file:///d:/PROJECT/prototype/ui/web/components/glass/). |
+| **Implemented Raw Semantic** | **9 Komponen** | Selesai didekomposisi (HTML murni tanpa CSS) di [`ui/components/raw/`](file:///d:/PROJECT/prototype/ui/web/components/raw/). |
+| **Integrated Web Applications** | **2 Aplikasi** | Terintegrasi penuh di [`ui/web/apps/file-manager/`](file:///d:/PROJECT/prototype/ui/web/apps/file-manager/) & [`ui/web/apps/ai-studio/`](file:///d:/PROJECT/prototype/ui/web/apps/ai-studio/). |
 
 ---
 
@@ -71,7 +71,7 @@ Untuk membedakan secara tegas antara **peta perancangan konseptual** dan **kompo
 | OVL-01 | Centered Modal Dialog | `modal-dialog-glass/` | `modal-dialog/` | `[stable]` |
 | OVL-02 | Bottom Sheet Drawer | `swirl-bottom-sheet/` | `modal-dialog/` | `[stable]` |
 | SCE-01 | AI Agent Studio Scenery | `ai-agent-scenery/` | - | `[stable]` |
-| SCE-02 | Cloud File Manager App | `projects/file-manager/` | - | `[stable]` |
+| SCE-02 | Cloud File Manager App | `ui/web/apps/file-manager/` | - | `[stable]` |
 
 ## 1. Taksonomi Hierarki Komponen
 
@@ -258,5 +258,5 @@ Komponen dikelompokkan berdasarkan metodologi desain hierarkis:
 ## 📌 Catatan Implementasi Desain
 
 Dokumen ini sengaja disusun **bebas dari keterikatan tema gaya spesifik**.
-- Untuk spesifikasi token warna, efek kaca, multi-layer blur, dan shader noise dari tema **Glass Dark Premium**, lihat file panduan desain di: [ui/components/glass/STYLE_SPEC.md](file:///d:/PROJECT/prototype/ui/components/glass/STYLE_SPEC.md).
+- Untuk spesifikasi token warna, efek kaca, multi-layer blur, dan shader noise dari tema **Glass Dark Premium**, lihat file panduan desain di: [ui/components/glass/STYLE_SPEC.md](file:///d:/PROJECT/prototype/ui/web/components/glass/STYLE_SPEC.md).
 - Untuk mencoba dan menguji setiap komponen secara interaktif dalam bentuk nyata, buka dashboard showcase terpadu di: [showcase.html](file:///d:/PROJECT/prototype/showcase.html).

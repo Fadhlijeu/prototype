@@ -44,7 +44,7 @@ Jika ada perubahan pada komponen di `ui/components/`:
 ```bash
 python scripts/rebuild_all.py
 ```
-*Hasil: File `ui/components/glass/showcase.html`, `ui/components/raw/showcase.html`, dan `web-apps.html` akan diperbarui secara otomatis dengan kode terbaru.*
+*Hasil: File `ui/components/glass/showcase.html`, `ui/components/raw/showcase.html`, dan `apps.html` akan diperbarui secara otomatis dengan kode terbaru.*
 
 ---
 

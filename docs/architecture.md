@@ -52,7 +52,7 @@ Repositori ini menerapkan pembagian tugas yang tegas untuk setiap folder:
 | **`ui/`** | **Pusat Desain & Komponen**. Berisi token CSS global dan paket komponen modular (`raw/` & `glass/`). | Setiap komponen wajib memiliki folder mandiri yang didekomposisi. |
 | **`projects/`** | **Aplikasi Web Utuh & Ruang Kerja**. Implementasi nyata yang memadukan komponen menjadi produk. | Mengonsumsi komponen dan token bersama; memiliki `PROJECT_SPEC.md` sendiri. |
 | **`scripts/`** | **Otomatisasi & Pengujian**. Script verifikasi tautan, sinkronisasi showcase, dan audit kualitas. | Wajib dapat dijalankan secara non-interaktif (`python scripts/...`). |
-| **Root (`/`)** | **Entry Point & Gateways**. `index.html`, `web-apps.html`, `showcase.html`, `README.md`, `CHANGELOG.md`. | Harus tetap bersih; jangan letakkan komponen individual langsung di root. |
+| **Root (`/`)** | **Entry Point & Gateways**. `index.html`, `apps.html`, `showcase.html`, `README.md`, `CHANGELOG.md`. | Harus tetap bersih; jangan letakkan komponen individual langsung di root. |
 
 ---
 
@@ -79,5 +79,5 @@ ui/components/glass/<nama-komponen>/
 
 Ketika ada komponen baru yang ditambahkan atau diubah:
 1. Berkas komponen dibuat/diperbarui di subfoldernya masing-masing.
-2. Script otomatis [`scripts/rebuild_all.py`](file:///d:/PROJECT/prototype/scripts/rebuild_all.py) dijalankan untuk membaca seluruh berkas komponen, memperbarui basis data showcase di `showcase.html`, `ui/components/glass/showcase.html`, dan `web-apps.html`.
+2. Script otomatis [`scripts/rebuild_all.py`](file:///d:/PROJECT/prototype/scripts/rebuild_all.py) dijalankan untuk membaca seluruh berkas komponen, memperbarui basis data showcase di `showcase.html`, `ui/components/glass/showcase.html`, dan `apps.html`.
 3. Script verifikasi integritas [`scripts/verify_links.py`](file:///d:/PROJECT/prototype/scripts/verify_links.py) dan [`scripts/verify_docs.py`](file:///d:/PROJECT/prototype/scripts/verify_docs.py) dijalankan untuk memastikan seluruh tautan, iframe, dan dependensi valid 100%.
