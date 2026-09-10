@@ -1,7 +1,7 @@
 {
-  "name": "glassos-prototype",
+  "name": "prototype",
   "version": "3.2.0",
-  "description": "GlassOS UI/UX Component Prototype Ecosystem & Web Applications",
+  "description": "Prototype UI/UX Testing & Component Workbench",
   "scripts": {
     "start": "serve . -p 3000",
     "dev": "serve . -p 3000",
@@ -11,10 +11,7 @@
     "verify": "python scripts/verify_links.py && python scripts/verify_docs.py",
     "verify:links": "python scripts/verify_links.py",
     "verify:docs": "python scripts/verify_docs.py",
-    "rebuild": "python scripts/rebuild_all.py",
-    "generate": "python -m generator.runner generate",
-    "curate": "python -m generator.runner curate",
-    "test:generator": "python -m unittest generator/tests/test_generator.py"
+    "rebuild": "python scripts/rebuild_all.py"
   },
   "keywords": [
     "glassmorphism",

@@ -1,6 +1,6 @@
 # Agent Skill: Motion Physics & Interactive Dynamics
 
-Panduan standar pembuatan animasi, transisi fisika, kontinuitas spasial, dan kepatuhan aksesibilitas gerak (*motion sensitivity*) dalam ekosistem **GlassOS Prototype**.
+Panduan standar pembuatan animasi, transisi fisika, kontinuitas spasial, dan kepatuhan aksesibilitas gerak (*motion sensitivity*) dalam ekosistem **Prototype Workspace**.
 
 ---
 
@@ -19,7 +19,7 @@ Dilarang menggunakan pergerakan linear tanpa bobot (`transition: all 0.3s ease`)
 
 ## 📐 2. Pola Kontinuitas Spasial (Spatial Continuity)
 
-Antarmuka GlassOS mengutamakan hubungan ruang antar komponen:
+Antarmuka Prototype mengutamakan hubungan ruang antar komponen:
 
 1. **Titik Asal Transformasi (Transform Origin)**:
    - Tooltip dan popover wajib memiliki `transform-origin` yang mengarah tepat ke tombol pemicunya.
@@ -38,7 +38,7 @@ Antarmuka GlassOS mengutamakan hubungan ruang antar komponen:
 
 ## 🛑 3. Kepatuhan Aksesibilitas Gerak (`prefers-reduced-motion`)
 
-Setiap animasi di GlassOS **wajib aman** bagi pengguna yang memiliki gangguan vestibular atau sensitivitas gerak.
+Setiap animasi di repositori ini **wajib aman** bagi pengguna yang memiliki gangguan vestibular atau sensitivitas gerak.
 
 Sertakan selalu aturan reduksi gerak pada CSS komponen:
 

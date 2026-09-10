@@ -1,6 +1,6 @@
 # Agent Skill: Development Workflow & Quality Gates
 
-Panduan alur kerja standar (*Standard Operating Procedure*) untuk AI Agent saat memodifikasi, menguji, atau merawat repositori **GlassOS Prototype**.
+Panduan alur kerja standar (*Standard Operating Procedure*) untuk AI Agent saat memodifikasi, menguji, atau merawat repositori **Prototype**.
 
 ---
 

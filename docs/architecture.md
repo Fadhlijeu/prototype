@@ -1,22 +1,22 @@
-# Arsitektur Sistem GlassOS (Architecture)
+# Arsitektur Sistem Prototype (Architecture)
 
-Dokumen ini mendefinisikan struktur teknis repositori, hierarki token desain, batas-batas dependensi antar direktori (*layer boundaries*), dan standar integrasi kode dalam ekosistem **GlassOS Prototype**.
+Dokumen ini mendefinisikan struktur teknis repositori, hierarki token desain, batas-batas dependensi antar direktori (*layer boundaries*), dan standar integrasi kode dalam ekosistem **Prototype Workspace**.
 
 ---
 
 ## 🏗️ 1. Hierarki 5 Lapisan Sistem (5-Tier Architecture)
 
-Ekosistem GlassOS dibangun di atas struktur dependensi satu arah (*unidirectional dependency*):
+Ekosistem Prototype dibangun di atas struktur dependensi satu arah (*unidirectional dependency*):
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │ Tier 4: Applications & Sceneries (projects/*)              │
-│         GlassOS File Manager, AI Studio Workspace           │
+│         Cloud File Manager, AI Studio Workspace             │
 └──────────────────────────────┬──────────────────────────────┘
                                │ mengonsumsi
 ┌──────────────────────────────▼──────────────────────────────┐
 │ Tier 3: State & Runtime Layer                               │
-│         GlassOSStore, persistence (localStorage), audio     │
+│         App Store, persistence (localStorage), audio        │
 └──────────────────────────────┬──────────────────────────────┘
                                │ mengikat
 ┌──────────────────────────────▼──────────────────────────────┐
@@ -49,7 +49,6 @@ Repositori ini menerapkan pembagian tugas yang tegas untuk setiap folder:
 |---|---|---|
 | **`docs/`** | **Dokumentasi Global untuk Manusia**. Visi, prinsip, arsitektur, dan keputusan teknis. | Jangan masukkan instruksi langkah demi langkah agentik atau cuplikan kode ad-hoc di sini. |
 | **`skills/`** | **SOP Operasional untuk AI Agent**. Aturan teknis pembuatan komponen, motion, glass styling, dan workflow. | Ditulis dalam bentuk constraint ketat, checklist, dan panduan eksekusi yang langsung dapat dibaca AI. |
-| **`generator/`** | **Subsistem Generator Otonom & Kurasi**. Mesin generasi UI berbasis model cascade (Gemini/9Router/Mock), decompiler, dan antrean kurasi manusia. | Tidak boleh menyimpan API keys; wajib validasi token glass; mengalirkan komponen baru ke `ui/components/glass/`. |
 | **`ui/`** | **Pusat Desain & Komponen**. Berisi token CSS global dan paket komponen modular (`raw/` & `glass/`). | Setiap komponen wajib memiliki folder mandiri yang didekomposisi. |
 | **`projects/`** | **Aplikasi Web Utuh & Ruang Kerja**. Implementasi nyata yang memadukan komponen menjadi produk. | Mengonsumsi komponen dan token bersama; memiliki `PROJECT_SPEC.md` sendiri. |
 | **`scripts/`** | **Otomatisasi & Pengujian**. Script verifikasi tautan, sinkronisasi showcase, dan audit kualitas. | Wajib dapat dijalankan secara non-interaktif (`python scripts/...`). |

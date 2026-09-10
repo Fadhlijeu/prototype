@@ -1,6 +1,6 @@
-# Spesifikasi Teknis: GlassOS AI Agent Studio Workspace
+# Spesifikasi Teknis: AI Agent Studio Workspace
 
-Dokumen spesifikasi integrasi arsitektur antarmuka dan alur kerja agentik untuk aplikasi **GlassOS AI Agent Studio**.
+Dokumen spesifikasi integrasi arsitektur antarmuka dan alur kerja agentik untuk aplikasi **AI Agent Studio**.
 
 ---
 
@@ -8,7 +8,7 @@ Dokumen spesifikasi integrasi arsitektur antarmuka dan alur kerja agentik untuk 
 
 | Parameter | Nilai Spesifikasi |
 |---|---|
-| **Nama Aplikasi** | GlassOS AI Agent Studio |
+| **Nama Aplikasi** | AI Agent Studio |
 | **Tingkat Arsitektur** | Web Application / Composite Scenery |
 | **Gaya Desain** | Glass Dark Premium (Deep Void `#07080B`) |
 | **Dependencies** | Zero External Bundler (Vanilla HTML5, CSS Custom Properties, Vanilla ES6+) |

@@ -34,9 +34,3 @@ __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
-
-# Generator runtime caches & temp
-generator/queue/cache/
-generator/queue/temp/
-
-

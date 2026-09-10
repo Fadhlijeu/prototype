@@ -1,4 +1,4 @@
-# GlassOS Agent Skills & Execution SOPs
+# Prototype Agent Skills & Execution SOPs
 
 Direktori `skills/` adalah repositori pengetahuan operasional (*Standard Operating Procedures*) yang dirancang khusus sebagai **panduan eksekusi untuk AI Agent** yang bertugas di repositori ini.
 

@@ -1,6 +1,6 @@
-# GlassOS Documentation Hub
+# Prototype Documentation Hub
 
-Pusat dokumentasi repositori **GlassOS Prototype & UI/UX Component Ecosystem**.
+Pusat dokumentasi repositori **Prototype — Testing & UI Component Ecosystem**.
 
 Direktori `docs/` dirancang khusus untuk **pemahaman manusia** (arsitektur, filosofi, prinsip desain, dan panduan sistem), sedangkan panduan operasional teknis untuk **AI Agent** tersimpan secara terpisah di [`skills/`](file:///d:/PROJECT/prototype/skills/README.md).
 

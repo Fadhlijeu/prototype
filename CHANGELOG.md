@@ -1,4 +1,4 @@
-# Changelog — GlassOS UI/UX Component System
+# Changelog — Prototype Workspace & UI Ecosystem
 
 Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen dalam repositori ini dicatat dalam berkas ini.
 
@@ -10,14 +10,14 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 #### 1. Arsitektur Store & Persistensi Reaktif (`localStorage`)
 - **`FileManagerStore` pada [`projects/file-manager/index.html`](projects/file-manager/index.html)**:
-  - **Dynamic Spaces Grid**: Folder yang dibuat pengguna melalui modal Bottom Sheet kini disimpan secara persisten di `localStorage` (`glassos_fm_folders_v1`).
-  - **Tab State Memory**: Tab aktif (`home`, `folders`, `clean`, `settings`) dipersistensikan (`glassos_fm_tab_v1`), sehingga reload halaman menjaga konteks navigasi pengguna.
-  - **Preference Sync**: Status toggle audio feedback, Canvas 2D swirl refraction, dan ambient aurora motion disimpan persisten (`glassos_fm_prefs_v1`).
-  - **Telemetry State**: Status deep clean (2.4 GB cache freed) dipersistensikan (`glassos_fm_stats_v1`).
+  - **Dynamic Spaces Grid**: Folder yang dibuat pengguna melalui modal Bottom Sheet kini disimpan secara persisten di `localStorage` (`prototype_fm_folders_v1`).
+  - **Tab State Memory**: Tab aktif (`home`, `folders`, `clean`, `settings`) dipersistensikan (`prototype_fm_tab_v1`), sehingga reload halaman menjaga konteks navigasi pengguna.
+  - **Preference Sync**: Status toggle audio feedback, Canvas 2D swirl refraction, dan ambient aurora motion disimpan persisten (`prototype_fm_prefs_v1`).
+  - **Telemetry State**: Status deep clean (2.4 GB cache freed) dipersistensikan (`prototype_fm_stats_v1`).
 - **`AIStudioStore` pada [`projects/ai-studio/index.html`](projects/ai-studio/index.html)**:
   - Persistensi active model selection (`K3-Pro Ultra`, `Swarm Agent 2.0`, `Flash Instant`).
   - Persistensi reasoning effort (`Low`, `Med`, `High`, `Max`).
-  - Persistensi chat stream message bubbles secara kronologis (`glassos_ai_studio_v1`).
+  - Persistensi chat stream message bubbles secara kronologis (`prototype_ai_studio_v1`).
 
 #### 2. Peningkatan Standar Aksesibilitas (WCAG 2.1 AA & Keyboard Navigation)
 - **Keyboard Focus Rings (`:focus-visible`)**: Menambahkan styling cincin fokus cyan neon (`0 0 0 2px #08090C, 0 0 0 4px var(--accent-cyan)`) untuk seluruh elemen interaktif, tombol, tab, folder cards, dan input fields.
@@ -60,8 +60,8 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
   - Menghapus 16 baris deklarasi lokal `:root`.
 - **`index.html` (Master Gateway)**:
   - Menghubungkan ke `<link rel="stylesheet" href="ui/components/glass/css.css">`.
-- **`scripts/rebuild_all.py` (Showroom & Studio Generator)**:
-  - Memperbarui template generator `web-apps.html` dan `ui/components/glass/showcase.html` untuk memuat `css.css` terpusat dan membersihkan deklarasi token redundant.
+- **`scripts/rebuild_all.py` (Rebuild Script)**:
+  - Memperbarui template `web-apps.html` dan `ui/components/glass/showcase.html` untuk memuat `css.css` terpusat dan membersihkan deklarasi token redundant.
 
 #### 3. Hasil Pengujian Sistem & Quality Assurance Fase 2
 - **Link & Asset Verification**: 68 tautan internal dan aset HTML terverifikasi 100% valid tanpa broken links.
@@ -135,7 +135,7 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
   - *Solusi*: Mengubah struktur pembungkus kartu menjadi flex column terpadu dengan `.card-preview-zone { flex: 1; min-height: 400px; display: flex; align-items: center; justify-content: center; background: #050508; }`. Seluruh kartu kini mengisi grid secara seragam tanpa celah kosong.
 - **Gambar 2 (Raw Showcase Unstyled & Blank Terdistorsi)**:
   - *Penyebab*: Badge tag teknis pada kartu Raw merender string mentah seperti `<select> & <option>` dan `<table>, <thead>, <tbody>`. Parser HTML browser mengeksekusi tag `<select>` yang tidak tertutup, sehingga menelan sisa kartu berikutnya ke dalam dropdown, serta memicu *table foster parenting*.
-  - *Solusi*: Menerapkan sanitasi `html.escape(tag)` pada generator `scripts/rebuild_all.py` dan `ui/components/raw/showcase.html`. Semua badge tag dirender aman (`&lt;select&gt;`, `&lt;table&gt;`), memulihkan tampilan 9 komponen Raw dengan sempurna.
+  - *Solusi*: Menerapkan sanitasi `html.escape(tag)` pada `scripts/rebuild_all.py` dan `ui/components/raw/showcase.html`. Semua badge tag dirender aman (`&lt;select&gt;`, `&lt;table&gt;`), memulihkan tampilan 9 komponen Raw dengan sempurna.
 
 #### 2. Fitur Pengatur Tampilan Grid (1, 2, 3, 4 Kolom & Auto)
 - Menambahkan toolbar pengatur kolom interaktif pada `ui/components/glass/showcase.html` dan `ui/components/raw/showcase.html`:
@@ -185,7 +185,7 @@ Seluruh perubahan penting, restrukturisasi direktori, dan dekomposisi komponen d
 
 #### 4. Perkakas Perawatan & Sinkronisasi Repositori (`scripts/`)
 - [`scripts/verify_links.py`](file:///d:/PROJECT/prototype/scripts/verify_links.py): Otomatisasi pengujian integritas 100% tautan relatif, iframe, skrip, dan style pada seluruh halaman web (82 tautan terverifikasi 0 broken link).
-- [`scripts/rebuild_all.py`](file:///d:/PROJECT/prototype/scripts/rebuild_all.py): Generator master satu perintah untuk menyinkronkan seluruh database kode embedded dan tampilan showroom.
+- [`scripts/rebuild_all.py`](file:///d:/PROJECT/prototype/scripts/rebuild_all.py): Script rebuild satu perintah untuk menyinkronkan seluruh database kode embedded dan tampilan showroom.
 - Penambahan npm scripts di `package.json` (`npm start`, `npm run project`, `npm run showcase`, `npm run verify`, `npm run rebuild`).
 
 ---

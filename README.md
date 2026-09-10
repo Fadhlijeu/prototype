@@ -1,6 +1,6 @@
-# GlassOS Prototype & UI/UX Component Ecosystem
+# Prototype — Testing & UI Component Ecosystem
 
-Laboratorium pengujian, standarisasi, dan inkubasi komponen antarmuka pengguna (UI/UX) modern berbasis material optik kaca (*optical glass*) dan fisika pergerakan (*motion physics*).
+Laboratorium pengujian, eksperimen, dan inkubasi komponen antarmuka pengguna (UI/UX) modern.
 
 ---
 
@@ -29,8 +29,7 @@ prototype/
 ├── skills/               # SOP & aturan teknis operasional untuk AI Agent
 ├── projects/             # Implementasi aplikasi web utuh (File Manager, AI Studio)
 ├── ui/                   # Token desain & paket komponen modular (raw & glass)
-├── generator/            # Subsistem generator otonom, model cascade, & kurasi UI
-├── scripts/              # Perkakas verifikasi integritas, testing, & generator
+├── scripts/              # Perkakas verifikasi integritas, testing, & sinkronisasi showcase
 ├── index.html            # Portal gerbang utama
 └── package.json          # Manajemen script preview & pengujian
 ```
@@ -45,7 +44,6 @@ Untuk menjaga kerapian dan mencegah duplikasi informasi, dokumentasi dipisahkan 
 |---|---|---|
 | [**`docs/`**](file:///d:/PROJECT/prototype/docs/README.md) | **Pemahaman Manusia**: Visi produk, filosofi optik & fisika gerak, serta 5-layer arsitektur sistem. | [`principles.md`](file:///d:/PROJECT/prototype/docs/principles.md), [`architecture.md`](file:///d:/PROJECT/prototype/docs/architecture.md) |
 | [**`skills/`**](file:///d:/PROJECT/prototype/skills/README.md) | **Eksekusi AI Agent**: SOP pembuatan glass UI, standar dekomposisi berkas, kurva gerak, dan workflow. | [`glass-ui.md`](file:///d:/PROJECT/prototype/skills/glass-ui.md), [`component.md`](file:///d:/PROJECT/prototype/skills/component.md), [`motion.md`](file:///d:/PROJECT/prototype/skills/motion.md), [`workflow.md`](file:///d:/PROJECT/prototype/skills/workflow.md) |
-| [**`generator/`**](file:///d:/PROJECT/prototype/generator/README.md) | **Infrastruktur Generator**: Pipeline continuous generation otonom, model router cascade, dan kurasi manusia. | [`README.md`](file:///d:/PROJECT/prototype/generator/README.md), [`directive.md`](file:///d:/PROJECT/prototype/generator/config/directive.md) |
 | [**`component.md`**](file:///d:/PROJECT/prototype/component.md) | **Kamus Master Komponen**: Taksonomi 120+ komponen universal dan inventarisasi berkas aktual di disk. | [`component.md`](file:///d:/PROJECT/prototype/component.md) |
 | [**`projects/`**](file:///d:/PROJECT/prototype/projects/README.md) | **Portofolio Aplikasi Web**: Manifest dan cetak biru aplikasi terintegrasi. | [`README.md`](file:///d:/PROJECT/prototype/projects/README.md), [`TEMPLATE.md`](file:///d:/PROJECT/prototype/projects/TEMPLATE.md) |
 

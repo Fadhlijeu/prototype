@@ -1,6 +1,6 @@
 # Web Applications & Projects Directory
 
-Direktori ini berisi seluruh **aplikasi web utuh (*full-stack / frontend composite projects*)** yang mengintegrasikan puluhan komponen dari sistem desain GlassOS menjadi satu ekosistem aplikasi fungsional yang siap pakai.
+Direktori ini berisi seluruh **aplikasi web utuh (*frontend composite projects*)** yang mengintegrasikan puluhan komponen antarmuka menjadi satu ekosistem aplikasi fungsional yang siap pakai.
 
 ---
 
@@ -11,11 +11,11 @@ projects/
 ├── README.md                  # Manifest & panduan direktori proyek
 ├── TEMPLATE.md                # Cetak biru standar spesifikasi proyek baru
 │
-├── file-manager/              # Proyek: GlassOS Cloud File Manager OS
+├── file-manager/              # Proyek: Cloud File Manager
 │   ├── index.html             # Aplikasi web utuh mandiri (Single-File Architecture)
 │   └── PROJECT_SPEC.md        # Spesifikasi arsitektur & komponen terintegrasi
 │
-└── ai-studio/                 # Proyek: GlassOS AI Agent Studio Workspace
+└── ai-studio/                 # Proyek: AI Agent Studio Workspace
     ├── index.html             # Ruang kerja agentik AI interaktif
     └── PROJECT_SPEC.md        # Spesifikasi arsitektur AI studio
 ```
@@ -26,8 +26,8 @@ projects/
 
 | Nama Proyek | Versi | Status | Direktori | Live Showroom |
 |---|---|---|---|---|
-| **GlassOS Cloud File Manager OS** | v2.4 | `[production-ready]` | [`projects/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../web-apps.html#project-file-manager) |
-| **GlassOS AI Agent Studio** | v1.0 | `[production-ready]` | [`projects/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../web-apps.html#project-ai-studio) |
+| **Cloud File Manager** | v2.4 | `[production-ready]` | [`projects/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../web-apps.html#project-file-manager) |
+| **AI Agent Studio** | v1.0 | `[production-ready]` | [`projects/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../web-apps.html#project-ai-studio) |
 
 ---
 

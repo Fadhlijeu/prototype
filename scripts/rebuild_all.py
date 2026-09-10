@@ -20,10 +20,6 @@ with open(os.path.join(GLASS_DIR, "css.css"), "r", encoding="utf-8") as f:
     shared_css_code = f.read()
 
 glass_components_metadata = [
-    ("glass-aurora-magnetic-precision", "Glass Aurora Magnetic Precision", "Sliders", "Molecule", "inputs"),
-    ("floating-glass-telemetry", "Floating Glass Telemetry", "Telemetry", "Molecule", "telemetry"),
-    ("glass-slider-futuristik-magnetic", "Glass Slider Futuristik Magnetic", "Sliders", "Molecule", "inputs"),
-    ("aurora-floating-glass-input", "Aurora Floating Glass Input", "Inputs", "Molecule", "inputs"),
     ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "inputs"),
     ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs"),
     ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs"),
@@ -662,7 +658,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <i data-lucide="gem"></i>
             </div>
             <div class="brand-text">
-                <h1>Glass<span>OS</span> Style Showroom</h1>
+                <h1>Proto<span>type</span> Glass Showcase</h1>
                 <p>21 Komponen Glass Dark Premium All-in-One Mandiri</p>
             </div>
         </div>
@@ -1625,28 +1621,6 @@ projects_registry = [
             "Synthesizer Sine Wave Haptic Audio Feedback",
             "Adaptive Fluid Viewport for Mobile & Desktop"
         ]
-    },
-    {
-        "id": "generator-lab",
-        "title": "Autonomous Generator Lab",
-        "version": "v1.0",
-        "status": "Production Ready",
-        "desc": "Ruang kerja visual otonom untuk memantau siklus generasi AI, menguji prompt on-demand, meninjau antrean kandidat (Review Queue), dan mengeksekusi keputusan kurasi manusia (Accept/Reject).",
-        "icon": "cpu",
-        "folder": "projects/generator-lab",
-        "components": [
-            ("Glass Buttons Collection", "sparkles", "ui/components/glass/showcase.html#card-button-glass"),
-            ("Form Input Fields", "text-cursor-input", "ui/components/glass/showcase.html#card-input-field-glass"),
-            ("Telemetry Activity Chart", "bar-chart-2", "ui/components/glass/showcase.html#card-telemetry-activity-chart"),
-            ("Aurora Storage Card", "gauge", "ui/components/glass/showcase.html#card-aurora-storage-card"),
-            ("Toast Notification Glass", "bell", "ui/components/glass/showcase.html#card-toast-notification-glass"),
-        ],
-        "features": [
-            "Real-time Review Queue & Curation Decisions",
-            "Dynamic Obsidian Empty State Architecture",
-            "Model Cascade Health Monitor (Gemini & TokenRouter)",
-            "Live Interactive Isolated Candidate Preview"
-        ]
     }
 ]
 
@@ -2329,7 +2303,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 <i data-lucide="folder-kanban"></i>
             </div>
             <div class="brand-text">
-                <h1>Glass<span>OS</span> Web Applications Studio</h1>
+                <h1>Proto<span>type</span> Web Applications</h1>
                 <p>Portofolio & Workbench Seluruh Proyek di <code>projects/</code></p>
             </div>
         </div>
@@ -2367,10 +2341,6 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 </button>
                 <button class="proj-tab-btn" id="tab-ai-studio" onclick="switchToProject('ai-studio')">
                     <i data-lucide="sparkles"></i> AI Agent Studio
-                    <span class="badge-pill">v1.0</span>
-                </button>
-                <button class="proj-tab-btn" id="tab-generator-lab" onclick="switchToProject('generator-lab')">
-                    <i data-lucide="cpu"></i> Generator Lab
                     <span class="badge-pill">v1.0</span>
                 </button>
             </div>

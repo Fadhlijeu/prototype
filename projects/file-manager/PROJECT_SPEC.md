@@ -1,11 +1,11 @@
-# Project Specification: GlassOS Cloud File Manager
+# Project Specification: Cloud File Manager
 
 > Proyek aplikasi terintegrasi berbasis tema **Glass Dark Premium** untuk manajemen berkas awan (*Cloud File Manager*) dan asisten produktivitas AI.
 
 ---
 
 ## 1. Ikhtisar Proyek
-- **Nama Proyek**: GlassOS Cloud File Manager
+- **Nama Proyek**: Cloud File Manager
 - **File Utama**: [`index.html`](file:///d:/PROJECT/prototype/projects/file-manager/index.html)
 - **Tema Desain**: Glass Dark Premium (Multi-layered Glass, Symmetrical Lighting, Aurora Mesh, Noise Textures)
 - **Target Perangkat**: Responsif (Mobile-first 375px–480px, Tablet & Desktop Widescreen)
@@ -18,7 +18,7 @@ Proyek ini menggabungkan komponen-komponen berikut dari katalog sistem:
 
 | Komponen | Level | Peran & Penempatan | Detail Desain & Interaksi |
 |---|---|---|---|
-| **Symmetrical Top Bar** | Molecule | Header aplikasi | Menampilkan logo brand GlassOS, live status indicator, audio synthesizer mute toggle, dan menu pemicu settings. |
+| **Symmetrical Top Bar** | Molecule | Header aplikasi | Menampilkan logo brand, live status indicator, audio synthesizer mute toggle, dan menu pemicu settings. |
 | **AI Model Selector** | Molecule | Tab Home | Kartu selector interaktif untuk memilih antara model `K3`, `K3 Swarm`, dan `Instant` dengan checkmark aktif beranimasi spring. |
 | **Thinking Effort Row** | Molecule | Tab Home | Pengatur tingkat penalaran (*Low, Medium, High*) dengan indikator teks cyan. |
 | **Prompt Quick Pills** | Molecule | Tab Home | Baris pil aksi cepat (*Slides, Swarm, Websites, Deep Research*) yang langsung mengisi chat bar. |

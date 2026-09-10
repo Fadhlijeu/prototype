@@ -1,6 +1,6 @@
-# Prinsip & Filosofi Desain GlassOS (Principles)
+# Prinsip & Filosofi Desain (Principles)
 
-Dokumen ini memuat visi inti, moto arsitektur, filosofi material kaca (*optical material*), dan prinsip pergerakan (*motion physics*) yang menjadi acuan permanen ekosistem **GlassOS Prototype**.
+Dokumen ini memuat visi inti, moto arsitektur, filosofi material kaca (*optical material*), dan prinsip pergerakan (*motion physics*) yang menjadi acuan pengujian antarmuka dalam **Prototype Workspace**.
 
 ---
 
@@ -10,7 +10,7 @@ Dokumen ini memuat visi inti, moto arsitektur, filosofi material kaca (*optical 
 > *(Form follows function, style follows identity).*
 
 ### Visi Utama
-GlassOS bukan sekadar koleksi mockup visual, melainkan sebuah **laboratorium eksplorasi antarmuka masa depan** di mana:
+Prototype adalah sebuah **laboratorium eksplorasi dan testing antarmuka modern** di mana:
 1. **Semantik Web Bersih**: Komponen memiliki fungsi dan aksesibilitas murni yang kokoh sebelum diberi polesan visual.
 2. **Material Optik Nyata**: Efek kaca melampaui transparansi dan blur sederhana—mengintegrasikan refraksi, highlight specular asimetris, dan tekstur mikro organik.
 3. **Fisika Pergerakan Organik**: Animasi tidak terasa kaku atau sekadar dekoratif, melainkan memiliki bobot, inersia (*spring physics*), dan kontinuitas spasial (*spatial continuity*).
@@ -19,7 +19,7 @@ GlassOS bukan sekadar koleksi mockup visual, melainkan sebuah **laboratorium eks
 
 ## 🏛️ 2. Pemisahan Tiga Lapis (Separation of Concerns)
 
-Untuk mencegah kekacauan dalam pengembangan antarmuka, setiap elemen UI dalam GlassOS dipisahkan ke dalam 3 lapisan independen:
+Untuk mencegah kekacauan dalam pengembangan antarmuka, setiap elemen UI dalam Prototype dipisahkan ke dalam 3 lapisan independen:
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
@@ -44,7 +44,7 @@ Dengan arsitektur ini, gaya visual dapat diubah atau diganti secara menyeluruh t
 
 ## 🔮 3. Filosofi Material Kaca (Optical Glass Architecture)
 
-Banyak desain "glassmorphism" di web hanya mengandalkan satu lapisan CSS `backdrop-filter: blur()`. Dalam GlassOS, permukaan kaca dirancang sebagai **sistem optik multi-lapis**:
+Banyak desain "glassmorphism" di web hanya mengandalkan satu lapisan CSS `backdrop-filter: blur()`. Dalam Prototype UI, permukaan kaca dirancang sebagai **sistem optik multi-lapis**:
 
 1. **Scene Background**: Latar belakang bertingkat gelap pekat (`#08090C` hingga `#0D0E12`) yang diperkaya dengan ambient atmospheric blobs yang halus.
 2. **Translucency & Dispersion**: Nilai transparansi seimbang (`0.03` hingga `0.08` untuk kontainer besar, `0.12` hingga `0.20` untuk elemen aksi) dengan saturasi warna latar (`saturate(160%)`).
@@ -52,14 +52,14 @@ Banyak desain "glassmorphism" di web hanya mengandalkan satu lapisan CSS `backdr
    - `border-top`: Menangkap pantulan cahaya paling terang (`rgba(255, 255, 255, 0.20 - 0.35)`).
    - `border-left`: Pantulan sekunder (`rgba(255, 255, 255, 0.15 - 0.22)`).
    - `border-right & border-bottom`: Menghadap bayangan / oklusi (`rgba(255, 255, 255, 0.04 - 0.08)`).
-4. **Organic Noise Overlay**: Permukaan kaca digital murni cenderung terlihat "plastik". GlassOS menyematkan layer tekstur noise SVG mikro berfrekuensi tinggi (`opacity: 0.038`) untuk memberikan tekstur rabaan fisik.
+4. **Organic Noise Overlay**: Permukaan kaca digital murni cenderung terlihat "plastik". Prototype menyematkan layer tekstur noise SVG mikro berfrekuensi tinggi (`opacity: 0.038`) untuk memberikan tekstur rabaan fisik.
 5. **Refraction & Caustics**: Untuk interaksi khusus (seperti bottom sheet dan modal), canvas 2D digunakan untuk menghitung refraksi cahaya secara real-time.
 
 ---
 
 ## 🌊 4. Prinsip Pergerakan & Fisika (Motion Physics)
 
-Motion dalam GlassOS adalah bahasa komunikasi, bukan sekadar riasan.
+Motion dalam antarmuka adalah bahasa komunikasi, bukan sekadar riasan.
 
 ### 1. Spring Physics & Inersia
 Hindari kurva gerak linear standar peramban (`ease`, `linear`). Gunakan kurva spring fisika:

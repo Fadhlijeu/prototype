@@ -7,7 +7,7 @@
 ## 1. Parametric Color Palettes (Sistem Palet Rentang Dinamis)
 
 > [!IMPORTANT]
-> **PERINGATAN UNTUK AI / GENERATOR**: Nilai hex di bawah adalah **CONTOH ARTIKULASI MOOD**, BUKAN nilai statis untuk disalin persis (*copy-paste*). AI WAJIB memilih salah satu dari 8 keluarga palet warna di bawah atau meracik kombinasi hex segar yang harmonis. Jangan pernah menghasilkan komponen dengan skema biru-ungu yang itu-itu saja!
+> **PANDUAN PEMBUATAN KOMPONEN UI**: Nilai hex di bawah adalah **CONTOH ARTIKULASI MOOD**, BUKAN nilai statis untuk disalin persis (*copy-paste*). Pilih salah satu dari 8 keluarga palet warna di bawah atau racik kombinasi hex segar yang harmonis. Jangan pernah menghasilkan komponen dengan skema biru-ungu yang itu-itu saja!
 
 ```css
 :root {
@@ -163,7 +163,7 @@ DILARANG menggunakan gradien linier sederhana. Gunakan multi-blob radial gradien
   - Opasitas Blob: Rentang `0.35` hingga `0.75` (disesuaikan dengan kontras teks di atasnya).
 
 > [!TIP]
-> Nilai koordinat `30% 50%` atau `80% 80%` di atas adalah contoh acuan mood. AI Generator WAJIB memberikan angka koordinat unik di dalam rentang tersebut agar bentuk pencahayaan setiap komponen berbeda.
+> Nilai koordinat `30% 50%` atau `80% 80%` di atas adalah contoh acuan mood. Saat membuat komponen, berikan angka koordinat unik di dalam rentang tersebut agar bentuk pencahayaan setiap komponen berbeda.
 
 ### Keyframes Animasi:
 ```css
