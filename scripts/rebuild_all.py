@@ -75,6 +75,20 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
     card_id = f"card-{folder}"
     card_classes = f"component-card {span_class}".strip()
     
+    # Map aspect ratio for optimal SVG Blob matching
+    if span_class == "span-tall":
+        ratio_attr = "9:16"
+        ratio_class = "ratio-9-16"
+        ratio_label = "9:16"
+    elif folder in ["button-glass", "toggle-switch-glass", "checkbox-glass", "dropdown-select-glass", "avatar-badge-glass", "thinking-effort-selector", "progress-bar-glass", "prompt-pills-row", "toast-notification-glass", "tooltip-glass", "glass-dock-navigation"]:
+        ratio_attr = "1:1"
+        ratio_class = "ratio-1-1"
+        ratio_label = "1:1"
+    else:
+        ratio_attr = "4:5"
+        ratio_class = "ratio-4-5"
+        ratio_label = "4:5"
+
     glass_cards_html += f"""
             <!-- Component: {title} -->
             <article class="{card_classes}" data-cat="{filter_cat}" id="{card_id}">
@@ -89,16 +103,13 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
                     <button class="btn-card-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Buka Component Studio Pop-up Full Screen">
                         <i data-lucide="maximize-2"></i> Full
                     </button>
-                    <!-- Per-Component Background Toggle (Black | White | Blob Pure CSS) -->
-                    <div class="comp-bg-switcher" id="bg-switcher-{folder}" title="Ganti background khusus komponen ini">
+                    <!-- Per-Component Background Switcher (Dark | Blob SVG Ratio: {ratio_label}) -->
+                    <div class="comp-bg-switcher" id="bg-switcher-{folder}" title="Ganti latar khusus komponen ini ({ratio_label})">
                         <span class="comp-bg-text">BG:</span>
-                        <button type="button" class="btn-comp-bg active" data-bg="black" onclick="setComponentBg('{folder}', 'black', this)" title="Latar Hitam (Black)">
+                        <button type="button" class="btn-comp-bg active" data-bg="dark" onclick="setComponentBg('{folder}', 'dark', this)" title="Latar Hitam Default">
                             <span class="swatch-dot dot-black"></span>
                         </button>
-                        <button type="button" class="btn-comp-bg" data-bg="white" onclick="setComponentBg('{folder}', 'white', this)" title="Latar Putih (White)">
-                            <span class="swatch-dot dot-white"></span>
-                        </button>
-                        <button type="button" class="btn-comp-bg" data-bg="blob" onclick="setComponentBg('{folder}', 'blob', this)" title="Latar Pure CSS Planetary Dual-Arc (Blob)">
+                        <button type="button" class="btn-comp-bg" data-bg="blob" onclick="setComponentBg('{folder}', 'blob', this)" title="Latar Blob SVG ({ratio_label})">
                             <span class="swatch-dot dot-blob"></span>
                         </button>
                     </div>
@@ -111,7 +122,7 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
                         </button>
                     </div>
                 </div>
-                <div class="card-preview-zone" id="preview-zone-{folder}" data-comp-bg="black">
+                <div class="card-preview-zone {ratio_class}" id="preview-zone-{folder}" data-blob-ratio="{ratio_attr}" data-comp-bg="dark">
                     <div class="preview-resizer-wrapper">
                         <iframe src="{folder}/{aio_file}" id="iframe-{folder}" title="{title} Preview"></iframe>
                     </div>
@@ -192,84 +203,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         .header-actions {{ display: flex; align-items: center; gap: 10px; }}
 
-        /* Global Theme Menu (Header) */
-        .theme-selector-wrap {{
-            position: relative;
-        }}
-        .btn-theme-trigger {{
-            display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
-            border-radius: 10px; font-size: 12.5px; font-weight: 600;
-            color: var(--text-primary); background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
-            cursor: pointer; transition: all 0.2s ease;
-        }}
-        .btn-theme-trigger:hover {{
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(56, 189, 248, 0.4);
-        }}
-        .theme-chevron {{
-            width: 13px; height: 13px; color: var(--text-muted);
-            transition: transform 0.2s ease;
-        }}
-        .theme-dropdown-menu {{
-            position: absolute; top: calc(100% + 8px); right: 0; width: 250px;
-            background: rgba(16, 20, 32, 0.85);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-top: 1px solid rgba(255, 255, 255, 0.35);
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            padding: 8px; display: flex; flex-direction: column; gap: 4px;
-            z-index: 100; opacity: 0; visibility: hidden;
-            transform: translateY(-8px) scale(0.96);
-            transition: all 0.2s var(--ease-spring);
-            pointer-events: none;
-        }}
-        .theme-dropdown-menu.open {{
-            opacity: 1; visibility: visible; transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }}
-        .theme-menu-title {{
-            font-size: 11px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.05em; color: var(--accent-cyan);
-            padding: 6px 10px 4px;
-        }}
-        .theme-menu-item {{
-            display: flex; align-items: center; gap: 10px; padding: 8px 12px;
-            border-radius: 10px; cursor: pointer; transition: all 0.18s;
-            border: 1px solid transparent;
-        }}
-        .theme-menu-item:hover {{
-            background: rgba(255, 255, 255, 0.08);
-        }}
-        .theme-menu-item.active {{
-            background: rgba(56, 189, 248, 0.16);
-            border-color: rgba(56, 189, 248, 0.4);
-        }}
-        .theme-swatch {{
-            width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-        }}
-        .swatch-white {{
-            background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.2);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }}
-        .swatch-black {{
-            background: #08080C; border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-        }}
-        .swatch-blob {{
-            background: linear-gradient(135deg, #38BDF8 0%, #111F38 45%, #F59E0B 100%);
-            border: 1px solid rgba(56, 189, 248, 0.5);
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-        }}
-        .theme-meta {{ flex: 1; }}
-        .theme-title {{ font-size: 13px; font-weight: 600; color: #FFFFFF; }}
-        .theme-desc {{ font-size: 11px; color: var(--text-muted); }}
-        .theme-check {{ width: 14px; height: 14px; color: var(--accent-cyan); opacity: 0; }}
-        .theme-menu-item.active .theme-check {{ opacity: 1; }}
 
         /* Dedicated Grid Background Switcher */
         .grid-bg-selector {{
@@ -966,7 +899,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
 
                 
-        /* Per-Component Background Switcher */
+                /* Per-Component Background Switcher */
         .comp-bg-switcher {{
             display: inline-flex;
             align-items: center;
@@ -978,7 +911,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             transition: all 0.2s;
         }}
         .comp-bg-text {{
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-muted);
             letter-spacing: 0.04em;
@@ -1015,530 +948,84 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background: #08080C;
             border: 1px solid rgba(255, 255, 255, 0.4);
         }}
-        .dot-white {{
-            background: #FFFFFF;
-            border: 1px solid rgba(0, 0, 0, 0.3);
-        }}
         .dot-blob {{
             background: radial-gradient(circle at 70% 30%, #38BDF8 0%, #111F38 60%, #F59E0B 100%);
             border: 1px solid #38BDF8;
         }}
 
-        /* Per-Component Preview Zone Backgrounds (Pure CSS) */
+        /* Aspect Ratio Adaptive SVG Blob Backgrounds for Component Cards */
+        .card-preview-zone.ratio-1-1[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="1:1"][data-comp-bg="blob"] {{
+            background-color: #0D0D0D !important;
+            background-image: url('blob_1-1.svg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }}
+
+        .card-preview-zone.ratio-4-5[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="4:5"][data-comp-bg="blob"] {{
+            background-color: #0D0D0D !important;
+            background-image: url('blob_4-5.svg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }}
+
+        .card-preview-zone.ratio-9-16[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="9:16"][data-comp-bg="blob"] {{
+            background-color: #0D0D0D !important;
+            background-image: url('blob_9-16.svg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }}
+
+        /* Default Dark Preview */
+        .card-preview-zone[data-comp-bg="dark"],
         .card-preview-zone[data-comp-bg="black"] {{
-            background: #08080C !important;
-            background-image: none !important;
-        }}
-        .card-preview-zone[data-comp-bg="white"] {{
-            background: #F8FAFC !important;
-            background-image: none !important;
-        }}
-        .card-preview-zone[data-comp-bg="blob"] {{
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-        }}
-
-        /* Studio Stage Backgrounds */
-        .studio-canvas-stage[data-stage-bg="black"] {{
-            background: #08080C !important;
-            background-image: none !important;
-        }}
-        .studio-canvas-stage[data-stage-bg="white"] {{
-            background: #F8FAFC !important;
-            background-image: none !important;
-        }}
-        .studio-canvas-stage[data-stage-bg="blob"] {{
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-        }}
-
-        /* Dedicated Grid Background Variants */
-        .showcase-grid[data-grid-bg="white"] {{
-            background-color: #F8FAFC !important;
-            background-image: none !important;
-            border-radius: 24px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
-            margin: 12px 24px 48px;
-            padding: 24px !important;
-        }}
-        .showcase-grid[data-grid-bg="white"] .component-card {{
-            background: rgba(255, 255, 255, 0.88) !important;
-            border-color: rgba(203, 213, 225, 0.8) !important;
-            border-top-color: #FFFFFF !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF !important;
-        }}
-        .showcase-grid[data-grid-bg="white"] .card-actions-bar {{
-            background: rgba(241, 245, 249, 0.85) !important;
-            border-bottom-color: rgba(0, 0, 0, 0.06) !important;
-        }}
-        .showcase-grid[data-grid-bg="white"] .card-meta-left h3 {{ color: #0F172A !important; }}
-        .showcase-grid[data-grid-bg="white"] .card-meta-left p {{ color: #64748B !important; }}
-        .showcase-grid[data-grid-bg="white"] .card-badge-pill {{
-            background: rgba(0, 0, 0, 0.06) !important;
-            border-color: rgba(0, 0, 0, 0.1) !important;
-            color: #334155 !important;
-        }}
-        .showcase-grid[data-grid-bg="white"] .btn-card-tool {{
-            background: rgba(0, 0, 0, 0.04) !important;
-            border-color: rgba(0, 0, 0, 0.08) !important;
-            color: #334155 !important;
-        }}
-
-        .showcase-grid[data-grid-bg="black"] {{
             background-color: #08080C !important;
             background-image: none !important;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
-            margin: 12px 24px 48px;
-            padding: 24px !important;
         }}
 
+        /* Full-Width Showcase Grid Container (Landscape 2048x1156px) */
         .showcase-grid[data-grid-bg="blob"] {{
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
+            background-color: #0D0D0D !important;
+            background-image: url('blob_2048x1156px.svg') !important;
             background-size: cover !important;
             background-position: center center !important;
             background-repeat: no-repeat !important;
             background-attachment: fixed !important;
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
             margin: 12px 24px 48px;
             padding: 24px !important;
         }}
-        .showcase-grid[data-grid-bg="blob"] .component-card {{
-            background: rgba(17, 31, 56, 0.58) !important;
-            backdrop-filter: blur(28px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-            border-color: rgba(255, 255, 255, 0.14) !important;
-            border-top-color: rgba(255, 255, 255, 0.38) !important;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        .showcase-grid[data-grid-bg="dark"] {{
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 auto !important;
+            padding: 20px 36px 60px !important;
         }}
 
-        /* 1:1 Blob Planetary Dual-Arc Background Layer */
-        .blob-bg-layer {{
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 0; display: none;
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }}
-        body[data-theme="blob"] .blob-bg-layer {{
-            display: block;
-        }}
-
-        /* ============================================================ */
-        /* THEME OVERRIDES: WHITE & BLOB                                */
-        /* ============================================================ */
-
-        /* WHITE THEME (CLEAN LIGHT GLASS) */
-        body[data-theme="white"] {{
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .ambient-mesh {{ display: none; }}
-        body[data-theme="white"] .showcase-header {{
-            background: rgba(255, 255, 255, 0.86);
-            border-bottom-color: rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .brand-text h1 {{ color: #0F172A; }}
-        body[data-theme="white"] .brand-text p {{ color: #64748B; }}
-        body[data-theme="white"] .btn-top-link {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #334155;
-        }}
-        body[data-theme="white"] .btn-top-link:hover {{
-            background: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .btn-theme-trigger {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .theme-dropdown-menu {{
-            background: rgba(255, 255, 255, 0.94);
-            border-color: rgba(203, 213, 225, 0.8);
-            border-top-color: #FFFFFF;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
-        }}
-        body[data-theme="white"] .theme-menu-title {{ color: #0284C7; }}
-        body[data-theme="white"] .theme-title {{ color: #0F172A; }}
-        body[data-theme="white"] .theme-desc {{ color: #64748B; }}
-        body[data-theme="white"] .theme-menu-item:hover {{ background: rgba(0, 0, 0, 0.04); }}
-        body[data-theme="white"] .theme-menu-item.active {{
-            background: rgba(14, 165, 233, 0.12);
-            border-color: rgba(14, 165, 233, 0.3);
-        }}
-        body[data-theme="white"] .app-highlight-banner {{
-            background: linear-gradient(90deg, rgba(6, 182, 212, 0.08), rgba(59, 130, 246, 0.08));
-            border-color: rgba(6, 182, 212, 0.25);
-        }}
-        body[data-theme="white"] .banner-text h3 {{ color: #0F172A; }}
-        body[data-theme="white"] .banner-text p {{ color: #475569; }}
-        body[data-theme="white"] .filter-tabs,
-        body[data-theme="white"] .layout-selector,
-        body[data-theme="white"] .grid-bg-selector {{
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .filter-tab,
-        body[data-theme="white"] .layout-label,
-        body[data-theme="white"] .grid-bg-label,
-        body[data-theme="white"] .btn-layout,
-        body[data-theme="white"] .btn-grid-bg {{
-            color: #64748B;
-        }}
-        body[data-theme="white"] .filter-tab:hover,
-        body[data-theme="white"] .btn-layout:hover,
-        body[data-theme="white"] .btn-grid-bg:hover {{
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .filter-tab.active {{
-            background: #FFFFFF;
-            color: #0F172A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .btn-layout.active,
-        body[data-theme="white"] .btn-grid-bg.active {{
-            background: rgba(14, 165, 233, 0.15);
-            color: #0284C7;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-        }}
-        body[data-theme="white"] .search-box {{
-            background: #FFFFFF;
-            border-color: rgba(0, 0, 0, 0.1);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }}
-        body[data-theme="white"] .search-box input {{ color: #0F172A; }}
-        body[data-theme="white"] .search-box input::placeholder {{ color: #94A3B8; }}
-        body[data-theme="white"] .component-card {{
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(226, 232, 240, 0.9);
-            border-top-color: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        }}
-        body[data-theme="white"] .component-card:hover {{
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 #FFFFFF;
-        }}
-        body[data-theme="white"] .card-top {{
-            border-bottom-color: rgba(0, 0, 0, 0.06);
-            background: rgba(0, 0, 0, 0.015);
-        }}
-        body[data-theme="white"] .card-name {{ color: #0F172A; }}
-        body[data-theme="white"] .card-category {{ color: #64748B; }}
-        body[data-theme="white"] .card-actions-bar {{
-            background: rgba(0, 0, 0, 0.03);
-            border-bottom-color: rgba(0, 0, 0, 0.06);
-        }}
-        body[data-theme="white"] .btn-card-tool {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #475569;
-        }}
-        body[data-theme="white"] .btn-card-tool:hover {{
-            background: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .card-preview-zone {{
-            background: #F8FAFC;
-        }}
-        body[data-theme="white"] .studio-modal-card {{
-            background: #FFFFFF;
-            border-color: rgba(226, 232, 240, 0.9);
-            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.2);
-        }}
-        body[data-theme="white"] .studio-header {{
-            background: #F8FAFC;
-            border-bottom-color: rgba(226, 232, 240, 0.9);
-        }}
-        body[data-theme="white"] .studio-title {{ color: #0F172A; }}
-        body[data-theme="white"] .studio-toolbar {{
-            background: #F1F5F9;
-            border-bottom-color: rgba(226, 232, 240, 0.8);
-        }}
-        body[data-theme="white"] .btn-studio-preset {{
-            background: #FFFFFF;
-            border-color: rgba(203, 213, 225, 0.8);
-            color: #334155;
-        }}
-        body[data-theme="white"] .btn-studio-preset:hover {{
-            background: rgba(0, 0, 0, 0.04);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .btn-studio-preset.active {{
-            background: rgba(14, 165, 233, 0.15);
-            border-color: #0284C7;
-            color: #0284C7;
-        }}
-        body[data-theme="white"] .studio-canvas-stage {{
-            background: #E2E8F0;
-        }}
-        body[data-theme="white"] .studio-viewport-wrapper {{
-            background: #FFFFFF;
-            border-color: rgba(203, 213, 225, 0.8);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
-        }}
-
-        /* BLOB THEME (1:1 PLANETARY DUAL-ARC AURA) */
-        body[data-theme="blob"] {{
-            background-color: #111F38;
-            color: #FFFFFF;
-        }}
-        body[data-theme="blob"] .ambient-mesh {{ display: none; }}
-        body[data-theme="blob"] .showcase-header {{
-            background: rgba(17, 31, 56, 0.72);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border-bottom-color: rgba(255, 255, 255, 0.12);
-        }}
-        body[data-theme="blob"] .component-card {{
-            background: rgba(17, 31, 56, 0.55);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border-color: rgba(255, 255, 255, 0.12);
-            border-top-color: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-        }}
-        body[data-theme="blob"] .component-card:hover {{
-            background: rgba(17, 31, 56, 0.7);
-            border-top-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-        }}
-        body[data-theme="blob"] .card-actions-bar {{
-            background: rgba(10, 20, 38, 0.5);
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }}
-        body[data-theme="blob"] .card-preview-zone {{
-            background: transparent;
-        }}
-        body[data-theme="blob"] .studio-canvas-stage,
+        /* Studio Modal Stage Backgrounds */
         .studio-canvas-stage[data-stage-bg="blob"] {{
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
+            background-color: #0D0D0D !important;
+            background-image: url('blob_2048x1156px.svg') !important;
             background-size: cover !important;
             background-position: center center !important;
             background-repeat: no-repeat !important;
             background-attachment: fixed !important;
         }}
-        body[data-theme="blob"] .studio-viewport-wrapper {{
-            background: transparent;
-            border-color: rgba(255, 255, 255, 0.2);
+        .studio-canvas-stage[data-stage-bg="dark"] {{
+            background: #08080C !important;
+            background-image: none !important;
         }}
-    </style>
+</style>
 </head>
 <body>
-
-    <!-- 1:1 Planetary Dual-Arc Wallpaper Layer -->
-    <div class="blob-bg-layer" id="blobBgLayer"></div>
 
     <div class="ambient-mesh">
         <div class="blob blob-1"></div>
@@ -1558,41 +1045,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
-            <!-- Global Theme Switcher Menu (White | Black | Blob) -->
-            <div class="theme-selector-wrap" id="themeSelectorWrap">
-                <button type="button" class="btn-theme-trigger" id="btnThemeTrigger" onclick="toggleThemeMenu(event)" title="Pilih Tema Global (White, Black, Blob)">
-                    <i data-lucide="palette"></i>
-                    <span id="headerThemeLabel">Black</span>
-                    <i data-lucide="chevron-down" class="theme-chevron" id="headerThemeChevron"></i>
-                </button>
-                <div class="theme-dropdown-menu" id="themeDropdownMenu">
-                    <div class="theme-menu-title">Global Theme</div>
-                    <div class="theme-menu-item" data-theme="white" onclick="switchTheme('white')">
-                        <span class="theme-swatch swatch-white"></span>
-                        <div class="theme-meta">
-                            <div class="theme-title">White</div>
-                            <div class="theme-desc">Clean Light Glass</div>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                    <div class="theme-menu-item active" data-theme="black" onclick="switchTheme('black')">
-                        <span class="theme-swatch swatch-black"></span>
-                        <div class="theme-meta">
-                            <div class="theme-title">Black</div>
-                            <div class="theme-desc">Obsidian Dark Glass</div>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                    <div class="theme-menu-item" data-theme="blob" onclick="switchTheme('blob')">
-                        <span class="theme-swatch swatch-blob"></span>
-                        <div class="theme-meta">
-                            <div class="theme-title">Blob</div>
-                            <div class="theme-desc">Planetary Dual-Arc Aura (1:1)</div>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                </div>
-            </div>
 
             <a href="../../../../index.html" class="btn-top-link" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
@@ -1634,12 +1086,11 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="controls-right">
-            <!-- Grid Background Switcher (White | Black | Blob) -->
+            <!-- Grid Background Switcher (Dark | Blob Grid) -->
             <div class="grid-bg-selector">
-                <span class="grid-bg-label"><i data-lucide="palette"></i> Background:</span>
-                <button type="button" class="btn-grid-bg" data-bg="white" onclick="setGridBg('white')" title="Tema Latar Putih">White</button>
-                <button type="button" class="btn-grid-bg active" data-bg="black" onclick="setGridBg('black')" title="Tema Latar Hitam Obsidian">Black</button>
-                <button type="button" class="btn-grid-bg" data-bg="blob" onclick="setGridBg('blob')" title="Tema Latar Planetary Dual-Arc Aura (1:1)">Blob</button>
+                <span class="grid-bg-label"><i data-lucide="palette"></i> Grid BG:</span>
+                <button type="button" class="btn-grid-bg active" data-bg="dark" onclick="setGridBg('dark')" title="Latar Grid Standar Obsidian">Dark</button>
+                <button type="button" class="btn-grid-bg" data-bg="blob" onclick="setGridBg('blob')" title="Latar Grid Wallpaper Blob (Landscape 2048x1156)">Blob Grid</button>
             </div>
 
             <!-- Grid Layout Selector -->
@@ -1713,9 +1164,8 @@ glass_showcase_content = f"""<!DOCTYPE html>
                     <div class="studio-toolbar-section">
                         <span class="toolbar-label"><i data-lucide="palette"></i> BG:</span>
                         <div class="presets-group">
-                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="white" onclick="switchTheme('white')">White</button>
-                            <button type="button" class="btn-studio-preset btn-studio-bg active" data-bg="black" onclick="switchTheme('black')">Black</button>
-                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="blob" onclick="switchTheme('blob')">Blob</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg active" data-bg="dark" onclick="setStudioBg('dark')">Dark</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="blob" onclick="setStudioBg('blob')">Blob Wide</button>
                         </div>
                     </div>
 
@@ -1874,6 +1324,17 @@ glass_showcase_content = f"""<!DOCTYPE html>
             const iframe = document.getElementById('studioIframe');
             iframe.src = `${{folder}}/${{folder}}.html`;
             
+            const curBg = localStorage.getItem(`comp-bg-${{folder}}`) || currentGridBg || 'dark';
+            setStudioBg(curBg);
+            iframe.onload = () => {{
+                try {{
+                    const doc = iframe.contentDocument;
+                    if (doc && doc.body && curBg === 'blob') {{
+                        doc.body.style.backgroundColor = 'transparent';
+                    }}
+                }} catch(e) {{}}
+            }};
+            
             populateCodeTabs(folder);
             resetStudioWidth();
             switchStudioMode(initialMode);
@@ -1962,7 +1423,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
 
         function setStudioPreset(width, btn) {{
-            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.btn-studio-preset[data-preset]').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
             const wrapper = document.getElementById('studioViewportWrapper');
@@ -1987,7 +1448,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
 
         function setStudioSliderWidth(val) {{
-            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.btn-studio-preset[data-preset]').forEach(b => b.classList.remove('active'));
 
             const wrapper = document.getElementById('studioViewportWrapper');
             const badge = document.getElementById('studioSliderBadge');
@@ -2182,32 +1643,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }});
 
         // ============================================================
-        // GLOBAL THEME CONTROLLER (WHITE | BLACK | BLOB)
+        // COMPONENT & GRID BACKGROUND CONTROLLER (DARK | BLOB SVG)
         // ============================================================
-        let currentTheme = localStorage.getItem('prototype-theme') || 'black';
-
-        function toggleThemeMenu(e) {{
-            if (e) e.stopPropagation();
-            const menu = document.getElementById('themeDropdownMenu');
-            const chevron = document.getElementById('headerThemeChevron');
-            if (!menu) return;
-            const isOpen = menu.classList.toggle('open');
-            if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-        }}
-
-        document.addEventListener('click', (e) => {{
-            const menu = document.getElementById('themeDropdownMenu');
-            const trigger = document.getElementById('btnThemeTrigger');
-            if (menu && menu.classList.contains('open')) {{
-                if (!menu.contains(e.target) && (!trigger || !trigger.contains(e.target))) {{
-                    menu.classList.remove('open');
-                    const chevron = document.getElementById('headerThemeChevron');
-                    if (chevron) chevron.style.transform = 'rotate(0deg)';
-                }}
-            }}
-        }});
-
-        let currentGridBg = localStorage.getItem('prototype-grid-bg') || currentTheme;
+                // Per-Component & Grid Background Management
+        let currentGridBg = localStorage.getItem('prototype-grid-bg') || 'dark';
 
         function setComponentBg(folder, bg, btnEl) {{
             const previewZone = document.getElementById(`preview-zone-${{folder}}`);
@@ -2223,17 +1662,12 @@ glass_showcase_content = f"""<!DOCTYPE html>
             const iframe = document.getElementById(`iframe-${{folder}}`);
             if (iframe) {{
                 try {{
-                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: bg }}, '*');
                     const doc = iframe.contentDocument;
-                    if (doc && doc.documentElement) {{
-                        doc.documentElement.setAttribute('data-theme', bg);
-                        if (doc.body) {{
-                            doc.body.setAttribute('data-theme', bg);
-                            if (bg === 'blob' || bg === 'white') {{
-                                doc.body.style.backgroundColor = 'transparent';
-                            }} else {{
-                                doc.body.style.backgroundColor = '';
-                            }}
+                    if (doc && doc.body) {{
+                        if (bg === 'blob') {{
+                            doc.body.style.backgroundColor = 'transparent';
+                        }} else {{
+                            doc.body.style.backgroundColor = '';
                         }}
                     }}
                 }} catch (e) {{}}
@@ -2252,17 +1686,12 @@ glass_showcase_content = f"""<!DOCTYPE html>
             const iframe = document.getElementById('studioIframe');
             if (iframe) {{
                 try {{
-                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: bg }}, '*');
                     const doc = iframe.contentDocument;
-                    if (doc && doc.documentElement) {{
-                        doc.documentElement.setAttribute('data-theme', bg);
-                        if (doc.body) {{
-                            doc.body.setAttribute('data-theme', bg);
-                            if (bg === 'blob' || bg === 'white') {{
-                                doc.body.style.backgroundColor = 'transparent';
-                            }} else {{
-                                doc.body.style.backgroundColor = '';
-                            }}
+                    if (doc && doc.body) {{
+                        if (bg === 'blob') {{
+                            doc.body.style.backgroundColor = 'transparent';
+                        }} else {{
+                            doc.body.style.backgroundColor = '';
                         }}
                     }}
                 }} catch (e) {{}}
@@ -2279,86 +1708,45 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
             }});
             localStorage.setItem('prototype-grid-bg', bg);
-            
-            // Set all components to this background
+
+            // Update all individual component backgrounds to match
             document.querySelectorAll('.component-card').forEach(card => {{
                 const folder = card.id.replace('card-', '');
                 setComponentBg(folder, bg);
             }});
-            showToast(`Background seluruh komponen diatur ke: ${{bg.toUpperCase()}}`);
+            showToast(`Latar Grid diatur ke: ${{bg === 'blob' ? 'BLOB (2048x1156)' : 'DARK OBSIDIAN'}}`);
         }}
 
-        function switchTheme(theme) {{
-            currentTheme = theme;
-            document.documentElement.setAttribute('data-theme', theme);
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('prototype-theme', theme);
-
-            // Update Header Trigger Label
-            const headerLabel = document.getElementById('headerThemeLabel');
-            if (headerLabel) {{
-                headerLabel.textContent = theme === 'white' ? 'White' : theme === 'blob' ? 'Blob' : 'Black';
-            }}
-
-            // Update Dropdown Items Active State
-            document.querySelectorAll('.theme-menu-item').forEach(item => {{
-                item.classList.toggle('active', item.getAttribute('data-theme') === theme);
-            }});
-
-            // Sync Grid background with current theme
-            setGridBg(theme);
-
-            // Update Studio Toolbar BG buttons
-            document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
-                btn.classList.toggle('active', btn.getAttribute('data-bg') === theme);
-            }});
-
-            // Close Header Dropdown Menu
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.remove('open');
-            const chevron = document.getElementById('headerThemeChevron');
-            if (chevron) chevron.style.transform = 'rotate(0deg)';
-
-            // Propagate theme to all child iframes
-            propagateThemeToIframes(theme);
-
-            showToast(`Tema global diubah ke: ${{theme.toUpperCase()}}`);
-        }}
-
-        function propagateThemeToIframes(theme) {{
-            document.querySelectorAll('iframe').forEach(iframe => {{
-                try {{
-                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: theme }}, '*');
-                    const doc = iframe.contentDocument;
-                    if (doc && doc.documentElement) {{
-                        doc.documentElement.setAttribute('data-theme', theme);
-                        if (doc.body) {{
-                            doc.body.setAttribute('data-theme', theme);
-                            if (theme === 'blob' || theme === 'white') {{
-                                doc.body.style.backgroundColor = 'transparent';
-                            }} else {{
-                                doc.body.style.backgroundColor = '';
-                            }}
-                        }}
-                    }}
-                }} catch (err) {{}}
-            }});
-        }}
-
-        // Initialize Theme on Page Load & Hook Iframe Load
         window.addEventListener('DOMContentLoaded', () => {{
-            switchTheme(currentTheme);
+            // Restore Grid BG
+            const grid = document.getElementById('componentsGrid');
+            if (grid) {{
+                grid.setAttribute('data-grid-bg', currentGridBg);
+            }}
+            document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-bg') === currentGridBg);
+            }});
+
             // Restore individual component background preferences
             document.querySelectorAll('.component-card').forEach(card => {{
                 const folder = card.id.replace('card-', '');
-                const savedBg = localStorage.getItem(`comp-bg-${{folder}}`) || currentGridBg || 'black';
+                const savedBg = localStorage.getItem(`comp-bg-${{folder}}`) || currentGridBg || 'dark';
                 setComponentBg(folder, savedBg);
             }});
         }});
 
         document.querySelectorAll('iframe').forEach(iframe => {{
             iframe.addEventListener('load', () => {{
-                propagateThemeToIframes(currentTheme);
+                const folder = iframe.id ? iframe.id.replace('iframe-', '') : '';
+                const bg = (folder && localStorage.getItem(`comp-bg-${{folder}}`)) || currentGridBg || 'dark';
+                try {{
+                    const doc = iframe.contentDocument;
+                    if (doc && doc.body) {{
+                        if (bg === 'blob') {{
+                            doc.body.style.backgroundColor = 'transparent';
+                        }}
+                    }}
+                }} catch(e) {{}}
             }});
         }});
     </script>
@@ -4043,274 +3431,9 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 align-items: flex-end;
             }}
         }}
-        /* Global Theme Menu (Header) */
-        .theme-selector-wrap {{
-            position: relative;
-        }}
-        .btn-theme-trigger {{
-            display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
-            border-radius: 10px; font-size: 13px; font-weight: 500;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-primary); cursor: pointer; transition: all 0.2s;
-        }}
-        .btn-theme-trigger:hover {{
-            background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);
-        }}
-        .theme-chevron {{
-            width: 14px; height: 14px; transition: transform 0.2s ease;
-        }}
-        .theme-dropdown-menu {{
-            position: absolute; top: calc(100% + 8px); right: 0;
-            width: 250px; background: rgba(13, 13, 18, 0.95);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 14px; padding: 8px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            display: none; flex-direction: column; gap: 4px;
-            z-index: 100;
-        }}
-        .theme-dropdown-menu.open {{ display: flex; }}
-        .theme-menu-header {{
-            padding: 6px 10px 4px; font-size: 11px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.06em;
-            color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;
-        }}
-        .theme-menu-item {{
-            display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-            border-radius: 8px; cursor: pointer; transition: all 0.15s ease;
-            position: relative; border: 1px solid transparent;
-        }}
-        .theme-menu-item:hover {{ background: rgba(255, 255, 255, 0.06); }}
-        .theme-menu-item.active {{
-            background: rgba(74, 158, 255, 0.12);
-            border-color: rgba(74, 158, 255, 0.25);
-        }}
-        .theme-swatch {{
-            width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-        }}
-        .swatch-white {{ background: #F8FAFC; border-color: #CBD5E1; }}
-        .swatch-black {{ background: #08080C; border-color: rgba(255, 255, 255, 0.3); }}
-        .swatch-blob {{
-            background: radial-gradient(circle at 70% 30%, #38BDF8 0%, #111F38 60%, #F59E0B 100%);
-            border-color: #38BDF8;
-        }}
-        .theme-info {{ display: flex; flex-direction: column; flex: 1; min-width: 0; }}
-        .theme-title {{ font-size: 12.5px; font-weight: 600; color: #FFFFFF; }}
-        .theme-desc {{ font-size: 11px; color: var(--text-secondary); }}
-        .theme-check {{ width: 14px; height: 14px; color: var(--accent-cyan); opacity: 0; }}
-        .theme-menu-item.active .theme-check {{ opacity: 1; }}
-
-        /* 1:1 Blob Planetary Dual-Arc Background Layer */
-        .blob-bg-layer {{
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 0; display: none;
-            background-color: #111F38 !important;
-            background-image:
-                /* 1. Upper Arc - Sharp Luminous Cyan Core */
-                radial-gradient(ellipse 112% 82% at 116% -8%,
-                    transparent 63.5%,
-                    rgba(186, 230, 253, 0.95) 65.2%,
-                    rgba(125, 211, 252, 0.90) 66.0%,
-                    rgba(56, 189, 248, 0.70) 67.2%,
-                    rgba(14, 116, 144, 0.25) 71.0%,
-                    transparent 75.0%
-                ),
-                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
-                radial-gradient(ellipse 120% 90% at 116% -8%,
-                    transparent 58.0%,
-                    rgba(56, 189, 248, 0.12) 62.0%,
-                    rgba(56, 189, 248, 0.35) 65.0%,
-                    rgba(14, 116, 144, 0.20) 69.0%,
-                    transparent 76.0%
-                ),
-                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
-                radial-gradient(ellipse 118% 76% at 62% 126%,
-                    transparent 61.5%,
-                    rgba(254, 240, 138, 0.98) 63.2%,
-                    rgba(253, 230, 138, 0.92) 64.0%,
-                    rgba(245, 158, 11, 0.75) 65.5%,
-                    rgba(180, 83, 9, 0.25) 70.0%,
-                    transparent 74.0%
-                ),
-                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
-                radial-gradient(ellipse 125% 85% at 62% 126%,
-                    transparent 56.0%,
-                    rgba(245, 158, 11, 0.10) 60.0%,
-                    rgba(245, 158, 11, 0.30) 63.0%,
-                    rgba(180, 83, 9, 0.15) 68.0%,
-                    transparent 75.0%
-                ),
-                /* 5. Subtle Cosmic Vignette */
-                radial-gradient(circle at 50% 50%,
-                    transparent 60.0%,
-                    rgba(8, 15, 28, 0.40) 100.0%
-                ) !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }}
-        body[data-theme="blob"] .blob-bg-layer {{
-            display: block;
-        }}
-
-        /* WHITE THEME (CLEAN LIGHT GLASS) */
-        body[data-theme="white"] {{
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .ambient-mesh {{ display: none; }}
-        body[data-theme="white"] .hub-header {{
-            background: rgba(255, 255, 255, 0.88);
-            border-bottom-color: rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .brand-text h1 {{ color: #0F172A; }}
-        body[data-theme="white"] .brand-text p {{ color: #64748B; }}
-        body[data-theme="white"] .action-link-btn {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #334155;
-        }}
-        body[data-theme="white"] .action-link-btn:hover {{
-            background: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .btn-theme-trigger {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .theme-dropdown-menu {{
-            background: rgba(255, 255, 255, 0.94);
-            border-color: rgba(203, 213, 225, 0.8);
-            border-top-color: #FFFFFF;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
-        }}
-        body[data-theme="white"] .theme-menu-title {{ color: #0284C7; }}
-        body[data-theme="white"] .theme-title {{ color: #0F172A; }}
-        body[data-theme="white"] .theme-desc {{ color: #64748B; }}
-        body[data-theme="white"] .theme-menu-item:hover {{ background: rgba(0, 0, 0, 0.04); }}
-        body[data-theme="white"] .theme-menu-item.active {{
-            background: rgba(14, 165, 233, 0.12);
-            border-color: rgba(14, 165, 233, 0.3);
-        }}
-        body[data-theme="white"] .hero-title {{ color: #0F172A; }}
-        body[data-theme="white"] .hero-desc {{ color: #475569; }}
-        body[data-theme="white"] .proj-tab-btn {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #475569;
-        }}
-        body[data-theme="white"] .proj-tab-btn:hover {{
-            background: rgba(0, 0, 0, 0.08);
-            color: #0F172A;
-        }}
-        body[data-theme="white"] .proj-tab-btn.active {{
-            background: #FFFFFF;
-            border-color: #CBD5E1;
-            color: #0F172A;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-        }}
-        body[data-theme="white"] .mode-toggle-cluster {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .btn-mode {{ color: #64748B; }}
-        body[data-theme="white"] .btn-mode.active {{
-            background: #FFFFFF;
-            color: #0F172A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .app-showcase-box {{
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #CBD5E1;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
-        }}
-        body[data-theme="white"] .app-title-group h2 {{ color: #0F172A; }}
-        body[data-theme="white"] .app-title-group p {{ color: #64748B; }}
-        body[data-theme="white"] .viewport-selector {{
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .vp-btn {{ color: #64748B; }}
-        body[data-theme="white"] .vp-btn.active {{
-            background: #FFFFFF;
-            color: #0F172A;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }}
-        body[data-theme="white"] .btn-tool-secondary {{
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #334155;
-        }}
-        body[data-theme="white"] .gallery-card {{
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #CBD5E1;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-        }}
-        body[data-theme="white"] .gallery-title {{ color: #0F172A; }}
-        body[data-theme="white"] .gallery-desc {{ color: #64748B; }}
-        body[data-theme="white"] .arch-card {{
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #CBD5E1;
-        }}
-        body[data-theme="white"] .arch-card h3 {{ color: #0F172A; }}
-        body[data-theme="white"] .arch-card li {{ color: #475569; }}
-        body[data-theme="white"] .spec-card {{
-            background: rgba(255, 255, 255, 0.85);
-            border-color: #CBD5E1;
-        }}
-        body[data-theme="white"] .spec-card h3 {{ color: #0F172A; }}
-        body[data-theme="white"] .spec-card p {{ color: #64748B; }}
-
-        /* BLOB THEME (1:1 PLANETARY DUAL-ARC AURA) */
-        body[data-theme="blob"] {{
-            background-color: #111F38;
-            color: #FFFFFF;
-        }}
-        body[data-theme="blob"] .ambient-mesh {{ display: none; }}
-        body[data-theme="blob"] .hub-header {{
-            background: rgba(17, 31, 56, 0.75);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border-bottom-color: rgba(255, 255, 255, 0.12);
-        }}
-        body[data-theme="blob"] .app-showcase-box {{
-            background: rgba(17, 31, 56, 0.65);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border-color: rgba(255, 255, 255, 0.14);
-            border-top-color: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }}
-        body[data-theme="blob"] .gallery-card {{
-            background: rgba(17, 31, 56, 0.65);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border-color: rgba(255, 255, 255, 0.14);
-            border-top-color: rgba(255, 255, 255, 0.35);
-        }}
-        body[data-theme="blob"] .arch-card {{
-            background: rgba(17, 31, 56, 0.65);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border-color: rgba(255, 255, 255, 0.14);
-        }}
-        body[data-theme="blob"] .spec-card {{
-            background: rgba(17, 31, 56, 0.65);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border-color: rgba(255, 255, 255, 0.14);
-        }}
-    </style>
+        </style>
 </head>
 <body>
-
-    <!-- 1:1 Planetary Dual-Arc Wallpaper Layer -->
-    <div class="blob-bg-layer" id="blobBgLayer"></div>
 
     <div class="ambient-mesh">
         <div class="blob blob-1"></div>
@@ -4330,44 +3453,6 @@ web_apps_html_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
-            <!-- Global Theme Switcher Menu (White | Black | Blob) -->
-            <div class="theme-selector-wrap" id="themeSelectorWrap">
-                <button type="button" class="btn-theme-trigger" id="btnThemeTrigger" onclick="toggleThemeMenu(event)" title="Pilih Tema Global (White, Black, Blob)">
-                    <i data-lucide="palette"></i>
-                    <span class="theme-label-text" id="headerThemeLabel">Black</span>
-                    <i data-lucide="chevron-down" class="theme-chevron" id="headerThemeChevron"></i>
-                </button>
-                <div class="theme-dropdown-menu" id="themeDropdownMenu">
-                    <div class="theme-menu-header">
-                        <span class="theme-menu-title"><i data-lucide="sun-moon"></i> Global Theme</span>
-                    </div>
-                    <div class="theme-menu-item" data-theme="white" onclick="switchTheme('white')">
-                        <span class="theme-swatch swatch-white"></span>
-                        <div class="theme-info">
-                            <span class="theme-title">White Light</span>
-                            <span class="theme-desc">Clean, cerah & modern frosted glass</span>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                    <div class="theme-menu-item active" data-theme="black" onclick="switchTheme('black')">
-                        <span class="theme-swatch swatch-black"></span>
-                        <div class="theme-info">
-                            <span class="theme-title">Obsidian Black</span>
-                            <span class="theme-desc">Elegan, kontras tinggi & neon glow</span>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                    <div class="theme-menu-item" data-theme="blob" onclick="switchTheme('blob')">
-                        <span class="theme-swatch swatch-blob"></span>
-                        <div class="theme-info">
-                            <span class="theme-title">Dual-Arc Blob (1:1)</span>
-                            <span class="theme-desc">Planetary aura: Cyan & golden amber</span>
-                        </div>
-                        <i data-lucide="check" class="theme-check"></i>
-                    </div>
-                </div>
-            </div>
-
             <a href="../../index.html" class="action-link-btn" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
@@ -4737,81 +3822,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
             if (e.target.id === 'appModal') closeAppModal();
         }});
 
-        // Global Theme Management
-        let currentTheme = localStorage.getItem('prototype-theme') || 'black';
-
-        function toggleThemeMenu(e) {{
-            e.stopPropagation();
-            const menu = document.getElementById('themeDropdownMenu');
-            const chevron = document.getElementById('headerThemeChevron');
-            if (menu) {{
-                const isOpen = menu.classList.toggle('open');
-                if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-            }}
-        }}
-
-        document.addEventListener('click', (e) => {{
-            const wrap = document.getElementById('themeSelectorWrap');
-            if (wrap && !wrap.contains(e.target)) {{
-                const menu = document.getElementById('themeDropdownMenu');
-                if (menu) menu.classList.remove('open');
-                const chevron = document.getElementById('headerThemeChevron');
-                if (chevron) chevron.style.transform = 'rotate(0deg)';
-            }}
-        }});
-
-        function switchTheme(theme) {{
-            currentTheme = theme;
-            document.documentElement.setAttribute('data-theme', theme);
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('prototype-theme', theme);
-
-            const headerLabel = document.getElementById('headerThemeLabel');
-            if (headerLabel) {{
-                headerLabel.textContent = theme === 'white' ? 'White' : theme === 'blob' ? 'Blob' : 'Black';
-            }}
-
-            document.querySelectorAll('.theme-menu-item').forEach(item => {{
-                item.classList.toggle('active', item.getAttribute('data-theme') === theme);
-            }});
-
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.remove('open');
-            const chevron = document.getElementById('headerThemeChevron');
-            if (chevron) chevron.style.transform = 'rotate(0deg)';
-
-            // Propagate theme to active app iframe
-            const iframe = document.getElementById('appFrame');
-            if (iframe) {{
-                try {{
-                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: theme }}, '*');
-                    if (iframe.contentDocument && iframe.contentDocument.documentElement) {{
-                        iframe.contentDocument.documentElement.setAttribute('data-theme', theme);
-                        if (iframe.contentDocument.body) {{
-                            iframe.contentDocument.body.setAttribute('data-theme', theme);
-                            if (theme === 'blob' || theme === 'white') {{
-                                iframe.contentDocument.body.style.backgroundColor = 'transparent';
-                            }} else {{
-                                iframe.contentDocument.body.style.backgroundColor = '';
-                            }}
-                        }}
-                    }}
-                }} catch (err) {{}}
-            }}
-
-            showToast(`Tema global diubah ke: ${{theme.toUpperCase()}}`);
-        }}
-
-        window.addEventListener('DOMContentLoaded', () => {{
-            switchTheme(currentTheme);
-        }});
-        const frameEl = document.getElementById('appFrame');
-        if (frameEl) {{
-            frameEl.addEventListener('load', () => {{
-                switchTheme(currentTheme);
-            }});
-        }}
-    </script>
+        </script>
 </body>
 </html>
 """
