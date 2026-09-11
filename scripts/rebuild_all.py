@@ -95,26 +95,15 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/{folder}/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 """
@@ -399,19 +388,20 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background: rgba(56, 189, 248, 0.22);
             color: #FFFFFF;
         }}
+        .btn-card-tool.new-tab,
         .btn-card-tool.solo {{
             color: var(--text-muted);
         }}
+        .btn-card-tool.new-tab:hover,
         .btn-card-tool.solo:hover {{
             color: #C084FC;
         }}
 
-        /* Preview Zone - Seamless & Clickable to Launch Full Studio Popup */
+        /* Preview Zone - Direct Interactive Component Viewport */
         .card-preview-zone {{
-            flex: 1; width: 100%; min-height: 380px;
+            flex: 1; width: 100%; min-height: 400px;
             display: flex; align-items: stretch; justify-content: center;
             background: #050508; position: relative;
-            cursor: pointer;
             overflow: hidden;
             padding: 0;
         }}
@@ -422,51 +412,8 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
         .card-preview-zone iframe {{
             width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
-            display: block; pointer-events: none;
+            display: block; pointer-events: auto;
         }}
-
-        .preview-hover-hint {{
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(5, 5, 8, 0.55);
-            backdrop-filter: blur(3px);
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.2s ease;
-            z-index: 5;
-        }}
-        .component-card:hover .preview-hover-hint {{
-            opacity: 1;
-        }}
-        .hover-hint-badge {{
-            padding: 8px 18px; border-radius: 20px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(56, 189, 248, 0.5);
-            color: #38BDF8; font-size: 13px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 7px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            transform: translateY(4px);
-            transition: transform 0.2s;
-        }}
-        .component-card:hover .hover-hint-badge {{
-            transform: translateY(0);
-        }}
-        .hover-hint-badge svg {{ width: 14px; height: 14px; }}
-
-        .card-bottom {{
-            padding: 10px 18px; display: flex; align-items: center; justify-content: space-between;
-            border-top: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02);
-            font-size: 11.5px; flex-shrink: 0;
-        }}
-        .file-link-tag {{ font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }}
-
-        .btn-card-mini-full {{
-            background: transparent; border: none; color: var(--text-muted);
-            font-size: 11.5px; font-weight: 500; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 4px;
-            padding: 4px 8px; border-radius: 6px; transition: all 0.2s;
-        }}
-        .btn-card-mini-full:hover {{ color: #38BDF8; background: rgba(255, 255, 255, 0.05); }}
-        .btn-card-mini-full svg {{ width: 12px; height: 12px; }}
 
         /* ============================================================ */
         /* COMPONENT STUDIO POPUP MODAL (Fullscreen Interactive Studio) */
@@ -985,7 +932,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
                         <i data-lucide="copy"></i> <span>Salin</span>
                     </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="studioSoloLink" title="Buka Standalone File di Tab Baru">
-                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                        <i data-lucide="external-link"></i> <span>Tab Baru</span>
                     </a>
                     <button class="studio-close-btn" onclick="closeComponentStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>
@@ -1490,26 +1437,15 @@ for folder, title, tag in raw_components:
                         <button class="btn-card-tool highlight" onclick="copyRawAio('{folder}')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('{folder}', '{title}', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-{folder}">
                         <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/{folder}/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('{folder}', '{title}', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 """
@@ -1650,57 +1586,22 @@ raw_showcase_content = f"""<!DOCTYPE html>
         .btn-card-tool.highlight:hover {{
             background: rgba(59, 130, 246, 0.25); color: #FFFFFF;
         }}
+        .btn-card-tool.new-tab,
         .btn-card-tool.solo {{ color: var(--text-secondary); }}
+        .btn-card-tool.new-tab:hover,
         .btn-card-tool.solo:hover {{ color: #FFFFFF; }}
 
         .comp-preview-zone {{
-            flex: 1; min-height: 280px; background: #FFFFFF;
+            flex: 1; min-height: 320px; background: #FFFFFF;
             display: flex; align-items: stretch; justify-content: center;
-            padding: 0; overflow: hidden; position: relative; cursor: pointer;
+            padding: 0; overflow: hidden; position: relative;
         }}
         .comp-preview-zone .preview-resizer-wrapper {{
             width: 100%; height: 100%; min-height: 100%;
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
         }}
-        .comp-preview-zone iframe {{ width: 100%; height: 100%; min-height: 100%; border: none; display: block; pointer-events: none; }}
-
-        .preview-hover-hint {{
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(12, 13, 18, 0.55);
-            backdrop-filter: blur(2px);
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.2s ease;
-            z-index: 5;
-        }}
-        .comp-card:hover .preview-hover-hint {{ opacity: 1; }}
-        .hover-hint-badge {{
-            padding: 7px 16px; border-radius: 20px;
-            background: #141620; border: 1px solid rgba(59, 130, 246, 0.5);
-            color: #60A5FA; font-size: 12px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 6px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            transform: translateY(3px); transition: transform 0.2s;
-        }}
-        .comp-card:hover .hover-hint-badge {{ transform: translateY(0); }}
-        .hover-hint-badge svg {{ width: 13px; height: 13px; }}
-
-        .comp-card-foot {{
-            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.3); border-top: 1px solid var(--border-color); font-size: 12px;
-            flex-shrink: 0;
-        }}
-        .path-label {{ font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }}
-
-        .btn-card-mini-full {{
-            background: transparent; border: none; color: var(--text-secondary);
-            font-size: 11.5px; font-weight: 500; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 4px;
-            padding: 3px 6px; border-radius: 4px; transition: all 0.2s;
-        }}
-        .btn-card-mini-full:hover {{ color: #60A5FA; background: rgba(255, 255, 255, 0.05); }}
-        .btn-card-mini-full svg {{ width: 12px; height: 12px; }}
+        .comp-preview-zone iframe {{ width: 100%; height: 100%; min-height: 100%; border: none; display: block; pointer-events: auto; }}
 
         /* Raw Studio Modal */
         .modal-overlay {{
@@ -2042,7 +1943,7 @@ raw_showcase_content = f"""<!DOCTYPE html>
                         <i data-lucide="copy"></i> <span>Salin</span>
                     </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="rawStudioSoloLink" title="Buka Standalone File di Tab Baru">
-                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                        <i data-lucide="external-link"></i> <span>Tab Baru</span>
                     </a>
                     <button class="studio-close-btn" onclick="closeRawStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>

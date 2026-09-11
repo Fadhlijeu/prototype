@@ -276,19 +276,20 @@
             background: rgba(56, 189, 248, 0.22);
             color: #FFFFFF;
         }
+        .btn-card-tool.new-tab,
         .btn-card-tool.solo {
             color: var(--text-muted);
         }
+        .btn-card-tool.new-tab:hover,
         .btn-card-tool.solo:hover {
             color: #C084FC;
         }
 
-        /* Preview Zone - Seamless & Clickable to Launch Full Studio Popup */
+        /* Preview Zone - Direct Interactive Component Viewport */
         .card-preview-zone {
-            flex: 1; width: 100%; min-height: 380px;
+            flex: 1; width: 100%; min-height: 400px;
             display: flex; align-items: stretch; justify-content: center;
             background: #050508; position: relative;
-            cursor: pointer;
             overflow: hidden;
             padding: 0;
         }
@@ -299,51 +300,8 @@
         }
         .card-preview-zone iframe {
             width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
-            display: block; pointer-events: none;
+            display: block; pointer-events: auto;
         }
-
-        .preview-hover-hint {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(5, 5, 8, 0.55);
-            backdrop-filter: blur(3px);
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.2s ease;
-            z-index: 5;
-        }
-        .component-card:hover .preview-hover-hint {
-            opacity: 1;
-        }
-        .hover-hint-badge {
-            padding: 8px 18px; border-radius: 20px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(56, 189, 248, 0.5);
-            color: #38BDF8; font-size: 13px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 7px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            transform: translateY(4px);
-            transition: transform 0.2s;
-        }
-        .component-card:hover .hover-hint-badge {
-            transform: translateY(0);
-        }
-        .hover-hint-badge svg { width: 14px; height: 14px; }
-
-        .card-bottom {
-            padding: 10px 18px; display: flex; align-items: center; justify-content: space-between;
-            border-top: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02);
-            font-size: 11.5px; flex-shrink: 0;
-        }
-        .file-link-tag { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }
-
-        .btn-card-mini-full {
-            background: transparent; border: none; color: var(--text-muted);
-            font-size: 11.5px; font-weight: 500; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 4px;
-            padding: 4px 8px; border-radius: 6px; transition: all 0.2s;
-        }
-        .btn-card-mini-full:hover { color: #38BDF8; background: rgba(255, 255, 255, 0.05); }
-        .btn-card-mini-full svg { width: 12px; height: 12px; }
 
         /* ============================================================ */
         /* COMPONENT STUDIO POPUP MODAL (Fullscreen Interactive Studio) */
@@ -849,26 +807,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('button-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="button-glass/button-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="button-glass/button-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="button-glass/button-glass.html" title="Glass Buttons Collection Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/button-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -892,26 +839,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('chat-input-bar')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="chat-input-bar/chat-input-bar.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="chat-input-bar/chat-input-bar.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="chat-input-bar/chat-input-bar.html" title="Glass Chat Input Bar Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/chat-input-bar/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -935,26 +871,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('input-field-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="input-field-glass/input-field-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="input-field-glass/input-field-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="input-field-glass/input-field-glass.html" title="Glass Form Input Fields Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/input-field-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -978,26 +903,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('prompt-pills-row')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="prompt-pills-row/prompt-pills-row.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="prompt-pills-row/prompt-pills-row.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="prompt-pills-row/prompt-pills-row.html" title="Prompt Pills Quick Scroller Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/prompt-pills-row/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1021,26 +935,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('thinking-effort-selector')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="thinking-effort-selector/thinking-effort-selector.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="thinking-effort-selector/thinking-effort-selector.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="thinking-effort-selector/thinking-effort-selector.html" title="Thinking Effort Selector Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/thinking-effort-selector/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1064,26 +967,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('toggle-switch-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="toggle-switch-glass/toggle-switch-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="toggle-switch-glass/toggle-switch-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="toggle-switch-glass/toggle-switch-glass.html" title="Glass Toggle Switch Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/toggle-switch-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1107,26 +999,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('checkbox-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="checkbox-glass/checkbox-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="checkbox-glass/checkbox-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="checkbox-glass/checkbox-glass.html" title="Glass Checkbox & Radio Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/checkbox-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1150,26 +1031,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('dropdown-select-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="dropdown-select-glass/dropdown-select-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="dropdown-select-glass/dropdown-select-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="dropdown-select-glass/dropdown-select-glass.html" title="Glass Floating Dropdown Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/dropdown-select-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1193,26 +1063,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('ai-model-selector')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="ai-model-selector/ai-model-selector.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="ai-model-selector/ai-model-selector.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="ai-model-selector/ai-model-selector.html" title="AI Model Selector Card Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/ai-model-selector/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1236,26 +1095,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('frosted-folder-card')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="frosted-folder-card/frosted-folder-card.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="frosted-folder-card/frosted-folder-card.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="frosted-folder-card/frosted-folder-card.html" title="Frosted Folder Card Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/frosted-folder-card/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1279,26 +1127,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('aurora-storage-card')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="aurora-storage-card/aurora-storage-card.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="aurora-storage-card/aurora-storage-card.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="aurora-storage-card/aurora-storage-card.html" title="Aurora Storage Card Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/aurora-storage-card/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1322,26 +1159,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('progress-bar-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="progress-bar-glass/progress-bar-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="progress-bar-glass/progress-bar-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="progress-bar-glass/progress-bar-glass.html" title="Glass Glowing Progress Bar Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/progress-bar-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1365,26 +1191,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('avatar-badge-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="avatar-badge-glass/avatar-badge-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="avatar-badge-glass/avatar-badge-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="avatar-badge-glass/avatar-badge-glass.html" title="Glass Avatar with Status Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/avatar-badge-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1408,26 +1223,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('glass-dock-navigation')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="glass-dock-navigation/glass-dock-navigation.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="glass-dock-navigation/glass-dock-navigation.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="glass-dock-navigation/glass-dock-navigation.html" title="Floating Glass Dock Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/glass-dock-navigation/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1451,26 +1255,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('glass-sidepanel')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="glass-sidepanel/glass-sidepanel.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="glass-sidepanel/glass-sidepanel.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="glass-sidepanel/glass-sidepanel.html" title="Productivity Glass Sidepanel Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/glass-sidepanel/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1494,26 +1287,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('swirl-bottom-sheet')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="swirl-bottom-sheet/swirl-bottom-sheet.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="swirl-bottom-sheet/swirl-bottom-sheet.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="swirl-bottom-sheet/swirl-bottom-sheet.html" title="Swirl Refraction Bottom Sheet Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/swirl-bottom-sheet/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1537,26 +1319,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('modal-dialog-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="modal-dialog-glass/modal-dialog-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="modal-dialog-glass/modal-dialog-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="modal-dialog-glass/modal-dialog-glass.html" title="Glass Modal Dialog Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/modal-dialog-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1580,26 +1351,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('toast-notification-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="toast-notification-glass/toast-notification-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="toast-notification-glass/toast-notification-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="toast-notification-glass/toast-notification-glass.html" title="Glass Toast Notification Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/toast-notification-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1623,26 +1383,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('tooltip-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="tooltip-glass/tooltip-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="tooltip-glass/tooltip-glass.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="tooltip-glass/tooltip-glass.html" title="Glass Micro Tooltip Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/tooltip-glass/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1666,26 +1415,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('telemetry-activity-chart')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="telemetry-activity-chart/telemetry-activity-chart.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="telemetry-activity-chart/telemetry-activity-chart.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="telemetry-activity-chart/telemetry-activity-chart.html" title="Telemetry Activity Chart Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/telemetry-activity-chart/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1709,26 +1447,15 @@
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('ai-agent-scenery')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="ai-agent-scenery/ai-agent-scenery.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="ai-agent-scenery/ai-agent-scenery.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="card-preview-zone" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'preview')" title="Klik untuk membuka Full Studio Popup">
+                <div class="card-preview-zone">
                     <div class="preview-resizer-wrapper">
                         <iframe src="ai-agent-scenery/ai-agent-scenery.html" title="AI Agent Studio Scenery Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="file-link-tag">ui/web/components/glass/ai-agent-scenery/</span>
-                    <button class="btn-card-mini-full" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -1765,7 +1492,7 @@
                         <i data-lucide="copy"></i> <span>Salin</span>
                     </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="studioSoloLink" title="Buka Standalone File di Tab Baru">
-                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                        <i data-lucide="external-link"></i> <span>Tab Baru</span>
                     </a>
                     <button class="studio-close-btn" onclick="closeComponentStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>

@@ -132,57 +132,22 @@
         .btn-card-tool.highlight:hover {
             background: rgba(59, 130, 246, 0.25); color: #FFFFFF;
         }
+        .btn-card-tool.new-tab,
         .btn-card-tool.solo { color: var(--text-secondary); }
+        .btn-card-tool.new-tab:hover,
         .btn-card-tool.solo:hover { color: #FFFFFF; }
 
         .comp-preview-zone {
-            flex: 1; min-height: 280px; background: #FFFFFF;
+            flex: 1; min-height: 320px; background: #FFFFFF;
             display: flex; align-items: stretch; justify-content: center;
-            padding: 0; overflow: hidden; position: relative; cursor: pointer;
+            padding: 0; overflow: hidden; position: relative;
         }
         .comp-preview-zone .preview-resizer-wrapper {
             width: 100%; height: 100%; min-height: 100%;
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
         }
-        .comp-preview-zone iframe { width: 100%; height: 100%; min-height: 100%; border: none; display: block; pointer-events: none; }
-
-        .preview-hover-hint {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(12, 13, 18, 0.55);
-            backdrop-filter: blur(2px);
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.2s ease;
-            z-index: 5;
-        }
-        .comp-card:hover .preview-hover-hint { opacity: 1; }
-        .hover-hint-badge {
-            padding: 7px 16px; border-radius: 20px;
-            background: #141620; border: 1px solid rgba(59, 130, 246, 0.5);
-            color: #60A5FA; font-size: 12px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 6px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            transform: translateY(3px); transition: transform 0.2s;
-        }
-        .comp-card:hover .hover-hint-badge { transform: translateY(0); }
-        .hover-hint-badge svg { width: 13px; height: 13px; }
-
-        .comp-card-foot {
-            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.3); border-top: 1px solid var(--border-color); font-size: 12px;
-            flex-shrink: 0;
-        }
-        .path-label { font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }
-
-        .btn-card-mini-full {
-            background: transparent; border: none; color: var(--text-secondary);
-            font-size: 11.5px; font-weight: 500; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 4px;
-            padding: 3px 6px; border-radius: 4px; transition: all 0.2s;
-        }
-        .btn-card-mini-full:hover { color: #60A5FA; background: rgba(255, 255, 255, 0.05); }
-        .btn-card-mini-full svg { width: 12px; height: 12px; }
+        .comp-preview-zone iframe { width: 100%; height: 100%; min-height: 100%; border: none; display: block; pointer-events: auto; }
 
         /* Raw Studio Modal */
         .modal-overlay {
@@ -513,26 +478,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('button')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="button/button.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="button/button.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('button', 'Buttons & Actions', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-button">
                         <iframe src="button/button.html" title="Buttons & Actions Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/button/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('button', 'Buttons & Actions', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -553,26 +507,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('input')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="input/input.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="input/input.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('input', 'Form Input Fields', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-input">
                         <iframe src="input/input.html" title="Form Input Fields Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/input/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('input', 'Form Input Fields', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -593,26 +536,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('checkbox-radio')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="checkbox-radio/checkbox-radio.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="checkbox-radio/checkbox-radio.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('checkbox-radio', 'Checkboxes & Radios', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-checkbox-radio">
                         <iframe src="checkbox-radio/checkbox-radio.html" title="Checkboxes & Radios Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/checkbox-radio/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('checkbox-radio', 'Checkboxes & Radios', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -633,26 +565,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('select-dropdown')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="select-dropdown/select-dropdown.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="select-dropdown/select-dropdown.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('select-dropdown', 'Select Dropdown', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-select-dropdown">
                         <iframe src="select-dropdown/select-dropdown.html" title="Select Dropdown Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/select-dropdown/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('select-dropdown', 'Select Dropdown', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -673,26 +594,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('toggle-switch')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="toggle-switch/toggle-switch.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="toggle-switch/toggle-switch.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('toggle-switch', 'Toggle Switch (Raw)', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-toggle-switch">
                         <iframe src="toggle-switch/toggle-switch.html" title="Toggle Switch (Raw) Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/toggle-switch/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('toggle-switch', 'Toggle Switch (Raw)', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -713,26 +623,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('details-accordion')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="details-accordion/details-accordion.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="details-accordion/details-accordion.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('details-accordion', 'Disclosure / Accordion', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-details-accordion">
                         <iframe src="details-accordion/details-accordion.html" title="Disclosure / Accordion Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/details-accordion/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('details-accordion', 'Disclosure / Accordion', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -753,26 +652,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('modal-dialog')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="modal-dialog/modal-dialog.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="modal-dialog/modal-dialog.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('modal-dialog', 'Native Modal Dialog', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-modal-dialog">
                         <iframe src="modal-dialog/modal-dialog.html" title="Native Modal Dialog Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/modal-dialog/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('modal-dialog', 'Native Modal Dialog', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -793,26 +681,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('progress-meter')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="progress-meter/progress-meter.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="progress-meter/progress-meter.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('progress-meter', 'Progress & Meter', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-progress-meter">
                         <iframe src="progress-meter/progress-meter.html" title="Progress & Meter Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/progress-meter/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('progress-meter', 'Progress & Meter', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -833,26 +710,15 @@
                         <button class="btn-card-tool highlight" onclick="copyRawAio('table')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="table/table.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
-                            <i data-lucide="external-link"></i> Solo
+                        <a href="table/table.html" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
+                            <i data-lucide="external-link"></i> Tab Baru
                         </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone" onclick="openRawStudio('table', 'Tabular Data Grid', 'preview')" title="Klik untuk membuka Raw Studio Popup">
+                <div class="comp-preview-zone">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-table">
                         <iframe src="table/table.html" title="Tabular Data Grid Preview"></iframe>
                     </div>
-                    <div class="preview-hover-hint">
-                        <span class="hover-hint-badge">
-                            <i data-lucide="maximize-2"></i> Buka Full Popup
-                        </span>
-                    </div>
-                </div>
-                <div class="comp-card-foot">
-                    <span class="path-label">ui/components/raw/table/</span>
-                    <button class="btn-card-mini-full" onclick="openRawStudio('table', 'Tabular Data Grid', 'preview')">
-                        <i data-lucide="expand"></i> Studio Mode
-                    </button>
                 </div>
             </article>
 
@@ -884,7 +750,7 @@
                         <i data-lucide="copy"></i> <span>Salin</span>
                     </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="rawStudioSoloLink" title="Buka Standalone File di Tab Baru">
-                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                        <i data-lucide="external-link"></i> <span>Tab Baru</span>
                     </a>
                     <button class="studio-close-btn" onclick="closeRawStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>
