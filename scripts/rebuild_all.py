@@ -84,45 +84,37 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
                     </div>
                     <span class="{badge_class}">{badge}</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('{card_id}', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('{folder}', '{title}', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('{card_id}', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-{card_id}"
-                                   oninput="setCardSliderWidth('{card_id}', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-{card_id}">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('{folder}', '{title}')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/{folder}/</span>
-                    <a href="{folder}/{aio_file}" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 """
@@ -338,117 +330,127 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background: rgba(139, 92, 246, 0.15); color: #C084FC; border-color: rgba(139, 92, 246, 0.3);
         }}
 
-        .card-resizer-toolbar {{
-            padding: 8px 18px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        /* Card Action Bar (Clean & Spacious) */
+        .card-actions-bar {{
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.28);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-shrink: 0;
+            gap: 8px;
         }}
-        .viewport-presets {{ display: flex; align-items: center; gap: 4px; }}
-        .btn-preset {{
-            padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
-            background: transparent; border: 1px solid rgba(255, 255, 255, 0.06);
-            color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 4px;
-            transition: all 0.15s;
+        .btn-card-full {{
+            padding: 6px 14px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.25));
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s var(--ease-spring);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }}
-        .btn-preset svg {{ width: 12px; height: 12px; }}
-        .btn-preset:hover {{ color: var(--text-primary); border-color: rgba(255, 255, 255, 0.15); }}
-        .btn-preset.active {{
-            background: rgba(255, 255, 255, 0.1); color: #FFFFFF;
-            border-color: rgba(255, 255, 255, 0.2); font-weight: 600;
-        }}
-
-        .toolbar-right {{ display: flex; align-items: center; gap: 6px; }}
-        .btn-action-tool {{
-            padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 500;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 5px;
-            transition: all 0.2s;
-        }}
-        .btn-action-tool svg {{ width: 12px; height: 12px; }}
-        .btn-action-tool:hover {{ background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }}
-        .btn-action-tool.highlight {{
-            background: rgba(74, 158, 255, 0.15); border-color: rgba(74, 158, 255, 0.35); color: #93C5FD;
-        }}
-        .btn-action-tool.highlight:hover {{
-            background: rgba(74, 158, 255, 0.25); color: #FFFFFF;
+        .btn-card-full svg {{ width: 13px; height: 13px; color: #38BDF8; }}
+        .btn-card-full:hover {{
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.38), rgba(139, 92, 246, 0.42));
+            border-color: rgba(56, 189, 248, 0.8);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+            transform: translateY(-1px);
         }}
 
-        .card-slider-wrap {{
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 3px 8px; border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-left: 4px;
+        .card-actions-tools {{
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }}
-        .slider-icon {{ width: 12px; height: 12px; color: var(--accent-cyan); opacity: 0.85; flex-shrink: 0; }}
-        .card-slider-range {{
-            -webkit-appearance: none; appearance: none;
-            width: 75px; height: 4px; border-radius: 2px;
-            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
-            transition: background 0.2s;
+        .btn-card-tool {{
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 11.5px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: all 0.18s;
         }}
-        .card-slider-range::-webkit-slider-thumb {{
-            -webkit-appearance: none; appearance: none;
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #38BDF8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
-            cursor: pointer; transition: transform 0.15s;
+        .btn-card-tool svg {{ width: 12px; height: 12px; }}
+        .btn-card-tool:hover {{
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            border-color: rgba(255, 255, 255, 0.2);
         }}
-        .card-slider-range::-webkit-slider-thumb:hover {{
-            transform: scale(1.25);
+        .btn-card-tool.highlight {{
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.25);
+            color: #93C5FD;
         }}
-        .slider-val-badge {{
-            font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
-            color: #38BDF8; min-width: 34px; text-align: center;
+        .btn-card-tool.highlight:hover {{
+            background: rgba(56, 189, 248, 0.22);
+            color: #FFFFFF;
         }}
-        .btn-reset-slider {{
-            background: transparent; border: none; color: var(--text-muted);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            padding: 2px; border-radius: 4px; transition: color 0.15s;
+        .btn-card-tool.solo {{
+            color: var(--text-muted);
         }}
-        .btn-reset-slider:hover {{ color: #FFFFFF; }}
-        .btn-reset-slider svg {{ width: 12px; height: 12px; }}
+        .btn-card-tool.solo:hover {{
+            color: #C084FC;
+        }}
 
-        /* Preview Zone - Seamless Horizontal Scrolling Slider & Zero Blank Void */
+        /* Preview Zone - Seamless & Clickable to Launch Full Studio Popup */
         .card-preview-zone {{
-            flex: 1; width: 100%; min-height: 400px;
+            flex: 1; width: 100%; min-height: 380px;
             display: flex; align-items: stretch; justify-content: center;
             background: #050508; position: relative;
-            overflow-x: auto; overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(74, 158, 255, 0.45) rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            overflow: hidden;
             padding: 0;
         }}
-
-        /* Modern Glass Horizontal Slider Scrollbar */
-        .card-preview-zone::-webkit-scrollbar {{
-            height: 8px;
-        }}
-        .card-preview-zone::-webkit-scrollbar-track {{
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 4px;
-            margin: 0 10px;
-        }}
-        .card-preview-zone::-webkit-scrollbar-thumb {{
-            background: linear-gradient(90deg, rgba(74, 158, 255, 0.45), rgba(139, 92, 246, 0.45));
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }}
-        .card-preview-zone::-webkit-scrollbar-thumb:hover {{
-            background: linear-gradient(90deg, rgba(74, 158, 255, 0.8), rgba(139, 92, 246, 0.8));
-            box-shadow: 0 0 10px rgba(74, 158, 255, 0.6);
-        }}
-
-        .preview-resizer-wrapper {{
+        .card-preview-zone .preview-resizer-wrapper {{
             width: 100%; height: 100%; min-height: 100%;
-            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
         }}
-
-        .preview-resizer-wrapper iframe {{
+        .card-preview-zone iframe {{
             width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
-            display: block;
+            display: block; pointer-events: none;
         }}
+
+        .preview-hover-hint {{
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(5, 5, 8, 0.55);
+            backdrop-filter: blur(3px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 5;
+        }}
+        .component-card:hover .preview-hover-hint {{
+            opacity: 1;
+        }}
+        .hover-hint-badge {{
+            padding: 8px 18px; border-radius: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #38BDF8; font-size: 13px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 7px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            transform: translateY(4px);
+            transition: transform 0.2s;
+        }}
+        .component-card:hover .hover-hint-badge {{
+            transform: translateY(0);
+        }}
+        .hover-hint-badge svg {{ width: 14px; height: 14px; }}
 
         .card-bottom {{
             padding: 10px 18px; display: flex; align-items: center; justify-content: space-between;
@@ -457,42 +459,226 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
         .file-link-tag {{ font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }}
 
-        .btn-view-solo {{
-            color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 4px;
-            font-weight: 500; transition: color 0.15s;
+        .btn-card-mini-full {{
+            background: transparent; border: none; color: var(--text-muted);
+            font-size: 11.5px; font-weight: 500; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 8px; border-radius: 6px; transition: all 0.2s;
         }}
-        .btn-view-solo:hover {{ text-decoration: underline; color: #FFFFFF; }}
-        .btn-view-solo svg {{ width: 12px; height: 12px; }}
+        .btn-card-mini-full:hover {{ color: #38BDF8; background: rgba(255, 255, 255, 0.05); }}
+        .btn-card-mini-full svg {{ width: 12px; height: 12px; }}
 
-        /* Modal Code Inspection */
+        /* ============================================================ */
+        /* COMPONENT STUDIO POPUP MODAL (Fullscreen Interactive Studio) */
+        /* ============================================================ */
         .modal-overlay {{
-            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            display: none; align-items: center; justify-content: center; padding: 24px;
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+            padding: 24px;
         }}
-        .modal-overlay.active {{ display: flex; }}
+        .modal-overlay.active {{
+            opacity: 1; pointer-events: auto;
+        }}
 
-        .modal-card {{
-            width: 100%; max-width: 900px; height: 82vh; background: #0A0A10; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+        .studio-modal-card {{
+            width: 96vw; max-width: 1560px; height: 92vh; max-height: 1020px;
+            background: #08080C; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             display: flex; flex-direction: column; overflow: hidden;
+            transform: scale(0.97); transition: transform 0.25s var(--ease-spring);
+        }}
+        .modal-overlay.active .studio-modal-card {{
+            transform: scale(1);
         }}
 
-        .modal-header {{
-            padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: #12121A;
+        /* Studio Header */
+        .studio-header {{
+            padding: 12px 24px; background: #0C0D14;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; flex-shrink: 0;
         }}
-        .modal-title-wrap h3 {{ font-size: 16px; font-weight: 600; }}
-        .modal-title-wrap p {{ font-size: 12px; color: var(--text-secondary); margin-top: 2px; }}
-
-        .modal-header-actions {{ display: flex; align-items: center; gap: 10px; }}
-
-        .modal-close-btn {{
-            width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-secondary); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        .studio-title-block {{ display: flex; flex-direction: column; gap: 2px; }}
+        .studio-badge-row {{ display: flex; align-items: center; gap: 8px; }}
+        .studio-type-badge {{
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; padding: 2px 6px; border-radius: 4px;
+            background: rgba(56, 189, 248, 0.15); color: #38BDF8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }}
-        .modal-close-btn:hover {{ background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }}
+        .studio-path-tag {{
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: var(--text-muted);
+        }}
+        .studio-title {{
+            font-size: 16px; font-weight: 700; color: #FFFFFF;
+            letter-spacing: -0.01em; margin: 0;
+        }}
+
+        /* Mode Switcher Tabs */
+        .studio-mode-switcher {{
+            display: inline-flex; padding: 4px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 4px;
+        }}
+        .btn-mode-tab {{
+            padding: 6px 16px; border-radius: 8px; border: 1px solid transparent;
+            background: transparent; color: var(--text-muted); font-size: 12.5px;
+            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center;
+            gap: 7px; transition: all 0.2s;
+        }}
+        .btn-mode-tab svg {{ width: 14px; height: 14px; }}
+        .btn-mode-tab:hover {{ color: var(--text-primary); }}
+        .btn-mode-tab.active {{
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.25));
+            border-color: rgba(56, 189, 248, 0.4);
+            color: #FFFFFF; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }}
+
+        /* Studio Header Right */
+        .studio-header-right {{ display: flex; align-items: center; gap: 8px; }}
+        .btn-studio-action {{
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s;
+        }}
+        .btn-studio-action svg {{ width: 13px; height: 13px; }}
+        .btn-studio-action:hover {{ background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }}
+        .btn-studio-action.highlight {{
+            background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4);
+            color: #38BDF8; font-weight: 600;
+        }}
+        .btn-studio-action.highlight:hover {{
+            background: rgba(56, 189, 248, 0.25); color: #FFFFFF;
+        }}
+        .studio-close-btn {{
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: all 0.2s;
+        }}
+        .studio-close-btn:hover {{
+            background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4);
+            color: #EF4444;
+        }}
+        .studio-close-btn svg {{ width: 16px; height: 16px; }}
+
+        /* Studio Panels */
+        .studio-panel {{
+            display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden;
+        }}
+        .studio-panel.active {{
+            display: flex;
+        }}
+
+        /* Studio Toolbar (Preset Pixel & Slider Rasio Ukuran) */
+        .studio-toolbar {{
+            padding: 10px 24px; background: #11121B;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 14px; flex-shrink: 0;
+        }}
+        .studio-toolbar-section {{ display: flex; align-items: center; gap: 8px; }}
+        .toolbar-label {{
+            font-size: 12px; font-weight: 600; color: var(--text-muted);
+            display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }}
+        .toolbar-label svg {{ width: 13px; height: 13px; color: #38BDF8; }}
+
+        .presets-group {{ display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }}
+        .btn-studio-preset {{
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; transition: all 0.15s;
+        }}
+        .btn-studio-preset svg {{ width: 12px; height: 12px; }}
+        .btn-studio-preset:hover {{
+            background: rgba(255, 255, 255, 0.08); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.18);
+        }}
+        .btn-studio-preset.active {{
+            background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.45);
+            color: #38BDF8; font-weight: 600; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }}
+
+        .studio-toolbar-divider {{
+            width: 1px; height: 24px; background: rgba(255, 255, 255, 0.08);
+        }}
+
+        .studio-slider-box {{
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 4px 12px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+        }}
+        .studio-slider-range {{
+            -webkit-appearance: none; appearance: none;
+            width: 130px; height: 5px; border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
+            transition: background 0.2s;
+        }}
+        .studio-slider-range::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: #38BDF8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+            cursor: pointer; transition: transform 0.15s;
+        }}
+        .studio-slider-range::-webkit-slider-thumb:hover {{
+            transform: scale(1.25);
+        }}
+        .studio-slider-badge {{
+            font-size: 11.5px; font-family: 'JetBrains Mono', monospace;
+            color: #38BDF8; min-width: 75px; text-align: center; font-weight: 600;
+        }}
+        .btn-reset-studio-slider {{
+            background: transparent; border: none; color: var(--text-muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            padding: 3px; border-radius: 4px; transition: color 0.15s;
+        }}
+        .btn-reset-studio-slider:hover {{ color: #FFFFFF; }}
+        .btn-reset-studio-slider svg {{ width: 13px; height: 13px; }}
+
+        .btn-studio-tool {{
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; transition: all 0.2s;
+        }}
+        .btn-studio-tool svg {{ width: 13px; height: 13px; }}
+        .btn-studio-tool:hover {{ background: rgba(255, 255, 255, 0.1); color: #FFFFFF; }}
+
+        /* Viewport Canvas Stage */
+        .studio-canvas-stage {{
+            flex: 1; width: 100%; min-height: 0;
+            background: radial-gradient(circle at center, #13141F 0%, #06070B 100%);
+            overflow: auto; display: flex; align-items: stretch; justify-content: center;
+            padding: 20px; position: relative;
+        }}
+        .studio-viewport-wrapper {{
+            width: 100%; max-width: 100%; height: 100%; min-height: 100%;
+            border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); overflow: hidden;
+            background: #07070A;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            position: relative; display: flex; flex-direction: column;
+            margin: 0 auto;
+        }}
+        .studio-viewport-wrapper iframe {{
+            width: 100%; height: 100%; flex: 1; border: none; display: block;
+        }}
+        .viewport-meta-floating {{
+            position: absolute; bottom: 10px; right: 14px;
+            padding: 3px 10px; border-radius: 6px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
+            font-size: 11px; font-family: 'JetBrains Mono', monospace;
+            color: #94A3B8; border: 1px solid rgba(255, 255, 255, 0.08);
+            pointer-events: none; z-index: 10;
+        }}
 
         .modal-tabs-bar {{
             display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
@@ -616,25 +802,56 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .card-preview-zone {{
                 min-height: 320px;
             }}
-            .modal-card {{
-                height: 95vh;
+            .studio-modal-card {{
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
                 margin: 0;
-                border-radius: 18px 18px 0 0;
+                border-radius: 0;
             }}
             .modal-overlay {{
                 padding: 0;
-                align-items: flex-end;
+            }}
+            .studio-header {{
+                padding: 10px 14px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }}
+            .studio-mode-switcher {{
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }}
+            .btn-mode-tab {{
+                flex: 1;
+                justify-content: center;
+            }}
+            .studio-toolbar {{
+                padding: 8px 12px;
+                gap: 8px;
+            }}
+            .presets-group {{
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 2px;
+                scrollbar-width: none;
+            }}
+            .presets-group::-webkit-scrollbar {{ display: none; }}
+            .studio-slider-box {{
+                width: 100%;
+                justify-content: space-between;
+            }}
+            .studio-slider-range {{
+                flex: 1;
+                width: auto;
             }}
         }}
 
         @media (max-width: 600px) {{
-            .card-resizer-toolbar {{
-                padding: 6px 12px;
-                flex-wrap: wrap;
-                gap: 6px;
+            .card-actions-bar {{
+                padding: 6px 10px;
             }}
-            .card-slider-wrap,
-            .btn-preset:nth-child(2) {{
+            .btn-card-tool.solo {{
                 display: none !important;
             }}
             .layout-selector .btn-layout:nth-child(4),
@@ -737,35 +954,117 @@ glass_showcase_content = f"""<!DOCTYPE html>
 {glass_cards_html}
     </main>
 
-    <!-- Code Modal -->
-    <div class="modal-overlay" id="codeModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <div class="modal-title-wrap">
-                    <h3 id="modalComponentTitle">Glass Component Source</h3>
-                    <p id="modalComponentPath">ui/components/glass/...</p>
+    <!-- Component Studio Modal (Fullscreen Interactive Popup) -->
+    <div class="modal-overlay" id="componentStudioModal">
+        <div class="studio-modal-card">
+            <!-- Studio Header -->
+            <header class="studio-header">
+                <div class="studio-header-left">
+                    <div class="studio-title-block">
+                        <div class="studio-badge-row">
+                            <span class="studio-type-badge" id="studioTypeBadge">Glass Component</span>
+                            <span class="studio-path-tag" id="studioPathTag">ui/web/components/glass/...</span>
+                        </div>
+                        <h2 class="studio-title" id="studioComponentTitle">Glass Component Title</h2>
+                    </div>
                 </div>
-                <div class="modal-header-actions">
-                    <button class="btn-action-tool highlight" onclick="copyCurrentModalCode()">
-                        <i data-lucide="copy"></i> Salin File Ini
+
+                <!-- Mode Switcher Tabs: Live Preview vs Lihat Code -->
+                <div class="studio-mode-switcher">
+                    <button class="btn-mode-tab active" id="modePreviewBtn" onclick="switchStudioMode('preview')">
+                        <i data-lucide="eye"></i> <span>Live Preview</span>
                     </button>
-                    <button class="modal-close-btn" onclick="closeCodeModal()" title="Tutup Modal">
+                    <button class="btn-mode-tab" id="modeCodeBtn" onclick="switchStudioMode('code')">
+                        <i data-lucide="code-2"></i> <span>Lihat Code</span>
+                    </button>
+                </div>
+
+                <!-- Header Quick Actions -->
+                <div class="studio-header-right">
+                    <button class="btn-studio-action highlight" id="studioCopyBtn" onclick="copyCurrentStudioCode()" title="Salin Kode ke Clipboard">
+                        <i data-lucide="copy"></i> <span>Salin</span>
+                    </button>
+                    <a href="#" target="_blank" class="btn-studio-action solo-link" id="studioSoloLink" title="Buka Standalone File di Tab Baru">
+                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                    </a>
+                    <button class="studio-close-btn" onclick="closeComponentStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>
                     </button>
                 </div>
+            </header>
+
+            <!-- Mode 1: Live Interactive Viewport Studio -->
+            <div class="studio-panel active" id="studioPreviewPanel">
+                <!-- Studio Toolbar: Presets Pixel & Slider Rasio Ukuran -->
+                <div class="studio-toolbar">
+                    <div class="studio-toolbar-section presets-group">
+                        <span class="toolbar-label"><i data-lucide="monitor"></i> Preset:</span>
+                        <button class="btn-studio-preset active" data-preset="100%" onclick="setStudioPreset('100%', this)" title="Full Viewport (100%)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1440px" onclick="setStudioPreset('1440px', this)" title="Desktop Ultra (1440px)">
+                            <i data-lucide="monitor"></i> 1440px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1024px" onclick="setStudioPreset('1024px', this)" title="Laptop (1024px)">
+                            <i data-lucide="laptop"></i> 1024px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="768px" onclick="setStudioPreset('768px', this)" title="Tablet (768px)">
+                            <i data-lucide="tablet"></i> 768px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="375px" onclick="setStudioPreset('375px', this)" title="Mobile (375px)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+
+                    <div class="studio-toolbar-divider"></div>
+
+                    <!-- Slider Rasio Ukuran -->
+                    <div class="studio-toolbar-section slider-group">
+                        <span class="toolbar-label"><i data-lucide="sliders-horizontal"></i> Slider Rasio:</span>
+                        <div class="studio-slider-box" title="Geser untuk mengatur lebar preview secara fluid">
+                            <input type="range" class="studio-slider-range" id="studioWidthSlider"
+                                   min="320" max="1440" step="10" value="1440"
+                                   oninput="setStudioSliderWidth(this.value)"
+                                   aria-label="Atur lebar viewport komponen">
+                            <span class="studio-slider-badge" id="studioSliderBadge">Full (100%)</span>
+                            <button class="btn-reset-studio-slider" onclick="resetStudioWidth()" title="Reset ke Full (100%)">
+                                <i data-lucide="rotate-ccw"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="studio-toolbar-right">
+                        <button class="btn-studio-tool" onclick="reloadStudioIframe()" title="Muat Ulang Iframe Preview">
+                            <i data-lucide="refresh-cw"></i> <span>Reload</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Viewport Canvas Stage -->
+                <div class="studio-canvas-stage">
+                    <div class="studio-viewport-wrapper" id="studioViewportWrapper">
+                        <div class="viewport-meta-floating">
+                            <span id="viewportDimensionIndicator">100% (Full Width)</span>
+                        </div>
+                        <iframe src="" id="studioIframe" title="Component Live Preview"></iframe>
+                    </div>
+                </div>
             </div>
 
-            <!-- Multi-file Tabs Bar -->
-            <div class="modal-tabs-bar" id="modalTabsBar"></div>
+            <!-- Mode 2: Multi-file Code Studio -->
+            <div class="studio-panel" id="studioCodePanel">
+                <!-- Multi-file Tabs Bar -->
+                <div class="modal-tabs-bar" id="modalTabsBar"></div>
 
-            <!-- Subbar details -->
-            <div class="modal-tab-subbar">
-                <span class="subbar-file-path" id="modalSubbarFilePath">...</span>
-                <span id="modalSubbarStats">0 baris</span>
-            </div>
+                <!-- Subbar details -->
+                <div class="modal-tab-subbar">
+                    <span class="subbar-file-path" id="modalSubbarFilePath">...</span>
+                    <span id="modalSubbarStats">0 baris</span>
+                </div>
 
-            <div class="modal-body">
-                <pre class="code-pre"><code id="modalCodeSnippet">Memuat kode...</code></pre>
+                <div class="modal-body">
+                    <pre class="code-pre"><code id="modalCodeSnippet">Memuat kode...</code></pre>
+                </div>
             </div>
         </div>
     </div>
@@ -789,9 +1088,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }} catch(e) {{
             console.error('Failed to parse component database:', e);
         }}
-
-        let activeFolder = "";
-        let activeFile = "";
 
         lucide.createIcons();
 
@@ -838,69 +1134,21 @@ glass_showcase_content = f"""<!DOCTYPE html>
             }});
         }}
 
-        function setCardWidth(cardId, width, btn) {{
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const slider = document.getElementById(`slider-${{cardId}}`);
-            const badge = document.getElementById(`badge-${{cardId}}`);
-
-            if (wrapper) {{
-                if (width === '100%') {{
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                    if (slider) slider.value = 1000;
-                    if (badge) badge.innerText = 'Full';
-                }} else {{
-                    wrapper.style.maxWidth = width;
-                    wrapper.style.width = width;
-                    const num = parseInt(width);
-                    if (slider) slider.value = num;
-                    if (badge) badge.innerText = width;
-                }}
-            }}
-        }}
-
-        function setCardSliderWidth(cardId, val) {{
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const badge = document.getElementById(`badge-${{cardId}}`);
-
-            if (val >= 1000) {{
-                if (wrapper) {{
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                }}
-                if (badge) badge.innerText = 'Full';
-                const fullBtn = card.querySelector('.btn-preset:first-child');
-                if (fullBtn) fullBtn.classList.add('active');
-            }} else {{
-                const w = `${{val}}px`;
-                if (wrapper) {{
-                    wrapper.style.maxWidth = w;
-                    wrapper.style.width = w;
-                }}
-                if (badge) badge.innerText = w;
-                card.querySelectorAll('.btn-preset').forEach(b => {{
-                    if (b.textContent.includes(w)) b.classList.add('active');
-                }});
-            }}
-        }}
+        let activeFolder = "";
+        let activeTitle = "";
+        let activeFile = "";
+        let currentMode = "preview";
 
         function setGlobalCardWidth(val) {{
             const badge = document.getElementById('globalWidthBadge');
             const cards = document.querySelectorAll('.component-card');
             cards.forEach(card => {{
-                const id = card.id;
-                const slider = document.getElementById(`slider-${{id}}`);
-                if (slider) slider.value = val;
-                setCardSliderWidth(id, val);
+                const wrapper = card.querySelector('.preview-resizer-wrapper');
+                if (val >= 1200) {{
+                    if (wrapper) wrapper.style.maxWidth = '100%';
+                }} else {{
+                    if (wrapper) wrapper.style.maxWidth = `${{val}}px`;
+                }}
             }});
             if (val >= 1200) {{
                 if (badge) badge.innerText = 'Auto';
@@ -915,11 +1163,29 @@ glass_showcase_content = f"""<!DOCTYPE html>
             setGlobalCardWidth(1200);
         }}
 
-        function openComponentModal(folder, title) {{
+        function openComponentStudio(folder, title, initialMode = 'preview') {{
             activeFolder = folder;
-            document.getElementById('modalComponentTitle').innerText = title;
-            document.getElementById('modalComponentPath').innerText = `ui/components/glass/${{folder}}/`;
+            activeTitle = title;
+            
+            document.getElementById('studioComponentTitle').innerText = title;
+            document.getElementById('studioPathTag').innerText = `ui/web/components/glass/${{folder}}/`;
+            document.getElementById('studioSoloLink').href = `${{folder}}/${{folder}}.html`;
+            
+            const iframe = document.getElementById('studioIframe');
+            iframe.src = `${{folder}}/${{folder}}.html`;
+            
+            populateCodeTabs(folder);
+            resetStudioWidth();
+            switchStudioMode(initialMode);
+            
+            const modal = document.getElementById('componentStudioModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (window.lucide) lucide.createIcons();
+        }}
 
+        function populateCodeTabs(folder) {{
             const tabsBar = document.getElementById('modalTabsBar');
             tabsBar.innerHTML = '';
 
@@ -966,12 +1232,115 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 }}
             }});
 
-            document.getElementById('codeModal').classList.add('active');
-            if (window.lucide) lucide.createIcons();
-
             if (firstFile) {{
                 switchCodeTab(firstFile);
             }}
+        }}
+
+        function switchStudioMode(mode) {{
+            currentMode = mode;
+            const previewBtn = document.getElementById('modePreviewBtn');
+            const codeBtn = document.getElementById('modeCodeBtn');
+            const previewPanel = document.getElementById('studioPreviewPanel');
+            const codePanel = document.getElementById('studioCodePanel');
+            const copyBtnText = document.querySelector('#studioCopyBtn span');
+
+            if (mode === 'preview') {{
+                previewBtn.classList.add('active');
+                codeBtn.classList.remove('active');
+                previewPanel.classList.add('active');
+                codePanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin";
+            }} else {{
+                codeBtn.classList.add('active');
+                previewBtn.classList.remove('active');
+                codePanel.classList.add('active');
+                previewPanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin File";
+            }}
+            if (window.lucide) lucide.createIcons();
+        }}
+
+        function setStudioPreset(width, btn) {{
+            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const wrapper = document.getElementById('studioViewportWrapper');
+            const slider = document.getElementById('studioWidthSlider');
+            const badge = document.getElementById('studioSliderBadge');
+            const dimIndicator = document.getElementById('viewportDimensionIndicator');
+
+            if (width === '100%') {{
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = 'Full (100%)';
+                if (dimIndicator) dimIndicator.innerText = '100% (Full Width)';
+            }} else {{
+                wrapper.style.maxWidth = width;
+                wrapper.style.width = width;
+                const num = parseInt(width);
+                if (slider) slider.value = num;
+                if (badge) badge.innerText = width;
+                if (dimIndicator) dimIndicator.innerText = `${{width}} × auto`;
+            }}
+        }}
+
+        function setStudioSliderWidth(val) {{
+            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = document.getElementById('studioViewportWrapper');
+            const badge = document.getElementById('studioSliderBadge');
+            const dimIndicator = document.getElementById('viewportDimensionIndicator');
+
+            if (val >= 1440) {{
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                badge.innerText = 'Full (100%)';
+                dimIndicator.innerText = '100% (Full Width)';
+                const fullBtn = document.querySelector('.btn-studio-preset[data-preset="100%"]');
+                if (fullBtn) fullBtn.classList.add('active');
+            }} else {{
+                const w = `${{val}}px`;
+                wrapper.style.maxWidth = w;
+                wrapper.style.width = w;
+                badge.innerText = w;
+                dimIndicator.innerText = `${{w}} × auto`;
+                const matchBtn = document.querySelector(`.btn-studio-preset[data-preset="${{w}}"]`);
+                if (matchBtn) matchBtn.classList.add('active');
+            }}
+        }}
+
+        function resetStudioWidth() {{
+            const slider = document.getElementById('studioWidthSlider');
+            if (slider) slider.value = 1440;
+            const fullBtn = document.querySelector('.btn-studio-preset[data-preset="100%"]');
+            setStudioPreset('100%', fullBtn);
+        }}
+
+        function reloadStudioIframe() {{
+            const iframe = document.getElementById('studioIframe');
+            if (iframe && iframe.src) {{
+                const cur = iframe.src;
+                iframe.src = 'about:blank';
+                setTimeout(() => {{ iframe.src = cur; }}, 50);
+            }}
+        }}
+
+        function closeComponentStudio() {{
+            const modal = document.getElementById('componentStudioModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            const iframe = document.getElementById('studioIframe');
+            if (iframe) iframe.src = 'about:blank';
+        }}
+
+        // Backward compatibility alias
+        function openComponentModal(folder, title) {{
+            openComponentStudio(folder, title, 'code');
+        }}
+        function closeCodeModal() {{
+            closeComponentStudio();
         }}
 
         function getTabIcon(fn) {{
@@ -990,10 +1359,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
             let code = "";
             if (filename === "css.css") {{
                 code = COMP_DB["css.css"] || "";
-                document.getElementById('modalSubbarFilePath').innerText = `ui/components/glass/css.css (Master Shared Tokens)`;
+                document.getElementById('modalSubbarFilePath').innerText = `ui/web/components/glass/css.css (Master Shared Tokens)`;
             }} else {{
                 code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][filename]) || "";
-                document.getElementById('modalSubbarFilePath').innerText = `ui/components/glass/${{activeFolder}}/${{filename}}`;
+                document.getElementById('modalSubbarFilePath').innerText = `ui/web/components/glass/${{activeFolder}}/${{filename}}`;
             }}
 
             const lines = code ? code.split('\\n').length : 0;
@@ -1003,21 +1372,29 @@ glass_showcase_content = f"""<!DOCTYPE html>
             document.getElementById('modalCodeSnippet').innerText = code;
         }}
 
-        function closeCodeModal() {{
-            document.getElementById('codeModal').classList.remove('active');
-        }}
-
-        async function copyCurrentModalCode() {{
+        async function copyCurrentStudioCode() {{
             let code = "";
-            if (activeFile === "css.css") {{
-                code = COMP_DB["css.css"] || "";
+            let label = "";
+
+            if (currentMode === 'code') {{
+                if (activeFile === "css.css") {{
+                    code = COMP_DB["css.css"] || "";
+                    label = "Shared Tokens (css.css)";
+                }} else {{
+                    code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][activeFile]) || "";
+                    label = activeFile;
+                }}
             }} else {{
-                code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][activeFile]) || "";
+                const aioFile = `${{activeFolder}}.html`;
+                code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][aioFile]) || "";
+                label = `All-in-One (${{activeFolder}})`;
             }}
 
             if (code) {{
                 await navigator.clipboard.writeText(code);
-                showToast(`File ${{activeFile}} berhasil disalin!`);
+                showToast(`Kode ${{label}} berhasil disalin ke clipboard!`);
+            }} else {{
+                showToast(`Kode tidak tersedia untuk disalin.`);
             }}
         }}
 
@@ -1039,8 +1416,17 @@ glass_showcase_content = f"""<!DOCTYPE html>
             setTimeout(() => toast.classList.remove('active'), 2500);
         }}
 
-        document.getElementById('codeModal').addEventListener('click', (e) => {{
-            if (e.target.id === 'codeModal') closeCodeModal();
+        document.getElementById('componentStudioModal').addEventListener('click', (e) => {{
+            if (e.target.id === 'componentStudioModal') closeComponentStudio();
+        }});
+
+        window.addEventListener('keydown', (e) => {{
+            if (e.key === 'Escape') {{
+                const modal = document.getElementById('componentStudioModal');
+                if (modal && modal.classList.contains('active')) {{
+                    closeComponentStudio();
+                }}
+            }}
         }});
     </script>
 </body>
@@ -1093,32 +1479,37 @@ for folder, title, tag in raw_components:
                     <span class="comp-card-title">{title}</span>
                     <span class="comp-card-tag">{escaped_tag}</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setRawCardWidth('raw-card-{folder}', '100%', this)" title="100% Full Width">Full</button>
-                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-{folder}', '560px', this)" title="Tablet 560px">560px</button>
-                        <button class="btn-preset" onclick="setRawCardWidth('raw-card-{folder}', '360px', this)" title="Mobile 360px">360px</button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal">
-                            <input type="range" class="card-slider-range" min="300" max="900" step="10" value="900"
-                                   id="raw-slider-{folder}"
-                                   oninput="setRawCardSliderWidth('raw-card-{folder}', this.value)"
-                                   aria-label="Atur lebar kartu raw">
-                            <span class="slider-val-badge" id="raw-badge-{folder}">Full</span>
-                        </div>
-                    </div>
-                    <div class="foot-actions">
-                        <button class="btn-act" onclick="openRawModal('{folder}', '{title}')">Kode</button>
-                        <button class="btn-act" onclick="copyRawAio('{folder}')">Salin</button>
-                        <a href="{folder}/{aio_file}" target="_blank" class="btn-act">Solo</a>
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openRawStudio('{folder}', '{title}', 'preview')" title="Buka Raw Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openRawStudio('{folder}', '{title}', 'code')" title="Lihat Source HTML Baku">
+                            <i data-lucide="code"></i> Kode
+                        </button>
+                        <button class="btn-card-tool highlight" onclick="copyRawAio('{folder}')" title="Salin Kode HTML Murni">
+                            <i data-lucide="copy"></i> Salin
+                        </button>
+                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="comp-preview-zone">
+                <div class="comp-preview-zone" onclick="openRawStudio('{folder}', '{title}', 'preview')" title="Klik untuk membuka Raw Studio Popup">
                     <div class="preview-resizer-wrapper" id="raw-wrapper-{folder}">
                         <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="comp-card-foot">
                     <span class="path-label">ui/components/raw/{folder}/</span>
+                    <button class="btn-card-mini-full" onclick="openRawStudio('{folder}', '{title}', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 """
@@ -1226,71 +1617,74 @@ raw_showcase_content = f"""<!DOCTYPE html>
             border-radius: 4px; background: rgba(255, 255, 255, 0.06); color: #93C5FD;
         }}
 
-        .card-resizer-toolbar {{
-            padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border-color);
-            flex-shrink: 0; gap: 8px; flex-wrap: wrap;
+        /* Card Action Bar */
+        .card-actions-bar {{
+            padding: 8px 14px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0; gap: 8px;
         }}
-        .viewport-presets {{ display: flex; align-items: center; gap: 4px; }}
-        .btn-preset {{
-            padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
-            background: transparent; border: 1px solid var(--border-color);
-            color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+        .btn-card-full {{
+            padding: 5px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600;
+            background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.45);
+            color: #60A5FA; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+            transition: all 0.2s;
         }}
-        .btn-preset:hover {{ color: #FFFFFF; border-color: rgba(255, 255, 255, 0.3); }}
-        .btn-preset.active {{
-            background: rgba(59, 130, 246, 0.2); color: #60A5FA; font-weight: 600;
-            border-color: rgba(59, 130, 246, 0.4);
+        .btn-card-full svg {{ width: 12px; height: 12px; }}
+        .btn-card-full:hover {{
+            background: rgba(59, 130, 246, 0.35); border-color: rgba(59, 130, 246, 0.8);
+            color: #FFFFFF;
         }}
-        .card-slider-wrap {{
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 2px 6px; border-radius: 6px;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color);
+        .card-actions-tools {{ display: flex; align-items: center; gap: 6px; }}
+        .btn-card-tool {{
+            padding: 4px 10px; border-radius: 6px; font-size: 11.5px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color);
+            color: var(--text-primary); cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;
         }}
-        .card-slider-range {{
-            -webkit-appearance: none; appearance: none;
-            width: 65px; height: 4px; border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2); outline: none; cursor: pointer;
+        .btn-card-tool svg {{ width: 12px; height: 12px; }}
+        .btn-card-tool:hover {{ background: rgba(255, 255, 255, 0.12); }}
+        .btn-card-tool.highlight {{
+            background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.35);
+            color: #93C5FD;
         }}
-        .card-slider-range::-webkit-slider-thumb {{
-            -webkit-appearance: none; appearance: none;
-            width: 11px; height: 11px; border-radius: 50%;
-            background: #60A5FA; cursor: pointer;
+        .btn-card-tool.highlight:hover {{
+            background: rgba(59, 130, 246, 0.25); color: #FFFFFF;
         }}
-        .slider-val-badge {{
-            font-size: 10px; font-family: 'JetBrains Mono', monospace;
-            color: #60A5FA; min-width: 30px; text-align: center;
-        }}
+        .btn-card-tool.solo {{ color: var(--text-secondary); }}
+        .btn-card-tool.solo:hover {{ color: #FFFFFF; }}
 
         .comp-preview-zone {{
             flex: 1; min-height: 280px; background: #FFFFFF;
             display: flex; align-items: stretch; justify-content: center;
-            padding: 0; overflow-x: auto; overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: #94A3B8 #E2E8F0;
-        }}
-        .comp-preview-zone::-webkit-scrollbar {{
-            height: 7px;
-        }}
-        .comp-preview-zone::-webkit-scrollbar-track {{
-            background: #E2E8F0;
-            border-radius: 4px;
-        }}
-        .comp-preview-zone::-webkit-scrollbar-thumb {{
-            background: #94A3B8;
-            border-radius: 4px;
-        }}
-        .comp-preview-zone::-webkit-scrollbar-thumb:hover {{
-            background: #3B82F6;
+            padding: 0; overflow: hidden; position: relative; cursor: pointer;
         }}
         .comp-preview-zone .preview-resizer-wrapper {{
             width: 100%; height: 100%; min-height: 100%;
-            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
         }}
-        .comp-preview-zone iframe {{ width: 100%; height: 100%; min-height: 100%; border: none; display: block; }}
+        .comp-preview-zone iframe {{ width: 100%; height: 100%; min-height: 100%; border: none; display: block; pointer-events: none; }}
+
+        .preview-hover-hint {{
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(12, 13, 18, 0.55);
+            backdrop-filter: blur(2px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 5;
+        }}
+        .comp-card:hover .preview-hover-hint {{ opacity: 1; }}
+        .hover-hint-badge {{
+            padding: 7px 16px; border-radius: 20px;
+            background: #141620; border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60A5FA; font-size: 12px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            transform: translateY(3px); transition: transform 0.2s;
+        }}
+        .comp-card:hover .hover-hint-badge {{ transform: translateY(0); }}
+        .hover-hint-badge svg {{ width: 13px; height: 13px; }}
 
         .comp-card-foot {{
             padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
@@ -1299,30 +1693,189 @@ raw_showcase_content = f"""<!DOCTYPE html>
         }}
         .path-label {{ font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); }}
 
-        .foot-actions {{ display: flex; align-items: center; gap: 6px; }}
-        .btn-act {{
+        .btn-card-mini-full {{
+            background: transparent; border: none; color: var(--text-secondary);
+            font-size: 11.5px; font-weight: 500; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 6px; border-radius: 4px; transition: all 0.2s;
+        }}
+        .btn-card-mini-full:hover {{ color: #60A5FA; background: rgba(255, 255, 255, 0.05); }}
+        .btn-card-mini-full svg {{ width: 12px; height: 12px; }}
+
+        /* Raw Studio Modal */
+        .modal-overlay {{
+            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease; padding: 24px;
+        }}
+        .modal-overlay.active {{ opacity: 1; pointer-events: auto; }}
+
+        .studio-modal-card {{
+            width: 96vw; max-width: 1500px; height: 90vh; max-height: 980px;
+            background: #0E1017; border-radius: 16px; border: 1px solid var(--border-color);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column;
+            overflow: hidden; transform: scale(0.97); transition: transform 0.25s var(--ease-spring);
+        }}
+        .modal-overlay.active .studio-modal-card {{ transform: scale(1); }}
+
+        .studio-header {{
+            padding: 12px 20px; background: #141722; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0;
+        }}
+        .studio-title-block {{ display: flex; flex-direction: column; gap: 2px; }}
+        .studio-badge-row {{ display: flex; align-items: center; gap: 8px; }}
+        .studio-type-badge {{
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            padding: 2px 6px; border-radius: 4px; background: rgba(59, 130, 246, 0.15);
+            color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3);
+        }}
+        .studio-path-tag {{ font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-secondary); }}
+        .studio-title {{ font-size: 15px; font-weight: 700; color: #FFFFFF; margin: 0; }}
+
+        .studio-mode-switcher {{
+            display: inline-flex; padding: 3px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); gap: 3px;
+        }}
+        .btn-mode-tab {{
+            padding: 5px 14px; border-radius: 7px; border: 1px solid transparent;
+            background: transparent; color: var(--text-secondary); font-size: 12px;
+            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center;
+            gap: 6px; transition: all 0.2s;
+        }}
+        .btn-mode-tab svg {{ width: 13px; height: 13px; }}
+        .btn-mode-tab:hover {{ color: var(--text-primary); }}
+        .btn-mode-tab.active {{
+            background: rgba(59, 130, 246, 0.25); border-color: rgba(59, 130, 246, 0.45);
+            color: #FFFFFF;
+        }}
+
+        .studio-header-right {{ display: flex; align-items: center; gap: 8px; }}
+        .btn-studio-action {{
+            padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color);
+            color: var(--text-primary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 5px; text-decoration: none; transition: all 0.2s;
+        }}
+        .btn-studio-action svg {{ width: 12px; height: 12px; }}
+        .btn-studio-action:hover {{ background: rgba(255, 255, 255, 0.12); }}
+        .btn-studio-action.highlight {{
+            background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.45);
+            color: #60A5FA; font-weight: 600;
+        }}
+        .studio-close-btn {{
+            width: 30px; height: 30px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color);
+            color: var(--text-secondary); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: all 0.2s;
+        }}
+        .studio-close-btn:hover {{ background: rgba(239, 68, 68, 0.2); color: #EF4444; border-color: rgba(239, 68, 68, 0.4); }}
+        .studio-close-btn svg {{ width: 15px; height: 15px; }}
+
+        .studio-panel {{ display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }}
+        .studio-panel.active {{ display: flex; }}
+
+        .studio-toolbar {{
+            padding: 9px 20px; background: #12141D; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; flex-shrink: 0;
+        }}
+        .studio-toolbar-section {{ display: flex; align-items: center; gap: 8px; }}
+        .toolbar-label {{
+            font-size: 11.5px; font-weight: 600; color: var(--text-secondary);
+            display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase;
+        }}
+        .toolbar-label svg {{ width: 12px; height: 12px; color: #60A5FA; }}
+
+        .presets-group {{ display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }}
+        .btn-studio-preset {{
+            padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 5px; transition: all 0.15s;
+        }}
+        .btn-studio-preset svg {{ width: 11px; height: 11px; }}
+        .btn-studio-preset:hover {{ background: rgba(255, 255, 255, 0.08); color: #FFFFFF; }}
+        .btn-studio-preset.active {{
+            background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5);
+            color: #60A5FA; font-weight: 600;
+        }}
+
+        .studio-toolbar-divider {{ width: 1px; height: 20px; background: var(--border-color); }}
+
+        .studio-slider-box {{
+            display: inline-flex; align-items: center; gap: 8px; padding: 3px 10px;
+            border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color);
+        }}
+        .studio-slider-range {{
+            -webkit-appearance: none; appearance: none;
+            width: 120px; height: 4px; border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2); outline: none; cursor: pointer;
+        }}
+        .studio-slider-range::-webkit-slider-thumb {{
+            -webkit-appearance: none; appearance: none;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #60A5FA; cursor: pointer;
+        }}
+        .studio-slider-badge {{
+            font-size: 11px; font-family: 'JetBrains Mono', monospace;
+            color: #60A5FA; min-width: 65px; text-align: center; font-weight: 600;
+        }}
+        .btn-reset-studio-slider {{
+            background: transparent; border: none; color: var(--text-secondary);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px;
+        }}
+        .btn-reset-studio-slider:hover {{ color: #FFFFFF; }}
+        .btn-reset-studio-slider svg {{ width: 12px; height: 12px; }}
+
+        .btn-studio-tool {{
             padding: 4px 10px; border-radius: 6px; font-size: 11.5px;
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color);
-            color: var(--text-primary); cursor: pointer; text-decoration: none;
-            transition: all 0.2s;
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 5px; transition: all 0.2s;
         }}
-        .btn-act:hover {{ background: rgba(255, 255, 255, 0.12); }}
+        .btn-studio-tool svg {{ width: 12px; height: 12px; }}
+        .btn-studio-tool:hover {{ background: rgba(255, 255, 255, 0.1); color: #FFFFFF; }}
 
-        /* Modal */
-        .modal-overlay {{
-            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 24px;
+        .studio-canvas-stage {{
+            flex: 1; width: 100%; min-height: 0; background: #0B0D13;
+            overflow: auto; display: flex; align-items: stretch; justify-content: center;
+            padding: 20px; position: relative;
         }}
-        .modal-overlay.active {{ display: flex; }}
+        .studio-viewport-wrapper {{
+            width: 100%; max-width: 100%; height: 100%; min-height: 100%;
+            border-radius: 10px; border: 1px solid var(--border-color);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); overflow: hidden; background: #FFFFFF;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            position: relative; display: flex; flex-direction: column; margin: 0 auto;
+        }}
+        .studio-viewport-wrapper iframe {{ width: 100%; height: 100%; flex: 1; border: none; display: block; }}
+        .viewport-meta-floating {{
+            position: absolute; bottom: 8px; right: 12px; padding: 2px 8px; border-radius: 4px;
+            background: rgba(0, 0, 0, 0.75); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+            color: #94A3B8; pointer-events: none; z-index: 10;
+        }}
 
-        .modal-card {{
-            width: 100%; max-width: 800px; height: 75vh; background: #0F1118; border-radius: 16px;
-            border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden;
+        .modal-tabs-bar {{
+            display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
+            background: #11141E; border-bottom: 1px solid var(--border-color);
+            overflow-x: auto; scrollbar-width: none;
         }}
-        .modal-header {{
-            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid var(--border-color); background: #141722;
+        .modal-tabs-bar::-webkit-scrollbar {{ display: none; }}
+        .code-tab-btn {{
+            padding: 7px 14px; border-radius: 8px 8px 0 0; background: transparent;
+            border: 1px solid transparent; border-bottom: none; color: var(--text-secondary);
+            font-size: 12px; font-family: 'JetBrains Mono', monospace; cursor: pointer;
+            display: flex; align-items: center; gap: 7px; transition: all 0.2s; white-space: nowrap;
         }}
+        .code-tab-btn:hover {{ color: var(--text-primary); background: rgba(255, 255, 255, 0.04); }}
+        .code-tab-btn.active {{
+            background: #0B0D13; border-color: var(--border-color); color: #FFFFFF; font-weight: 600;
+        }}
+        .modal-tab-subbar {{
+            padding: 7px 20px; background: #0B0D13; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;
+            color: var(--text-secondary);
+        }}
+        .subbar-file-path {{ font-family: 'JetBrains Mono', monospace; color: #60A5FA; }}
         .modal-body {{ flex: 1; overflow: auto; padding: 18px 20px; background: #0B0D13; }}
         .code-pre {{ margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #CBD5E1; }}
 
@@ -1370,20 +1923,56 @@ raw_showcase_content = f"""<!DOCTYPE html>
                 padding: 10px 14px 40px !important;
                 gap: 16px !important;
             }}
-            .modal-card {{
-                height: 95vh;
+            .studio-modal-card {{
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
                 margin: 0;
-                border-radius: 16px 16px 0 0;
+                border-radius: 0;
             }}
             .modal-overlay {{
                 padding: 0;
-                align-items: flex-end;
+            }}
+            .studio-header {{
+                padding: 10px 14px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }}
+            .studio-mode-switcher {{
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }}
+            .btn-mode-tab {{
+                flex: 1;
+                justify-content: center;
+            }}
+            .studio-toolbar {{
+                padding: 8px 12px;
+                gap: 8px;
+            }}
+            .presets-group {{
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 2px;
+                scrollbar-width: none;
+            }}
+            .presets-group::-webkit-scrollbar {{ display: none; }}
+            .studio-slider-box {{
+                width: 100%;
+                justify-content: space-between;
+            }}
+            .studio-slider-range {{
+                flex: 1;
+                width: auto;
             }}
         }}
 
         @media (max-width: 600px) {{
-            .card-slider-wrap,
-            .btn-preset:nth-child(2) {{
+            .card-actions-bar {{
+                padding: 6px 10px;
+            }}
+            .btn-card-tool.solo {{
                 display: none !important;
             }}
             .layout-selector .btn-layout:nth-child(4),
@@ -1427,14 +2016,106 @@ raw_showcase_content = f"""<!DOCTYPE html>
 {raw_cards_html}
     </main>
 
-    <div class="modal-overlay" id="rawModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 id="modalTitle">Kode Komponen Raw</h3>
-                <button class="btn-act" onclick="closeRawModal()">Tutup</button>
+    <!-- Raw Component Studio Modal (Fullscreen Interactive Popup) -->
+    <div class="modal-overlay" id="rawStudioModal">
+        <div class="studio-modal-card">
+            <header class="studio-header">
+                <div class="studio-title-block">
+                    <div class="studio-badge-row">
+                        <span class="studio-type-badge" id="rawStudioTypeBadge">Raw HTML5</span>
+                        <span class="studio-path-tag" id="rawStudioPathTag">ui/components/raw/...</span>
+                    </div>
+                    <h2 class="studio-title" id="rawStudioComponentTitle">Raw Component Title</h2>
+                </div>
+
+                <div class="studio-mode-switcher">
+                    <button class="btn-mode-tab active" id="rawModePreviewBtn" onclick="switchRawStudioMode('preview')">
+                        <i data-lucide="eye"></i> <span>Live Preview</span>
+                    </button>
+                    <button class="btn-mode-tab" id="rawModeCodeBtn" onclick="switchRawStudioMode('code')">
+                        <i data-lucide="code-2"></i> <span>Lihat Code</span>
+                    </button>
+                </div>
+
+                <div class="studio-header-right">
+                    <button class="btn-studio-action highlight" id="rawStudioCopyBtn" onclick="copyCurrentRawStudioCode()" title="Salin Kode ke Clipboard">
+                        <i data-lucide="copy"></i> <span>Salin</span>
+                    </button>
+                    <a href="#" target="_blank" class="btn-studio-action solo-link" id="rawStudioSoloLink" title="Buka Standalone File di Tab Baru">
+                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                    </a>
+                    <button class="studio-close-btn" onclick="closeRawStudio()" title="Tutup Modal (Esc)">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Mode 1: Live Interactive Viewport Studio -->
+            <div class="studio-panel active" id="rawStudioPreviewPanel">
+                <div class="studio-toolbar">
+                    <div class="studio-toolbar-section presets-group">
+                        <span class="toolbar-label"><i data-lucide="monitor"></i> Preset:</span>
+                        <button class="btn-studio-preset active" data-preset="100%" onclick="setRawStudioPreset('100%', this)" title="Full Viewport (100%)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1440px" onclick="setRawStudioPreset('1440px', this)" title="Desktop Ultra (1440px)">
+                            <i data-lucide="monitor"></i> 1440px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1024px" onclick="setRawStudioPreset('1024px', this)" title="Laptop (1024px)">
+                            <i data-lucide="laptop"></i> 1024px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="768px" onclick="setRawStudioPreset('768px', this)" title="Tablet (768px)">
+                            <i data-lucide="tablet"></i> 768px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="375px" onclick="setRawStudioPreset('375px', this)" title="Mobile (375px)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+
+                    <div class="studio-toolbar-divider"></div>
+
+                    <!-- Slider Rasio Ukuran -->
+                    <div class="studio-toolbar-section slider-group">
+                        <span class="toolbar-label"><i data-lucide="sliders-horizontal"></i> Slider Rasio:</span>
+                        <div class="studio-slider-box" title="Geser untuk mengatur lebar preview secara fluid">
+                            <input type="range" class="studio-slider-range" id="rawStudioWidthSlider"
+                                   min="320" max="1440" step="10" value="1440"
+                                   oninput="setRawStudioSliderWidth(this.value)"
+                                   aria-label="Atur lebar viewport komponen">
+                            <span class="studio-slider-badge" id="rawStudioSliderBadge">Full (100%)</span>
+                            <button class="btn-reset-studio-slider" onclick="resetRawStudioWidth()" title="Reset ke Full (100%)">
+                                <i data-lucide="rotate-ccw"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="studio-toolbar-right">
+                        <button class="btn-studio-tool" onclick="reloadRawStudioIframe()" title="Muat Ulang Iframe Preview">
+                            <i data-lucide="refresh-cw"></i> <span>Reload</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="studio-canvas-stage">
+                    <div class="studio-viewport-wrapper" id="rawStudioViewportWrapper">
+                        <div class="viewport-meta-floating">
+                            <span id="rawViewportDimensionIndicator">100% (Full Width)</span>
+                        </div>
+                        <iframe src="" id="rawStudioIframe" title="Raw Component Live Preview"></iframe>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <pre class="code-pre"><code id="modalCode">Memuat...</code></pre>
+
+            <!-- Mode 2: Multi-file Code Studio -->
+            <div class="studio-panel" id="rawStudioCodePanel">
+                <div class="modal-tabs-bar" id="rawModalTabsBar"></div>
+                <div class="modal-tab-subbar">
+                    <span class="subbar-file-path" id="rawModalSubbarFilePath">...</span>
+                    <span id="rawModalSubbarStats">0 baris</span>
+                </div>
+                <div class="modal-body">
+                    <pre class="code-pre"><code id="rawModalCodeSnippet">Memuat kode...</code></pre>
+                </div>
             </div>
         </div>
     </div>
@@ -1470,69 +2151,198 @@ raw_showcase_content = f"""<!DOCTYPE html>
             localStorage.setItem('raw-grid-layout', cols);
         }}
 
-        function openRawModal(folder, title) {{
-            document.getElementById('modalTitle').innerText = `${{title}} (${{folder}}.html)`;
-            const code = (RAW_DB[folder] && RAW_DB[folder][`${{folder}}.html`]) || "";
-            document.getElementById('modalCode').innerText = code;
-            document.getElementById('rawModal').classList.add('active');
+        let rawActiveFolder = "";
+        let rawActiveTitle = "";
+        let rawActiveFile = "";
+        let rawCurrentMode = "preview";
+
+        function openRawStudio(folder, title, initialMode = 'preview') {{
+            rawActiveFolder = folder;
+            rawActiveTitle = title;
+            
+            document.getElementById('rawStudioComponentTitle').innerText = title;
+            document.getElementById('rawStudioPathTag').innerText = `ui/components/raw/${{folder}}/`;
+            document.getElementById('rawStudioSoloLink').href = `${{folder}}/${{folder}}.html`;
+            
+            const iframe = document.getElementById('rawStudioIframe');
+            iframe.src = `${{folder}}/${{folder}}.html`;
+            
+            populateRawCodeTabs(folder);
+            resetRawStudioWidth();
+            switchRawStudioMode(initialMode);
+            
+            const modal = document.getElementById('rawStudioModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (window.lucide) lucide.createIcons();
         }}
 
-        function closeRawModal() {{
-            document.getElementById('rawModal').classList.remove('active');
-        }}
+        function populateRawCodeTabs(folder) {{
+            const tabsBar = document.getElementById('rawModalTabsBar');
+            tabsBar.innerHTML = '';
 
-        function setRawCardWidth(cardId, width, btn) {{
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+            const compFiles = RAW_DB[folder] || {{}};
+            const aioFile = `${{folder}}.html`;
+            const fileOrder = [aioFile, "index.html", "index.css"];
 
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const slider = card.querySelector('.card-slider-range');
-            const badge = card.querySelector('.slider-val-badge');
+            let firstFile = null;
 
-            if (wrapper) {{
-                if (width === '100%') {{
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                    if (slider) slider.value = 900;
-                    if (badge) badge.innerText = 'Full';
-                }} else {{
-                    wrapper.style.maxWidth = width;
-                    wrapper.style.width = width;
-                    const num = parseInt(width);
-                    if (slider) slider.value = num;
-                    if (badge) badge.innerText = width;
+            fileOrder.forEach(fn => {{
+                if (compFiles[fn] !== undefined) {{
+                    if (!firstFile) firstFile = fn;
+                    const btn = document.createElement('button');
+                    btn.className = "code-tab-btn";
+                    btn.setAttribute('data-filename', fn);
+                    btn.innerHTML = `<i data-lucide="${{fn.endsWith('.css') ? 'palette' : 'file-code'}}"></i> ${{fn}}`;
+                    btn.onclick = () => switchRawCodeTab(fn);
+                    tabsBar.appendChild(btn);
                 }}
+            }});
+
+            if (firstFile) {{
+                switchRawCodeTab(firstFile);
             }}
         }}
 
-        function setRawCardSliderWidth(cardId, val) {{
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+        function switchRawStudioMode(mode) {{
+            rawCurrentMode = mode;
+            const previewBtn = document.getElementById('rawModePreviewBtn');
+            const codeBtn = document.getElementById('rawModeCodeBtn');
+            const previewPanel = document.getElementById('rawStudioPreviewPanel');
+            const codePanel = document.getElementById('rawStudioCodePanel');
+            const copyBtnText = document.querySelector('#rawStudioCopyBtn span');
 
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const badge = card.querySelector('.slider-val-badge');
+            if (mode === 'preview') {{
+                previewBtn.classList.add('active');
+                codeBtn.classList.remove('active');
+                previewPanel.classList.add('active');
+                codePanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin";
+            }} else {{
+                codeBtn.classList.add('active');
+                previewBtn.classList.remove('active');
+                codePanel.classList.add('active');
+                previewPanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin File";
+            }}
+            if (window.lucide) lucide.createIcons();
+        }}
 
-            if (val >= 900) {{
-                if (wrapper) {{
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                }}
-                if (badge) badge.innerText = 'Full';
-                const fullBtn = card.querySelector('.btn-preset:first-child');
+        function setRawStudioPreset(width, btn) {{
+            document.querySelectorAll('#rawStudioModal .btn-studio-preset').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const wrapper = document.getElementById('rawStudioViewportWrapper');
+            const slider = document.getElementById('rawStudioWidthSlider');
+            const badge = document.getElementById('rawStudioSliderBadge');
+            const dimIndicator = document.getElementById('rawViewportDimensionIndicator');
+
+            if (width === '100%') {{
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = 'Full (100%)';
+                if (dimIndicator) dimIndicator.innerText = '100% (Full Width)';
+            }} else {{
+                wrapper.style.maxWidth = width;
+                wrapper.style.width = width;
+                const num = parseInt(width);
+                if (slider) slider.value = num;
+                if (badge) badge.innerText = width;
+                if (dimIndicator) dimIndicator.innerText = `${{width}} × auto`;
+            }}
+        }}
+
+        function setRawStudioSliderWidth(val) {{
+            document.querySelectorAll('#rawStudioModal .btn-studio-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = document.getElementById('rawStudioViewportWrapper');
+            const badge = document.getElementById('rawStudioSliderBadge');
+            const dimIndicator = document.getElementById('rawViewportDimensionIndicator');
+
+            if (val >= 1440) {{
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                badge.innerText = 'Full (100%)';
+                dimIndicator.innerText = '100% (Full Width)';
+                const fullBtn = document.querySelector('#rawStudioModal .btn-studio-preset[data-preset="100%"]');
                 if (fullBtn) fullBtn.classList.add('active');
             }} else {{
                 const w = `${{val}}px`;
-                if (wrapper) {{
-                    wrapper.style.maxWidth = w;
-                    wrapper.style.width = w;
-                }}
-                if (badge) badge.innerText = w;
-                card.querySelectorAll('.btn-preset').forEach(b => {{
-                    if (b.textContent.includes(w)) b.classList.add('active');
-                }});
+                wrapper.style.maxWidth = w;
+                wrapper.style.width = w;
+                badge.innerText = w;
+                dimIndicator.innerText = `${{w}} × auto`;
+                const matchBtn = document.querySelector(`#rawStudioModal .btn-studio-preset[data-preset="${{w}}"]`);
+                if (matchBtn) matchBtn.classList.add('active');
+            }}
+        }}
+
+        function resetRawStudioWidth() {{
+            const slider = document.getElementById('rawStudioWidthSlider');
+            if (slider) slider.value = 1440;
+            const fullBtn = document.querySelector('#rawStudioModal .btn-studio-preset[data-preset="100%"]');
+            setRawStudioPreset('100%', fullBtn);
+        }}
+
+        function reloadRawStudioIframe() {{
+            const iframe = document.getElementById('rawStudioIframe');
+            if (iframe && iframe.src) {{
+                const cur = iframe.src;
+                iframe.src = 'about:blank';
+                setTimeout(() => {{ iframe.src = cur; }}, 50);
+            }}
+        }}
+
+        function closeRawStudio() {{
+            const modal = document.getElementById('rawStudioModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            const iframe = document.getElementById('rawStudioIframe');
+            if (iframe) iframe.src = 'about:blank';
+        }}
+
+        // Backward compatibility
+        function openRawModal(folder, title) {{
+            openRawStudio(folder, title, 'code');
+        }}
+        function closeRawModal() {{
+            closeRawStudio();
+        }}
+
+        function switchRawCodeTab(filename) {{
+            rawActiveFile = filename;
+            document.querySelectorAll('#rawModalTabsBar .code-tab-btn').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-filename') === filename);
+            }});
+
+            const code = (RAW_DB[rawActiveFolder] && RAW_DB[rawActiveFolder][filename]) || "";
+            document.getElementById('rawModalSubbarFilePath').innerText = `ui/components/raw/${{rawActiveFolder}}/${{filename}}`;
+            const lines = code ? code.split('\\n').length : 0;
+            const kb = (new Blob([code]).size / 1024).toFixed(1);
+            document.getElementById('rawModalSubbarStats').innerText = `${{lines}} baris (${{kb}} KB)`;
+            document.getElementById('rawModalCodeSnippet').innerText = code;
+        }}
+
+        async function copyCurrentRawStudioCode() {{
+            let code = "";
+            let label = "";
+
+            if (rawCurrentMode === 'code') {{
+                code = (RAW_DB[rawActiveFolder] && RAW_DB[rawActiveFolder][rawActiveFile]) || "";
+                label = rawActiveFile;
+            }} else {{
+                const aioFile = `${{rawActiveFolder}}.html`;
+                code = (RAW_DB[rawActiveFolder] && RAW_DB[rawActiveFolder][aioFile]) || "";
+                label = `All-in-One (${{rawActiveFolder}})`;
+            }}
+
+            if (code) {{
+                await navigator.clipboard.writeText(code);
+                showToast(`Kode ${{label}} disalin ke clipboard!`);
+            }} else {{
+                showToast(`Kode tidak tersedia.`);
             }}
         }}
 
@@ -1548,11 +2358,20 @@ raw_showcase_content = f"""<!DOCTYPE html>
             const t = document.getElementById('toastMsg');
             t.innerText = msg;
             t.classList.add('active');
-            setTimeout(() => t.classList.remove('active'), 2000);
+            setTimeout(() => t.classList.remove('active'), 2500);
         }}
 
-        document.getElementById('rawModal').addEventListener('click', (e) => {{
-            if (e.target.id === 'rawModal') closeRawModal();
+        document.getElementById('rawStudioModal').addEventListener('click', (e) => {{
+            if (e.target.id === 'rawStudioModal') closeRawStudio();
+        }});
+
+        window.addEventListener('keydown', (e) => {{
+            if (e.key === 'Escape') {{
+                const modal = document.getElementById('rawStudioModal');
+                if (modal && modal.classList.contains('active')) {{
+                    closeRawStudio();
+                }}
+            }}
         }});
     </script>
 </body>

@@ -207,117 +207,127 @@
             background: rgba(139, 92, 246, 0.15); color: #C084FC; border-color: rgba(139, 92, 246, 0.3);
         }
 
-        .card-resizer-toolbar {
-            padding: 8px 18px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        /* Card Action Bar (Clean & Spacious) */
+        .card-actions-bar {
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.28);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-shrink: 0;
+            gap: 8px;
         }
-        .viewport-presets { display: flex; align-items: center; gap: 4px; }
-        .btn-preset {
-            padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
-            background: transparent; border: 1px solid rgba(255, 255, 255, 0.06);
-            color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 4px;
-            transition: all 0.15s;
+        .btn-card-full {
+            padding: 6px 14px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.25));
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s var(--ease-spring);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
-        .btn-preset svg { width: 12px; height: 12px; }
-        .btn-preset:hover { color: var(--text-primary); border-color: rgba(255, 255, 255, 0.15); }
-        .btn-preset.active {
-            background: rgba(255, 255, 255, 0.1); color: #FFFFFF;
-            border-color: rgba(255, 255, 255, 0.2); font-weight: 600;
-        }
-
-        .toolbar-right { display: flex; align-items: center; gap: 6px; }
-        .btn-action-tool {
-            padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 500;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 5px;
-            transition: all 0.2s;
-        }
-        .btn-action-tool svg { width: 12px; height: 12px; }
-        .btn-action-tool:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
-        .btn-action-tool.highlight {
-            background: rgba(74, 158, 255, 0.15); border-color: rgba(74, 158, 255, 0.35); color: #93C5FD;
-        }
-        .btn-action-tool.highlight:hover {
-            background: rgba(74, 158, 255, 0.25); color: #FFFFFF;
+        .btn-card-full svg { width: 13px; height: 13px; color: #38BDF8; }
+        .btn-card-full:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.38), rgba(139, 92, 246, 0.42));
+            border-color: rgba(56, 189, 248, 0.8);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+            transform: translateY(-1px);
         }
 
-        .card-slider-wrap {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 3px 8px; border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-left: 4px;
+        .card-actions-tools {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .slider-icon { width: 12px; height: 12px; color: var(--accent-cyan); opacity: 0.85; flex-shrink: 0; }
-        .card-slider-range {
-            -webkit-appearance: none; appearance: none;
-            width: 75px; height: 4px; border-radius: 2px;
-            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
-            transition: background 0.2s;
+        .btn-card-tool {
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 11.5px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            transition: all 0.18s;
         }
-        .card-slider-range::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #38BDF8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
-            cursor: pointer; transition: transform 0.15s;
+        .btn-card-tool svg { width: 12px; height: 12px; }
+        .btn-card-tool:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            border-color: rgba(255, 255, 255, 0.2);
         }
-        .card-slider-range::-webkit-slider-thumb:hover {
-            transform: scale(1.25);
+        .btn-card-tool.highlight {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.25);
+            color: #93C5FD;
         }
-        .slider-val-badge {
-            font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
-            color: #38BDF8; min-width: 34px; text-align: center;
+        .btn-card-tool.highlight:hover {
+            background: rgba(56, 189, 248, 0.22);
+            color: #FFFFFF;
         }
-        .btn-reset-slider {
-            background: transparent; border: none; color: var(--text-muted);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            padding: 2px; border-radius: 4px; transition: color 0.15s;
+        .btn-card-tool.solo {
+            color: var(--text-muted);
         }
-        .btn-reset-slider:hover { color: #FFFFFF; }
-        .btn-reset-slider svg { width: 12px; height: 12px; }
+        .btn-card-tool.solo:hover {
+            color: #C084FC;
+        }
 
-        /* Preview Zone - Seamless Horizontal Scrolling Slider & Zero Blank Void */
+        /* Preview Zone - Seamless & Clickable to Launch Full Studio Popup */
         .card-preview-zone {
-            flex: 1; width: 100%; min-height: 400px;
+            flex: 1; width: 100%; min-height: 380px;
             display: flex; align-items: stretch; justify-content: center;
             background: #050508; position: relative;
-            overflow-x: auto; overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(74, 158, 255, 0.45) rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            overflow: hidden;
             padding: 0;
         }
-
-        /* Modern Glass Horizontal Slider Scrollbar */
-        .card-preview-zone::-webkit-scrollbar {
-            height: 8px;
-        }
-        .card-preview-zone::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 4px;
-            margin: 0 10px;
-        }
-        .card-preview-zone::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, rgba(74, 158, 255, 0.45), rgba(139, 92, 246, 0.45));
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .card-preview-zone::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(90deg, rgba(74, 158, 255, 0.8), rgba(139, 92, 246, 0.8));
-            box-shadow: 0 0 10px rgba(74, 158, 255, 0.6);
-        }
-
-        .preview-resizer-wrapper {
+        .card-preview-zone .preview-resizer-wrapper {
             width: 100%; height: 100%; min-height: 100%;
-            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
         }
-
-        .preview-resizer-wrapper iframe {
+        .card-preview-zone iframe {
             width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
-            display: block;
+            display: block; pointer-events: none;
         }
+
+        .preview-hover-hint {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(5, 5, 8, 0.55);
+            backdrop-filter: blur(3px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 5;
+        }
+        .component-card:hover .preview-hover-hint {
+            opacity: 1;
+        }
+        .hover-hint-badge {
+            padding: 8px 18px; border-radius: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #38BDF8; font-size: 13px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 7px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            transform: translateY(4px);
+            transition: transform 0.2s;
+        }
+        .component-card:hover .hover-hint-badge {
+            transform: translateY(0);
+        }
+        .hover-hint-badge svg { width: 14px; height: 14px; }
 
         .card-bottom {
             padding: 10px 18px; display: flex; align-items: center; justify-content: space-between;
@@ -326,42 +336,226 @@
         }
         .file-link-tag { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }
 
-        .btn-view-solo {
-            color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 4px;
-            font-weight: 500; transition: color 0.15s;
+        .btn-card-mini-full {
+            background: transparent; border: none; color: var(--text-muted);
+            font-size: 11.5px; font-weight: 500; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 8px; border-radius: 6px; transition: all 0.2s;
         }
-        .btn-view-solo:hover { text-decoration: underline; color: #FFFFFF; }
-        .btn-view-solo svg { width: 12px; height: 12px; }
+        .btn-card-mini-full:hover { color: #38BDF8; background: rgba(255, 255, 255, 0.05); }
+        .btn-card-mini-full svg { width: 12px; height: 12px; }
 
-        /* Modal Code Inspection */
+        /* ============================================================ */
+        /* COMPONENT STUDIO POPUP MODAL (Fullscreen Interactive Studio) */
+        /* ============================================================ */
         .modal-overlay {
-            position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            display: none; align-items: center; justify-content: center; padding: 24px;
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+            padding: 24px;
         }
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
 
-        .modal-card {
-            width: 100%; max-width: 900px; height: 82vh; background: #0A0A10; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+        .studio-modal-card {
+            width: 96vw; max-width: 1560px; height: 92vh; max-height: 1020px;
+            background: #08080C; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             display: flex; flex-direction: column; overflow: hidden;
+            transform: scale(0.97); transition: transform 0.25s var(--ease-spring);
+        }
+        .modal-overlay.active .studio-modal-card {
+            transform: scale(1);
         }
 
-        .modal-header {
-            padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: #12121A;
+        /* Studio Header */
+        .studio-header {
+            padding: 12px 24px; background: #0C0D14;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; flex-shrink: 0;
         }
-        .modal-title-wrap h3 { font-size: 16px; font-weight: 600; }
-        .modal-title-wrap p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-
-        .modal-header-actions { display: flex; align-items: center; gap: 10px; }
-
-        .modal-close-btn {
-            width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-secondary); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        .studio-title-block { display: flex; flex-direction: column; gap: 2px; }
+        .studio-badge-row { display: flex; align-items: center; gap: 8px; }
+        .studio-type-badge {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; padding: 2px 6px; border-radius: 4px;
+            background: rgba(56, 189, 248, 0.15); color: #38BDF8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
-        .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }
+        .studio-path-tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: var(--text-muted);
+        }
+        .studio-title {
+            font-size: 16px; font-weight: 700; color: #FFFFFF;
+            letter-spacing: -0.01em; margin: 0;
+        }
+
+        /* Mode Switcher Tabs */
+        .studio-mode-switcher {
+            display: inline-flex; padding: 4px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 4px;
+        }
+        .btn-mode-tab {
+            padding: 6px 16px; border-radius: 8px; border: 1px solid transparent;
+            background: transparent; color: var(--text-muted); font-size: 12.5px;
+            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center;
+            gap: 7px; transition: all 0.2s;
+        }
+        .btn-mode-tab svg { width: 14px; height: 14px; }
+        .btn-mode-tab:hover { color: var(--text-primary); }
+        .btn-mode-tab.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.25));
+            border-color: rgba(56, 189, 248, 0.4);
+            color: #FFFFFF; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Studio Header Right */
+        .studio-header-right { display: flex; align-items: center; gap: 8px; }
+        .btn-studio-action {
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s;
+        }
+        .btn-studio-action svg { width: 13px; height: 13px; }
+        .btn-studio-action:hover { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
+        .btn-studio-action.highlight {
+            background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4);
+            color: #38BDF8; font-weight: 600;
+        }
+        .btn-studio-action.highlight:hover {
+            background: rgba(56, 189, 248, 0.25); color: #FFFFFF;
+        }
+        .studio-close-btn {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: all 0.2s;
+        }
+        .studio-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4);
+            color: #EF4444;
+        }
+        .studio-close-btn svg { width: 16px; height: 16px; }
+
+        /* Studio Panels */
+        .studio-panel {
+            display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden;
+        }
+        .studio-panel.active {
+            display: flex;
+        }
+
+        /* Studio Toolbar (Preset Pixel & Slider Rasio Ukuran) */
+        .studio-toolbar {
+            padding: 10px 24px; background: #11121B;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 14px; flex-shrink: 0;
+        }
+        .studio-toolbar-section { display: flex; align-items: center; gap: 8px; }
+        .toolbar-label {
+            font-size: 12px; font-weight: 600; color: var(--text-muted);
+            display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .toolbar-label svg { width: 13px; height: 13px; color: #38BDF8; }
+
+        .presets-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .btn-studio-preset {
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; transition: all 0.15s;
+        }
+        .btn-studio-preset svg { width: 12px; height: 12px; }
+        .btn-studio-preset:hover {
+            background: rgba(255, 255, 255, 0.08); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.18);
+        }
+        .btn-studio-preset.active {
+            background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.45);
+            color: #38BDF8; font-weight: 600; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        .studio-toolbar-divider {
+            width: 1px; height: 24px; background: rgba(255, 255, 255, 0.08);
+        }
+
+        .studio-slider-box {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 4px 12px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .studio-slider-range {
+            -webkit-appearance: none; appearance: none;
+            width: 130px; height: 5px; border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15); outline: none; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .studio-slider-range::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: #38BDF8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+            cursor: pointer; transition: transform 0.15s;
+        }
+        .studio-slider-range::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+        .studio-slider-badge {
+            font-size: 11.5px; font-family: 'JetBrains Mono', monospace;
+            color: #38BDF8; min-width: 75px; text-align: center; font-weight: 600;
+        }
+        .btn-reset-studio-slider {
+            background: transparent; border: none; color: var(--text-muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            padding: 3px; border-radius: 4px; transition: color 0.15s;
+        }
+        .btn-reset-studio-slider:hover { color: #FFFFFF; }
+        .btn-reset-studio-slider svg { width: 13px; height: 13px; }
+
+        .btn-studio-tool {
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); cursor: pointer; display: inline-flex;
+            align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-studio-tool svg { width: 13px; height: 13px; }
+        .btn-studio-tool:hover { background: rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+
+        /* Viewport Canvas Stage */
+        .studio-canvas-stage {
+            flex: 1; width: 100%; min-height: 0;
+            background: radial-gradient(circle at center, #13141F 0%, #06070B 100%);
+            overflow: auto; display: flex; align-items: stretch; justify-content: center;
+            padding: 20px; position: relative;
+        }
+        .studio-viewport-wrapper {
+            width: 100%; max-width: 100%; height: 100%; min-height: 100%;
+            border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); overflow: hidden;
+            background: #07070A;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            position: relative; display: flex; flex-direction: column;
+            margin: 0 auto;
+        }
+        .studio-viewport-wrapper iframe {
+            width: 100%; height: 100%; flex: 1; border: none; display: block;
+        }
+        .viewport-meta-floating {
+            position: absolute; bottom: 10px; right: 14px;
+            padding: 3px 10px; border-radius: 6px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
+            font-size: 11px; font-family: 'JetBrains Mono', monospace;
+            color: #94A3B8; border: 1px solid rgba(255, 255, 255, 0.08);
+            pointer-events: none; z-index: 10;
+        }
 
         .modal-tabs-bar {
             display: flex; align-items: center; gap: 4px; padding: 8px 16px 0;
@@ -485,25 +679,56 @@
             .card-preview-zone {
                 min-height: 320px;
             }
-            .modal-card {
-                height: 95vh;
+            .studio-modal-card {
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
                 margin: 0;
-                border-radius: 18px 18px 0 0;
+                border-radius: 0;
             }
             .modal-overlay {
                 padding: 0;
-                align-items: flex-end;
+            }
+            .studio-header {
+                padding: 10px 14px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .studio-mode-switcher {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+            .btn-mode-tab {
+                flex: 1;
+                justify-content: center;
+            }
+            .studio-toolbar {
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            .presets-group {
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 2px;
+                scrollbar-width: none;
+            }
+            .presets-group::-webkit-scrollbar { display: none; }
+            .studio-slider-box {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .studio-slider-range {
+                flex: 1;
+                width: auto;
             }
         }
 
         @media (max-width: 600px) {
-            .card-resizer-toolbar {
-                padding: 6px 12px;
-                flex-wrap: wrap;
-                gap: 6px;
+            .card-actions-bar {
+                padding: 6px 10px;
             }
-            .card-slider-wrap,
-            .btn-preset:nth-child(2) {
+            .btn-card-tool.solo {
                 display: none !important;
             }
             .layout-selector .btn-layout:nth-child(4),
@@ -613,45 +838,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-button-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-button-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-button-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-button-glass"
-                                   oninput="setCardSliderWidth('card-button-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-button-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('button-glass', 'Glass Buttons Collection')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('button-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('button-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="button-glass/button-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="button-glass/button-glass.html" title="Glass Buttons Collection Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/button-glass/</span>
-                    <a href="button-glass/button-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('button-glass', 'Glass Buttons Collection', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -664,45 +881,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-chat-input-bar', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-chat-input-bar', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-chat-input-bar', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-chat-input-bar"
-                                   oninput="setCardSliderWidth('card-chat-input-bar', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-chat-input-bar">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('chat-input-bar', 'Glass Chat Input Bar')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('chat-input-bar')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('chat-input-bar')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="chat-input-bar/chat-input-bar.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="chat-input-bar/chat-input-bar.html" title="Glass Chat Input Bar Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/chat-input-bar/</span>
-                    <a href="chat-input-bar/chat-input-bar.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('chat-input-bar', 'Glass Chat Input Bar', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -715,45 +924,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-input-field-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-input-field-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-input-field-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-input-field-glass"
-                                   oninput="setCardSliderWidth('card-input-field-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-input-field-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('input-field-glass', 'Glass Form Input Fields')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('input-field-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('input-field-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="input-field-glass/input-field-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="input-field-glass/input-field-glass.html" title="Glass Form Input Fields Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/input-field-glass/</span>
-                    <a href="input-field-glass/input-field-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('input-field-glass', 'Glass Form Input Fields', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -766,45 +967,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-prompt-pills-row', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-prompt-pills-row', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-prompt-pills-row', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-prompt-pills-row"
-                                   oninput="setCardSliderWidth('card-prompt-pills-row', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-prompt-pills-row">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('prompt-pills-row', 'Prompt Pills Quick Scroller')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('prompt-pills-row')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('prompt-pills-row')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="prompt-pills-row/prompt-pills-row.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="prompt-pills-row/prompt-pills-row.html" title="Prompt Pills Quick Scroller Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/prompt-pills-row/</span>
-                    <a href="prompt-pills-row/prompt-pills-row.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('prompt-pills-row', 'Prompt Pills Quick Scroller', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -817,45 +1010,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-thinking-effort-selector', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-thinking-effort-selector', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-thinking-effort-selector', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-thinking-effort-selector"
-                                   oninput="setCardSliderWidth('card-thinking-effort-selector', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-thinking-effort-selector">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('thinking-effort-selector', 'Thinking Effort Selector')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('thinking-effort-selector')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('thinking-effort-selector')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="thinking-effort-selector/thinking-effort-selector.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="thinking-effort-selector/thinking-effort-selector.html" title="Thinking Effort Selector Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/thinking-effort-selector/</span>
-                    <a href="thinking-effort-selector/thinking-effort-selector.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('thinking-effort-selector', 'Thinking Effort Selector', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -868,45 +1053,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-toggle-switch-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-toggle-switch-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-toggle-switch-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-toggle-switch-glass"
-                                   oninput="setCardSliderWidth('card-toggle-switch-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-toggle-switch-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('toggle-switch-glass', 'Glass Toggle Switch')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('toggle-switch-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('toggle-switch-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="toggle-switch-glass/toggle-switch-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="toggle-switch-glass/toggle-switch-glass.html" title="Glass Toggle Switch Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/toggle-switch-glass/</span>
-                    <a href="toggle-switch-glass/toggle-switch-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('toggle-switch-glass', 'Glass Toggle Switch', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -919,45 +1096,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-checkbox-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-checkbox-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-checkbox-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-checkbox-glass"
-                                   oninput="setCardSliderWidth('card-checkbox-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-checkbox-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('checkbox-glass', 'Glass Checkbox & Radio')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('checkbox-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('checkbox-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="checkbox-glass/checkbox-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="checkbox-glass/checkbox-glass.html" title="Glass Checkbox & Radio Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/checkbox-glass/</span>
-                    <a href="checkbox-glass/checkbox-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('checkbox-glass', 'Glass Checkbox & Radio', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -970,45 +1139,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-dropdown-select-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-dropdown-select-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-dropdown-select-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-dropdown-select-glass"
-                                   oninput="setCardSliderWidth('card-dropdown-select-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-dropdown-select-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('dropdown-select-glass', 'Glass Floating Dropdown')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('dropdown-select-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('dropdown-select-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="dropdown-select-glass/dropdown-select-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="dropdown-select-glass/dropdown-select-glass.html" title="Glass Floating Dropdown Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/dropdown-select-glass/</span>
-                    <a href="dropdown-select-glass/dropdown-select-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('dropdown-select-glass', 'Glass Floating Dropdown', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1021,45 +1182,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-ai-model-selector', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-ai-model-selector', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-ai-model-selector', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-ai-model-selector"
-                                   oninput="setCardSliderWidth('card-ai-model-selector', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-ai-model-selector">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('ai-model-selector', 'AI Model Selector Card')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('ai-model-selector')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('ai-model-selector')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="ai-model-selector/ai-model-selector.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="ai-model-selector/ai-model-selector.html" title="AI Model Selector Card Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/ai-model-selector/</span>
-                    <a href="ai-model-selector/ai-model-selector.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('ai-model-selector', 'AI Model Selector Card', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1072,45 +1225,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-frosted-folder-card', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-frosted-folder-card', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-frosted-folder-card', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-frosted-folder-card"
-                                   oninput="setCardSliderWidth('card-frosted-folder-card', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-frosted-folder-card">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('frosted-folder-card', 'Frosted Folder Card')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('frosted-folder-card')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('frosted-folder-card')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="frosted-folder-card/frosted-folder-card.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="frosted-folder-card/frosted-folder-card.html" title="Frosted Folder Card Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/frosted-folder-card/</span>
-                    <a href="frosted-folder-card/frosted-folder-card.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('frosted-folder-card', 'Frosted Folder Card', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1123,45 +1268,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-aurora-storage-card', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-aurora-storage-card', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-aurora-storage-card', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-aurora-storage-card"
-                                   oninput="setCardSliderWidth('card-aurora-storage-card', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-aurora-storage-card">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('aurora-storage-card', 'Aurora Storage Card')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('aurora-storage-card')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('aurora-storage-card')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="aurora-storage-card/aurora-storage-card.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="aurora-storage-card/aurora-storage-card.html" title="Aurora Storage Card Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/aurora-storage-card/</span>
-                    <a href="aurora-storage-card/aurora-storage-card.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('aurora-storage-card', 'Aurora Storage Card', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1174,45 +1311,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-progress-bar-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-progress-bar-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-progress-bar-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-progress-bar-glass"
-                                   oninput="setCardSliderWidth('card-progress-bar-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-progress-bar-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('progress-bar-glass', 'Glass Glowing Progress Bar')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('progress-bar-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('progress-bar-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="progress-bar-glass/progress-bar-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="progress-bar-glass/progress-bar-glass.html" title="Glass Glowing Progress Bar Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/progress-bar-glass/</span>
-                    <a href="progress-bar-glass/progress-bar-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('progress-bar-glass', 'Glass Glowing Progress Bar', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1225,45 +1354,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-avatar-badge-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-avatar-badge-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-avatar-badge-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-avatar-badge-glass"
-                                   oninput="setCardSliderWidth('card-avatar-badge-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-avatar-badge-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('avatar-badge-glass', 'Glass Avatar with Status')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('avatar-badge-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('avatar-badge-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="avatar-badge-glass/avatar-badge-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="avatar-badge-glass/avatar-badge-glass.html" title="Glass Avatar with Status Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/avatar-badge-glass/</span>
-                    <a href="avatar-badge-glass/avatar-badge-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('avatar-badge-glass', 'Glass Avatar with Status', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1276,45 +1397,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-glass-dock-navigation', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-glass-dock-navigation', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-glass-dock-navigation', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-glass-dock-navigation"
-                                   oninput="setCardSliderWidth('card-glass-dock-navigation', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-glass-dock-navigation">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('glass-dock-navigation', 'Floating Glass Dock')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('glass-dock-navigation')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('glass-dock-navigation')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="glass-dock-navigation/glass-dock-navigation.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="glass-dock-navigation/glass-dock-navigation.html" title="Floating Glass Dock Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/glass-dock-navigation/</span>
-                    <a href="glass-dock-navigation/glass-dock-navigation.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('glass-dock-navigation', 'Floating Glass Dock', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1327,45 +1440,37 @@
                     </div>
                     <span class="badge-type">Organism</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-glass-sidepanel', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-glass-sidepanel', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-glass-sidepanel', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-glass-sidepanel"
-                                   oninput="setCardSliderWidth('card-glass-sidepanel', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-glass-sidepanel">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('glass-sidepanel', 'Productivity Glass Sidepanel')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('glass-sidepanel')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('glass-sidepanel')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="glass-sidepanel/glass-sidepanel.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="glass-sidepanel/glass-sidepanel.html" title="Productivity Glass Sidepanel Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/glass-sidepanel/</span>
-                    <a href="glass-sidepanel/glass-sidepanel.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('glass-sidepanel', 'Productivity Glass Sidepanel', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1378,45 +1483,37 @@
                     </div>
                     <span class="badge-type">Organism</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-swirl-bottom-sheet', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-swirl-bottom-sheet', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-swirl-bottom-sheet', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-swirl-bottom-sheet"
-                                   oninput="setCardSliderWidth('card-swirl-bottom-sheet', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-swirl-bottom-sheet">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('swirl-bottom-sheet')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('swirl-bottom-sheet')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="swirl-bottom-sheet/swirl-bottom-sheet.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="swirl-bottom-sheet/swirl-bottom-sheet.html" title="Swirl Refraction Bottom Sheet Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/swirl-bottom-sheet/</span>
-                    <a href="swirl-bottom-sheet/swirl-bottom-sheet.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('swirl-bottom-sheet', 'Swirl Refraction Bottom Sheet', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1429,45 +1526,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-modal-dialog-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-modal-dialog-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-modal-dialog-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-modal-dialog-glass"
-                                   oninput="setCardSliderWidth('card-modal-dialog-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-modal-dialog-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('modal-dialog-glass', 'Glass Modal Dialog')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('modal-dialog-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('modal-dialog-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="modal-dialog-glass/modal-dialog-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="modal-dialog-glass/modal-dialog-glass.html" title="Glass Modal Dialog Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/modal-dialog-glass/</span>
-                    <a href="modal-dialog-glass/modal-dialog-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('modal-dialog-glass', 'Glass Modal Dialog', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1480,45 +1569,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-toast-notification-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-toast-notification-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-toast-notification-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-toast-notification-glass"
-                                   oninput="setCardSliderWidth('card-toast-notification-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-toast-notification-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('toast-notification-glass', 'Glass Toast Notification')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('toast-notification-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('toast-notification-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="toast-notification-glass/toast-notification-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="toast-notification-glass/toast-notification-glass.html" title="Glass Toast Notification Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/toast-notification-glass/</span>
-                    <a href="toast-notification-glass/toast-notification-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('toast-notification-glass', 'Glass Toast Notification', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1531,45 +1612,37 @@
                     </div>
                     <span class="badge-type">Atomic</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-tooltip-glass', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-tooltip-glass', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-tooltip-glass', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-tooltip-glass"
-                                   oninput="setCardSliderWidth('card-tooltip-glass', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-tooltip-glass">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('tooltip-glass', 'Glass Micro Tooltip')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('tooltip-glass')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('tooltip-glass')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="tooltip-glass/tooltip-glass.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="tooltip-glass/tooltip-glass.html" title="Glass Micro Tooltip Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/tooltip-glass/</span>
-                    <a href="tooltip-glass/tooltip-glass.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('tooltip-glass', 'Glass Micro Tooltip', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1582,45 +1655,37 @@
                     </div>
                     <span class="badge-type">Molecule</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-telemetry-activity-chart', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-telemetry-activity-chart', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-telemetry-activity-chart', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-telemetry-activity-chart"
-                                   oninput="setCardSliderWidth('card-telemetry-activity-chart', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-telemetry-activity-chart">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('telemetry-activity-chart', 'Telemetry Activity Chart')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('telemetry-activity-chart')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('telemetry-activity-chart')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="telemetry-activity-chart/telemetry-activity-chart.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="telemetry-activity-chart/telemetry-activity-chart.html" title="Telemetry Activity Chart Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/telemetry-activity-chart/</span>
-                    <a href="telemetry-activity-chart/telemetry-activity-chart.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('telemetry-activity-chart', 'Telemetry Activity Chart', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
@@ -1633,79 +1698,153 @@
                     </div>
                     <span class="badge-type scenery">Scenery</span>
                 </div>
-                <div class="card-resizer-toolbar">
-                    <div class="viewport-presets">
-                        <button class="btn-preset active" onclick="setCardWidth('card-ai-agent-scenery', '100%', this)" title="Tampilan Penuh (100%)">
-                            <i data-lucide="maximize-2"></i> Full
+                <div class="card-actions-bar">
+                    <button class="btn-card-full" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'preview')" title="Buka Component Studio Pop-up Full Screen">
+                        <i data-lucide="maximize-2"></i> Full
+                    </button>
+                    <div class="card-actions-tools">
+                        <button class="btn-card-tool" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'code')" title="Lihat Source Code">
+                            <i data-lucide="code"></i> Lihat Code
                         </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-ai-agent-scenery', '640px', this)" title="Tablet (640px)">
-                            <i data-lucide="tablet"></i> 640px
-                        </button>
-                        <button class="btn-preset" onclick="setCardWidth('card-ai-agent-scenery', '375px', this)" title="Mobile (375px)">
-                            <i data-lucide="smartphone"></i> 375px
-                        </button>
-                        <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar preview secara fluid">
-                            <i data-lucide="sliders-horizontal" class="slider-icon"></i>
-                            <input type="range" class="card-slider-range" min="320" max="1000" step="10" value="1000"
-                                   id="slider-card-ai-agent-scenery"
-                                   oninput="setCardSliderWidth('card-ai-agent-scenery', this.value)"
-                                   aria-label="Atur lebar kartu secara horizontal">
-                            <span class="slider-val-badge" id="badge-card-ai-agent-scenery">Full</span>
-                        </div>
-                    </div>
-                    <div class="toolbar-right">
-                        <button class="btn-action-tool" onclick="openComponentModal('ai-agent-scenery', 'AI Agent Studio Scenery')">
-                            <i data-lucide="code"></i> Kode
-                        </button>
-                        <button class="btn-action-tool highlight" onclick="quickCopyAllInOne('ai-agent-scenery')" title="Salin kode file mandiri">
+                        <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('ai-agent-scenery')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
+                        <a href="ai-agent-scenery/ai-agent-scenery.html" target="_blank" class="btn-card-tool solo" title="Buka Standalone di Tab Baru">
+                            <i data-lucide="external-link"></i> Solo
+                        </a>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'preview')" title="Klik untuk membuka Full Studio Popup">
                     <div class="preview-resizer-wrapper">
                         <iframe src="ai-agent-scenery/ai-agent-scenery.html" title="AI Agent Studio Scenery Preview"></iframe>
+                    </div>
+                    <div class="preview-hover-hint">
+                        <span class="hover-hint-badge">
+                            <i data-lucide="maximize-2"></i> Buka Full Popup
+                        </span>
                     </div>
                 </div>
                 <div class="card-bottom">
                     <span class="file-link-tag">ui/web/components/glass/ai-agent-scenery/</span>
-                    <a href="ai-agent-scenery/ai-agent-scenery.html" target="_blank" class="btn-view-solo" title="Buka file standalone all-in-one di tab baru">
-                        <i data-lucide="external-link"></i> Solo File
-                    </a>
+                    <button class="btn-card-mini-full" onclick="openComponentStudio('ai-agent-scenery', 'AI Agent Studio Scenery', 'preview')">
+                        <i data-lucide="expand"></i> Studio Mode
+                    </button>
                 </div>
             </article>
 
     </main>
 
-    <!-- Code Modal -->
-    <div class="modal-overlay" id="codeModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <div class="modal-title-wrap">
-                    <h3 id="modalComponentTitle">Glass Component Source</h3>
-                    <p id="modalComponentPath">ui/components/glass/...</p>
+    <!-- Component Studio Modal (Fullscreen Interactive Popup) -->
+    <div class="modal-overlay" id="componentStudioModal">
+        <div class="studio-modal-card">
+            <!-- Studio Header -->
+            <header class="studio-header">
+                <div class="studio-header-left">
+                    <div class="studio-title-block">
+                        <div class="studio-badge-row">
+                            <span class="studio-type-badge" id="studioTypeBadge">Glass Component</span>
+                            <span class="studio-path-tag" id="studioPathTag">ui/web/components/glass/...</span>
+                        </div>
+                        <h2 class="studio-title" id="studioComponentTitle">Glass Component Title</h2>
+                    </div>
                 </div>
-                <div class="modal-header-actions">
-                    <button class="btn-action-tool highlight" onclick="copyCurrentModalCode()">
-                        <i data-lucide="copy"></i> Salin File Ini
+
+                <!-- Mode Switcher Tabs: Live Preview vs Lihat Code -->
+                <div class="studio-mode-switcher">
+                    <button class="btn-mode-tab active" id="modePreviewBtn" onclick="switchStudioMode('preview')">
+                        <i data-lucide="eye"></i> <span>Live Preview</span>
                     </button>
-                    <button class="modal-close-btn" onclick="closeCodeModal()" title="Tutup Modal">
+                    <button class="btn-mode-tab" id="modeCodeBtn" onclick="switchStudioMode('code')">
+                        <i data-lucide="code-2"></i> <span>Lihat Code</span>
+                    </button>
+                </div>
+
+                <!-- Header Quick Actions -->
+                <div class="studio-header-right">
+                    <button class="btn-studio-action highlight" id="studioCopyBtn" onclick="copyCurrentStudioCode()" title="Salin Kode ke Clipboard">
+                        <i data-lucide="copy"></i> <span>Salin</span>
+                    </button>
+                    <a href="#" target="_blank" class="btn-studio-action solo-link" id="studioSoloLink" title="Buka Standalone File di Tab Baru">
+                        <i data-lucide="external-link"></i> <span>Solo Tab</span>
+                    </a>
+                    <button class="studio-close-btn" onclick="closeComponentStudio()" title="Tutup Modal (Esc)">
                         <i data-lucide="x"></i>
                     </button>
                 </div>
+            </header>
+
+            <!-- Mode 1: Live Interactive Viewport Studio -->
+            <div class="studio-panel active" id="studioPreviewPanel">
+                <!-- Studio Toolbar: Presets Pixel & Slider Rasio Ukuran -->
+                <div class="studio-toolbar">
+                    <div class="studio-toolbar-section presets-group">
+                        <span class="toolbar-label"><i data-lucide="monitor"></i> Preset:</span>
+                        <button class="btn-studio-preset active" data-preset="100%" onclick="setStudioPreset('100%', this)" title="Full Viewport (100%)">
+                            <i data-lucide="maximize-2"></i> Full
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1440px" onclick="setStudioPreset('1440px', this)" title="Desktop Ultra (1440px)">
+                            <i data-lucide="monitor"></i> 1440px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="1024px" onclick="setStudioPreset('1024px', this)" title="Laptop (1024px)">
+                            <i data-lucide="laptop"></i> 1024px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="768px" onclick="setStudioPreset('768px', this)" title="Tablet (768px)">
+                            <i data-lucide="tablet"></i> 768px
+                        </button>
+                        <button class="btn-studio-preset" data-preset="375px" onclick="setStudioPreset('375px', this)" title="Mobile (375px)">
+                            <i data-lucide="smartphone"></i> 375px
+                        </button>
+                    </div>
+
+                    <div class="studio-toolbar-divider"></div>
+
+                    <!-- Slider Rasio Ukuran -->
+                    <div class="studio-toolbar-section slider-group">
+                        <span class="toolbar-label"><i data-lucide="sliders-horizontal"></i> Slider Rasio:</span>
+                        <div class="studio-slider-box" title="Geser untuk mengatur lebar preview secara fluid">
+                            <input type="range" class="studio-slider-range" id="studioWidthSlider"
+                                   min="320" max="1440" step="10" value="1440"
+                                   oninput="setStudioSliderWidth(this.value)"
+                                   aria-label="Atur lebar viewport komponen">
+                            <span class="studio-slider-badge" id="studioSliderBadge">Full (100%)</span>
+                            <button class="btn-reset-studio-slider" onclick="resetStudioWidth()" title="Reset ke Full (100%)">
+                                <i data-lucide="rotate-ccw"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="studio-toolbar-right">
+                        <button class="btn-studio-tool" onclick="reloadStudioIframe()" title="Muat Ulang Iframe Preview">
+                            <i data-lucide="refresh-cw"></i> <span>Reload</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Viewport Canvas Stage -->
+                <div class="studio-canvas-stage">
+                    <div class="studio-viewport-wrapper" id="studioViewportWrapper">
+                        <div class="viewport-meta-floating">
+                            <span id="viewportDimensionIndicator">100% (Full Width)</span>
+                        </div>
+                        <iframe src="" id="studioIframe" title="Component Live Preview"></iframe>
+                    </div>
+                </div>
             </div>
 
-            <!-- Multi-file Tabs Bar -->
-            <div class="modal-tabs-bar" id="modalTabsBar"></div>
+            <!-- Mode 2: Multi-file Code Studio -->
+            <div class="studio-panel" id="studioCodePanel">
+                <!-- Multi-file Tabs Bar -->
+                <div class="modal-tabs-bar" id="modalTabsBar"></div>
 
-            <!-- Subbar details -->
-            <div class="modal-tab-subbar">
-                <span class="subbar-file-path" id="modalSubbarFilePath">...</span>
-                <span id="modalSubbarStats">0 baris</span>
-            </div>
+                <!-- Subbar details -->
+                <div class="modal-tab-subbar">
+                    <span class="subbar-file-path" id="modalSubbarFilePath">...</span>
+                    <span id="modalSubbarStats">0 baris</span>
+                </div>
 
-            <div class="modal-body">
-                <pre class="code-pre"><code id="modalCodeSnippet">Memuat kode...</code></pre>
+                <div class="modal-body">
+                    <pre class="code-pre"><code id="modalCodeSnippet">Memuat kode...</code></pre>
+                </div>
             </div>
         </div>
     </div>
@@ -1729,9 +1868,6 @@
         } catch(e) {
             console.error('Failed to parse component database:', e);
         }
-
-        let activeFolder = "";
-        let activeFile = "";
 
         lucide.createIcons();
 
@@ -1778,69 +1914,21 @@
             });
         }
 
-        function setCardWidth(cardId, width, btn) {
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const slider = document.getElementById(`slider-${cardId}`);
-            const badge = document.getElementById(`badge-${cardId}`);
-
-            if (wrapper) {
-                if (width === '100%') {
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                    if (slider) slider.value = 1000;
-                    if (badge) badge.innerText = 'Full';
-                } else {
-                    wrapper.style.maxWidth = width;
-                    wrapper.style.width = width;
-                    const num = parseInt(width);
-                    if (slider) slider.value = num;
-                    if (badge) badge.innerText = width;
-                }
-            }
-        }
-
-        function setCardSliderWidth(cardId, val) {
-            const card = document.getElementById(cardId);
-            if (!card) return;
-            card.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-
-            const wrapper = card.querySelector('.preview-resizer-wrapper');
-            const badge = document.getElementById(`badge-${cardId}`);
-
-            if (val >= 1000) {
-                if (wrapper) {
-                    wrapper.style.maxWidth = '100%';
-                    wrapper.style.width = '100%';
-                }
-                if (badge) badge.innerText = 'Full';
-                const fullBtn = card.querySelector('.btn-preset:first-child');
-                if (fullBtn) fullBtn.classList.add('active');
-            } else {
-                const w = `${val}px`;
-                if (wrapper) {
-                    wrapper.style.maxWidth = w;
-                    wrapper.style.width = w;
-                }
-                if (badge) badge.innerText = w;
-                card.querySelectorAll('.btn-preset').forEach(b => {
-                    if (b.textContent.includes(w)) b.classList.add('active');
-                });
-            }
-        }
+        let activeFolder = "";
+        let activeTitle = "";
+        let activeFile = "";
+        let currentMode = "preview";
 
         function setGlobalCardWidth(val) {
             const badge = document.getElementById('globalWidthBadge');
             const cards = document.querySelectorAll('.component-card');
             cards.forEach(card => {
-                const id = card.id;
-                const slider = document.getElementById(`slider-${id}`);
-                if (slider) slider.value = val;
-                setCardSliderWidth(id, val);
+                const wrapper = card.querySelector('.preview-resizer-wrapper');
+                if (val >= 1200) {
+                    if (wrapper) wrapper.style.maxWidth = '100%';
+                } else {
+                    if (wrapper) wrapper.style.maxWidth = `${val}px`;
+                }
             });
             if (val >= 1200) {
                 if (badge) badge.innerText = 'Auto';
@@ -1855,11 +1943,29 @@
             setGlobalCardWidth(1200);
         }
 
-        function openComponentModal(folder, title) {
+        function openComponentStudio(folder, title, initialMode = 'preview') {
             activeFolder = folder;
-            document.getElementById('modalComponentTitle').innerText = title;
-            document.getElementById('modalComponentPath').innerText = `ui/components/glass/${folder}/`;
+            activeTitle = title;
+            
+            document.getElementById('studioComponentTitle').innerText = title;
+            document.getElementById('studioPathTag').innerText = `ui/web/components/glass/${folder}/`;
+            document.getElementById('studioSoloLink').href = `${folder}/${folder}.html`;
+            
+            const iframe = document.getElementById('studioIframe');
+            iframe.src = `${folder}/${folder}.html`;
+            
+            populateCodeTabs(folder);
+            resetStudioWidth();
+            switchStudioMode(initialMode);
+            
+            const modal = document.getElementById('componentStudioModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (window.lucide) lucide.createIcons();
+        }
 
+        function populateCodeTabs(folder) {
             const tabsBar = document.getElementById('modalTabsBar');
             tabsBar.innerHTML = '';
 
@@ -1906,12 +2012,115 @@
                 }
             });
 
-            document.getElementById('codeModal').classList.add('active');
-            if (window.lucide) lucide.createIcons();
-
             if (firstFile) {
                 switchCodeTab(firstFile);
             }
+        }
+
+        function switchStudioMode(mode) {
+            currentMode = mode;
+            const previewBtn = document.getElementById('modePreviewBtn');
+            const codeBtn = document.getElementById('modeCodeBtn');
+            const previewPanel = document.getElementById('studioPreviewPanel');
+            const codePanel = document.getElementById('studioCodePanel');
+            const copyBtnText = document.querySelector('#studioCopyBtn span');
+
+            if (mode === 'preview') {
+                previewBtn.classList.add('active');
+                codeBtn.classList.remove('active');
+                previewPanel.classList.add('active');
+                codePanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin";
+            } else {
+                codeBtn.classList.add('active');
+                previewBtn.classList.remove('active');
+                codePanel.classList.add('active');
+                previewPanel.classList.remove('active');
+                if (copyBtnText) copyBtnText.innerText = "Salin File";
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function setStudioPreset(width, btn) {
+            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const wrapper = document.getElementById('studioViewportWrapper');
+            const slider = document.getElementById('studioWidthSlider');
+            const badge = document.getElementById('studioSliderBadge');
+            const dimIndicator = document.getElementById('viewportDimensionIndicator');
+
+            if (width === '100%') {
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = 'Full (100%)';
+                if (dimIndicator) dimIndicator.innerText = '100% (Full Width)';
+            } else {
+                wrapper.style.maxWidth = width;
+                wrapper.style.width = width;
+                const num = parseInt(width);
+                if (slider) slider.value = num;
+                if (badge) badge.innerText = width;
+                if (dimIndicator) dimIndicator.innerText = `${width} × auto`;
+            }
+        }
+
+        function setStudioSliderWidth(val) {
+            document.querySelectorAll('.btn-studio-preset').forEach(b => b.classList.remove('active'));
+
+            const wrapper = document.getElementById('studioViewportWrapper');
+            const badge = document.getElementById('studioSliderBadge');
+            const dimIndicator = document.getElementById('viewportDimensionIndicator');
+
+            if (val >= 1440) {
+                wrapper.style.maxWidth = '100%';
+                wrapper.style.width = '100%';
+                badge.innerText = 'Full (100%)';
+                dimIndicator.innerText = '100% (Full Width)';
+                const fullBtn = document.querySelector('.btn-studio-preset[data-preset="100%"]');
+                if (fullBtn) fullBtn.classList.add('active');
+            } else {
+                const w = `${val}px`;
+                wrapper.style.maxWidth = w;
+                wrapper.style.width = w;
+                badge.innerText = w;
+                dimIndicator.innerText = `${w} × auto`;
+                const matchBtn = document.querySelector(`.btn-studio-preset[data-preset="${w}"]`);
+                if (matchBtn) matchBtn.classList.add('active');
+            }
+        }
+
+        function resetStudioWidth() {
+            const slider = document.getElementById('studioWidthSlider');
+            if (slider) slider.value = 1440;
+            const fullBtn = document.querySelector('.btn-studio-preset[data-preset="100%"]');
+            setStudioPreset('100%', fullBtn);
+        }
+
+        function reloadStudioIframe() {
+            const iframe = document.getElementById('studioIframe');
+            if (iframe && iframe.src) {
+                const cur = iframe.src;
+                iframe.src = 'about:blank';
+                setTimeout(() => { iframe.src = cur; }, 50);
+            }
+        }
+
+        function closeComponentStudio() {
+            const modal = document.getElementById('componentStudioModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            const iframe = document.getElementById('studioIframe');
+            if (iframe) iframe.src = 'about:blank';
+        }
+
+        // Backward compatibility alias
+        function openComponentModal(folder, title) {
+            openComponentStudio(folder, title, 'code');
+        }
+        function closeCodeModal() {
+            closeComponentStudio();
         }
 
         function getTabIcon(fn) {
@@ -1930,10 +2139,10 @@
             let code = "";
             if (filename === "css.css") {
                 code = COMP_DB["css.css"] || "";
-                document.getElementById('modalSubbarFilePath').innerText = `ui/components/glass/css.css (Master Shared Tokens)`;
+                document.getElementById('modalSubbarFilePath').innerText = `ui/web/components/glass/css.css (Master Shared Tokens)`;
             } else {
                 code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][filename]) || "";
-                document.getElementById('modalSubbarFilePath').innerText = `ui/components/glass/${activeFolder}/${filename}`;
+                document.getElementById('modalSubbarFilePath').innerText = `ui/web/components/glass/${activeFolder}/${filename}`;
             }
 
             const lines = code ? code.split('\n').length : 0;
@@ -1943,21 +2152,29 @@
             document.getElementById('modalCodeSnippet').innerText = code;
         }
 
-        function closeCodeModal() {
-            document.getElementById('codeModal').classList.remove('active');
-        }
-
-        async function copyCurrentModalCode() {
+        async function copyCurrentStudioCode() {
             let code = "";
-            if (activeFile === "css.css") {
-                code = COMP_DB["css.css"] || "";
+            let label = "";
+
+            if (currentMode === 'code') {
+                if (activeFile === "css.css") {
+                    code = COMP_DB["css.css"] || "";
+                    label = "Shared Tokens (css.css)";
+                } else {
+                    code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][activeFile]) || "";
+                    label = activeFile;
+                }
             } else {
-                code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][activeFile]) || "";
+                const aioFile = `${activeFolder}.html`;
+                code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][aioFile]) || "";
+                label = `All-in-One (${activeFolder})`;
             }
 
             if (code) {
                 await navigator.clipboard.writeText(code);
-                showToast(`File ${activeFile} berhasil disalin!`);
+                showToast(`Kode ${label} berhasil disalin ke clipboard!`);
+            } else {
+                showToast(`Kode tidak tersedia untuk disalin.`);
             }
         }
 
@@ -1979,8 +2196,17 @@
             setTimeout(() => toast.classList.remove('active'), 2500);
         }
 
-        document.getElementById('codeModal').addEventListener('click', (e) => {
-            if (e.target.id === 'codeModal') closeCodeModal();
+        document.getElementById('componentStudioModal').addEventListener('click', (e) => {
+            if (e.target.id === 'componentStudioModal') closeComponentStudio();
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('componentStudioModal');
+                if (modal && modal.classList.contains('active')) {
+                    closeComponentStudio();
+                }
+            }
         });
     </script>
 </body>
