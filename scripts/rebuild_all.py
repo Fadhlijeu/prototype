@@ -89,6 +89,19 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
                     <button class="btn-card-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Buka Component Studio Pop-up Full Screen">
                         <i data-lucide="maximize-2"></i> Full
                     </button>
+                    <!-- Per-Component Background Toggle (Black | White | Blob Pure CSS) -->
+                    <div class="comp-bg-switcher" id="bg-switcher-{folder}" title="Ganti background khusus komponen ini">
+                        <span class="comp-bg-text">BG:</span>
+                        <button type="button" class="btn-comp-bg active" data-bg="black" onclick="setComponentBg('{folder}', 'black', this)" title="Latar Hitam (Black)">
+                            <span class="swatch-dot dot-black"></span>
+                        </button>
+                        <button type="button" class="btn-comp-bg" data-bg="white" onclick="setComponentBg('{folder}', 'white', this)" title="Latar Putih (White)">
+                            <span class="swatch-dot dot-white"></span>
+                        </button>
+                        <button type="button" class="btn-comp-bg" data-bg="blob" onclick="setComponentBg('{folder}', 'blob', this)" title="Latar Pure CSS Planetary Dual-Arc (Blob)">
+                            <span class="swatch-dot dot-blob"></span>
+                        </button>
+                    </div>
                     <div class="card-actions-tools">
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
@@ -98,9 +111,9 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
                         </button>
                     </div>
                 </div>
-                <div class="card-preview-zone">
+                <div class="card-preview-zone" id="preview-zone-{folder}" data-comp-bg="black">
                     <div class="preview-resizer-wrapper">
-                        <iframe src="{folder}/{aio_file}" title="{title} Preview"></iframe>
+                        <iframe src="{folder}/{aio_file}" id="iframe-{folder}" title="{title} Preview"></iframe>
                     </div>
                 </div>
             </article>
@@ -952,7 +965,178 @@ glass_showcase_content = f"""<!DOCTYPE html>
             }}
         }}
 
-                /* Dedicated Grid Background Variants */
+                
+        /* Per-Component Background Switcher */
+        .comp-bg-switcher {{
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s;
+        }}
+        .comp-bg-text {{
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            margin-right: 2px;
+        }}
+        .btn-comp-bg {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        .btn-comp-bg:hover {{
+            background: rgba(255, 255, 255, 0.12);
+        }}
+        .btn-comp-bg.active {{
+            background: rgba(56, 189, 248, 0.22);
+            border-color: #38BDF8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }}
+        .swatch-dot {{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+        }}
+        .dot-black {{
+            background: #08080C;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }}
+        .dot-white {{
+            background: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }}
+        .dot-blob {{
+            background: radial-gradient(circle at 70% 30%, #38BDF8 0%, #111F38 60%, #F59E0B 100%);
+            border: 1px solid #38BDF8;
+        }}
+
+        /* Per-Component Preview Zone Backgrounds (Pure CSS) */
+        .card-preview-zone[data-comp-bg="black"] {{
+            background: #08080C !important;
+            background-image: none !important;
+        }}
+        .card-preview-zone[data-comp-bg="white"] {{
+            background: #F8FAFC !important;
+            background-image: none !important;
+        }}
+        .card-preview-zone[data-comp-bg="blob"] {{
+            background-color: #111F38 !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }}
+
+        /* Studio Stage Backgrounds */
+        .studio-canvas-stage[data-stage-bg="black"] {{
+            background: #08080C !important;
+            background-image: none !important;
+        }}
+        .studio-canvas-stage[data-stage-bg="white"] {{
+            background: #F8FAFC !important;
+            background-image: none !important;
+        }}
+        .studio-canvas-stage[data-stage-bg="blob"] {{
+            background-color: #111F38 !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }}
+
+        /* Dedicated Grid Background Variants */
         .showcase-grid[data-grid-bg="white"] {{
             background-color: #F8FAFC !important;
             background-image: none !important;
@@ -997,7 +1181,46 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         .showcase-grid[data-grid-bg="blob"] {{
             background-color: #111F38 !important;
-            background-image: url('blob-bg.webp') !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
             background-size: cover !important;
             background-position: center center !important;
             background-repeat: no-repeat !important;
@@ -1021,12 +1244,51 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .blob-bg-layer {{
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 0; display: none;
-            background-color: #111F38;
-            background-image: url('blob-bg.webp');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-color: #111F38 !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
         }}
         body[data-theme="blob"] .blob-bg-layer {{
             display: block;
@@ -1219,8 +1481,53 @@ glass_showcase_content = f"""<!DOCTYPE html>
         body[data-theme="blob"] .card-preview-zone {{
             background: transparent;
         }}
-        body[data-theme="blob"] .studio-canvas-stage {{
-            background: #111F38 url('blob-bg.webp') center center / cover no-repeat fixed;
+        body[data-theme="blob"] .studio-canvas-stage,
+        .studio-canvas-stage[data-stage-bg="blob"] {{
+            background-color: #111F38 !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
         }}
         body[data-theme="blob"] .studio-viewport-wrapper {{
             background: transparent;
@@ -1902,19 +2209,19 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         let currentGridBg = localStorage.getItem('prototype-grid-bg') || currentTheme;
 
-        function setGridBg(bg) {{
-            currentGridBg = bg;
-            const grid = document.getElementById('componentsGrid');
-            if (grid) {{
-                grid.setAttribute('data-grid-bg', bg);
+        function setComponentBg(folder, bg, btnEl) {{
+            const previewZone = document.getElementById(`preview-zone-${{folder}}`);
+            if (previewZone) {{
+                previewZone.setAttribute('data-comp-bg', bg);
             }}
-            document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
-                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
-            }});
-            localStorage.setItem('prototype-grid-bg', bg);
-            
-            // Sync child iframes inside the grid to match contrast
-            document.querySelectorAll('#componentsGrid iframe').forEach(iframe => {{
+            const switcher = document.getElementById(`bg-switcher-${{folder}}`);
+            if (switcher) {{
+                switcher.querySelectorAll('.btn-comp-bg').forEach(b => {{
+                    b.classList.toggle('active', b.getAttribute('data-bg') === bg);
+                }});
+            }}
+            const iframe = document.getElementById(`iframe-${{folder}}`);
+            if (iframe) {{
                 try {{
                     iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: bg }}, '*');
                     const doc = iframe.contentDocument;
@@ -1929,9 +2236,56 @@ glass_showcase_content = f"""<!DOCTYPE html>
                             }}
                         }}
                     }}
-                }} catch(e) {{}}
+                }} catch (e) {{}}
+            }}
+            localStorage.setItem(`comp-bg-${{folder}}`, bg);
+        }}
+
+        function setStudioBg(bg) {{
+            const stage = document.getElementById('studioCanvasStage');
+            if (stage) {{
+                stage.setAttribute('data-stage-bg', bg);
+            }}
+            document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
             }});
-            showToast(`Background grid diatur ke: ${{bg.toUpperCase()}}`);
+            const iframe = document.getElementById('studioIframe');
+            if (iframe) {{
+                try {{
+                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: bg }}, '*');
+                    const doc = iframe.contentDocument;
+                    if (doc && doc.documentElement) {{
+                        doc.documentElement.setAttribute('data-theme', bg);
+                        if (doc.body) {{
+                            doc.body.setAttribute('data-theme', bg);
+                            if (bg === 'blob' || bg === 'white') {{
+                                doc.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                doc.body.style.backgroundColor = '';
+                            }}
+                        }}
+                    }}
+                }} catch (e) {{}}
+            }}
+        }}
+
+        function setGridBg(bg) {{
+            currentGridBg = bg;
+            const grid = document.getElementById('componentsGrid');
+            if (grid) {{
+                grid.setAttribute('data-grid-bg', bg);
+            }}
+            document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
+            }});
+            localStorage.setItem('prototype-grid-bg', bg);
+            
+            // Set all components to this background
+            document.querySelectorAll('.component-card').forEach(card => {{
+                const folder = card.id.replace('card-', '');
+                setComponentBg(folder, bg);
+            }});
+            showToast(`Background seluruh komponen diatur ke: ${{bg.toUpperCase()}}`);
         }}
 
         function switchTheme(theme) {{
@@ -1994,10 +2348,12 @@ glass_showcase_content = f"""<!DOCTYPE html>
         // Initialize Theme on Page Load & Hook Iframe Load
         window.addEventListener('DOMContentLoaded', () => {{
             switchTheme(currentTheme);
-            const savedGridBg = localStorage.getItem('prototype-grid-bg');
-            if (savedGridBg) {{
-                setGridBg(savedGridBg);
-            }}
+            // Restore individual component background preferences
+            document.querySelectorAll('.component-card').forEach(card => {{
+                const folder = card.id.replace('card-', '');
+                const savedBg = localStorage.getItem(`comp-bg-${{folder}}`) || currentGridBg || 'black';
+                setComponentBg(folder, savedBg);
+            }});
         }});
 
         document.querySelectorAll('iframe').forEach(iframe => {{
@@ -3751,12 +4107,51 @@ web_apps_html_content = f"""<!DOCTYPE html>
         .blob-bg-layer {{
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 0; display: none;
-            background-color: #111F38;
-            background-image: url('assets/blob-bg.webp');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-color: #111F38 !important;
+            background-image:
+                /* 1. Upper Arc - Sharp Luminous Cyan Core */
+                radial-gradient(ellipse 112% 82% at 116% -8%,
+                    transparent 63.5%,
+                    rgba(186, 230, 253, 0.95) 65.2%,
+                    rgba(125, 211, 252, 0.90) 66.0%,
+                    rgba(56, 189, 248, 0.70) 67.2%,
+                    rgba(14, 116, 144, 0.25) 71.0%,
+                    transparent 75.0%
+                ),
+                /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+                radial-gradient(ellipse 120% 90% at 116% -8%,
+                    transparent 58.0%,
+                    rgba(56, 189, 248, 0.12) 62.0%,
+                    rgba(56, 189, 248, 0.35) 65.0%,
+                    rgba(14, 116, 144, 0.20) 69.0%,
+                    transparent 76.0%
+                ),
+                /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+                radial-gradient(ellipse 118% 76% at 62% 126%,
+                    transparent 61.5%,
+                    rgba(254, 240, 138, 0.98) 63.2%,
+                    rgba(253, 230, 138, 0.92) 64.0%,
+                    rgba(245, 158, 11, 0.75) 65.5%,
+                    rgba(180, 83, 9, 0.25) 70.0%,
+                    transparent 74.0%
+                ),
+                /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+                radial-gradient(ellipse 125% 85% at 62% 126%,
+                    transparent 56.0%,
+                    rgba(245, 158, 11, 0.10) 60.0%,
+                    rgba(245, 158, 11, 0.30) 63.0%,
+                    rgba(180, 83, 9, 0.15) 68.0%,
+                    transparent 75.0%
+                ),
+                /* 5. Subtle Cosmic Vignette */
+                radial-gradient(circle at 50% 50%,
+                    transparent 60.0%,
+                    rgba(8, 15, 28, 0.40) 100.0%
+                ) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
         }}
         body[data-theme="blob"] .blob-bg-layer {{
             display: block;

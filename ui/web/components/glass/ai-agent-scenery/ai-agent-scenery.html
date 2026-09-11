@@ -6,6 +6,8 @@
     <title>AI Agent Studio Scenery — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -111,7 +113,7 @@
         .icon-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             transform: scale(1.05);
-            border-top-color: rgba(255, 255, 255, 0.45);
+            border-top-color: var(--text-muted);
         }
 
         .icon-btn.active {
@@ -194,7 +196,7 @@
         .model-title {
             font-size: 13.5px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .model-subtitle {
@@ -245,13 +247,13 @@
 
         .th-level-btn:hover {
             background: rgba(255, 255, 255, 0.12);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .th-level-btn.active {
             background: rgba(56, 189, 248, 0.22);
             border-color: rgba(56, 189, 248, 0.5);
-            color: #FFFFFF;
+            color: var(--text-primary);
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
         }
 
@@ -292,7 +294,7 @@
         .active-config-badge:hover {
             background: rgba(56, 189, 248, 0.14);
             border-color: rgba(56, 189, 248, 0.4);
-            color: #FFFFFF;
+            color: var(--text-primary);
             transform: translateY(-1px);
         }
 
@@ -333,7 +335,7 @@
         }
 
         .greeting strong {
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-weight: 700;
         }
 
@@ -390,7 +392,7 @@
         .pill:hover {
             background: rgba(255, 255, 255, 0.12);
             border-color: rgba(56, 189, 248, 0.4);
-            color: #FFFFFF;
+            color: var(--text-primary);
             transform: translateY(-1px);
         }
 
@@ -471,7 +473,7 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
             font-size: 11.5px;
-            color: #FFFFFF;
+            color: var(--text-primary);
             white-space: nowrap;
             flex-shrink: 0;
         }
@@ -523,7 +525,7 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 14px;
         }
 
@@ -538,7 +540,7 @@
             justify-content: center;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
+            color: var(--text-primary);
             cursor: pointer;
             flex-shrink: 0;
             transition: all 0.18s ease;
@@ -577,7 +579,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.35);
             padding: 9px 18px;
             border-radius: 20px;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 12.5px;
             display: flex;
             align-items: center;

@@ -573,15 +573,102 @@
         .blob-bg-layer {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 0; display: none;
-            background-color: #111F38;
-            background-image: url('blob-bg.webp');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        /* 1:1 Pure CSS Planetary Dual-Arc Celestial Aura (Zero Raster Images!) */
+        background-color: #111F38 ;
+        background-image:
+            /* 1. Upper Arc - Sharp Luminous Cyan Core */
+            radial-gradient(ellipse 112% 82% at 116% -8%,
+                transparent 63.5%,
+                rgba(186, 230, 253, 0.95) 65.2%,
+                rgba(125, 211, 252, 0.90) 66.0%,
+                rgba(56, 189, 248, 0.70) 67.2%,
+                rgba(14, 116, 144, 0.25) 71.0%,
+                transparent 75.0%
+            ),
+            /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+            radial-gradient(ellipse 120% 90% at 116% -8%,
+                transparent 58.0%,
+                rgba(56, 189, 248, 0.12) 62.0%,
+                rgba(56, 189, 248, 0.35) 65.0%,
+                rgba(14, 116, 144, 0.20) 69.0%,
+                transparent 76.0%
+            ),
+            /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+            radial-gradient(ellipse 118% 76% at 62% 126%,
+                transparent 61.5%,
+                rgba(254, 240, 138, 0.98) 63.2%,
+                rgba(253, 230, 138, 0.92) 64.0%,
+                rgba(245, 158, 11, 0.75) 65.5%,
+                rgba(180, 83, 9, 0.25) 70.0%,
+                transparent 74.0%
+            ),
+            /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+            radial-gradient(ellipse 125% 85% at 62% 126%,
+                transparent 56.0%,
+                rgba(245, 158, 11, 0.10) 60.0%,
+                rgba(245, 158, 11, 0.30) 63.0%,
+                rgba(180, 83, 9, 0.15) 68.0%,
+                transparent 75.0%
+            ),
+            /* 5. Subtle Cosmic Vignette */
+            radial-gradient(circle at 50% 50%,
+                transparent 60.0%,
+                rgba(8, 15, 28, 0.40) 100.0%
+            ) ;
+        background-size: cover ;
+        background-position: center center ;
+        background-repeat: no-repeat ;
+            background-attachment: fixed !important;
         }
         body[data-theme="blob"] .blob-bg-layer {
-            display: block;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0; display: none;
+        /* 1:1 Pure CSS Planetary Dual-Arc Celestial Aura (Zero Raster Images!) */
+        background-color: #111F38 ;
+        background-image:
+            /* 1. Upper Arc - Sharp Luminous Cyan Core */
+            radial-gradient(ellipse 112% 82% at 116% -8%,
+                transparent 63.5%,
+                rgba(186, 230, 253, 0.95) 65.2%,
+                rgba(125, 211, 252, 0.90) 66.0%,
+                rgba(56, 189, 248, 0.70) 67.2%,
+                rgba(14, 116, 144, 0.25) 71.0%,
+                transparent 75.0%
+            ),
+            /* 2. Upper Arc - Soft Atmospheric Cyan/Blue Bloom */
+            radial-gradient(ellipse 120% 90% at 116% -8%,
+                transparent 58.0%,
+                rgba(56, 189, 248, 0.12) 62.0%,
+                rgba(56, 189, 248, 0.35) 65.0%,
+                rgba(14, 116, 144, 0.20) 69.0%,
+                transparent 76.0%
+            ),
+            /* 3. Lower Arc - Sharp Luminous Golden/Amber Horizon Core */
+            radial-gradient(ellipse 118% 76% at 62% 126%,
+                transparent 61.5%,
+                rgba(254, 240, 138, 0.98) 63.2%,
+                rgba(253, 230, 138, 0.92) 64.0%,
+                rgba(245, 158, 11, 0.75) 65.5%,
+                rgba(180, 83, 9, 0.25) 70.0%,
+                transparent 74.0%
+            ),
+            /* 4. Lower Arc - Soft Warm Amber/Peach Ambient Bloom */
+            radial-gradient(ellipse 125% 85% at 62% 126%,
+                transparent 56.0%,
+                rgba(245, 158, 11, 0.10) 60.0%,
+                rgba(245, 158, 11, 0.30) 63.0%,
+                rgba(180, 83, 9, 0.15) 68.0%,
+                transparent 75.0%
+            ),
+            /* 5. Subtle Cosmic Vignette */
+            radial-gradient(circle at 50% 50%,
+                transparent 60.0%,
+                rgba(8, 15, 28, 0.40) 100.0%
+            ) ;
+        background-size: cover ;
+        background-position: center center ;
+        background-repeat: no-repeat ;
+            background-attachment: fixed !important;
         }
 
         /* WHITE THEME (CLEAN LIGHT GLASS) */

@@ -6,6 +6,8 @@
     <title>Glass Micro Tooltip — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
 :root {
     --bg-page: #08080C;
@@ -63,7 +65,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -84,7 +86,7 @@ body {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    color: #FFFFFF;
+    color: var(--text-primary);
     font-size: 11px;
     font-weight: 500;
     white-space: nowrap;

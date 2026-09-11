@@ -58,7 +58,7 @@ body {
 
 .close-btn:hover {
     background: rgba(255, 255, 255, 0.12);
-    color: #FFFFFF;
+    color: var(--text-primary);
 }
 
 .modal-content {
@@ -93,7 +93,7 @@ body {
 
 .btn-m.confirm {
     background: linear-gradient(135deg, #4A7BF7, #2E5FD9);
-    color: #FFFFFF;
+    color: var(--text-primary);
     box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 

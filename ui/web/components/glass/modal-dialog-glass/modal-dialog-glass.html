@@ -6,6 +6,8 @@
     <title>Glass Modal Dialog — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
 :root {
     --bg-page: #08080C;
@@ -89,7 +91,7 @@ body {
 
 .close-btn:hover {
     background: rgba(255, 255, 255, 0.12);
-    color: #FFFFFF;
+    color: var(--text-primary);
 }
 
 .modal-content {
@@ -124,7 +126,7 @@ body {
 
 .btn-m.confirm {
     background: linear-gradient(135deg, #4A7BF7, #2E5FD9);
-    color: #FFFFFF;
+    color: var(--text-primary);
     box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 

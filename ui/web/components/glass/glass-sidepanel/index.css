@@ -97,7 +97,7 @@
             justify-content: center;
         }
 
-        .brand-icon svg { width: 20px; height: 20px; stroke-width: 1.5px; color: #FFFFFF; }
+        .brand-icon svg { width: 20px; height: 20px; stroke-width: 1.5px; color: var(--text-primary); }
 
         .brand-title {
             font-size: 16px;
@@ -137,7 +137,7 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 13px;
             font-family: inherit;
         }
@@ -184,13 +184,13 @@
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.05);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .menu-item.active {
             background: rgba(255, 255, 255, 0.09);
             border-color: rgba(255, 255, 255, 0.12);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .item-left {
@@ -233,7 +233,7 @@
             margin-bottom: 8px;
         }
 
-        .storage-text strong { color: #FFFFFF; }
+        .storage-text strong { color: var(--text-primary); }
 
         .meter-track {
             width: 100%; height: 6px;

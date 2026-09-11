@@ -6,6 +6,8 @@
     <title>Prompt Pills Row — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -90,7 +92,7 @@
         }
         .pill-nav-btn:hover {
             background: rgba(255, 255, 255, 0.18);
-            color: #FFFFFF;
+            color: var(--text-primary);
             transform: scale(1.08);
         }
 
@@ -133,8 +135,8 @@
 
         .pill:hover {
             background: var(--glass-card-hover);
-            border-top-color: rgba(255, 255, 255, 0.35);
-            color: #FFFFFF;
+            border-top-color: var(--text-muted);
+            color: var(--text-primary);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 12px rgba(74, 158, 255, 0.25);
         }

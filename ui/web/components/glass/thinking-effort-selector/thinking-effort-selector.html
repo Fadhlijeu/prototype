@@ -6,6 +6,8 @@
     <title>Thinking Effort Selector — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -63,7 +65,7 @@
 
         .thinking-trigger-card:hover {
             background: rgba(255, 255, 255, 0.09);
-            border-top-color: rgba(255, 255, 255, 0.35);
+            border-top-color: var(--text-muted);
         }
 
         .thinking-card-wrapper.open .thinking-trigger-card {
@@ -80,7 +82,7 @@
         .title {
             font-size: 15px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -123,7 +125,7 @@
 
         .thinking-card-wrapper.open .chevron-icon {
             transform: rotate(180deg);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         /* Ambient Background Glow for Glass Refraction */
@@ -206,7 +208,7 @@
         .level-name {
             font-size: 13.5px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .level-desc {

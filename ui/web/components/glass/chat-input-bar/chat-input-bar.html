@@ -6,6 +6,8 @@
     <title>Chat Input Bar — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -183,7 +185,7 @@
         .chip-name {
             font-size: 12px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -259,18 +261,13 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 14px;
             font-family: inherit;
             padding: 0 4px;
         }
 
-        .chat-input::placeholder {
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .chat-input::placeholder { color: var(--text-muted); }
 
         .icon-btn {
             position: relative;
@@ -291,7 +288,7 @@
 
         .icon-btn:hover {
             background: rgba(255, 255, 255, 0.14);
-            color: #FFFFFF;
+            color: var(--text-primary);
             transform: scale(1.05);
         }
 
@@ -310,7 +307,7 @@
         .send-btn {
             background: linear-gradient(135deg, var(--accent-blue-1) 0%, var(--accent-blue-2) 60%, var(--accent-blue-3) 100%);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #FFFFFF;
+            color: var(--text-primary);
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
         }
 
@@ -329,7 +326,7 @@
             border: 1px solid rgba(56, 189, 248, 0.4);
             padding: 10px 20px;
             border-radius: 20px;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 13px;
             font-weight: 500;
             display: flex;

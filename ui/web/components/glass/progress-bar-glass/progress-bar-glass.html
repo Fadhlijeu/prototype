@@ -6,6 +6,8 @@
     <title>Glass Glowing Progress Bar — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -106,7 +108,7 @@
         .prog-title {
             font-size: 14.5px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .prog-sub {
@@ -133,7 +135,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 38px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: var(--text-primary);
             letter-spacing: -0.02em;
             text-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
         }

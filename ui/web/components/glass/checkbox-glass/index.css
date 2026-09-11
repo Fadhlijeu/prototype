@@ -58,13 +58,13 @@ body {
 
 .check-item.active .glass-checkbox {
     background: linear-gradient(135deg, #4A7BF7, #2E5FD9);
-    border-color: rgba(255, 255, 255, 0.35);
+    border-color: var(--text-muted);
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
 }
 
 .glass-checkbox svg {
     width: 13px; height: 13px;
-    color: #FFFFFF;
+    color: var(--text-primary);
     opacity: 0;
     transform: scale(0.5);
     transition: all 0.2s var(--ease-spring);

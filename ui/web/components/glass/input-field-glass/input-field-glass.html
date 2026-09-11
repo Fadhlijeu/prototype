@@ -6,6 +6,8 @@
     <title>Glass Input Fields — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -94,15 +96,13 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 14px;
             font-family: inherit;
             padding: 13px 12px;
         }
 
-        .glass-input::placeholder {
-            color: var(--text-muted);
-        }
+        .glass-input::placeholder { color: var(--text-muted); }
 
         /* Anti-white box browser autofill override */
         .glass-input:-webkit-autofill,
@@ -130,7 +130,7 @@
         }
 
         .field-action-btn:hover {
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .field-action-btn svg {

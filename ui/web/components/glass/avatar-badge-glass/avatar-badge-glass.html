@@ -6,6 +6,8 @@
     <title>Glass Avatar with Status — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -175,7 +177,7 @@
         .profile-name {
             font-size: 16px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: var(--text-primary);
             letter-spacing: -0.01em;
         }
 
@@ -237,7 +239,7 @@
         .stack-title {
             font-size: 13px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .stack-sub {
@@ -262,7 +264,7 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: all 0.25s var(--ease-spring);
@@ -319,7 +321,7 @@
         }
 
         .telemetry-chip b {
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-weight: 600;
         }
     </style>

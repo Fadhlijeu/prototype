@@ -51,11 +51,11 @@ body {
 
 .btn-primary-glass {
     background: linear-gradient(135deg, #4A7BF7 0%, #2E5FD9 50%, #1E3A8A 100%);
-    border-top-color: rgba(255, 255, 255, 0.35);
+    border-top-color: var(--text-muted);
     border-left-color: rgba(255, 255, 255, 0.15);
     border-right-color: rgba(255, 255, 255, 0.15);
     border-bottom-color: rgba(0, 0, 0, 0.3);
-    color: #FFFFFF;
+    color: var(--text-primary);
     box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
@@ -71,7 +71,7 @@ body {
     border-left-color: var(--glass-border-side);
     border-right-color: var(--glass-border-side);
     border-bottom-color: var(--glass-border-bottom);
-    color: #FFFFFF;
+    color: var(--text-primary);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
@@ -89,7 +89,7 @@ body {
 
 .btn-ghost-glass:hover {
     background: rgba(255, 255, 255, 0.06);
-    color: #FFFFFF;
+    color: var(--text-primary);
 }
 
 .btn-danger-glass {

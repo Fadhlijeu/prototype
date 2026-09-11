@@ -6,6 +6,8 @@
     <title>AI Model Selector Card — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -103,7 +105,7 @@
         .header-title {
             font-size: 14px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -133,7 +135,7 @@
         .btn-shuffle:hover {
             background: rgba(56, 189, 248, 0.2);
             border-color: rgba(56, 189, 248, 0.4);
-            color: #FFFFFF;
+            color: var(--text-primary);
             transform: scale(1.04);
         }
 
@@ -189,7 +191,7 @@
         .model-title {
             font-size: 14.5px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .model-tag {

@@ -6,6 +6,8 @@
     <title>Glass Floating Dropdown — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #08080C;
@@ -54,7 +56,7 @@
             border-left-color: var(--glass-border-side);
             border-right-color: var(--glass-border-side);
             border-bottom-color: var(--glass-border-bottom);
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -65,7 +67,7 @@
 
         .dropdown-trigger:hover {
             background: rgba(255, 255, 255, 0.09);
-            border-top-color: rgba(255, 255, 255, 0.35);
+            border-top-color: var(--text-muted);
         }
 
         .dropdown-wrap.open .dropdown-trigger {
@@ -94,7 +96,7 @@
 
         .dropdown-wrap.open .chevron-icon {
             transform: rotate(180deg);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         /* Ambient Background Glow for Glass Refraction */
@@ -163,14 +165,14 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .dropdown-item.selected {
             background: rgba(56, 189, 248, 0.16);
             border: 1px solid rgba(56, 189, 248, 0.4);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(56, 189, 248, 0.15);
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-weight: 600;
         }
 

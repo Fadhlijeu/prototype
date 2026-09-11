@@ -6,6 +6,8 @@
     <title>Glass Sidepanel / Sidebar — Glass Dark Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <!-- Shared Glass Design System Tokens & White/Blob Themes -->
+    <link rel="stylesheet" href="../css.css">
     <style>
         :root {
             --bg-page: #0A0A0A;
@@ -100,7 +102,7 @@
             justify-content: center;
         }
 
-        .brand-icon svg { width: 20px; height: 20px; stroke-width: 1.5px; color: #FFFFFF; }
+        .brand-icon svg { width: 20px; height: 20px; stroke-width: 1.5px; color: var(--text-primary); }
 
         .brand-title {
             font-size: 16px;
@@ -140,7 +142,7 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-size: 13px;
             font-family: inherit;
         }
@@ -187,13 +189,13 @@
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.05);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .menu-item.active {
             background: rgba(255, 255, 255, 0.09);
             border-color: rgba(255, 255, 255, 0.12);
-            color: #FFFFFF;
+            color: var(--text-primary);
         }
 
         .item-left {
@@ -236,7 +238,7 @@
             margin-bottom: 8px;
         }
 
-        .storage-text strong { color: #FFFFFF; }
+        .storage-text strong { color: var(--text-primary); }
 
         .meter-track {
             width: 100%; height: 6px;
