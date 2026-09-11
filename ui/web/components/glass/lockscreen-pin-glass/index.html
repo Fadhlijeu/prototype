@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Lockscreen PIN Keypad — Glass Dark</title>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Phone Mockup Container (9:16 Aspect Ratio) -->
+    <div class="phone-viewport" id="phoneViewport" data-phone-bg="blob">
+        <!-- Punch-hole Front Camera -->
+        <div class="phone-punch-hole" aria-hidden="true">
+            <div class="camera-lens"></div>
+        </div>
+
+        <!-- Phone Top Control Bar (Wallpaper Switcher: Black / Blob) -->
+        <div class="phone-header-controls">
+            <div class="wallpaper-switcher" title="Ganti Wallpaper Layar HP (Black / Blob)">
+                <span class="switcher-label">Wallpaper:</span>
+                <button type="button" class="btn-wp-toggle" data-bg="black" id="btnWpBlack" onclick="setPhoneWallpaper('black')">
+                    <span class="dot-swatch black-swatch"></span> Black
+                </button>
+                <button type="button" class="btn-wp-toggle active" data-bg="blob" id="btnWpBlob" onclick="setPhoneWallpaper('blob')">
+                    <span class="dot-swatch blob-swatch"></span> Blob
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Lockscreen Content (1:1 with reference) -->
+        <main class="lockscreen-content">
+            <!-- Header Section -->
+            <header class="lockscreen-header">
+                <h1 class="lockscreen-title">Enter password</h1>
+                <p class="lockscreen-subtitle">
+                    To prevent you from forgetting your password, you need to enter it at least once every 72 hours.
+                </p>
+            </header>
+
+            <!-- Frosted Password Display Pill -->
+            <div class="password-pill-container">
+                <div class="password-pill" id="passwordPill">
+                    <div class="dots-track" id="dotsTrack">
+                        <!-- Dynamic PIN dots inserted here -->
+                    </div>
+                </div>
+                <div class="error-toast" id="errorToast">Incorrect password, try again</div>
+            </div>
+
+            <!-- Circular Keypad Grid (3x4) -->
+            <div class="keypad-grid" role="group" aria-label="Keypad PIN">
+                <!-- Row 1 -->
+                <button type="button" class="key-btn" data-key="1" onclick="handleKeyPress('1')">
+                    <span class="key-number">1</span>
+                </button>
+                <button type="button" class="key-btn" data-key="2" onclick="handleKeyPress('2')">
+                    <span class="key-number">2</span>
+                </button>
+                <button type="button" class="key-btn" data-key="3" onclick="handleKeyPress('3')">
+                    <span class="key-number">3</span>
+                </button>
+
+                <!-- Row 2 -->
+                <button type="button" class="key-btn" data-key="4" onclick="handleKeyPress('4')">
+                    <span class="key-number">4</span>
+                </button>
+                <button type="button" class="key-btn" data-key="5" onclick="handleKeyPress('5')">
+                    <span class="key-number">5</span>
+                </button>
+                <button type="button" class="key-btn" data-key="6" onclick="handleKeyPress('6')">
+                    <span class="key-number">6</span>
+                </button>
+
+                <!-- Row 3 -->
+                <button type="button" class="key-btn" data-key="7" onclick="handleKeyPress('7')">
+                    <span class="key-number">7</span>
+                </button>
+                <button type="button" class="key-btn" data-key="8" onclick="handleKeyPress('8')">
+                    <span class="key-number">8</span>
+                </button>
+                <button type="button" class="key-btn" data-key="9" onclick="handleKeyPress('9')">
+                    <span class="key-number">9</span>
+                </button>
+
+                <!-- Row 4 -->
+                <button type="button" class="key-btn action-key backspace-key" id="btnBackspace" data-key="backspace" onclick="handleBackspace()" aria-label="Hapus Digit">
+                    <svg class="key-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                        <line x1="18" y1="9" x2="12" y2="15"/>
+                        <line x1="12" y1="9" x2="18" y2="15"/>
+                    </svg>
+                </button>
+                <button type="button" class="key-btn" data-key="0" onclick="handleKeyPress('0')">
+                    <span class="key-number">0</span>
+                </button>
+                <button type="button" class="key-btn action-key confirm-key" id="btnConfirm" data-key="confirm" onclick="handleConfirm()" aria-label="Konfirmasi Password">
+                    <svg class="key-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Footer: Emergency Call -->
+            <footer class="lockscreen-footer">
+                <button type="button" class="emergency-call-btn" onclick="handleEmergencyCall()">
+                    Emergency call
+                </button>
+            </footer>
+        </main>
+
+        <!-- Unlocked Success Overlay -->
+        <div class="unlock-overlay" id="unlockOverlay">
+            <div class="unlock-card">
+                <div class="unlock-icon-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h2>Device Unlocked</h2>
+                <p>Authentication Successful</p>
+                <button type="button" class="btn-relock" onclick="resetLockscreen()">Lock Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

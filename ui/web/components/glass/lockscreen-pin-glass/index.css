@@ -1,0 +1,464 @@
+/* ======================================================================
+   PHONE LOCKSCREEN PIN KEYPAD — GLASS DARK DESIGN SYSTEM
+   1:1 Replication with Aspect Ratio 9:16 Adaptive Wallpaper (Black / Blob)
+   ====================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-page, #08080C);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary, #FFFFFF);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-x: hidden;
+}
+
+/* Phone Viewport Container (9:16 Aspect Ratio) */
+.phone-viewport {
+    width: 100%;
+    max-width: 390px;
+    height: 760px;
+    border-radius: 46px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+                0 0 0 6px #12141C;
+    transition: background 0.35s ease;
+}
+
+/* Wallpaper 1: Blob (9:16 Planetary Dual-Arc SVG) */
+.phone-viewport[data-phone-bg="blob"] {
+    background-color: #0D0D0D;
+    background-image: url('blob_9-16.svg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Wallpaper 2: Obsidian Black (Clean Dark Glass) */
+.phone-viewport[data-phone-bg="black"],
+.phone-viewport[data-phone-bg="dark"] {
+    background-color: #08080C;
+    background-image: radial-gradient(circle at 50% 18%, #141722 0%, #08080C 72%);
+}
+
+/* Punch-hole Front Camera */
+.phone-punch-hole {
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #000000;
+    box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.25), 0 0 2px rgba(0, 0, 0, 0.9);
+    z-index: 20;
+}
+
+.camera-lens {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #0A1B2A;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    box-shadow: 0 0 2px rgba(56, 189, 248, 0.5);
+}
+
+/* Phone Top Control Bar (Wallpaper Switcher) */
+.phone-header-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 14px 20px 0;
+    z-index: 10;
+}
+
+.wallpaper-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.switcher-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.02em;
+    padding: 0 4px;
+}
+
+.btn-wp-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.75);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-wp-toggle:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-wp-toggle.active {
+    background: rgba(56, 189, 248, 0.22);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #FFFFFF;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+.dot-swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.black-swatch {
+    background: #08080C;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.blob-swatch {
+    background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
+    border: 1px solid #38BDF8;
+}
+
+/* Main Lockscreen Content */
+.lockscreen-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 24px;
+    z-index: 5;
+}
+
+/* Header: Enter password */
+.lockscreen-header {
+    text-align: center;
+    padding-top: 14px;
+}
+
+.lockscreen-title {
+    font-size: 23px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.015em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.lockscreen-subtitle {
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.42;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 295px;
+    margin: 9px auto 0;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Frosted Password Pill Container */
+.password-pill-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 18px;
+    position: relative;
+}
+
+.password-pill {
+    width: 86%;
+    height: 50px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-top: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                0 10px 26px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.password-pill.error-shake {
+    animation: pillShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    border-color: #EF4444;
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.5), inset 0 1px 2px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes pillShake {
+    10%, 90% { transform: translate3d(-3px, 0, 0); }
+    20%, 80% { transform: translate3d(5px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+    40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+.dots-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 14px;
+}
+
+.pin-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    animation: dotPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dotPop {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.error-toast {
+    position: absolute;
+    top: 58px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #F87171;
+    background: rgba(30, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.error-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Keypad Grid (3x4) */
+.keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 76px);
+    grid-template-rows: repeat(4, 76px);
+    gap: 18px 24px;
+    justify-content: center;
+    align-items: center;
+    margin: 22px auto 0;
+}
+
+/* Circular Keypad Buttons */
+.key-btn {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-top: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.32),
+                0 8px 24px rgba(0, 0, 0, 0.30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    user-select: none;
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.15s ease,
+                box-shadow 0.15s ease;
+}
+
+.key-btn:hover {
+    background: rgba(255, 255, 255, 0.19);
+    border-color: rgba(255, 255, 255, 0.32);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45),
+                0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.key-btn:active,
+.key-btn.pressed {
+    transform: scale(0.91);
+    background: rgba(255, 255, 255, 0.30);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4),
+                inset 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.key-number {
+    font-size: 32px;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 1;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.key-icon {
+    width: 27px;
+    height: 27px;
+    color: #FFFFFF;
+    pointer-events: none;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+}
+
+.confirm-key .key-icon {
+    width: 29px;
+    height: 29px;
+}
+
+/* Footer: Emergency call */
+.lockscreen-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+}
+
+.emergency-call-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.emergency-call-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.04);
+}
+
+.emergency-call-btn:active {
+    transform: scale(0.96);
+}
+
+/* Unlocked Success Overlay */
+.unlock-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 12, 20, 0.88);
+    backdrop-filter: blur(32px) saturate(190%);
+    -webkit-backdrop-filter: blur(32px) saturate(190%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.05);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.unlock-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.unlock-card {
+    text-align: center;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.unlock-icon-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.2);
+    border: 2px solid #10B981;
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #10B981;
+    margin-bottom: 20px;
+    animation: popBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.unlock-icon-circle svg {
+    width: 36px;
+    height: 36px;
+}
+
+@keyframes popBounce {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.unlock-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+}
+
+.unlock-card p {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 24px;
+}
+
+.btn-relock {
+    padding: 10px 24px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-relock:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}

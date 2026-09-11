@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Lockscreen PIN Keypad — Glass Dark All-in-One</title>
+    <meta name="description" content="1:1 Mobile Phone Lockscreen PIN Keypad dengan Glassmorphism, Web Audio Synthesizer, dan Wallpaper Switcher Black / Blob (9:16).">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: transparent;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 8px;
+            overflow: hidden;
+        }
+
+        /* Phone Viewport Container (9:16 Aspect Ratio) */
+        .phone-viewport {
+            width: 100%;
+            max-width: 380px;
+            height: 740px;
+            border-radius: 46px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85),
+                        inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+                        0 0 0 6px #12141C;
+            transition: background 0.35s ease;
+        }
+
+        /* Wallpaper 1: Blob (9:16 Planetary Dual-Arc SVG) */
+        .phone-viewport[data-phone-bg="blob"] {
+            background-color: #0D0D0D;
+            background-image: url('blob_9-16.svg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        /* Wallpaper 2: Obsidian Black (Clean Dark Glass) */
+        .phone-viewport[data-phone-bg="black"],
+        .phone-viewport[data-phone-bg="dark"] {
+            background-color: #08080C;
+            background-image: radial-gradient(circle at 50% 18%, #141722 0%, #08080C 72%);
+        }
+
+        /* Punch-hole Front Camera */
+        .phone-punch-hole {
+            position: absolute;
+            top: 13px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #000000;
+            box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.25), 0 0 2px rgba(0, 0, 0, 0.9);
+            z-index: 20;
+        }
+
+        .camera-lens {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #0A1B2A;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            box-shadow: 0 0 2px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Phone Top Control Bar (Wallpaper Switcher) */
+        .phone-header-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 12px 18px 0;
+            z-index: 10;
+        }
+
+        .wallpaper-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 3px 6px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .switcher-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.02em;
+            padding: 0 4px;
+        }
+
+        .btn-wp-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-wp-toggle:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-wp-toggle.active {
+            background: rgba(56, 189, 248, 0.22);
+            border-color: rgba(56, 189, 248, 0.45);
+            color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+        }
+
+        .dot-swatch {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .black-swatch {
+            background: #08080C;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .blob-swatch {
+            background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
+            border: 1px solid #38BDF8;
+        }
+
+        /* Main Lockscreen Content */
+        .lockscreen-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px 20px;
+            z-index: 5;
+        }
+
+        /* Header: Enter password */
+        .lockscreen-header {
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .lockscreen-title {
+            font-size: 22.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.015em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .lockscreen-subtitle {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.42;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 290px;
+            margin: 8px auto 0;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Frosted Password Pill Container */
+        .password-pill-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 16px;
+            position: relative;
+        }
+
+        .password-pill {
+            width: 86%;
+            height: 48px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-top: 1px solid rgba(255, 255, 255, 0.38);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                        0 10px 26px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+
+        .password-pill.error-shake {
+            animation: pillShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            border-color: #EF4444;
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.5), inset 0 1px 2px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes pillShake {
+            10%, 90% { transform: translate3d(-3px, 0, 0); }
+            20%, 80% { transform: translate3d(5px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        .dots-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 14px;
+        }
+
+        .pin-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+            animation: dotPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes dotPop {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.25); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .error-toast {
+            position: absolute;
+            top: 54px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #F87171;
+            background: rgba(30, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+
+        .error-toast.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Keypad Grid (3x4) */
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 74px);
+            grid-template-rows: repeat(4, 74px);
+            gap: 16px 22px;
+            justify-content: center;
+            align-items: center;
+            margin: 18px auto 0;
+        }
+
+        /* Circular Keypad Buttons */
+        .key-btn {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.13);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            border-top: 1px solid rgba(255, 255, 255, 0.42);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.32),
+                        0 8px 24px rgba(0, 0, 0, 0.30);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            user-select: none;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        background 0.15s ease,
+                        box-shadow 0.15s ease;
+        }
+
+        .key-btn:hover {
+            background: rgba(255, 255, 255, 0.19);
+            border-color: rgba(255, 255, 255, 0.32);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45),
+                        0 10px 28px rgba(0, 0, 0, 0.35);
+        }
+
+        .key-btn:active,
+        .key-btn.pressed {
+            transform: scale(0.91);
+            background: rgba(255, 255, 255, 0.30);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4),
+                        inset 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+
+        .key-number {
+            font-size: 31px;
+            font-weight: 600;
+            color: #FFFFFF;
+            line-height: 1;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .key-icon {
+            width: 26px;
+            height: 26px;
+            color: #FFFFFF;
+            pointer-events: none;
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .confirm-key .key-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Footer: Emergency call */
+        .lockscreen-footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+        }
+
+        .emergency-call-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            padding: 6px 16px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .emergency-call-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.04);
+        }
+
+        .emergency-call-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Unlocked Success Overlay */
+        .unlock-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(8, 12, 20, 0.88);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.05);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .unlock-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .unlock-card {
+            text-align: center;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .unlock-icon-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10B981;
+            box-shadow: 0 0 24px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10B981;
+            margin-bottom: 20px;
+            animation: popBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .unlock-icon-circle svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        @keyframes popBounce {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .unlock-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .unlock-card p {
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+        }
+
+        .btn-relock {
+            padding: 10px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-relock:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Phone Mockup Container (9:16 Aspect Ratio) -->
+    <div class="phone-viewport" id="phoneViewport" data-phone-bg="blob">
+        <!-- Punch-hole Front Camera -->
+        <div class="phone-punch-hole" aria-hidden="true">
+            <div class="camera-lens"></div>
+        </div>
+
+        <!-- Phone Top Control Bar (Wallpaper Switcher: Black / Blob) -->
+        <div class="phone-header-controls">
+            <div class="wallpaper-switcher" title="Ganti Wallpaper Layar HP (Black / Blob)">
+                <span class="switcher-label">Wallpaper:</span>
+                <button type="button" class="btn-wp-toggle" data-bg="black" id="btnWpBlack" onclick="setPhoneWallpaper('black')">
+                    <span class="dot-swatch black-swatch"></span> Black
+                </button>
+                <button type="button" class="btn-wp-toggle active" data-bg="blob" id="btnWpBlob" onclick="setPhoneWallpaper('blob')">
+                    <span class="dot-swatch blob-swatch"></span> Blob
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Lockscreen Content (1:1 with reference) -->
+        <main class="lockscreen-content">
+            <!-- Header Section -->
+            <header class="lockscreen-header">
+                <h1 class="lockscreen-title">Enter password</h1>
+                <p class="lockscreen-subtitle">
+                    To prevent you from forgetting your password, you need to enter it at least once every 72 hours.
+                </p>
+            </header>
+
+            <!-- Frosted Password Display Pill -->
+            <div class="password-pill-container">
+                <div class="password-pill" id="passwordPill">
+                    <div class="dots-track" id="dotsTrack">
+                        <!-- Dynamic PIN dots inserted here -->
+                    </div>
+                </div>
+                <div class="error-toast" id="errorToast">Incorrect password, try again</div>
+            </div>
+
+            <!-- Circular Keypad Grid (3x4) -->
+            <div class="keypad-grid" role="group" aria-label="Keypad PIN">
+                <!-- Row 1 -->
+                <button type="button" class="key-btn" data-key="1" onclick="handleKeyPress('1')">
+                    <span class="key-number">1</span>
+                </button>
+                <button type="button" class="key-btn" data-key="2" onclick="handleKeyPress('2')">
+                    <span class="key-number">2</span>
+                </button>
+                <button type="button" class="key-btn" data-key="3" onclick="handleKeyPress('3')">
+                    <span class="key-number">3</span>
+                </button>
+
+                <!-- Row 2 -->
+                <button type="button" class="key-btn" data-key="4" onclick="handleKeyPress('4')">
+                    <span class="key-number">4</span>
+                </button>
+                <button type="button" class="key-btn" data-key="5" onclick="handleKeyPress('5')">
+                    <span class="key-number">5</span>
+                </button>
+                <button type="button" class="key-btn" data-key="6" onclick="handleKeyPress('6')">
+                    <span class="key-number">6</span>
+                </button>
+
+                <!-- Row 3 -->
+                <button type="button" class="key-btn" data-key="7" onclick="handleKeyPress('7')">
+                    <span class="key-number">7</span>
+                </button>
+                <button type="button" class="key-btn" data-key="8" onclick="handleKeyPress('8')">
+                    <span class="key-number">8</span>
+                </button>
+                <button type="button" class="key-btn" data-key="9" onclick="handleKeyPress('9')">
+                    <span class="key-number">9</span>
+                </button>
+
+                <!-- Row 4 -->
+                <button type="button" class="key-btn action-key backspace-key" id="btnBackspace" data-key="backspace" onclick="handleBackspace()" aria-label="Hapus Digit">
+                    <svg class="key-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                        <line x1="18" y1="9" x2="12" y2="15"/>
+                        <line x1="12" y1="9" x2="18" y2="15"/>
+                    </svg>
+                </button>
+                <button type="button" class="key-btn" data-key="0" onclick="handleKeyPress('0')">
+                    <span class="key-number">0</span>
+                </button>
+                <button type="button" class="key-btn action-key confirm-key" id="btnConfirm" data-key="confirm" onclick="handleConfirm()" aria-label="Konfirmasi Password">
+                    <svg class="key-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Footer: Emergency Call -->
+            <footer class="lockscreen-footer">
+                <button type="button" class="emergency-call-btn" onclick="handleEmergencyCall()">
+                    Emergency call
+                </button>
+            </footer>
+        </main>
+
+        <!-- Unlocked Success Overlay -->
+        <div class="unlock-overlay" id="unlockOverlay">
+            <div class="unlock-card">
+                <div class="unlock-icon-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h2>Device Unlocked</h2>
+                <p>Authentication Successful</p>
+                <button type="button" class="btn-relock" onclick="resetLockscreen()">Lock Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pinCode = "";
+        const MAX_PIN_LENGTH = 8;
+        let audioCtx = null;
+
+        // Web Audio Synthesizer for Touch Haptic Feedback
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playKeyClickSound() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                const now = audioCtx.currentTime;
+                osc.frequency.setValueAtTime(580, now);
+                osc.frequency.exponentialRampToValueAtTime(240, now + 0.045);
+
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } catch (e) {}
+        }
+
+        function playSuccessChime() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const startTime = audioCtx.currentTime + idx * 0.07;
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, startTime);
+
+                    gain.gain.setValueAtTime(0.2, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.28);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.3);
+                });
+            } catch (e) {}
+        }
+
+        function playErrorBuzz() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                const now = audioCtx.currentTime;
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.setValueAtTime(110, now + 0.08);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.26);
+            } catch (e) {}
+        }
+
+        function triggerHaptic(duration = 20) {
+            if (navigator.vibrate) {
+                try {
+                    navigator.vibrate(duration);
+                } catch (e) {}
+            }
+        }
+
+        // Render PIN dots inside the frosted capsule
+        function updateDotsDisplay() {
+            const dotsTrack = document.getElementById('dotsTrack');
+            if (!dotsTrack) return;
+
+            dotsTrack.innerHTML = '';
+            for (let i = 0; i < pinCode.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'pin-dot';
+                dotsTrack.appendChild(dot);
+            }
+
+            // Hide error toast when user starts typing again
+            const errorToast = document.getElementById('errorToast');
+            if (errorToast) errorToast.classList.remove('visible');
+        }
+
+        // Key Press Handler
+        window.handleKeyPress = function (digit) {
+            if (pinCode.length >= MAX_PIN_LENGTH) return;
+
+            playKeyClickSound();
+            triggerHaptic(15);
+
+            pinCode += digit;
+            updateDotsDisplay();
+
+            // Animate button active state
+            const btn = document.querySelector(`.key-btn[data-key="${digit}"]`);
+            if (btn) {
+                btn.classList.add('pressed');
+                setTimeout(() => btn.classList.remove('pressed'), 140);
+            }
+        };
+
+        // Backspace Handler
+        window.handleBackspace = function () {
+            playKeyClickSound();
+            triggerHaptic(18);
+
+            if (pinCode.length > 0) {
+                pinCode = pinCode.slice(0, -1);
+                updateDotsDisplay();
+            }
+
+            const btn = document.getElementById('btnBackspace');
+            if (btn) {
+                btn.classList.add('pressed');
+                setTimeout(() => btn.classList.remove('pressed'), 140);
+            }
+        };
+
+        // Confirm / Validate Handler
+        window.handleConfirm = function () {
+            const btn = document.getElementById('btnConfirm');
+            if (btn) {
+                btn.classList.add('pressed');
+                setTimeout(() => btn.classList.remove('pressed'), 140);
+            }
+
+            if (pinCode.length === 0) {
+                showError("Please enter your password");
+                return;
+            }
+
+            if (pinCode.length >= 4) {
+                unlockSuccess();
+            } else {
+                showError("Password too short (min 4 digits)");
+            }
+        };
+
+        function showError(msg = "Incorrect password, try again") {
+            playErrorBuzz();
+            triggerHaptic([40, 60, 40]);
+
+            const pill = document.getElementById('passwordPill');
+            const toast = document.getElementById('errorToast');
+
+            if (pill) {
+                pill.classList.remove('error-shake');
+                void pill.offsetWidth;
+                pill.classList.add('error-shake');
+            }
+
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('visible');
+            }
+
+            setTimeout(() => {
+                pinCode = "";
+                updateDotsDisplay();
+            }, 500);
+        }
+
+        function unlockSuccess() {
+            playSuccessChime();
+            triggerHaptic([30, 40, 60]);
+
+            const overlay = document.getElementById('unlockOverlay');
+            if (overlay) {
+                overlay.classList.add('active');
+            }
+        }
+
+        window.resetLockscreen = function () {
+            pinCode = "";
+            updateDotsDisplay();
+            const overlay = document.getElementById('unlockOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        };
+
+        window.handleEmergencyCall = function () {
+            playKeyClickSound();
+            triggerHaptic(25);
+            alert("Emergency Call\nSimulasi panggilan darurat: 112 / 911 / 110.");
+        };
+
+        // Wallpaper Switcher (Black / Blob)
+        window.setPhoneWallpaper = function (bg) {
+            const viewport = document.getElementById('phoneViewport');
+            if (viewport) {
+                viewport.setAttribute('data-phone-bg', bg);
+            }
+
+            const btnBlack = document.getElementById('btnWpBlack');
+            const btnBlob = document.getElementById('btnWpBlob');
+            if (btnBlack) btnBlack.classList.toggle('active', bg === 'black');
+            if (btnBlob) btnBlob.classList.toggle('active', bg === 'blob');
+
+            try {
+                localStorage.setItem('phone-lockscreen-wp', bg);
+            } catch (e) {}
+        };
+
+        // Keyboard support
+        window.addEventListener('keydown', function (e) {
+            if (e.key >= '0' && e.key <= '9') {
+                handleKeyPress(e.key);
+            } else if (e.key === 'Backspace') {
+                handleBackspace();
+            } else if (e.key === 'Enter') {
+                handleConfirm();
+            } else if (e.key === 'Escape') {
+                pinCode = "";
+                updateDotsDisplay();
+            }
+        });
+
+        // Restore saved wallpaper preference
+        window.addEventListener('DOMContentLoaded', function () {
+            let savedWp = 'blob';
+            try {
+                savedWp = localStorage.getItem('phone-lockscreen-wp') || 'blob';
+            } catch (e) {}
+            setPhoneWallpaper(savedWp);
+        });
+    </script>
+</body>
+</html>
