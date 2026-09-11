@@ -179,6 +179,107 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         .header-actions {{ display: flex; align-items: center; gap: 10px; }}
 
+        /* Global Theme Menu (Header) */
+        .theme-selector-wrap {{
+            position: relative;
+        }}
+        .btn-theme-trigger {{
+            display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+            border-radius: 10px; font-size: 12.5px; font-weight: 600;
+            color: var(--text-primary); background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer; transition: all 0.2s ease;
+        }}
+        .btn-theme-trigger:hover {{
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(56, 189, 248, 0.4);
+        }}
+        .theme-chevron {{
+            width: 13px; height: 13px; color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }}
+        .theme-dropdown-menu {{
+            position: absolute; top: calc(100% + 8px); right: 0; width: 250px;
+            background: rgba(16, 20, 32, 0.85);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            padding: 8px; display: flex; flex-direction: column; gap: 4px;
+            z-index: 100; opacity: 0; visibility: hidden;
+            transform: translateY(-8px) scale(0.96);
+            transition: all 0.2s var(--ease-spring);
+            pointer-events: none;
+        }}
+        .theme-dropdown-menu.open {{
+            opacity: 1; visibility: visible; transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }}
+        .theme-menu-title {{
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--accent-cyan);
+            padding: 6px 10px 4px;
+        }}
+        .theme-menu-item {{
+            display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+            border-radius: 10px; cursor: pointer; transition: all 0.18s;
+            border: 1px solid transparent;
+        }}
+        .theme-menu-item:hover {{
+            background: rgba(255, 255, 255, 0.08);
+        }}
+        .theme-menu-item.active {{
+            background: rgba(56, 189, 248, 0.16);
+            border-color: rgba(56, 189, 248, 0.4);
+        }}
+        .theme-swatch {{
+            width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+        }}
+        .swatch-white {{
+            background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }}
+        .swatch-black {{
+            background: #08080C; border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }}
+        .swatch-blob {{
+            background: linear-gradient(135deg, #38BDF8 0%, #111F38 45%, #F59E0B 100%);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }}
+        .theme-meta {{ flex: 1; }}
+        .theme-title {{ font-size: 13px; font-weight: 600; color: #FFFFFF; }}
+        .theme-desc {{ font-size: 11px; color: var(--text-muted); }}
+        .theme-check {{ width: 14px; height: 14px; color: var(--accent-cyan); opacity: 0; }}
+        .theme-menu-item.active .theme-check {{ opacity: 1; }}
+
+        /* Dedicated Grid Background Switcher */
+        .grid-bg-selector {{
+            display: flex; align-items: center; gap: 4px; padding: 4px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+        }}
+        .grid-bg-label {{
+            font-size: 11.5px; font-weight: 600; color: var(--text-muted); padding: 0 8px;
+            display: flex; align-items: center; gap: 5px;
+        }}
+        .grid-bg-label svg {{ width: 14px; height: 14px; }}
+        .btn-grid-bg {{
+            padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+            background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+            transition: all 0.2s;
+        }}
+        .btn-grid-bg:hover {{ color: var(--text-primary); }}
+        .btn-grid-bg.active {{
+            background: rgba(56, 189, 248, 0.18); color: #38BDF8; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }}
+
         .btn-top-link {{
             display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px;
             border-radius: 10px; font-size: 12.5px; font-weight: 500; text-decoration: none;
@@ -444,7 +545,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .card-preview-zone {{
             flex: 1; width: 100%; min-height: 400px;
             display: flex; align-items: stretch; justify-content: center;
-            background: #050508; position: relative;
+            background: transparent; position: relative;
             overflow: hidden;
             padding: 0;
         }}
@@ -452,9 +553,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
             width: 100%; height: 100%; min-height: 100%;
             display: flex; align-items: stretch; justify-content: center;
             margin: 0 auto; flex-shrink: 0;
+            background: transparent;
         }}
         .card-preview-zone iframe {{
-            width: 100%; height: 100%; min-height: 100%; border: none; background: #07070A;
+            width: 100%; height: 100%; min-height: 100%; border: none; background: transparent;
             display: block; pointer-events: auto;
         }}
 
@@ -849,9 +951,287 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 display: none !important;
             }}
         }}
+
+                /* Dedicated Grid Background Variants */
+        .showcase-grid[data-grid-bg="white"] {{
+            background-color: #F8FAFC !important;
+            background-image: none !important;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+            margin: 12px 24px 48px;
+            padding: 24px !important;
+        }}
+        .showcase-grid[data-grid-bg="white"] .component-card {{
+            background: rgba(255, 255, 255, 0.88) !important;
+            border-color: rgba(203, 213, 225, 0.8) !important;
+            border-top-color: #FFFFFF !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF !important;
+        }}
+        .showcase-grid[data-grid-bg="white"] .card-actions-bar {{
+            background: rgba(241, 245, 249, 0.85) !important;
+            border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+        }}
+        .showcase-grid[data-grid-bg="white"] .card-meta-left h3 {{ color: #0F172A !important; }}
+        .showcase-grid[data-grid-bg="white"] .card-meta-left p {{ color: #64748B !important; }}
+        .showcase-grid[data-grid-bg="white"] .card-badge-pill {{
+            background: rgba(0, 0, 0, 0.06) !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+            color: #334155 !important;
+        }}
+        .showcase-grid[data-grid-bg="white"] .btn-card-tool {{
+            background: rgba(0, 0, 0, 0.04) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+            color: #334155 !important;
+        }}
+
+        .showcase-grid[data-grid-bg="black"] {{
+            background-color: #08080C !important;
+            background-image: none !important;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+            margin: 12px 24px 48px;
+            padding: 24px !important;
+        }}
+
+        .showcase-grid[data-grid-bg="blob"] {{
+            background-color: #111F38 !important;
+            background-image: url('blob-bg.webp') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            margin: 12px 24px 48px;
+            padding: 24px !important;
+        }}
+        .showcase-grid[data-grid-bg="blob"] .component-card {{
+            background: rgba(17, 31, 56, 0.58) !important;
+            backdrop-filter: blur(28px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+            border-color: rgba(255, 255, 255, 0.14) !important;
+            border-top-color: rgba(255, 255, 255, 0.38) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        }}
+
+        /* 1:1 Blob Planetary Dual-Arc Background Layer */
+        .blob-bg-layer {{
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0; display: none;
+            background-color: #111F38;
+            background-image: url('blob-bg.webp');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        body[data-theme="blob"] .blob-bg-layer {{
+            display: block;
+        }}
+
+        /* ============================================================ */
+        /* THEME OVERRIDES: WHITE & BLOB                                */
+        /* ============================================================ */
+
+        /* WHITE THEME (CLEAN LIGHT GLASS) */
+        body[data-theme="white"] {{
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .ambient-mesh {{ display: none; }}
+        body[data-theme="white"] .showcase-header {{
+            background: rgba(255, 255, 255, 0.86);
+            border-bottom-color: rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .brand-text h1 {{ color: #0F172A; }}
+        body[data-theme="white"] .brand-text p {{ color: #64748B; }}
+        body[data-theme="white"] .btn-top-link {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #334155;
+        }}
+        body[data-theme="white"] .btn-top-link:hover {{
+            background: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .btn-theme-trigger {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .theme-dropdown-menu {{
+            background: rgba(255, 255, 255, 0.94);
+            border-color: rgba(203, 213, 225, 0.8);
+            border-top-color: #FFFFFF;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
+        }}
+        body[data-theme="white"] .theme-menu-title {{ color: #0284C7; }}
+        body[data-theme="white"] .theme-title {{ color: #0F172A; }}
+        body[data-theme="white"] .theme-desc {{ color: #64748B; }}
+        body[data-theme="white"] .theme-menu-item:hover {{ background: rgba(0, 0, 0, 0.04); }}
+        body[data-theme="white"] .theme-menu-item.active {{
+            background: rgba(14, 165, 233, 0.12);
+            border-color: rgba(14, 165, 233, 0.3);
+        }}
+        body[data-theme="white"] .app-highlight-banner {{
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.08), rgba(59, 130, 246, 0.08));
+            border-color: rgba(6, 182, 212, 0.25);
+        }}
+        body[data-theme="white"] .banner-text h3 {{ color: #0F172A; }}
+        body[data-theme="white"] .banner-text p {{ color: #475569; }}
+        body[data-theme="white"] .filter-tabs,
+        body[data-theme="white"] .layout-selector,
+        body[data-theme="white"] .grid-bg-selector {{
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .filter-tab,
+        body[data-theme="white"] .layout-label,
+        body[data-theme="white"] .grid-bg-label,
+        body[data-theme="white"] .btn-layout,
+        body[data-theme="white"] .btn-grid-bg {{
+            color: #64748B;
+        }}
+        body[data-theme="white"] .filter-tab:hover,
+        body[data-theme="white"] .btn-layout:hover,
+        body[data-theme="white"] .btn-grid-bg:hover {{
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .filter-tab.active {{
+            background: #FFFFFF;
+            color: #0F172A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .btn-layout.active,
+        body[data-theme="white"] .btn-grid-bg.active {{
+            background: rgba(14, 165, 233, 0.15);
+            color: #0284C7;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }}
+        body[data-theme="white"] .search-box {{
+            background: #FFFFFF;
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }}
+        body[data-theme="white"] .search-box input {{ color: #0F172A; }}
+        body[data-theme="white"] .search-box input::placeholder {{ color: #94A3B8; }}
+        body[data-theme="white"] .component-card {{
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(226, 232, 240, 0.9);
+            border-top-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }}
+        body[data-theme="white"] .component-card:hover {{
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 #FFFFFF;
+        }}
+        body[data-theme="white"] .card-top {{
+            border-bottom-color: rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.015);
+        }}
+        body[data-theme="white"] .card-name {{ color: #0F172A; }}
+        body[data-theme="white"] .card-category {{ color: #64748B; }}
+        body[data-theme="white"] .card-actions-bar {{
+            background: rgba(0, 0, 0, 0.03);
+            border-bottom-color: rgba(0, 0, 0, 0.06);
+        }}
+        body[data-theme="white"] .btn-card-tool {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #475569;
+        }}
+        body[data-theme="white"] .btn-card-tool:hover {{
+            background: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .card-preview-zone {{
+            background: #F8FAFC;
+        }}
+        body[data-theme="white"] .studio-modal-card {{
+            background: #FFFFFF;
+            border-color: rgba(226, 232, 240, 0.9);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.2);
+        }}
+        body[data-theme="white"] .studio-header {{
+            background: #F8FAFC;
+            border-bottom-color: rgba(226, 232, 240, 0.9);
+        }}
+        body[data-theme="white"] .studio-title {{ color: #0F172A; }}
+        body[data-theme="white"] .studio-toolbar {{
+            background: #F1F5F9;
+            border-bottom-color: rgba(226, 232, 240, 0.8);
+        }}
+        body[data-theme="white"] .btn-studio-preset {{
+            background: #FFFFFF;
+            border-color: rgba(203, 213, 225, 0.8);
+            color: #334155;
+        }}
+        body[data-theme="white"] .btn-studio-preset:hover {{
+            background: rgba(0, 0, 0, 0.04);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .btn-studio-preset.active {{
+            background: rgba(14, 165, 233, 0.15);
+            border-color: #0284C7;
+            color: #0284C7;
+        }}
+        body[data-theme="white"] .studio-canvas-stage {{
+            background: #E2E8F0;
+        }}
+        body[data-theme="white"] .studio-viewport-wrapper {{
+            background: #FFFFFF;
+            border-color: rgba(203, 213, 225, 0.8);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+        }}
+
+        /* BLOB THEME (1:1 PLANETARY DUAL-ARC AURA) */
+        body[data-theme="blob"] {{
+            background-color: #111F38;
+            color: #FFFFFF;
+        }}
+        body[data-theme="blob"] .ambient-mesh {{ display: none; }}
+        body[data-theme="blob"] .showcase-header {{
+            background: rgba(17, 31, 56, 0.72);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border-bottom-color: rgba(255, 255, 255, 0.12);
+        }}
+        body[data-theme="blob"] .component-card {{
+            background: rgba(17, 31, 56, 0.55);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-color: rgba(255, 255, 255, 0.12);
+            border-top-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        }}
+        body[data-theme="blob"] .component-card:hover {{
+            background: rgba(17, 31, 56, 0.7);
+            border-top-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }}
+        body[data-theme="blob"] .card-actions-bar {{
+            background: rgba(10, 20, 38, 0.5);
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }}
+        body[data-theme="blob"] .card-preview-zone {{
+            background: transparent;
+        }}
+        body[data-theme="blob"] .studio-canvas-stage {{
+            background: #111F38 url('blob-bg.webp') center center / cover no-repeat fixed;
+        }}
+        body[data-theme="blob"] .studio-viewport-wrapper {{
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.2);
+        }}
     </style>
 </head>
 <body>
+
+    <!-- 1:1 Planetary Dual-Arc Wallpaper Layer -->
+    <div class="blob-bg-layer" id="blobBgLayer"></div>
 
     <div class="ambient-mesh">
         <div class="blob blob-1"></div>
@@ -871,6 +1251,42 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
+            <!-- Global Theme Switcher Menu (White | Black | Blob) -->
+            <div class="theme-selector-wrap" id="themeSelectorWrap">
+                <button type="button" class="btn-theme-trigger" id="btnThemeTrigger" onclick="toggleThemeMenu(event)" title="Pilih Tema Global (White, Black, Blob)">
+                    <i data-lucide="palette"></i>
+                    <span id="headerThemeLabel">Black</span>
+                    <i data-lucide="chevron-down" class="theme-chevron" id="headerThemeChevron"></i>
+                </button>
+                <div class="theme-dropdown-menu" id="themeDropdownMenu">
+                    <div class="theme-menu-title">Global Theme</div>
+                    <div class="theme-menu-item" data-theme="white" onclick="switchTheme('white')">
+                        <span class="theme-swatch swatch-white"></span>
+                        <div class="theme-meta">
+                            <div class="theme-title">White</div>
+                            <div class="theme-desc">Clean Light Glass</div>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                    <div class="theme-menu-item active" data-theme="black" onclick="switchTheme('black')">
+                        <span class="theme-swatch swatch-black"></span>
+                        <div class="theme-meta">
+                            <div class="theme-title">Black</div>
+                            <div class="theme-desc">Obsidian Dark Glass</div>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                    <div class="theme-menu-item" data-theme="blob" onclick="switchTheme('blob')">
+                        <span class="theme-swatch swatch-blob"></span>
+                        <div class="theme-meta">
+                            <div class="theme-title">Blob</div>
+                            <div class="theme-desc">Planetary Dual-Arc Aura (1:1)</div>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                </div>
+            </div>
+
             <a href="../../../../index.html" class="btn-top-link" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
@@ -911,6 +1327,14 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="controls-right">
+            <!-- Grid Background Switcher (White | Black | Blob) -->
+            <div class="grid-bg-selector">
+                <span class="grid-bg-label"><i data-lucide="palette"></i> Background:</span>
+                <button type="button" class="btn-grid-bg" data-bg="white" onclick="setGridBg('white')" title="Tema Latar Putih">White</button>
+                <button type="button" class="btn-grid-bg active" data-bg="black" onclick="setGridBg('black')" title="Tema Latar Hitam Obsidian">Black</button>
+                <button type="button" class="btn-grid-bg" data-bg="blob" onclick="setGridBg('blob')" title="Tema Latar Planetary Dual-Arc Aura (1:1)">Blob</button>
+            </div>
+
             <!-- Grid Layout Selector -->
             <div class="layout-selector">
                 <span class="layout-label"><i data-lucide="grid"></i> Kolom:</span>
@@ -979,6 +1403,17 @@ glass_showcase_content = f"""<!DOCTYPE html>
             <div class="studio-panel active" id="studioPreviewPanel">
                 <!-- Studio Toolbar: Presets Pixel & Slider Rasio Ukuran -->
                 <div class="studio-toolbar">
+                    <div class="studio-toolbar-section">
+                        <span class="toolbar-label"><i data-lucide="palette"></i> BG:</span>
+                        <div class="presets-group">
+                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="white" onclick="switchTheme('white')">White</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg active" data-bg="black" onclick="switchTheme('black')">Black</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="blob" onclick="switchTheme('blob')">Blob</button>
+                        </div>
+                    </div>
+
+                    <div class="studio-toolbar-divider"></div>
+
                     <div class="studio-toolbar-section presets-group">
                         <span class="toolbar-label"><i data-lucide="monitor"></i> Preset:</span>
                         <button class="btn-studio-preset active" data-preset="100%" onclick="setStudioPreset('100%', this)" title="Full Viewport (100%)">
@@ -1437,6 +1872,138 @@ glass_showcase_content = f"""<!DOCTYPE html>
                     closeComponentStudio();
                 }}
             }}
+        }});
+
+        // ============================================================
+        // GLOBAL THEME CONTROLLER (WHITE | BLACK | BLOB)
+        // ============================================================
+        let currentTheme = localStorage.getItem('prototype-theme') || 'black';
+
+        function toggleThemeMenu(e) {{
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('themeDropdownMenu');
+            const chevron = document.getElementById('headerThemeChevron');
+            if (!menu) return;
+            const isOpen = menu.classList.toggle('open');
+            if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        }}
+
+        document.addEventListener('click', (e) => {{
+            const menu = document.getElementById('themeDropdownMenu');
+            const trigger = document.getElementById('btnThemeTrigger');
+            if (menu && menu.classList.contains('open')) {{
+                if (!menu.contains(e.target) && (!trigger || !trigger.contains(e.target))) {{
+                    menu.classList.remove('open');
+                    const chevron = document.getElementById('headerThemeChevron');
+                    if (chevron) chevron.style.transform = 'rotate(0deg)';
+                }}
+            }}
+        }});
+
+        let currentGridBg = localStorage.getItem('prototype-grid-bg') || currentTheme;
+
+        function setGridBg(bg) {{
+            currentGridBg = bg;
+            const grid = document.getElementById('componentsGrid');
+            if (grid) {{
+                grid.setAttribute('data-grid-bg', bg);
+            }}
+            document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
+            }});
+            localStorage.setItem('prototype-grid-bg', bg);
+            
+            // Sync child iframes inside the grid to match contrast
+            document.querySelectorAll('#componentsGrid iframe').forEach(iframe => {{
+                try {{
+                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: bg }}, '*');
+                    const doc = iframe.contentDocument;
+                    if (doc && doc.documentElement) {{
+                        doc.documentElement.setAttribute('data-theme', bg);
+                        if (doc.body) {{
+                            doc.body.setAttribute('data-theme', bg);
+                            if (bg === 'blob' || bg === 'white') {{
+                                doc.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                doc.body.style.backgroundColor = '';
+                            }}
+                        }}
+                    }}
+                }} catch(e) {{}}
+            }});
+            showToast(`Background grid diatur ke: ${{bg.toUpperCase()}}`);
+        }}
+
+        function switchTheme(theme) {{
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('prototype-theme', theme);
+
+            // Update Header Trigger Label
+            const headerLabel = document.getElementById('headerThemeLabel');
+            if (headerLabel) {{
+                headerLabel.textContent = theme === 'white' ? 'White' : theme === 'blob' ? 'Blob' : 'Black';
+            }}
+
+            // Update Dropdown Items Active State
+            document.querySelectorAll('.theme-menu-item').forEach(item => {{
+                item.classList.toggle('active', item.getAttribute('data-theme') === theme);
+            }});
+
+            // Sync Grid background with current theme
+            setGridBg(theme);
+
+            // Update Studio Toolbar BG buttons
+            document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
+                btn.classList.toggle('active', btn.getAttribute('data-bg') === theme);
+            }});
+
+            // Close Header Dropdown Menu
+            const menu = document.getElementById('themeDropdownMenu');
+            if (menu) menu.classList.remove('open');
+            const chevron = document.getElementById('headerThemeChevron');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+
+            // Propagate theme to all child iframes
+            propagateThemeToIframes(theme);
+
+            showToast(`Tema global diubah ke: ${{theme.toUpperCase()}}`);
+        }}
+
+        function propagateThemeToIframes(theme) {{
+            document.querySelectorAll('iframe').forEach(iframe => {{
+                try {{
+                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: theme }}, '*');
+                    const doc = iframe.contentDocument;
+                    if (doc && doc.documentElement) {{
+                        doc.documentElement.setAttribute('data-theme', theme);
+                        if (doc.body) {{
+                            doc.body.setAttribute('data-theme', theme);
+                            if (theme === 'blob' || theme === 'white') {{
+                                doc.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                doc.body.style.backgroundColor = '';
+                            }}
+                        }}
+                    }}
+                }} catch (err) {{}}
+            }});
+        }}
+
+        // Initialize Theme on Page Load & Hook Iframe Load
+        window.addEventListener('DOMContentLoaded', () => {{
+            switchTheme(currentTheme);
+            const savedGridBg = localStorage.getItem('prototype-grid-bg');
+            if (savedGridBg) {{
+                setGridBg(savedGridBg);
+            }}
+        }});
+
+        document.querySelectorAll('iframe').forEach(iframe => {{
+            iframe.addEventListener('load', () => {{
+                propagateThemeToIframes(currentTheme);
+            }});
         }});
     </script>
 </body>
@@ -3120,9 +3687,235 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 align-items: flex-end;
             }}
         }}
+        /* Global Theme Menu (Header) */
+        .theme-selector-wrap {{
+            position: relative;
+        }}
+        .btn-theme-trigger {{
+            display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+            border-radius: 10px; font-size: 13px; font-weight: 500;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary); cursor: pointer; transition: all 0.2s;
+        }}
+        .btn-theme-trigger:hover {{
+            background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);
+        }}
+        .theme-chevron {{
+            width: 14px; height: 14px; transition: transform 0.2s ease;
+        }}
+        .theme-dropdown-menu {{
+            position: absolute; top: calc(100% + 8px); right: 0;
+            width: 250px; background: rgba(13, 13, 18, 0.95);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px; padding: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            display: none; flex-direction: column; gap: 4px;
+            z-index: 100;
+        }}
+        .theme-dropdown-menu.open {{ display: flex; }}
+        .theme-menu-header {{
+            padding: 6px 10px 4px; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;
+        }}
+        .theme-menu-item {{
+            display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+            border-radius: 8px; cursor: pointer; transition: all 0.15s ease;
+            position: relative; border: 1px solid transparent;
+        }}
+        .theme-menu-item:hover {{ background: rgba(255, 255, 255, 0.06); }}
+        .theme-menu-item.active {{
+            background: rgba(74, 158, 255, 0.12);
+            border-color: rgba(74, 158, 255, 0.25);
+        }}
+        .theme-swatch {{
+            width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }}
+        .swatch-white {{ background: #F8FAFC; border-color: #CBD5E1; }}
+        .swatch-black {{ background: #08080C; border-color: rgba(255, 255, 255, 0.3); }}
+        .swatch-blob {{
+            background: radial-gradient(circle at 70% 30%, #38BDF8 0%, #111F38 60%, #F59E0B 100%);
+            border-color: #38BDF8;
+        }}
+        .theme-info {{ display: flex; flex-direction: column; flex: 1; min-width: 0; }}
+        .theme-title {{ font-size: 12.5px; font-weight: 600; color: #FFFFFF; }}
+        .theme-desc {{ font-size: 11px; color: var(--text-secondary); }}
+        .theme-check {{ width: 14px; height: 14px; color: var(--accent-cyan); opacity: 0; }}
+        .theme-menu-item.active .theme-check {{ opacity: 1; }}
+
+        /* 1:1 Blob Planetary Dual-Arc Background Layer */
+        .blob-bg-layer {{
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 0; display: none;
+            background-color: #111F38;
+            background-image: url('assets/blob-bg.webp');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        body[data-theme="blob"] .blob-bg-layer {{
+            display: block;
+        }}
+
+        /* WHITE THEME (CLEAN LIGHT GLASS) */
+        body[data-theme="white"] {{
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .ambient-mesh {{ display: none; }}
+        body[data-theme="white"] .hub-header {{
+            background: rgba(255, 255, 255, 0.88);
+            border-bottom-color: rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .brand-text h1 {{ color: #0F172A; }}
+        body[data-theme="white"] .brand-text p {{ color: #64748B; }}
+        body[data-theme="white"] .action-link-btn {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #334155;
+        }}
+        body[data-theme="white"] .action-link-btn:hover {{
+            background: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .btn-theme-trigger {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .theme-dropdown-menu {{
+            background: rgba(255, 255, 255, 0.94);
+            border-color: rgba(203, 213, 225, 0.8);
+            border-top-color: #FFFFFF;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
+        }}
+        body[data-theme="white"] .theme-menu-title {{ color: #0284C7; }}
+        body[data-theme="white"] .theme-title {{ color: #0F172A; }}
+        body[data-theme="white"] .theme-desc {{ color: #64748B; }}
+        body[data-theme="white"] .theme-menu-item:hover {{ background: rgba(0, 0, 0, 0.04); }}
+        body[data-theme="white"] .theme-menu-item.active {{
+            background: rgba(14, 165, 233, 0.12);
+            border-color: rgba(14, 165, 233, 0.3);
+        }}
+        body[data-theme="white"] .hero-title {{ color: #0F172A; }}
+        body[data-theme="white"] .hero-desc {{ color: #475569; }}
+        body[data-theme="white"] .proj-tab-btn {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #475569;
+        }}
+        body[data-theme="white"] .proj-tab-btn:hover {{
+            background: rgba(0, 0, 0, 0.08);
+            color: #0F172A;
+        }}
+        body[data-theme="white"] .proj-tab-btn.active {{
+            background: #FFFFFF;
+            border-color: #CBD5E1;
+            color: #0F172A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }}
+        body[data-theme="white"] .mode-toggle-cluster {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .btn-mode {{ color: #64748B; }}
+        body[data-theme="white"] .btn-mode.active {{
+            background: #FFFFFF;
+            color: #0F172A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .app-showcase-box {{
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #CBD5E1;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+        }}
+        body[data-theme="white"] .app-title-group h2 {{ color: #0F172A; }}
+        body[data-theme="white"] .app-title-group p {{ color: #64748B; }}
+        body[data-theme="white"] .viewport-selector {{
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .vp-btn {{ color: #64748B; }}
+        body[data-theme="white"] .vp-btn.active {{
+            background: #FFFFFF;
+            color: #0F172A;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }}
+        body[data-theme="white"] .btn-tool-secondary {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #334155;
+        }}
+        body[data-theme="white"] .gallery-card {{
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #CBD5E1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }}
+        body[data-theme="white"] .gallery-title {{ color: #0F172A; }}
+        body[data-theme="white"] .gallery-desc {{ color: #64748B; }}
+        body[data-theme="white"] .arch-card {{
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #CBD5E1;
+        }}
+        body[data-theme="white"] .arch-card h3 {{ color: #0F172A; }}
+        body[data-theme="white"] .arch-card li {{ color: #475569; }}
+        body[data-theme="white"] .spec-card {{
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #CBD5E1;
+        }}
+        body[data-theme="white"] .spec-card h3 {{ color: #0F172A; }}
+        body[data-theme="white"] .spec-card p {{ color: #64748B; }}
+
+        /* BLOB THEME (1:1 PLANETARY DUAL-ARC AURA) */
+        body[data-theme="blob"] {{
+            background-color: #111F38;
+            color: #FFFFFF;
+        }}
+        body[data-theme="blob"] .ambient-mesh {{ display: none; }}
+        body[data-theme="blob"] .hub-header {{
+            background: rgba(17, 31, 56, 0.75);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border-bottom-color: rgba(255, 255, 255, 0.12);
+        }}
+        body[data-theme="blob"] .app-showcase-box {{
+            background: rgba(17, 31, 56, 0.65);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-color: rgba(255, 255, 255, 0.14);
+            border-top-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }}
+        body[data-theme="blob"] .gallery-card {{
+            background: rgba(17, 31, 56, 0.65);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-color: rgba(255, 255, 255, 0.14);
+            border-top-color: rgba(255, 255, 255, 0.35);
+        }}
+        body[data-theme="blob"] .arch-card {{
+            background: rgba(17, 31, 56, 0.65);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-color: rgba(255, 255, 255, 0.14);
+        }}
+        body[data-theme="blob"] .spec-card {{
+            background: rgba(17, 31, 56, 0.65);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-color: rgba(255, 255, 255, 0.14);
+        }}
     </style>
 </head>
 <body>
+
+    <!-- 1:1 Planetary Dual-Arc Wallpaper Layer -->
+    <div class="blob-bg-layer" id="blobBgLayer"></div>
 
     <div class="ambient-mesh">
         <div class="blob blob-1"></div>
@@ -3142,6 +3935,44 @@ web_apps_html_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="header-actions">
+            <!-- Global Theme Switcher Menu (White | Black | Blob) -->
+            <div class="theme-selector-wrap" id="themeSelectorWrap">
+                <button type="button" class="btn-theme-trigger" id="btnThemeTrigger" onclick="toggleThemeMenu(event)" title="Pilih Tema Global (White, Black, Blob)">
+                    <i data-lucide="palette"></i>
+                    <span class="theme-label-text" id="headerThemeLabel">Black</span>
+                    <i data-lucide="chevron-down" class="theme-chevron" id="headerThemeChevron"></i>
+                </button>
+                <div class="theme-dropdown-menu" id="themeDropdownMenu">
+                    <div class="theme-menu-header">
+                        <span class="theme-menu-title"><i data-lucide="sun-moon"></i> Global Theme</span>
+                    </div>
+                    <div class="theme-menu-item" data-theme="white" onclick="switchTheme('white')">
+                        <span class="theme-swatch swatch-white"></span>
+                        <div class="theme-info">
+                            <span class="theme-title">White Light</span>
+                            <span class="theme-desc">Clean, cerah & modern frosted glass</span>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                    <div class="theme-menu-item active" data-theme="black" onclick="switchTheme('black')">
+                        <span class="theme-swatch swatch-black"></span>
+                        <div class="theme-info">
+                            <span class="theme-title">Obsidian Black</span>
+                            <span class="theme-desc">Elegan, kontras tinggi & neon glow</span>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                    <div class="theme-menu-item" data-theme="blob" onclick="switchTheme('blob')">
+                        <span class="theme-swatch swatch-blob"></span>
+                        <div class="theme-info">
+                            <span class="theme-title">Dual-Arc Blob (1:1)</span>
+                            <span class="theme-desc">Planetary aura: Cyan & golden amber</span>
+                        </div>
+                        <i data-lucide="check" class="theme-check"></i>
+                    </div>
+                </div>
+            </div>
+
             <a href="../../index.html" class="action-link-btn" title="Master Gateway Portal">
                 <i data-lucide="home"></i> Gateway
             </a>
@@ -3510,6 +4341,81 @@ web_apps_html_content = f"""<!DOCTYPE html>
         document.getElementById('appModal').addEventListener('click', (e) => {{
             if (e.target.id === 'appModal') closeAppModal();
         }});
+
+        // Global Theme Management
+        let currentTheme = localStorage.getItem('prototype-theme') || 'black';
+
+        function toggleThemeMenu(e) {{
+            e.stopPropagation();
+            const menu = document.getElementById('themeDropdownMenu');
+            const chevron = document.getElementById('headerThemeChevron');
+            if (menu) {{
+                const isOpen = menu.classList.toggle('open');
+                if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+            }}
+        }}
+
+        document.addEventListener('click', (e) => {{
+            const wrap = document.getElementById('themeSelectorWrap');
+            if (wrap && !wrap.contains(e.target)) {{
+                const menu = document.getElementById('themeDropdownMenu');
+                if (menu) menu.classList.remove('open');
+                const chevron = document.getElementById('headerThemeChevron');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+            }}
+        }});
+
+        function switchTheme(theme) {{
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('prototype-theme', theme);
+
+            const headerLabel = document.getElementById('headerThemeLabel');
+            if (headerLabel) {{
+                headerLabel.textContent = theme === 'white' ? 'White' : theme === 'blob' ? 'Blob' : 'Black';
+            }}
+
+            document.querySelectorAll('.theme-menu-item').forEach(item => {{
+                item.classList.toggle('active', item.getAttribute('data-theme') === theme);
+            }});
+
+            const menu = document.getElementById('themeDropdownMenu');
+            if (menu) menu.classList.remove('open');
+            const chevron = document.getElementById('headerThemeChevron');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+
+            // Propagate theme to active app iframe
+            const iframe = document.getElementById('appFrame');
+            if (iframe) {{
+                try {{
+                    iframe.contentWindow.postMessage({{ type: 'SET_THEME', theme: theme }}, '*');
+                    if (iframe.contentDocument && iframe.contentDocument.documentElement) {{
+                        iframe.contentDocument.documentElement.setAttribute('data-theme', theme);
+                        if (iframe.contentDocument.body) {{
+                            iframe.contentDocument.body.setAttribute('data-theme', theme);
+                            if (theme === 'blob' || theme === 'white') {{
+                                iframe.contentDocument.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                iframe.contentDocument.body.style.backgroundColor = '';
+                            }}
+                        }}
+                    }}
+                }} catch (err) {{}}
+            }}
+
+            showToast(`Tema global diubah ke: ${{theme.toUpperCase()}}`);
+        }}
+
+        window.addEventListener('DOMContentLoaded', () => {{
+            switchTheme(currentTheme);
+        }});
+        const frameEl = document.getElementById('appFrame');
+        if (frameEl) {{
+            frameEl.addEventListener('load', () => {{
+                switchTheme(currentTheme);
+            }});
+        }}
     </script>
 </body>
 </html>

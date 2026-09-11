@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    /* 1. Canvas & Page Backgrounds */
+    /* 1. Canvas & Page Backgrounds (Default Black / Obsidian) */
     --bg-page: #08080C;
     --bg-surface: #0A0A0E;
     --bg-elevated: #111118;
@@ -82,6 +82,94 @@
     --ease: var(--ease-smooth);
 }
 
+/* ==========================================================================
+   THEME TOKENS: WHITE | BLACK | BLOB
+   ========================================================================== */
+
+/* 1. BLACK THEME (DEFAULT OBSIDIAN DARK) */
+:root[data-theme="black"],
+[data-theme="black"],
+body.theme-black {
+    --bg-page: #08080C;
+    --bg-surface: #0A0A0E;
+    --bg-elevated: #111118;
+
+    --glass-base: rgba(255, 255, 255, 0.04);
+    --glass-panel: rgba(36, 36, 38, 0.55);
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-card-hover: rgba(255, 255, 255, 0.09);
+    --glass-elevated: rgba(255, 255, 255, 0.12);
+    --glass-pill: rgba(255, 255, 255, 0.07);
+
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+
+    --shadow-glass: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    --shadow-glass-hover: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(74, 158, 255, 0.15);
+    --divider: rgba(255, 255, 255, 0.08);
+}
+
+/* 2. WHITE THEME (CLEAN LIGHT FROSTED GLASS) */
+:root[data-theme="white"],
+[data-theme="white"],
+body.theme-white {
+    --bg-page: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --bg-elevated: #F1F5F9;
+
+    --glass-base: rgba(0, 0, 0, 0.02);
+    --glass-panel: rgba(255, 255, 255, 0.88);
+    --glass-card: rgba(255, 255, 255, 0.82);
+    --glass-card-hover: rgba(255, 255, 255, 0.95);
+    --glass-elevated: rgba(255, 255, 255, 0.95);
+    --glass-pill: rgba(0, 0, 0, 0.05);
+
+    --glass-border-top: rgba(255, 255, 255, 0.98);
+    --glass-border-side: rgba(203, 213, 225, 0.6);
+    --glass-border-bottom: rgba(203, 213, 225, 0.4);
+
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+
+    --shadow-glass: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --shadow-glass-hover: 0 18px 40px rgba(0, 0, 0, 0.1), 0 0 20px rgba(59, 130, 246, 0.12);
+    --divider: rgba(0, 0, 0, 0.08);
+}
+
+/* 3. BLOB THEME (1:1 PLANETARY DUAL-ARC AURA) */
+:root[data-theme="blob"],
+[data-theme="blob"],
+body.theme-blob {
+    --bg-page: #111F38;
+    --bg-surface: rgba(17, 31, 56, 0.7);
+    --bg-elevated: rgba(24, 43, 77, 0.75);
+
+    --glass-base: rgba(255, 255, 255, 0.05);
+    --glass-panel: rgba(17, 31, 56, 0.68);
+    --glass-card: rgba(17, 31, 56, 0.58);
+    --glass-card-hover: rgba(17, 31, 56, 0.75);
+    --glass-elevated: rgba(24, 43, 77, 0.85);
+    --glass-pill: rgba(255, 255, 255, 0.09);
+
+    --glass-border-top: rgba(255, 255, 255, 0.35);
+    --glass-border-side: rgba(255, 255, 255, 0.12);
+    --glass-border-bottom: rgba(255, 255, 255, 0.05);
+
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.78);
+    --text-muted: rgba(255, 255, 255, 0.45);
+
+    --shadow-glass: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    --shadow-glass-hover: 0 22px 50px rgba(0, 0, 0, 0.65), 0 0 24px rgba(56, 189, 248, 0.25);
+    --divider: rgba(255, 255, 255, 0.1);
+}
+
 /* Universal Reset */
 * {
     box-sizing: border-box;
@@ -95,6 +183,7 @@ body {
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Common Utility: SVG Noise Texture Overlay */
@@ -126,9 +215,10 @@ body {
     border-right-color: var(--glass-border-side);
     border-bottom-color: var(--glass-border-bottom);
     box-shadow: var(--shadow-glass);
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Universal Dark Glass Form Inputs & Autofill Protection (Anti-White Box Glitch) */
+/* Universal Form Inputs & Autofill Protection */
 input, textarea, select {
     font-family: inherit;
     color: var(--text-primary);
@@ -146,6 +236,17 @@ select:-webkit-autofill {
     transition: background-color 5000s ease-in-out 0s;
 }
 
+[data-theme="white"] input:-webkit-autofill,
+[data-theme="white"] input:-webkit-autofill:hover,
+[data-theme="white"] input:-webkit-autofill:focus,
+[data-theme="white"] input:-webkit-autofill:active,
+[data-theme="white"] textarea:-webkit-autofill,
+[data-theme="white"] select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #F8FAFC inset !important;
+    -webkit-text-fill-color: #0F172A !important;
+    caret-color: #0F172A !important;
+}
+
 /* Animations for Glass Systems */
 @keyframes glassShimmer {
     0% { transform: translateX(-100%); }
@@ -161,4 +262,3 @@ select:-webkit-autofill {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
 }
-
