@@ -13,7 +13,7 @@
     <div class="modal-box">
         <div class="modal-head">
             <h3 class="modal-title">Confirm Component Action</h3>
-            <button type="button" class="close-btn" onclick="alert('Modal closed!')">
+            <button type="button" class="close-btn" onclick="handleModalAction('close', 'Modal ditutup.')">
                 <i data-lucide="x"></i>
             </button>
         </div>
@@ -21,13 +21,12 @@
             Are you sure you want to deploy the Glass Dark Premium design tokens to all child components?
         </p>
         <div class="modal-actions">
-            <button type="button" class="btn-m cancel" onclick="alert('Cancelled')">Cancel</button>
-            <button type="button" class="btn-m confirm" onclick="alert('Confirmed!')">Confirm</button>
+            <button type="button" class="btn-m cancel" onclick="handleModalAction('cancel', 'Tindakan Dibatalkan.')">Cancel</button>
+            <button type="button" class="btn-m confirm" onclick="handleModalAction('confirm', 'Tindakan Dikonfirmasi!')">Confirm</button>
         </div>
+        <div class="modal-status-feedback" id="modalFeedback"></div>
     </div>
 
-    <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>

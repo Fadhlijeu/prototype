@@ -99,3 +99,37 @@ body {
 
 .btn-m:hover { transform: translateY(-1px); }
 
+.modal-status-feedback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 16px;
+    transition: all 0.25s ease;
+}
+.modal-status-feedback.confirm {
+    display: flex;
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34D399;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+}
+.modal-status-feedback.cancel {
+    display: flex;
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #F87171;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
+}
+.modal-status-feedback.close {
+    display: flex;
+    background: rgba(148, 163, 184, 0.16);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #E2E8F0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+

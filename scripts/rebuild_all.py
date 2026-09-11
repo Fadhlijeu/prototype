@@ -40,7 +40,7 @@ glass_components_metadata = [
     ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "overlays", ""),
     ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "overlays", ""),
     ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry", ""),
-    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-wide")
+    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-tall")
 ]
 
 glass_files_db = {"css.css": shared_css_code}

@@ -46,18 +46,19 @@
             gap: 10px;
         }
 
-        /* Uploaded Media Preview Area (Above Input Field) */
+        /* Uploaded Media Preview Area (Authentic Glass Multi-File Container) */
         .upload-preview-area {
             display: none;
-            align-items: center;
+            flex-direction: column;
             gap: 10px;
-            padding: 8px 14px;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            padding: 12px 14px;
+            background: rgba(14, 18, 28, 0.65);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 20px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             animation: slideDownFade 0.25s var(--ease-spring);
         }
 
@@ -70,11 +71,87 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .preview-thumb-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .preview-header-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .preview-header-left svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-clear-all {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.18s ease;
+        }
+
+        .btn-clear-all:hover {
+            color: #EF4444;
+        }
+
+        .btn-clear-all svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .preview-files-list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 2px 0;
+        }
+
+        .preview-files-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .file-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            flex-shrink: 0;
+            max-width: 220px;
+            transition: all 0.2s ease;
+        }
+
+        .file-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .chip-thumb {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
             display: flex;
             align-items: center;
@@ -83,28 +160,28 @@
             flex-shrink: 0;
         }
 
-        .preview-thumb-box img {
+        .chip-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .preview-thumb-box svg {
-            width: 20px;
-            height: 20px;
+        .chip-thumb svg {
+            width: 16px;
+            height: 16px;
             color: var(--accent-cyan);
         }
 
-        .preview-meta {
-            flex: 1;
-            min-width: 0;
+        .chip-meta {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
+            min-width: 0;
+            flex: 1;
         }
 
-        .preview-filename {
-            font-size: 13px;
+        .chip-name {
+            font-size: 12px;
             font-weight: 600;
             color: #FFFFFF;
             white-space: nowrap;
@@ -112,37 +189,37 @@
             text-overflow: ellipsis;
         }
 
-        .preview-filesize {
-            font-size: 11px;
+        .chip-size {
+            font-size: 10px;
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-muted);
         }
 
-        .btn-remove-media {
-            width: 28px;
-            height: 28px;
+        .chip-btn-remove {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: var(--text-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
             flex-shrink: 0;
+            transition: all 0.15s ease;
         }
 
-        .btn-remove-media:hover {
-            background: rgba(239, 68, 68, 0.25);
+        .chip-btn-remove:hover {
+            background: rgba(239, 68, 68, 0.3);
             border-color: rgba(239, 68, 68, 0.5);
             color: #F87171;
             transform: scale(1.1);
         }
 
-        .btn-remove-media svg {
-            width: 14px;
-            height: 14px;
+        .chip-btn-remove svg {
+            width: 10px;
+            height: 10px;
         }
 
         /* Main Chat Input Bar */
@@ -281,30 +358,32 @@
 <body>
 
     <div class="chat-bar-wrapper">
-        <!-- Media Upload Preview Container (Above Input) -->
+        <!-- Media Upload Preview Container (Authentic Glass Multi-File Container) -->
         <div class="upload-preview-area" id="uploadPreviewArea">
-            <div class="preview-thumb-box" id="previewThumbBox">
-                <i data-lucide="file-text"></i>
+            <div class="preview-header">
+                <div class="preview-header-left">
+                    <i data-lucide="paperclip"></i>
+                    <span id="previewCountBadge">Lampiran (0)</span>
+                </div>
+                <button type="button" class="btn-clear-all" onclick="clearAllFiles()" title="Hapus semua berkas">
+                    <i data-lucide="trash-2"></i> Hapus Semua
+                </button>
             </div>
-            <div class="preview-meta">
-                <span class="preview-filename" id="previewFilename">image_upload.png</span>
-                <span class="preview-filesize" id="previewFilesize">1.4 MB</span>
+            <div class="preview-files-list" id="previewFilesList">
+                <!-- Dynamically populated file chips -->
             </div>
-            <button type="button" class="btn-remove-media" onclick="removeUploadedMedia()" title="Hapus media">
-                <i data-lucide="x"></i>
-            </button>
         </div>
 
         <!-- Chat Form -->
         <form class="chat-input-bar" id="chatForm" onsubmit="handleChatSubmit(event)">
-            <!-- Hidden File Input -->
-            <input type="file" id="chatFileInput" accept="image/*,.pdf,.doc,.docx,.txt" style="display: none;" onchange="handleFileSelected(this)">
+            <!-- Hidden File Input with multiple attribute -->
+            <input type="file" id="chatFileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt,.zip" style="display: none;" onchange="handleFileSelected(this)">
 
-            <button type="button" class="icon-btn" id="attachBtn" onclick="triggerFileInput()" title="Lampirkan berkas (gambar, dokumen)">
+            <button type="button" class="icon-btn" id="attachBtn" onclick="triggerFileInput()" title="Lampirkan berkas (gambar, dokumen, multi-file)">
                 <i data-lucide="plus"></i>
             </button>
 
-            <input type="text" id="chatInput" class="chat-input" placeholder="Tanyakan apapun. Gambar dan dokumen didukung..." autocomplete="off">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Tanyakan apapun. Multi berkas & gambar didukung..." autocomplete="off">
 
             <button type="button" class="icon-btn" id="micBtn" onclick="toggleMic()" title="Dikte suara">
                 <i data-lucide="mic"></i>
@@ -324,47 +403,100 @@
     <script>
         lucide.createIcons();
 
-        let currentUploadedFile = null;
+        let uploadedFiles = [];
 
         function triggerFileInput() {
             document.getElementById('chatFileInput').click();
         }
 
         function handleFileSelected(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                currentUploadedFile = file;
-
-                const previewArea = document.getElementById('uploadPreviewArea');
-                const thumbBox = document.getElementById('previewThumbBox');
-                const nameEl = document.getElementById('previewFilename');
-                const sizeEl = document.getElementById('previewFilesize');
-
-                nameEl.textContent = file.name;
-                const sizeKb = (file.size / 1024).toFixed(1);
-                sizeEl.textContent = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(2)} MB` : `${sizeKb} KB`;
-
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        thumbBox.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    thumbBox.innerHTML = `<i data-lucide="file-text"></i>`;
-                    lucide.createIcons();
+            if (input.files && input.files.length > 0) {
+                for (let i = 0; i < input.files.length; i++) {
+                    uploadedFiles.push(input.files[i]);
                 }
-
-                previewArea.classList.add('active');
-                document.getElementById('attachBtn').classList.add('active');
+                renderFilesList();
+                input.value = '';
             }
         }
 
-        function removeUploadedMedia() {
-            currentUploadedFile = null;
-            document.getElementById('chatFileInput').value = '';
-            document.getElementById('uploadPreviewArea').classList.remove('active');
-            document.getElementById('attachBtn').classList.remove('active');
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            renderFilesList();
+        }
+
+        function clearAllFiles() {
+            uploadedFiles = [];
+            renderFilesList();
+        }
+
+        function renderFilesList() {
+            const previewArea = document.getElementById('uploadPreviewArea');
+            const filesList = document.getElementById('previewFilesList');
+            const badge = document.getElementById('previewCountBadge');
+            const attachBtn = document.getElementById('attachBtn');
+
+            if (uploadedFiles.length === 0) {
+                previewArea.classList.remove('active');
+                attachBtn.classList.remove('active');
+                filesList.innerHTML = '';
+                return;
+            }
+
+            previewArea.classList.add('active');
+            attachBtn.classList.add('active');
+            badge.textContent = `Lampiran (${uploadedFiles.length})`;
+            filesList.innerHTML = '';
+
+            uploadedFiles.forEach((file, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'file-chip';
+
+                const thumb = document.createElement('div');
+                thumb.className = 'chip-thumb';
+
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    const reader = new FileReader();
+                    reader.onload = (e) => { img.src = e.target.result; };
+                    reader.readAsDataURL(file);
+                    thumb.appendChild(img);
+                } else {
+                    thumb.innerHTML = `<i data-lucide="${getFileIcon(file.name)}"></i>`;
+                }
+
+                const sizeKb = (file.size / 1024).toFixed(1);
+                const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(2)} MB` : `${sizeKb} KB`;
+
+                const meta = document.createElement('div');
+                meta.className = 'chip-meta';
+                meta.innerHTML = `
+                    <span class="chip-name" title="${file.name}">${file.name}</span>
+                    <span class="chip-size">${sizeStr}</span>
+                `;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'chip-btn-remove';
+                removeBtn.title = 'Hapus berkas ini';
+                removeBtn.innerHTML = '<i data-lucide="x"></i>';
+                removeBtn.onclick = () => removeFile(index);
+
+                chip.appendChild(thumb);
+                chip.appendChild(meta);
+                chip.appendChild(removeBtn);
+                filesList.appendChild(chip);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function getFileIcon(name) {
+            const ext = name.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'].includes(ext)) return 'image';
+            if (['pdf'].includes(ext)) return 'file-text';
+            if (['doc', 'docx', 'txt', 'md'].includes(ext)) return 'file-text';
+            if (['zip', 'rar', 'tar', 'gz'].includes(ext)) return 'archive';
+            return 'file';
         }
 
         function handleChatSubmit(e) {
@@ -372,17 +504,18 @@
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
 
-            if (!text && !currentUploadedFile) {
+            if (!text && uploadedFiles.length === 0) {
                 showToast('Ketik pesan atau lampirkan berkas terlebih dahulu.', 'alert-circle');
                 return;
             }
 
-            const sentMsg = currentUploadedFile ? `Terkirim: "${text || currentUploadedFile.name}" dengan 1 berkas` : `Terkirim: "${text}"`;
+            const count = uploadedFiles.length;
+            const sentMsg = count > 0 ? `Terkirim: "${text || 'Berkas'}" dengan ${count} lampiran` : `Terkirim: "${text}"`;
             showToast(sentMsg, 'check-circle-2');
 
-            // Reset input and media preview
+            // Reset input and clear uploaded media
             input.value = '';
-            removeUploadedMedia();
+            clearAllFiles();
         }
 
         let isRecording = false;

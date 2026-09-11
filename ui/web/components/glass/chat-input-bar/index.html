@@ -11,30 +11,32 @@
 <body>
 
     <div class="chat-bar-wrapper">
-        <!-- Media Upload Preview Container (Above Input) -->
+        <!-- Media Upload Preview Container (Authentic Glass Multi-File Container) -->
         <div class="upload-preview-area" id="uploadPreviewArea">
-            <div class="preview-thumb-box" id="previewThumbBox">
-                <i data-lucide="file-text"></i>
+            <div class="preview-header">
+                <div class="preview-header-left">
+                    <i data-lucide="paperclip"></i>
+                    <span id="previewCountBadge">Lampiran (0)</span>
+                </div>
+                <button type="button" class="btn-clear-all" id="btnClearAll" title="Hapus semua berkas">
+                    <i data-lucide="trash-2"></i> Hapus Semua
+                </button>
             </div>
-            <div class="preview-meta">
-                <span class="preview-filename" id="previewFilename">image_upload.png</span>
-                <span class="preview-filesize" id="previewFilesize">1.4 MB</span>
+            <div class="preview-files-list" id="previewFilesList">
+                <!-- Dynamically populated file chips -->
             </div>
-            <button type="button" class="btn-remove-media" id="btnRemoveMedia" title="Hapus media">
-                <i data-lucide="x"></i>
-            </button>
         </div>
 
         <!-- Chat Form -->
         <form class="chat-input-bar" id="chatForm">
-            <!-- Hidden File Input -->
-            <input type="file" id="chatFileInput" accept="image/*,.pdf,.doc,.docx,.txt" style="display: none;">
+            <!-- Hidden File Input with multiple attribute -->
+            <input type="file" id="chatFileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt,.zip" style="display: none;">
 
-            <button type="button" class="icon-btn" id="attachBtn" title="Lampirkan berkas (gambar, dokumen)">
+            <button type="button" class="icon-btn" id="attachBtn" title="Lampirkan berkas (gambar, dokumen, multi-file)">
                 <i data-lucide="plus"></i>
             </button>
 
-            <input type="text" id="chatInput" class="chat-input" placeholder="Tanyakan apapun. Gambar dan dokumen didukung..." autocomplete="off">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Tanyakan apapun. Multi berkas & gambar didukung..." autocomplete="off">
 
             <button type="button" class="icon-btn" id="micBtn" title="Dikte suara">
                 <i data-lucide="mic"></i>

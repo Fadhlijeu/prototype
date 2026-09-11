@@ -23,18 +23,19 @@ body {
     gap: 10px;
 }
 
-/* Uploaded Media Preview Area (Above Input Field) */
+/* Uploaded Media Preview Area (Authentic Glass Multi-File Container) */
 .upload-preview-area {
     display: none;
-    align-items: center;
+    flex-direction: column;
     gap: 10px;
-    padding: 8px 14px;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    padding: 12px 14px;
+    background: rgba(14, 18, 28, 0.65);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 20px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     animation: slideDownFade 0.25s var(--ease-spring);
 }
 
@@ -47,11 +48,87 @@ body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.preview-thumb-box {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+.preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.preview-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+
+.preview-header-left svg {
+    width: 14px;
+    height: 14px;
+}
+
+.btn-clear-all {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.18s ease;
+}
+
+.btn-clear-all:hover {
+    color: #EF4444;
+}
+
+.btn-clear-all svg {
+    width: 12px;
+    height: 12px;
+}
+
+.preview-files-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px 0;
+}
+
+.preview-files-list::-webkit-scrollbar {
+    display: none;
+}
+
+.file-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 12px;
     background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+    max-width: 220px;
+    transition: all 0.2s ease;
+}
+
+.file-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.chip-thumb {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     align-items: center;
@@ -60,28 +137,28 @@ body {
     flex-shrink: 0;
 }
 
-.preview-thumb-box img {
+.chip-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.preview-thumb-box svg {
-    width: 20px;
-    height: 20px;
+.chip-thumb svg {
+    width: 16px;
+    height: 16px;
     color: var(--accent-cyan);
 }
 
-.preview-meta {
-    flex: 1;
-    min-width: 0;
+.chip-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
+    min-width: 0;
+    flex: 1;
 }
 
-.preview-filename {
-    font-size: 13px;
+.chip-name {
+    font-size: 12px;
     font-weight: 600;
     color: #FFFFFF;
     white-space: nowrap;
@@ -89,37 +166,37 @@ body {
     text-overflow: ellipsis;
 }
 
-.preview-filesize {
-    font-size: 11px;
+.chip-size {
+    font-size: 10px;
     font-family: 'JetBrains Mono', monospace;
     color: var(--text-muted);
 }
 
-.btn-remove-media {
-    width: 28px;
-    height: 28px;
+.chip-btn-remove {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--text-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
     flex-shrink: 0;
+    transition: all 0.15s ease;
 }
 
-.btn-remove-media:hover {
-    background: rgba(239, 68, 68, 0.25);
+.chip-btn-remove:hover {
+    background: rgba(239, 68, 68, 0.3);
     border-color: rgba(239, 68, 68, 0.5);
     color: #F87171;
     transform: scale(1.1);
 }
 
-.btn-remove-media svg {
-    width: 14px;
-    height: 14px;
+.chip-btn-remove svg {
+    width: 10px;
+    height: 10px;
 }
 
 /* Main Chat Input Bar */

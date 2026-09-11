@@ -195,43 +195,48 @@
             100% { transform: translateX(450px) skewX(-20deg); }
         }
 
-        /* Interactive Controls Bar */
-        .controls-row {
+        /* Live Telemetry Status Row */
+        .telemetry-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            margin-top: 4px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 6px;
             position: relative;
             z-index: 1;
         }
 
-        .btn-prog-ctrl {
-            flex: 1;
-            padding: 7px 10px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
+        .telemetry-item {
+            display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            font-size: 11.5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
         }
 
-        .btn-prog-ctrl:hover {
-            background: rgba(56, 189, 248, 0.18);
-            border-color: rgba(56, 189, 248, 0.4);
-            color: #FFFFFF;
-            transform: translateY(-1px);
+        .telemetry-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px #10B981;
+            animation: pulseDot 1.5s infinite ease-in-out;
         }
 
-        .btn-prog-ctrl svg {
-            width: 13px; height: 13px;
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        .telemetry-speed {
+            font-size: 11.5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+            font-weight: 600;
         }
     </style>
 </head>
@@ -250,67 +255,73 @@
                     <div class="prog-sub">Sinkronisasi aset multi-region live</div>
                 </div>
             </div>
-            <div class="storage-detail" id="storageDetail">78.4 / 100 GB</div>
+            <div class="storage-detail" id="storageDetail">14.0 / 100 GB</div>
         </div>
 
         <div class="metric-row">
             <div class="big-number-group">
-                <span class="counter-val" id="counterVal">78</span>
+                <span class="counter-val" id="counterVal">14</span>
                 <span class="percent-sign">%</span>
             </div>
         </div>
 
         <div class="glass-track">
-            <div class="glass-fill" id="glassFill" style="width: 78%;"></div>
+            <div class="glass-fill" id="glassFill" style="width: 14%;"></div>
         </div>
 
-        <div class="controls-row">
-            <button type="button" class="btn-prog-ctrl" onclick="adjustProgress(-10)">
-                <i data-lucide="minus"></i> -10%
-            </button>
-            <button type="button" class="btn-prog-ctrl" onclick="adjustProgress(10)">
-                <i data-lucide="plus"></i> +10%
-            </button>
-            <button type="button" class="btn-prog-ctrl" onclick="toggleAutoSimulate()" id="btnAutoSim">
-                <i data-lucide="play"></i> Auto
-            </button>
+        <div class="telemetry-row">
+            <div class="telemetry-item">
+                <span class="telemetry-dot"></span>
+                <span id="syncStatusLabel">Streaming Data Multi-Region</span>
+            </div>
+            <div class="telemetry-speed" id="syncSpeedLabel">28.4 MB/s</div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        let currentPercent = 78;
+        let currentPercent = 14;
         const totalGb = 100;
+        const speeds = ["24.2 MB/s", "29.8 MB/s", "33.5 MB/s", "27.1 MB/s", "38.6 MB/s"];
 
         function updateProgress(val) {
-            currentPercent = Math.max(5, Math.min(100, val));
+            currentPercent = Math.max(0, Math.min(100, Math.round(val)));
             document.getElementById('counterVal').textContent = currentPercent;
             document.getElementById('glassFill').style.width = `${currentPercent}%`;
             document.getElementById('storageDetail').textContent = `${((currentPercent / 100) * totalGb).toFixed(1)} / ${totalGb} GB`;
         }
 
-        function adjustProgress(delta) {
-            updateProgress(currentPercent + delta);
+        // Autonomous auto-advancing progress simulation (Zero dummy buttons!)
+        function runAutoSyncLoop() {
+            const step = () => {
+                if (currentPercent < 100) {
+                    const inc = Math.floor(Math.random() * 5) + 2;
+                    currentPercent = Math.min(100, currentPercent + inc);
+                    updateProgress(currentPercent);
+
+                    const speedEl = document.getElementById('syncSpeedLabel');
+                    if (speedEl) speedEl.textContent = speeds[Math.floor(Math.random() * speeds.length)];
+
+                    const statusEl = document.getElementById('syncStatusLabel');
+                    if (statusEl) {
+                        statusEl.textContent = currentPercent === 100 ? "Sinkronisasi Selesai" : "Streaming Data Multi-Region";
+                    }
+
+                    const nextDelay = currentPercent === 100 ? 2400 : Math.floor(Math.random() * 300) + 250;
+                    setTimeout(step, nextDelay);
+                } else {
+                    currentPercent = 5;
+                    updateProgress(currentPercent);
+                    const statusEl = document.getElementById('syncStatusLabel');
+                    if (statusEl) statusEl.textContent = "Menginisialisasi Sesi Baru...";
+                    setTimeout(step, 800);
+                }
+            };
+            setTimeout(step, 400);
         }
 
-        let simInterval = null;
-        function toggleAutoSimulate() {
-            const btn = document.getElementById('btnAutoSim');
-            if (simInterval) {
-                clearInterval(simInterval);
-                simInterval = null;
-                btn.innerHTML = `<i data-lucide="play"></i> Auto`;
-            } else {
-                btn.innerHTML = `<i data-lucide="pause"></i> Pause`;
-                simInterval = setInterval(() => {
-                    let next = currentPercent + 3;
-                    if (next > 100) next = 10;
-                    updateProgress(next);
-                }, 800);
-            }
-            lucide.createIcons();
-        }
+        runAutoSyncLoop();
     </script>
 </body>
 </html>

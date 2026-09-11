@@ -175,41 +175,46 @@ body {
     100% { transform: translateX(450px) skewX(-20deg); }
 }
 
-/* Interactive Controls Bar */
-.controls-row {
+/* Live Telemetry Status Row */
+.telemetry-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    margin-top: 4px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 6px;
     position: relative;
     z-index: 1;
 }
 
-.btn-prog-ctrl {
-    flex: 1;
-    padding: 7px 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    display: inline-flex;
+.telemetry-item {
+    display: flex;
     align-items: center;
-    justify-content: center;
     gap: 6px;
-    transition: all 0.2s ease;
+    font-size: 11.5px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-secondary);
 }
 
-.btn-prog-ctrl:hover {
-    background: rgba(56, 189, 248, 0.18);
-    border-color: rgba(56, 189, 248, 0.4);
-    color: #FFFFFF;
-    transform: translateY(-1px);
+.telemetry-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 8px #10B981;
+    animation: pulseDot 1.5s infinite ease-in-out;
 }
 
-.btn-prog-ctrl svg {
-    width: 13px; height: 13px;
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.telemetry-speed {
+    font-size: 11.5px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+    font-weight: 600;
 }

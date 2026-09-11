@@ -246,6 +246,37 @@
                 height: 48px;
             }
         }
+        .dock-toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(14, 18, 28, 0.85);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 18px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #FFFFFF;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s cubic-bezier(0.34, 1.25, 0.64, 1);
+            z-index: 999;
+            pointer-events: none;
+        }
+        .dock-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .dock-toast svg { width: 16px; height: 16px; color: #38BDF8; }
     </style>
 </head>
 <body>
@@ -255,18 +286,18 @@
             <div class="active-pill-bg" id="pill"></div>
 
             <button class="nav-item active" onclick="switchNav(this)">
-                <i data-lucide="home"></i>
-                <span class="label">Home</span>
+                <i data-lucide="compass"></i>
+                <span class="label">Explore</span>
             </button>
 
             <button class="nav-item" onclick="switchNav(this)">
-                <i data-lucide="folder"></i>
-                <span class="label">Folders</span>
+                <i data-lucide="layers"></i>
+                <span class="label">Workspace</span>
             </button>
 
             <button class="nav-item" onclick="switchNav(this)">
-                <i data-lucide="rocket"></i>
-                <span class="label">Clean</span>
+                <i data-lucide="bell"></i>
+                <span class="label">Alerts</span>
             </button>
 
             <button class="nav-item" onclick="switchNav(this)">
@@ -275,13 +306,28 @@
             </button>
         </nav>
 
-        <button class="fab" onclick="alert('FAB Action Clicked!')" title="Add New Item">
+        <button class="fab" onclick="handleFabAction()" title="Add New Item">
             <i data-lucide="plus"></i>
         </button>
     </div>
 
+    <div class="dock-toast" id="dockToast">
+        <i data-lucide="sparkles"></i>
+        <span id="dockToastText">Aksi FAB Cepat Dipicu!</span>
+    </div>
+
     <script>
         lucide.createIcons();
+        let dockToastTimer = null;
+        function handleFabAction() {
+            const toast = document.getElementById('dockToast');
+            if (!toast) return;
+            toast.classList.add('show');
+            clearTimeout(dockToastTimer);
+            dockToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
         const dock = document.querySelector('.glass-dock');
         const items = document.querySelectorAll('.nav-item');
 

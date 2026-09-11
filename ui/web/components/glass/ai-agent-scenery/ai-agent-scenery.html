@@ -3,48 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Agent Scenery — Glass Dark Premium (All-in-One)</title>
+    <title>AI Agent Studio Scenery — Glass Dark Premium (All-in-One)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg-page: #08080C;
             --glass-card: rgba(255, 255, 255, 0.06);
-            --glass-border-top: rgba(255, 255, 255, 0.24);
+            --glass-dropdown: rgba(16, 20, 32, 0.65);
+            --glass-border-top: rgba(255, 255, 255, 0.28);
             --glass-border-side: rgba(255, 255, 255, 0.10);
             --glass-border-bottom: rgba(255, 255, 255, 0.04);
             --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.65);
-            --text-muted: rgba(255, 255, 255, 0.38);
+            --text-secondary: rgba(255, 255, 255, 0.68);
+            --text-muted: rgba(255, 255, 255, 0.40);
             --accent-cyan: #38BDF8;
             --accent-blue-1: #38BDF8;
             --accent-blue-2: #2563EB;
-            --accent-blue-3: #1D4ED8;
             --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
         body {
             background-color: var(--bg-page);
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-primary);
-            min-height: 100vh;
             display: flex;
+            align-items: stretch;
             justify-content: center;
-            overflow-y: auto;
             overflow-x: hidden;
+            overflow-y: auto;
             padding: 16px;
         }
 
+        /* Dynamic Vertical Layout: Adapts to PC, Tab, Mobile, and Bento Grid */
         .scenery-container {
             width: 100%;
-            max-width: 580px;
-            min-height: 100%;
+            height: 100%;
+            min-height: calc(100vh - 32px);
+            max-width: 860px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             position: relative;
-            padding-bottom: 20px;
+            margin: 0 auto;
+        }
+
+        /* Ambient Glow Orb Behind Main Workspace */
+        .ambient-glow-orb {
+            position: absolute;
+            width: 380px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(139, 92, 246, 0.15) 45%, transparent 70%);
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(65px);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseOrb 7s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.65; }
+            100% { transform: translate(-50%, -46%) scale(1.12); opacity: 0.95; }
         }
 
         /* Top Bar */
@@ -52,41 +81,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
             position: relative;
-            z-index: 10;
-        }
-
-        .top-left-cluster {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .top-brand-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .top-brand-badge svg {
-            width: 16px; height: 16px; color: var(--accent-cyan);
+            z-index: 20;
+            width: 100%;
+            padding-bottom: 12px;
         }
 
         .icon-btn {
-            width: 40px; height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--glass-card);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);
             border-left-color: var(--glass-border-side);
@@ -94,14 +104,14 @@
             border-bottom-color: var(--glass-border-bottom);
             color: var(--text-primary);
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
             transition: all 0.2s ease;
         }
 
         .icon-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             transform: scale(1.05);
-            border-color: rgba(56, 189, 248, 0.4);
+            border-top-color: rgba(255, 255, 255, 0.45);
         }
 
         .icon-btn.active {
@@ -110,309 +120,231 @@
             color: var(--accent-cyan);
         }
 
-        .icon-btn svg { width: 18px; height: 18px; stroke-width: 1.5px; }
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 1.6px;
+        }
 
-        /* Main Workspace Stage */
+        /* Genuine Frosted Glass Dropdown Menu (Opened via Top Menu Button) */
+        .scenery-dropdown-menu {
+            position: absolute;
+            top: 54px;
+            left: 0;
+            width: 330px;
+            max-width: calc(100vw - 40px);
+            background: var(--glass-dropdown);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 24px rgba(56, 189, 248, 0.05);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.24s var(--ease-spring), visibility 0.2s;
+        }
+
+        .scenery-dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .menu-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-cyan);
+            padding: 6px 10px 4px;
+        }
+
+        .model-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .model-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .model-item.active {
+            background: rgba(56, 189, 248, 0.16);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .model-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .model-subtitle {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .checkmark {
+            color: var(--accent-cyan);
+            width: 16px;
+            height: 16px;
+            stroke-width: 2px;
+            opacity: 0;
+            transition: opacity 0.18s ease;
+        }
+
+        .model-item.active .checkmark {
+            opacity: 1;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 4px 6px;
+        }
+
+        /* Thinking Effort Level Grid in Dropdown */
+        .thinking-levels-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            padding: 2px 6px 6px;
+        }
+
+        .th-level-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            padding: 8px 4px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.18s ease;
+        }
+
+        .th-level-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+        }
+
+        .th-level-btn.active {
+            background: rgba(56, 189, 248, 0.22);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Main Workspace Stage: Original Greeting & Vertical Rhythm */
         .main-workspace {
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
-            width: 100%;
+            justify-content: center;
             flex: 1;
-            padding-top: 10px;
-        }
-
-        .glow-orb {
-            position: absolute;
-            width: 220px; height: 160px;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, transparent 70%);
-            filter: blur(60px);
-            top: 20px;
-            pointer-events: none;
-            z-index: 0;
-            animation: pulseOrb 8s infinite alternate ease-in-out;
-        }
-
-        @keyframes pulseOrb {
-            0% { transform: scale(0.9) translateY(0); opacity: 0.6; }
-            100% { transform: scale(1.15) translateY(20px); opacity: 0.9; }
-        }
-
-        .greeting-section {
+            width: 100%;
             position: relative;
             z-index: 2;
+            padding: 24px 0;
             text-align: center;
-            margin: 20px 0 24px;
         }
 
-        .greeting-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #FFFFFF;
-            letter-spacing: -0.02em;
-            line-height: 1.35;
-        }
-
-        .greeting-title span {
-            background: linear-gradient(135deg, #38BDF8, #818CF8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .greeting-sub {
-            font-size: 13.5px;
-            color: var(--text-secondary);
-            margin-top: 6px;
-        }
-
-        .active-config-pill {
+        /* Active Config Glass Badge (Toggles Menu) */
+        .active-config-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 12px;
-            padding: 5px 14px;
+            padding: 6px 14px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.28);
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .active-config-pill:hover {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: rgba(56, 189, 248, 0.35);
-            color: #FFFFFF;
-        }
-
-        .active-config-pill b {
-            color: var(--accent-cyan);
-        }
-
-        /* Interactive Chat Stream Thread */
-        .chat-stream-area {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
             margin-bottom: 20px;
-            max-height: 240px;
-            overflow-y: auto;
-            padding-right: 4px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
         }
 
-        .chat-bubble {
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 13.5px;
-            line-height: 1.45;
-            animation: bubbleFade 0.25s var(--ease-spring);
-            max-width: 88%;
-        }
-
-        @keyframes bubbleFade {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-bubble.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.4), rgba(56, 189, 248, 0.25));
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            color: #FFFFFF;
-            border-bottom-right-radius: 4px;
-        }
-
-        .chat-bubble.agent {
-            align-self: flex-start;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-primary);
-            border-bottom-left-radius: 4px;
-            backdrop-filter: blur(16px);
-        }
-
-        .agent-header-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent-cyan);
-        }
-
-        .agent-header-row svg { width: 13px; height: 13px; }
-
-        /* Drawer / Modal: Model & Thinking Config (Hidden by default) */
-        .config-drawer-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px);
-            z-index: 50;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-
-        .config-drawer-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .config-modal-card {
-            width: 100%;
-            max-width: 440px;
-            background: #0E111A;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transform: scale(0.95) translateY(10px);
-            transition: transform 0.25s var(--ease-spring);
-        }
-
-        .config-drawer-overlay.open .config-modal-card {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .modal-header-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .modal-close-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            width: 30px; height: 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s;
-        }
-
-        .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #FFFFFF; }
-        .modal-close-btn svg { width: 16px; height: 16px; }
-
-        .modal-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        /* Model Selector Inside Modal */
-        .modal-model-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .scenery-model-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .scenery-model-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .scenery-model-item.active {
-            background: rgba(56, 189, 248, 0.15);
+        .active-config-badge:hover {
+            background: rgba(56, 189, 248, 0.14);
             border-color: rgba(56, 189, 248, 0.4);
-        }
-
-        .sm-name { font-size: 13.5px; font-weight: 600; color: #FFFFFF; }
-        .sm-sub { font-size: 11px; color: var(--text-muted); }
-
-        .sm-check {
-            width: 16px; height: 16px; color: var(--accent-cyan);
-            opacity: 0; transition: opacity 0.2s;
-        }
-        .scenery-model-item.active .sm-check { opacity: 1; }
-
-        /* Thinking Selector Dropdown Inside Modal */
-        .thinking-dropdown-wrap {
-            position: relative;
-        }
-
-        .scenery-thinking-trigger {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 11px 14px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #FFFFFF;
-            font-size: 13.5px;
-            cursor: pointer;
+            transform: translateY(-1px);
         }
 
-        .thinking-options-box {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: 6px;
-            background: #141824;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 14px;
-            padding: 6px;
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px #10B981;
         }
 
-        .thinking-options-box.open { display: flex; }
+        .badge-sep {
+            color: rgba(255, 255, 255, 0.25);
+        }
 
-        .th-option {
-            padding: 8px 12px;
-            border-radius: 10px;
+        .active-config-badge b {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .active-config-badge svg {
+            width: 13px;
+            height: 13px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .greeting {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(18px, 3.2vw, 24px);
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.45;
+            color: #E2E8F0;
+            letter-spacing: -0.01em;
+            max-width: 580px;
+        }
+
+        .greeting strong {
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        .greeting-sub {
             font-size: 13px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            color: var(--text-muted);
+            margin-top: 10px;
+            max-width: 420px;
         }
 
-        .th-option:hover { background: rgba(255, 255, 255, 0.08); color: #FFFFFF; }
-        .th-option.active { background: rgba(56, 189, 248, 0.2); color: #FFFFFF; font-weight: 600; }
-
-        /* Bottom Controls Section */
+        /* Bottom Section */
         .bottom-section {
             display: flex;
             flex-direction: column;
@@ -421,6 +353,7 @@
             z-index: 10;
             width: 100%;
             margin-top: auto;
+            padding-top: 16px;
         }
 
         .pills-scroll {
@@ -441,7 +374,10 @@
             padding: 8px 14px;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.09);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             white-space: nowrap;
             color: var(--text-secondary);
             font-size: 12.5px;
@@ -452,50 +388,110 @@
         }
 
         .pill:hover {
-            background: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.12);
             border-color: rgba(56, 189, 248, 0.4);
             color: #FFFFFF;
             transform: translateY(-1px);
         }
 
-        .pill svg { width: 15px; height: 15px; stroke-width: 1.5px; color: var(--accent-cyan); }
-
-        /* Attachment Media Preview Chip */
-        .scenery-upload-chip {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 6px 14px;
-            border-radius: 14px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-            animation: slideDownFade 0.2s var(--ease-spring);
+        .pill svg {
+            width: 15px;
+            height: 15px;
+            stroke-width: 1.5px;
+            color: var(--accent-cyan);
         }
 
-        .scenery-upload-chip.active { display: flex; }
+        /* Multi-File Upload Frosted Glass Chip Preview Area */
+        .upload-preview-area {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            padding: 10px 14px;
+            background: rgba(16, 20, 32, 0.65);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            animation: slideDownFade 0.22s var(--ease-spring);
+        }
 
-        .chip-meta {
+        .upload-preview-area.active { display: flex; }
+
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .preview-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12.5px;
-            color: #FFFFFF;
+            justify-content: space-between;
         }
 
-        .chip-meta svg { width: 16px; height: 16px; color: var(--accent-cyan); }
+        .preview-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        .btn-chip-close {
+        .preview-count svg { width: 14px; height: 14px; }
+
+        .btn-clear-all {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            cursor: pointer;
+            transition: color 0.18s;
+        }
+
+        .btn-clear-all:hover { color: #F87171; }
+
+        .preview-chips-list {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 2px 0;
+        }
+
+        .preview-chips-list::-webkit-scrollbar { display: none; }
+
+        .file-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 11.5px;
+            color: #FFFFFF;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .file-chip svg { width: 12px; height: 12px; color: var(--accent-cyan); }
+
+        .btn-remove-chip {
             background: transparent;
             border: none;
             color: var(--text-muted);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-left: 2px;
         }
-        .btn-chip-close:hover { color: #F87171; }
-        .btn-chip-close svg { width: 14px; height: 14px; }
 
-        /* Main Chat Bar */
+        .btn-remove-chip:hover { color: #F87171; }
+        .btn-remove-chip svg { width: 12px; height: 12px; }
+
+        /* Chat Input Bar */
         .chat-bar {
             display: flex;
             align-items: center;
@@ -504,15 +500,16 @@
             padding: 4px 6px 4px 14px;
             gap: 8px;
             background: var(--glass-card);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);
             border-left-color: var(--glass-border-side);
             border-right-color: var(--glass-border-side);
             border-bottom-color: var(--glass-border-bottom);
-            box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
             width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .chat-bar:focus-within {
@@ -533,7 +530,8 @@
         .chat-input::placeholder { color: var(--text-muted); }
 
         .icon-circle {
-            width: 38px; height: 38px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -543,7 +541,7 @@
             color: #FFFFFF;
             cursor: pointer;
             flex-shrink: 0;
-            transition: all 0.2s;
+            transition: all 0.18s ease;
         }
 
         .icon-circle:hover {
@@ -557,22 +555,26 @@
             color: var(--accent-cyan);
         }
 
-        .icon-circle svg { width: 17px; height: 17px; stroke-width: 1.5px; }
+        .icon-circle svg { width: 17px; height: 17px; stroke-width: 1.6px; }
 
         .send-btn {
             background: linear-gradient(135deg, var(--accent-blue-1), var(--accent-blue-2));
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.20);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
         }
 
-        /* Toast Feedback */
+        /* Glass Feedback Toast (Zero native alert dialogs!) */
         .scenery-toast {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%) translateY(20px);
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(16, 20, 32, 0.85);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
             border: 1px solid rgba(56, 189, 248, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
             padding: 9px 18px;
             border-radius: 20px;
             color: #FFFFFF;
@@ -583,92 +585,132 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             opacity: 0;
             pointer-events: none;
-            transition: all 0.2s var(--ease-spring);
-            z-index: 100;
+            transition: all 0.22s var(--ease-spring);
+            z-index: 200;
         }
-        .scenery-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+        .scenery-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
         .scenery-toast svg { width: 15px; height: 15px; color: var(--accent-cyan); }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .scenery-container { min-height: calc(100vh - 20px); }
+            .chat-bar { height: 48px; padding: 4px 6px 4px 12px; }
+            .chat-input { font-size: 13px; }
+            .icon-circle { width: 34px; height: 34px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="scenery-container">
         
-        <!-- Top Bar -->
+        <!-- Ambient Glowing Orb behind Main Stage -->
+        <div class="ambient-glow-orb"></div>
+
+        <!-- Top Bar with Menu & Sound Buttons -->
         <header class="top-bar">
-            <div class="top-left-cluster">
-                <button type="button" class="icon-btn" id="menuBtn" onclick="toggleConfigModal()" title="Buka Konfigurasi Model & Thinking">
-                    <i data-lucide="menu"></i>
-                </button>
-                <div class="top-brand-badge">
-                    <i data-lucide="sparkles"></i>
-                    <span>AI Studio Scenery</span>
+            <button type="button" class="icon-btn" id="menuBtn" onclick="toggleMenu()" title="Buka menu pilihan Model & Thinking Level">
+                <i data-lucide="menu"></i>
+            </button>
+
+            <!-- Genuine Frosted Glass Dropdown Menu -->
+            <div class="scenery-dropdown-menu" id="sceneryDropdownMenu">
+                <div class="menu-section-label">Model Selection</div>
+                
+                <div class="model-item" onclick="selectModel('K3', 'Chat & Agent, flagship all-rounder', this)">
+                    <div>
+                        <div class="model-title">K3</div>
+                        <div class="model-subtitle">Chat & Agent, flagship all-rounder</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item" onclick="selectModel('K3 Swarm', 'Massive search, batch processing', this)">
+                    <div>
+                        <div class="model-title">K3 Swarm</div>
+                        <div class="model-subtitle">Massive search, batch processing</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item active" onclick="selectModel('Instant', 'Fast chat, quick replies', this)">
+                    <div>
+                        <div class="model-title">Instant</div>
+                        <div class="model-subtitle">Fast chat, quick replies</div>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="menu-divider"></div>
+
+                <div class="menu-section-label">Thinking Effort (Reasoning Depth)</div>
+                <div class="thinking-levels-grid">
+                    <button type="button" class="th-level-btn" onclick="selectThinking('Low', this)">Low</button>
+                    <button type="button" class="th-level-btn" onclick="selectThinking('Med', this)">Med</button>
+                    <button type="button" class="th-level-btn active" onclick="selectThinking('High', this)">High</button>
+                    <button type="button" class="th-level-btn" onclick="selectThinking('Max', this)">Max</button>
                 </div>
             </div>
-            
+
             <button type="button" class="icon-btn" id="soundBtn" onclick="toggleSound()" title="Aktifkan / Nonaktifkan Sound Haptic">
                 <i data-lucide="volume-2" id="volumeIcon"></i>
             </button>
         </header>
 
-        <!-- Main Workspace -->
+        <!-- Main Workspace Stage (Original Aesthetic) -->
         <main class="main-workspace">
-            <div class="glow-orb"></div>
-
-            <div class="greeting-section">
-                <h1 class="greeting-title">Halo <span>Muhammad Fadhli</span>,<br>apa yang ingin Anda rancang hari ini?</h1>
-                <p class="greeting-sub">Ruang kerja agentik otonom berbasis arsitektur Glass Dark.</p>
-                <div class="active-config-pill" onclick="toggleConfigModal()">
-                    <span id="activeModelTag">Model: <b>Nexus Core 4.0</b></span>
-                    <span>•</span>
-                    <span id="activeEffortTag">Thinking: <b>High</b></span>
-                    <i data-lucide="sliders" style="width: 13px; height: 13px;"></i>
-                </div>
+            <div class="active-config-badge" id="activeConfigTrigger" onclick="toggleMenu()" title="Klik untuk ubah Model & Thinking Level">
+                <span class="badge-dot"></span>
+                <span id="displayModelTag">Model: <b>Instant</b></span>
+                <span class="badge-sep">•</span>
+                <span id="displayEffortTag">Reasoning: <b>High</b></span>
+                <i data-lucide="chevron-down" id="badgeChevron"></i>
             </div>
 
-            <!-- Interactive Chat Stream Bubbles -->
-            <div class="chat-stream-area" id="chatStreamArea">
-                <div class="chat-bubble agent">
-                    <div class="agent-header-row">
-                        <i data-lucide="bot"></i>
-                        <span>Nexus Core 4.0 • Autonomous Lead</span>
-                    </div>
-                    Siap membantu mengeksekusi arsitektur web, UI Glassmorphism, atau orkestrasi multi-agent. Pilih prompt cepat di bawah atau ketik permintaan Anda.
-                </div>
-            </div>
+            <h1 class="greeting">
+                Hi <strong>Muhammad Fadhli</strong>, what would<br>you like to prototype today?
+            </h1>
+            <p class="greeting-sub">Ruang kerja agentik otonom berbasis arsitektur Glass Dark.</p>
         </main>
 
         <!-- Bottom Controls Section -->
         <section class="bottom-section">
             <div class="pills-scroll">
-                <button type="button" class="pill" onclick="insertPillPrompt('Buat presentasi interaktif tentang arsitektur Glass Dark')"><i data-lucide="monitor-play"></i> Slides</button>
-                <button type="button" class="pill" onclick="insertPillPrompt('Jalankan swarm 4 agen untuk riset dan benchmark otomatis')"><i data-lucide="bot"></i> Swarm</button>
-                <button type="button" class="pill" onclick="insertPillPrompt('Rancang prototipe halaman web SaaS modern dengan dark mode')"><i data-lucide="layout-grid"></i> Websites</button>
-                <button type="button" class="pill" onclick="insertPillPrompt('Lakukan deep research multi-langkah dan buat laporannya')"><i data-lucide="microscope"></i> Deep Research</button>
+                <button type="button" class="pill" onclick="insertPillPrompt('Buat slides presentasi arsitektur AI agent')"><i data-lucide="monitor-play"></i> Slides</button>
+                <button type="button" class="pill" onclick="insertPillPrompt('Bentuk swarm 4 agen untuk audit performa')"><i data-lucide="bot"></i> Swarm</button>
+                <button type="button" class="pill" onclick="insertPillPrompt('Bangun website landing page glass dark')"><i data-lucide="layout-grid"></i> Websites</button>
+                <button type="button" class="pill" onclick="insertPillPrompt('Lakukan deep research tren web UI 2026')"><i data-lucide="microscope"></i> Deep Research</button>
             </div>
 
-            <!-- Upload Attachment Preview Chip -->
-            <div class="scenery-upload-chip" id="sceneryUploadChip">
-                <div class="chip-meta">
-                    <i data-lucide="file-check"></i>
-                    <span id="sceneryFileName">dokumen_analisis.pdf</span>
+            <!-- Multi-file Upload Frosted Glass Chip Preview Area -->
+            <div class="upload-preview-area" id="uploadPreviewArea">
+                <div class="preview-header">
+                    <span class="preview-count" id="previewCountText">
+                        <i data-lucide="paperclip"></i>
+                        <span>Lampiran Berkas (0)</span>
+                    </span>
+                    <button type="button" class="btn-clear-all" onclick="clearAllFiles()">Hapus Semua</button>
                 </div>
-                <button type="button" class="btn-chip-close" onclick="clearSceneryUpload()" title="Hapus berkas">
-                    <i data-lucide="x"></i>
-                </button>
+                <div class="preview-chips-list" id="previewChipsList"></div>
             </div>
 
-            <form class="chat-bar" id="sceneryChatForm" onsubmit="handleScenerySubmit(event)">
-                <!-- Hidden file input -->
-                <input type="file" id="sceneryFileInput" style="display: none;" onchange="handleSceneryFile(this)">
+            <!-- Chat Bar Form -->
+            <form class="chat-bar" id="sceneryChatForm" onsubmit="handleSend(event)">
+                <input type="file" id="sceneryFileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt,.zip" style="display: none;" onchange="handleFiles(this)">
 
-                <button type="button" class="icon-circle" id="btnSceneryAttach" onclick="triggerSceneryFile()" title="Upload media atau dokumen">
+                <button type="button" class="icon-circle" id="btnAttach" onclick="triggerFileInput()" title="Unggah multi berkas">
                     <i data-lucide="plus"></i>
                 </button>
 
-                <input type="text" id="sceneryInput" class="chat-input" placeholder="Tanyakan apapun. Gambar dan dokumen didukung..." autocomplete="off">
+                <input type="text" class="chat-input" id="sceneryChatInput" placeholder="Ask anything. Images work too..." autocomplete="off">
 
-                <button type="button" class="icon-circle" id="btnSceneryMic" onclick="toggleSceneryMic()" title="Input suara (Dictation)">
+                <button type="button" class="icon-circle" id="btnMic" onclick="toggleMic()" title="Dikte suara">
                     <i data-lucide="mic"></i>
                 </button>
 
@@ -678,68 +720,9 @@
             </form>
         </section>
 
-        <!-- Hidden Model & Thinking Config Modal (Appears only on Menu Click) -->
-        <div class="config-drawer-overlay" id="configDrawerOverlay" onclick="closeOnBackdrop(event)">
-            <div class="config-modal-card">
-                <div class="modal-header-row">
-                    <div class="modal-header-title">
-                        <i data-lucide="cpu" style="width: 17px; height: 17px; color: var(--accent-cyan);"></i>
-                        <span>Konfigurasi Model & Thinking</span>
-                    </div>
-                    <button type="button" class="modal-close-btn" onclick="toggleConfigModal()">
-                        <i data-lucide="x"></i>
-                    </button>
-                </div>
-
-                <div>
-                    <span class="modal-label">Pilih Model AI</span>
-                    <div class="modal-model-list">
-                        <div class="scenery-model-item active" data-name="Nexus Core 4.0" onclick="chooseSceneryModel('Nexus Core 4.0', this)">
-                            <div>
-                                <div class="sm-name">Nexus Core 4.0</div>
-                                <div class="sm-sub">Chat, penalaran otonom, andalan multi-tugas</div>
-                            </div>
-                            <i data-lucide="check" class="sm-check"></i>
-                        </div>
-                        <div class="scenery-model-item" data-name="Vortex Swarm" onclick="chooseSceneryModel('Vortex Swarm', this)">
-                            <div>
-                                <div class="sm-name">Vortex Swarm</div>
-                                <div class="sm-sub">Pencarian masif, koordinasi agen paralel</div>
-                            </div>
-                            <i data-lucide="check" class="sm-check"></i>
-                        </div>
-                        <div class="scenery-model-item" data-name="Chronos Flash" onclick="chooseSceneryModel('Chronos Flash', this)">
-                            <div>
-                                <div class="sm-name">Chronos Flash</div>
-                                <div class="sm-sub">Respon instan, latensi rendah untuk chat cepat</div>
-                            </div>
-                            <i data-lucide="check" class="sm-check"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <span class="modal-label">Thinking Effort (Level Penalaran)</span>
-                    <div class="thinking-dropdown-wrap">
-                        <button type="button" class="scenery-thinking-trigger" onclick="toggleThinkingOptions()">
-                            <span id="curThinkingLabel">High (Deep Thought)</span>
-                            <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                        </button>
-                        <div class="thinking-options-box" id="thinkingOptionsBox">
-                            <div class="th-option" onclick="chooseThinkingOption('Minimal (Fastest)')">Minimal (Fastest)</div>
-                            <div class="th-option" onclick="chooseThinkingOption('Low (Efficient)')">Low (Efficient)</div>
-                            <div class="th-option" onclick="chooseThinkingOption('Medium (Balanced)')">Medium (Balanced)</div>
-                            <div class="th-option active" onclick="chooseThinkingOption('High (Deep Thought)')">High (Deep Thought)</div>
-                            <div class="th-option" onclick="chooseThinkingOption('Ultra (Swarm)')">Ultra (Swarm)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Feedback Toast -->
+    <!-- Glass Feedback Toast -->
     <div class="scenery-toast" id="sceneryToast">
         <i data-lucide="check-circle-2"></i>
         <span id="sceneryToastText">Pemberitahuan</span>
@@ -748,44 +731,54 @@
     <script>
         lucide.createIcons();
 
-        let activeModel = "Nexus Core 4.0";
-        let activeEffort = "High";
-        let currentUploadedFile = null;
+        let currentModel = "Instant";
+        let currentThinking = "High";
+        let attachedFiles = [];
         let isMuted = false;
-        let isListening = false;
+        let isRecording = false;
 
-        function toggleConfigModal() {
-            const overlay = document.getElementById('configDrawerOverlay');
-            overlay.classList.toggle('open');
-        }
-
-        function closeOnBackdrop(e) {
-            if (e.target.id === 'configDrawerOverlay') {
-                toggleConfigModal();
+        function toggleMenu() {
+            const menu = document.getElementById('sceneryDropdownMenu');
+            const btn = document.getElementById('menuBtn');
+            const chevron = document.getElementById('badgeChevron');
+            const isOpen = menu.classList.toggle('open');
+            btn.classList.toggle('active', isOpen);
+            if (chevron) {
+                chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
             }
         }
 
-        function chooseSceneryModel(modelName, el) {
-            document.querySelectorAll('.scenery-model-item').forEach(i => i.classList.remove('active'));
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('sceneryDropdownMenu');
+            const btn = document.getElementById('menuBtn');
+            const badge = document.getElementById('activeConfigTrigger');
+            if (menu.classList.contains('open')) {
+                if (!menu.contains(e.target) && !btn.contains(e.target) && !badge.contains(e.target)) {
+                    menu.classList.remove('open');
+                    btn.classList.remove('active');
+                    const chevron = document.getElementById('badgeChevron');
+                    if (chevron) chevron.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
+
+        function selectModel(modelName, desc, el) {
+            document.querySelectorAll('.model-item').forEach(item => item.classList.remove('active'));
             el.classList.add('active');
-            activeModel = modelName;
-            document.getElementById('activeModelTag').innerHTML = `Model: <b>${modelName}</b>`;
-            showToast(`Model dialihkan ke ${modelName}`);
-            toggleConfigModal();
+            currentModel = modelName;
+            document.getElementById('displayModelTag').innerHTML = `Model: <b>${modelName}</b>`;
+            showToast(`Model diubah ke ${modelName}`);
+            toggleMenu();
         }
 
-        function toggleThinkingOptions() {
-            document.getElementById('thinkingOptionsBox').classList.toggle('open');
-        }
-
-        function chooseThinkingOption(label) {
-            document.querySelectorAll('.th-option').forEach(o => o.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('curThinkingLabel').textContent = label;
-            activeEffort = label.split(' ')[0];
-            document.getElementById('activeEffortTag').innerHTML = `Thinking: <b>${activeEffort}</b>`;
-            document.getElementById('thinkingOptionsBox').classList.remove('open');
-            showToast(`Thinking level: ${activeEffort}`);
+        function selectThinking(level, el) {
+            document.querySelectorAll('.th-level-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            currentThinking = level;
+            document.getElementById('displayEffortTag').innerHTML = `Reasoning: <b>${level}</b>`;
+            showToast(`Thinking Level: ${level}`);
+            toggleMenu();
         }
 
         function toggleSound() {
@@ -795,47 +788,81 @@
             if (isMuted) {
                 btn.classList.remove('active');
                 icon.setAttribute('data-lucide', 'volume-x');
-                showToast('Suara haptik dimatikan', 'volume-x');
+                showToast('Haptic suara dinonaktifkan', 'volume-x');
             } else {
                 btn.classList.add('active');
                 icon.setAttribute('data-lucide', 'volume-2');
-                showToast('Suara haptik diaktifkan', 'volume-2');
+                showToast('Haptic suara diaktifkan', 'volume-2');
             }
             lucide.createIcons();
         }
 
         function insertPillPrompt(text) {
-            const input = document.getElementById('sceneryInput');
+            const input = document.getElementById('sceneryChatInput');
             input.value = text;
             input.focus();
             showToast('Prompt disisipkan ke input', 'sparkles');
         }
 
-        function triggerSceneryFile() {
+        function triggerFileInput() {
             document.getElementById('sceneryFileInput').click();
         }
 
-        function handleSceneryFile(input) {
-            if (input.files && input.files[0]) {
-                currentUploadedFile = input.files[0];
-                document.getElementById('sceneryFileName').textContent = currentUploadedFile.name;
-                document.getElementById('sceneryUploadChip').classList.add('active');
-                document.getElementById('btnSceneryAttach').classList.add('active');
-                showToast(`Berkas terlampir: ${currentUploadedFile.name}`, 'file-check');
+        function handleFiles(input) {
+            if (input.files && input.files.length > 0) {
+                for (let i = 0; i < input.files.length; i++) {
+                    attachedFiles.push(input.files[i]);
+                }
+                renderAttachedFiles();
+                input.value = '';
             }
         }
 
-        function clearSceneryUpload() {
-            currentUploadedFile = null;
-            document.getElementById('sceneryFileInput').value = '';
-            document.getElementById('sceneryUploadChip').classList.remove('active');
-            document.getElementById('btnSceneryAttach').classList.remove('active');
+        function removeFile(index) {
+            attachedFiles.splice(index, 1);
+            renderAttachedFiles();
         }
 
-        function toggleSceneryMic() {
-            isListening = !isListening;
-            const micBtn = document.getElementById('btnSceneryMic');
-            if (isListening) {
+        function clearAllFiles() {
+            attachedFiles = [];
+            renderAttachedFiles();
+        }
+
+        function renderAttachedFiles() {
+            const area = document.getElementById('uploadPreviewArea');
+            const list = document.getElementById('previewChipsList');
+            const countText = document.getElementById('previewCountText');
+            const btnAttach = document.getElementById('btnAttach');
+
+            if (attachedFiles.length === 0) {
+                area.classList.remove('active');
+                btnAttach.classList.remove('active');
+                list.innerHTML = '';
+                return;
+            }
+
+            area.classList.add('active');
+            btnAttach.classList.add('active');
+            countText.innerHTML = `<i data-lucide="paperclip"></i><span>Lampiran Berkas (${attachedFiles.length})</span>`;
+            list.innerHTML = '';
+
+            attachedFiles.forEach((file, idx) => {
+                const chip = document.createElement('div');
+                chip.className = 'file-chip';
+                chip.innerHTML = `
+                    <i data-lucide="file-text"></i>
+                    <span>${file.name}</span>
+                    <button type="button" class="btn-remove-chip" onclick="removeFile(${idx})" title="Hapus"><i data-lucide="x"></i></button>
+                `;
+                list.appendChild(chip);
+            });
+            lucide.createIcons();
+        }
+
+        function toggleMic() {
+            isRecording = !isRecording;
+            const micBtn = document.getElementById('btnMic');
+            if (isRecording) {
                 micBtn.classList.add('active');
                 showToast('Mendengarkan instruksi suara...', 'mic');
             } else {
@@ -844,45 +871,24 @@
             }
         }
 
-        function handleScenerySubmit(e) {
+        function handleSend(e) {
             e.preventDefault();
-            const input = document.getElementById('sceneryInput');
+            const input = document.getElementById('sceneryChatInput');
             const val = input.value.trim();
 
-            if (!val && !currentUploadedFile) {
-                showToast('Silakan masukkan instruksi atau lampirkan berkas.', 'alert-circle');
+            if (!val && attachedFiles.length === 0) {
+                showToast('Silakan ketik instruksi atau lampirkan berkas.', 'alert-circle');
                 return;
             }
 
-            const stream = document.getElementById('chatStreamArea');
-
-            // Append user bubble
-            const userBubble = document.createElement('div');
-            userBubble.className = 'chat-bubble user';
-            userBubble.textContent = currentUploadedFile ? `${val || currentUploadedFile.name} (1 file)` : val;
-            stream.appendChild(userBubble);
-
-            // Clear input & file
+            const count = attachedFiles.length;
+            const msg = count > 0 
+                ? `Instruksi dikirim ke ${currentModel} (${currentThinking} reasoning) dengan ${count} berkas` 
+                : `Instruksi dikirim ke ${currentModel} (${currentThinking} reasoning)`;
+            
+            showToast(msg, 'check-circle-2');
             input.value = '';
-            clearSceneryUpload();
-
-            // Simulate Agent Response
-            setTimeout(() => {
-                const agentBubble = document.createElement('div');
-                agentBubble.className = 'chat-bubble agent';
-                agentBubble.innerHTML = `
-                    <div class="agent-header-row">
-                        <i data-lucide="bot"></i>
-                        <span>${activeModel} • Thinking: ${activeEffort}</span>
-                    </div>
-                    Menerima permintaan: "<em>${userBubble.textContent}</em>". Sedang mengorkestrasi rencana solusi dan mengeksekusi artefak.
-                `;
-                stream.appendChild(agentBubble);
-                lucide.createIcons();
-                stream.scrollTop = stream.scrollHeight;
-            }, 600);
-
-            stream.scrollTop = stream.scrollHeight;
+            clearAllFiles();
         }
 
         let toastTimer = null;

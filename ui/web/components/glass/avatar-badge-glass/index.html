@@ -59,17 +59,20 @@
 
         <div class="card-divider"></div>
 
-        <!-- Status Mode Toggles -->
-        <div class="status-modes-row">
-            <button type="button" class="btn-status-pill active" data-mode="online">
-                <span class="pill-dot online"></span> Online
-            </button>
-            <button type="button" class="btn-status-pill" data-mode="busy">
-                <span class="pill-dot busy"></span> Berpikir
-            </button>
-            <button type="button" class="btn-status-pill" data-mode="dnd">
-                <span class="pill-dot dnd"></span> DND
-            </button>
+        <!-- Live Agent Telemetry (Zero dummy buttons, autonomous status!) -->
+        <div class="agent-telemetry-panel">
+            <div class="telemetry-chip">
+                <i data-lucide="cpu"></i>
+                <span id="latencyTag">Latency: <b>18ms</b></span>
+            </div>
+            <div class="telemetry-chip">
+                <i data-lucide="shield-check"></i>
+                <span>Enclave: <b>Active</b></span>
+            </div>
+            <div class="telemetry-chip">
+                <i data-lucide="activity"></i>
+                <span id="modeCycleTag">Mode: <b id="modeBoldText">Online</b></span>
+            </div>
         </div>
     </div>
 

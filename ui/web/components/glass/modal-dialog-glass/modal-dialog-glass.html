@@ -130,6 +130,39 @@ body {
 
 .btn-m:hover { transform: translateY(-1px); }
 
+.modal-status-feedback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 16px;
+    transition: all 0.25s ease;
+}
+.modal-status-feedback.confirm {
+    display: flex;
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34D399;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+}
+.modal-status-feedback.cancel {
+    display: flex;
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #F87171;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
+}
+.modal-status-feedback.close {
+    display: flex;
+    background: rgba(148, 163, 184, 0.16);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #E2E8F0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
     </style>
 </head>
 <body>
@@ -137,7 +170,7 @@ body {
     <div class="modal-box">
         <div class="modal-head">
             <h3 class="modal-title">Confirm Component Action</h3>
-            <button type="button" class="close-btn" onclick="alert('Modal closed!')">
+            <button type="button" class="close-btn" onclick="handleModalAction('close', 'Modal ditutup.')">
                 <i data-lucide="x"></i>
             </button>
         </div>
@@ -145,16 +178,29 @@ body {
             Are you sure you want to deploy the Glass Dark Premium design tokens to all child components?
         </p>
         <div class="modal-actions">
-            <button type="button" class="btn-m cancel" onclick="alert('Cancelled')">Cancel</button>
-            <button type="button" class="btn-m confirm" onclick="alert('Confirmed!')">Confirm</button>
+            <button type="button" class="btn-m cancel" onclick="handleModalAction('cancel', 'Tindakan Dibatalkan.')">Cancel</button>
+            <button type="button" class="btn-m confirm" onclick="handleModalAction('confirm', 'Tindakan Dikonfirmasi!')">Confirm</button>
         </div>
+        <div class="modal-status-feedback" id="modalFeedback"></div>
     </div>
 
     <script>
         if (window.lucide) window.lucide.createIcons();
-    </script>
-    <script>
 
+        let modalFbTimer = null;
+        function handleModalAction(type, msg) {
+            const fb = document.getElementById('modalFeedback');
+            if (!fb) return;
+            fb.className = `modal-status-feedback ${type}`;
+            fb.innerHTML = type === 'confirm' ? `<i data-lucide="check-circle-2"></i> ${msg}` :
+                           type === 'cancel' ? `<i data-lucide="x-circle"></i> ${msg}` :
+                           `<i data-lucide="info"></i> ${msg}`;
+            if (window.lucide) window.lucide.createIcons();
+            clearTimeout(modalFbTimer);
+            modalFbTimer = setTimeout(() => {
+                fb.className = 'modal-status-feedback';
+            }, 2600);
+        }
     </script>
 </body>
 </html>

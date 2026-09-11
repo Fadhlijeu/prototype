@@ -125,18 +125,50 @@
             font-size: 12px;
             font-weight: 400;
         }
+
+        .folder-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(14, 18, 28, 0.85);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 18px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #FFFFFF;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s cubic-bezier(0.34, 1.25, 0.64, 1);
+            z-index: 999;
+            pointer-events: none;
+        }
+        .folder-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .folder-toast svg { width: 16px; height: 16px; color: #38BDF8; }
     </style>
 </head>
 <body>
 
-    <!-- SVG Mask & Gradient Defs -->
-    <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
+    <!-- SVG Mask Definition for Apple-style Folder Tab Shape -->
+    <svg width="0" height="0" style="position: absolute;">
         <defs>
             <mask id="folder-shape">
-                <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="#ffffff"/>
+                <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="#FFFFFF"/>
             </mask>
             <linearGradient id="gloss" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.65)"/>
+                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.6)"/>
                 <stop offset="35%" stop-color="rgba(255, 255, 255, 0.18)"/>
                 <stop offset="100%" stop-color="rgba(255, 255, 255, 0.02)"/>
             </linearGradient>
@@ -144,7 +176,7 @@
     </svg>
 
     <!-- Folder 1: Figma Files -->
-    <div class="folder-card" onclick="alert('Opened Figma Files')">
+    <div class="folder-card" onclick="openFolder('Figma Files')">
         <div class="glass-folder"></div>
         <svg class="glossy-border" viewBox="0 0 160 160">
             <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="none" stroke="url(#gloss)" stroke-width="1.2"/>
@@ -167,7 +199,7 @@
     </div>
 
     <!-- Folder 2: Design System -->
-    <div class="folder-card" onclick="alert('Opened Design System')">
+    <div class="folder-card" onclick="openFolder('Design System')">
         <div class="glass-folder"></div>
         <svg class="glossy-border" viewBox="0 0 160 160">
             <path d="M 20 0 H 65 C 76 0, 78 20, 88 20 H 140 A 20 20 0 0 1 160 40 V 140 A 20 20 0 0 1 140 160 H 20 A 20 20 0 0 1 0 140 V 20 A 20 20 0 0 1 20 0 Z" fill="none" stroke="url(#gloss)" stroke-width="1.2"/>
@@ -183,8 +215,25 @@
         </div>
     </div>
 
+    <div class="folder-toast" id="folderToast">
+        <i data-lucide="folder-open"></i>
+        <span id="folderToastText">Membuka folder...</span>
+    </div>
+
     <script>
         lucide.createIcons();
+        let folderToastTimer = null;
+        function openFolder(name) {
+            const toast = document.getElementById('folderToast');
+            const text = document.getElementById('folderToastText');
+            if (!toast || !text) return;
+            text.textContent = `Membuka berkas: ${name}`;
+            toast.classList.add('show');
+            clearTimeout(folderToastTimer);
+            folderToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
     </script>
 </body>
 </html>

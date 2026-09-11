@@ -22,3 +22,14 @@ lucide.createIcons();
         window.addEventListener('resize', () => {
             updatePill(document.querySelector('.nav-item.active'));
         });
+
+        let dockToastTimer = null;
+        function handleFabAction() {
+            const toast = document.getElementById('dockToast');
+            if (!toast) return;
+            toast.classList.add('show');
+            clearTimeout(dockToastTimer);
+            dockToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }

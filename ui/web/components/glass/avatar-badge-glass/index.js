@@ -6,39 +6,47 @@ document.addEventListener('DOMContentLoaded', () => {
         window.lucide.createIcons();
     }
 
-    const buttons = document.querySelectorAll('.btn-status-pill');
-    const dot = document.getElementById('mainStatusDot');
-    const dotText = document.getElementById('liveDotText');
-    const label = document.getElementById('statusLabel');
+    // Autonomous Status Randomizer (Zero dummy buttons!)
+    const agentStates = [
+        { name: "Online", color: "#10B981", label: "Online — Siap Menerima Instruksi" },
+        { name: "Berpikir", color: "#38BDF8", label: "Berpikir — Proses Penalaran Mendalam" },
+        { name: "Mensintesis", color: "#8B5CF6", label: "Mensintesis — Merancang Solusi Artefak" },
+        { name: "Siaga", color: "#F59E0B", label: "Siaga — Memantau Event Pipeline" }
+    ];
 
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    let stateIndex = 0;
 
-            const mode = btn.getAttribute('data-mode');
-            if (mode === 'online') {
-                if (dot) {
-                    dot.style.background = '#10B981';
-                    dot.style.boxShadow = '0 0 12px #10B981';
-                }
-                if (dotText) dotText.style.background = '#10B981';
-                if (label) label.textContent = 'Online — Aktif Mensintesis Data';
-            } else if (mode === 'busy') {
-                if (dot) {
-                    dot.style.background = '#F59E0B';
-                    dot.style.boxShadow = '0 0 12px #F59E0B';
-                }
-                if (dotText) dotText.style.background = '#F59E0B';
-                if (label) label.textContent = 'Berpikir — Proses Penalaran Mendalam';
-            } else if (mode === 'dnd') {
-                if (dot) {
-                    dot.style.background = '#EF4444';
-                    dot.style.boxShadow = '0 0 12px #EF4444';
-                }
-                if (dotText) dotText.style.background = '#EF4444';
-                if (label) label.textContent = 'DND — Jangan Ganggu (Silent)';
-            }
-        });
-    });
+    function applyAgentState(state) {
+        const dot = document.getElementById('mainStatusDot');
+        const dotText = document.getElementById('liveDotText');
+        const label = document.getElementById('statusLabel');
+        const modeBold = document.getElementById('modeBoldText');
+        const latencyTag = document.getElementById('latencyTag');
+
+        if (dot) {
+            dot.style.background = state.color;
+            dot.style.boxShadow = `0 0 12px ${state.color}`;
+        }
+        if (dotText) {
+            dotText.style.background = state.color;
+            dotText.style.boxShadow = `0 0 6px ${state.color}`;
+        }
+        if (label) {
+            label.textContent = state.label;
+        }
+        if (modeBold) {
+            modeBold.textContent = state.name;
+            modeBold.style.color = state.color;
+        }
+        if (latencyTag) {
+            const lat = Math.floor(Math.random() * 12) + 12;
+            latencyTag.innerHTML = `Latency: <b>${lat}ms</b>`;
+        }
+    }
+
+    // Cycle through states organically
+    setInterval(() => {
+        stateIndex = (stateIndex + 1) % agentStates.length;
+        applyAgentState(agentStates[stateIndex]);
+    }, 3400);
 });

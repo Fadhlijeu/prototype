@@ -1,86 +1,88 @@
-/* AI Agent Scenery Component Interaction Logic */
 document.addEventListener('DOMContentLoaded', () => {
     if (window.lucide) {
-        lucide.createIcons();
+        window.lucide.createIcons();
     }
 
-    let activeModel = "Nexus Core 4.0";
-    let activeEffort = "High";
-    let currentUploadedFile = null;
+    let currentModel = "Instant";
+    let currentThinking = "High";
+    let attachedFiles = [];
     let isMuted = false;
-    let isListening = false;
-    let toastTimer = null;
+    let isRecording = false;
 
-    const overlay = document.getElementById('configDrawerOverlay');
     const menuBtn = document.getElementById('menuBtn');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
-    const activeConfigPill = document.getElementById('activeConfigPill');
+    const sceneryDropdownMenu = document.getElementById('sceneryDropdownMenu');
+    const activeConfigTrigger = document.getElementById('activeConfigTrigger');
+    const badgeChevron = document.getElementById('badgeChevron');
     const soundBtn = document.getElementById('soundBtn');
     const volumeIcon = document.getElementById('volumeIcon');
-    const sceneryThinkingTrigger = document.getElementById('sceneryThinkingTrigger');
-    const thinkingOptionsBox = document.getElementById('thinkingOptionsBox');
-    const curThinkingLabel = document.getElementById('curThinkingLabel');
-    const activeModelTag = document.getElementById('activeModelTag');
-    const activeEffortTag = document.getElementById('activeEffortTag');
+    const sceneryChatForm = document.getElementById('sceneryChatForm');
+    const sceneryChatInput = document.getElementById('sceneryChatInput');
+    const sceneryFileInput = document.getElementById('sceneryFileInput');
+    const btnAttach = document.getElementById('btnAttach');
+    const btnMic = document.getElementById('btnMic');
+    const btnClearAll = document.getElementById('btnClearAll');
+    const uploadPreviewArea = document.getElementById('uploadPreviewArea');
+    const previewChipsList = document.getElementById('previewChipsList');
+    const previewCountText = document.getElementById('previewCountText');
+    const displayModelTag = document.getElementById('displayModelTag');
+    const displayEffortTag = document.getElementById('displayEffortTag');
+    const sceneryToast = document.getElementById('sceneryToast');
+    const sceneryToastText = document.getElementById('sceneryToastText');
 
-    const fileInput = document.getElementById('sceneryFileInput');
-    const btnAttach = document.getElementById('btnSceneryAttach');
-    const uploadChip = document.getElementById('sceneryUploadChip');
-    const fileNameSpan = document.getElementById('sceneryFileName');
-    const btnChipClose = document.getElementById('btnChipClose');
-    const micBtn = document.getElementById('btnSceneryMic');
-    const chatForm = document.getElementById('sceneryChatForm');
-    const chatInput = document.getElementById('sceneryInput');
-    const chatStreamArea = document.getElementById('chatStreamArea');
-
-    function toggleModal() {
-        if (overlay) {
-            overlay.classList.toggle('open');
+    function toggleMenu() {
+        if (!sceneryDropdownMenu) return;
+        const isOpen = sceneryDropdownMenu.classList.toggle('open');
+        if (menuBtn) menuBtn.classList.toggle('active', isOpen);
+        if (badgeChevron) {
+            badgeChevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
         }
     }
 
-    if (menuBtn) menuBtn.addEventListener('click', toggleModal);
-    if (modalCloseBtn) modalCloseBtn.addEventListener('click', toggleModal);
-    if (activeConfigPill) activeConfigPill.addEventListener('click', toggleModal);
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) toggleModal();
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
         });
     }
 
+    if (activeConfigTrigger) {
+        activeConfigTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!sceneryDropdownMenu || !sceneryDropdownMenu.classList.contains('open')) return;
+        if (!sceneryDropdownMenu.contains(e.target) && (!menuBtn || !menuBtn.contains(e.target)) && (!activeConfigTrigger || !activeConfigTrigger.contains(e.target))) {
+            sceneryDropdownMenu.classList.remove('open');
+            if (menuBtn) menuBtn.classList.remove('active');
+            if (badgeChevron) badgeChevron.style.transform = 'rotate(0deg)';
+        }
+    });
+
     // Model selection
-    document.querySelectorAll('.scenery-model-item').forEach(item => {
+    document.querySelectorAll('.model-item').forEach(item => {
         item.addEventListener('click', () => {
-            document.querySelectorAll('.scenery-model-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.model-item').forEach(m => m.classList.remove('active'));
             item.classList.add('active');
-            activeModel = item.dataset.name || "Nexus Core 4.0";
-            if (activeModelTag) {
-                activeModelTag.innerHTML = `Model: <b>${activeModel}</b>`;
-            }
-            showToast(`Model dialihkan ke ${activeModel}`);
-            toggleModal();
+            currentModel = item.getAttribute('data-model') || "Instant";
+            if (displayModelTag) displayModelTag.innerHTML = `Model: <b>${currentModel}</b>`;
+            showToast(`Model diubah ke ${currentModel}`);
+            toggleMenu();
         });
     });
 
-    // Thinking options dropdown
-    if (sceneryThinkingTrigger) {
-        sceneryThinkingTrigger.addEventListener('click', () => {
-            if (thinkingOptionsBox) thinkingOptionsBox.classList.toggle('open');
-        });
-    }
-
-    document.querySelectorAll('.th-option').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            document.querySelectorAll('.th-option').forEach(o => o.classList.remove('active'));
-            opt.classList.add('active');
-            const label = opt.dataset.val || opt.textContent.trim();
-            if (curThinkingLabel) curThinkingLabel.textContent = label;
-            activeEffort = label.split(' ')[0];
-            if (activeEffortTag) {
-                activeEffortTag.innerHTML = `Thinking: <b>${activeEffort}</b>`;
-            }
-            if (thinkingOptionsBox) thinkingOptionsBox.classList.remove('open');
-            showToast(`Thinking level: ${activeEffort}`);
+    // Thinking effort selection
+    document.querySelectorAll('.th-level-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.th-level-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentThinking = btn.getAttribute('data-level') || "High";
+            if (displayEffortTag) displayEffortTag.innerHTML = `Reasoning: <b>${currentThinking}</b>`;
+            showToast(`Thinking Level: ${currentThinking}`);
+            toggleMenu();
         });
     });
 
@@ -91,128 +93,142 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isMuted) {
                 soundBtn.classList.remove('active');
                 if (volumeIcon) volumeIcon.setAttribute('data-lucide', 'volume-x');
-                showToast('Suara haptik dimatikan', 'volume-x');
+                showToast('Haptic suara dinonaktifkan', 'volume-x');
             } else {
                 soundBtn.classList.add('active');
                 if (volumeIcon) volumeIcon.setAttribute('data-lucide', 'volume-2');
-                showToast('Suara haptik diaktifkan', 'volume-2');
+                showToast('Haptic suara diaktifkan', 'volume-2');
             }
-            if (window.lucide) lucide.createIcons();
+            if (window.lucide) window.lucide.createIcons();
         });
     }
 
-    // Quick prompts pills
+    // Pills prompt click
     document.querySelectorAll('.pill').forEach(pill => {
         pill.addEventListener('click', () => {
-            const prompt = pill.dataset.prompt || pill.textContent.trim();
-            if (chatInput) {
-                chatInput.value = prompt;
-                chatInput.focus();
+            const prompt = pill.getAttribute('data-prompt');
+            if (prompt && sceneryChatInput) {
+                sceneryChatInput.value = prompt;
+                sceneryChatInput.focus();
                 showToast('Prompt disisipkan ke input', 'sparkles');
             }
         });
     });
 
-    // Attachment
-    if (btnAttach && fileInput) {
-        btnAttach.addEventListener('click', () => fileInput.click());
+    // Attachment triggers
+    if (btnAttach && sceneryFileInput) {
+        btnAttach.addEventListener('click', () => {
+            sceneryFileInput.click();
+        });
     }
 
-    if (fileInput) {
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files && fileInput.files[0]) {
-                currentUploadedFile = fileInput.files[0];
-                if (fileNameSpan) fileNameSpan.textContent = currentUploadedFile.name;
-                if (uploadChip) uploadChip.classList.add('active');
-                if (btnAttach) btnAttach.classList.add('active');
-                showToast(`Berkas terlampir: ${currentUploadedFile.name}`, 'file-check');
+    if (sceneryFileInput) {
+        sceneryFileInput.addEventListener('change', () => {
+            if (sceneryFileInput.files && sceneryFileInput.files.length > 0) {
+                for (let i = 0; i < sceneryFileInput.files.length; i++) {
+                    attachedFiles.push(sceneryFileInput.files[i]);
+                }
+                renderFiles();
+                sceneryFileInput.value = '';
             }
         });
     }
 
-    function clearAttachment() {
-        currentUploadedFile = null;
-        if (fileInput) fileInput.value = '';
-        if (uploadChip) uploadChip.classList.remove('active');
-        if (btnAttach) btnAttach.classList.remove('active');
+    if (btnClearAll) {
+        btnClearAll.addEventListener('click', () => {
+            attachedFiles = [];
+            renderFiles();
+        });
     }
 
-    if (btnChipClose) {
-        btnChipClose.addEventListener('click', clearAttachment);
+    function removeFile(index) {
+        attachedFiles.splice(index, 1);
+        renderFiles();
     }
 
-    // Mic
-    if (micBtn) {
-        micBtn.addEventListener('click', () => {
-            isListening = !isListening;
-            if (isListening) {
-                micBtn.classList.add('active');
+    function renderFiles() {
+        if (!uploadPreviewArea || !previewChipsList || !previewCountText) return;
+
+        if (attachedFiles.length === 0) {
+            uploadPreviewArea.classList.remove('active');
+            if (btnAttach) btnAttach.classList.remove('active');
+            previewChipsList.innerHTML = '';
+            return;
+        }
+
+        uploadPreviewArea.classList.add('active');
+        if (btnAttach) btnAttach.classList.add('active');
+        previewCountText.innerHTML = `<i data-lucide="paperclip"></i><span>Lampiran Berkas (${attachedFiles.length})</span>`;
+        previewChipsList.innerHTML = '';
+
+        attachedFiles.forEach((file, idx) => {
+            const chip = document.createElement('div');
+            chip.className = 'file-chip';
+            chip.innerHTML = `
+                <i data-lucide="file-text"></i>
+                <span>${file.name}</span>
+                <button type="button" class="btn-remove-chip" title="Hapus"><i data-lucide="x"></i></button>
+            `;
+            chip.querySelector('.btn-remove-chip').addEventListener('click', () => removeFile(idx));
+            previewChipsList.appendChild(chip);
+        });
+
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Mic toggle
+    if (btnMic) {
+        btnMic.addEventListener('click', () => {
+            isRecording = !isRecording;
+            if (isRecording) {
+                btnMic.classList.add('active');
                 showToast('Mendengarkan instruksi suara...', 'mic');
             } else {
-                micBtn.classList.remove('active');
+                btnMic.classList.remove('active');
                 showToast('Perekaman audio selesai.', 'check');
             }
         });
     }
 
-    // Submit form
-    if (chatForm) {
-        chatForm.addEventListener('submit', (e) => {
+    // Chat submit
+    if (sceneryChatForm) {
+        sceneryChatForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const textVal = chatInput ? chatInput.value.trim() : '';
+            const val = sceneryChatInput ? sceneryChatInput.value.trim() : '';
 
-            if (!textVal && !currentUploadedFile) {
-                showToast('Silakan masukkan instruksi atau lampirkan berkas.', 'alert-circle');
+            if (!val && attachedFiles.length === 0) {
+                showToast('Silakan ketik instruksi atau lampirkan berkas.', 'alert-circle');
                 return;
             }
 
-            if (chatStreamArea) {
-                const userBubble = document.createElement('div');
-                userBubble.className = 'chat-bubble user';
-                userBubble.textContent = currentUploadedFile ? `${textVal || currentUploadedFile.name} (1 file)` : textVal;
-                chatStreamArea.appendChild(userBubble);
+            const count = attachedFiles.length;
+            const msg = count > 0 
+                ? `Instruksi dikirim ke ${currentModel} (${currentThinking} reasoning) dengan ${count} berkas` 
+                : `Instruksi dikirim ke ${currentModel} (${currentThinking} reasoning)`;
 
-                if (chatInput) chatInput.value = '';
-                clearAttachment();
+            showToast(msg, 'check-circle-2');
 
-                setTimeout(() => {
-                    const agentBubble = document.createElement('div');
-                    agentBubble.className = 'chat-bubble agent';
-                    agentBubble.innerHTML = `
-                        <div class="agent-header-row">
-                            <i data-lucide="bot"></i>
-                            <span>${activeModel} • Thinking: ${activeEffort}</span>
-                        </div>
-                        Menerima permintaan: "<em>${userBubble.textContent}</em>". Sedang mengorkestrasi rencana solusi dan mengeksekusi artefak.
-                    `;
-                    chatStreamArea.appendChild(agentBubble);
-                    if (window.lucide) lucide.createIcons();
-                    chatStreamArea.scrollTop = chatStreamArea.scrollHeight;
-                }, 600);
-
-                chatStreamArea.scrollTop = chatStreamArea.scrollHeight;
-            }
+            if (sceneryChatInput) sceneryChatInput.value = '';
+            attachedFiles = [];
+            renderFiles();
         });
     }
 
+    let toastTimer = null;
     function showToast(msg, iconName = 'check-circle-2') {
-        const toast = document.getElementById('sceneryToast');
-        const text = document.getElementById('sceneryToastText');
-        if (!toast || !text) return;
+        if (!sceneryToast || !sceneryToastText) return;
+        sceneryToastText.textContent = msg;
 
-        text.textContent = msg;
-        const oldSvg = toast.querySelector('svg');
-        if (oldSvg) oldSvg.remove();
-
+        sceneryToast.querySelector('svg')?.remove();
         const icon = document.createElement('i');
         icon.setAttribute('data-lucide', iconName);
-        toast.prepend(icon);
-        if (window.lucide) lucide.createIcons();
+        sceneryToast.prepend(icon);
+        if (window.lucide) window.lucide.createIcons();
 
-        toast.classList.add('show');
+        sceneryToast.classList.add('show');
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
-            toast.classList.remove('show');
+            sceneryToast.classList.remove('show');
         }, 2600);
     }
 });

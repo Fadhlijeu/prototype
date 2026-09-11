@@ -36,12 +36,16 @@
             </button>
         </nav>
 
-        <button class="fab" onclick="alert('FAB Action Clicked!')" title="Add New Item">
+        <button class="fab" onclick="handleFabAction()" title="Add New Item">
             <i data-lucide="plus"></i>
         </button>
     </div>
 
-    
+    <div class="dock-toast" id="dockToast">
+        <i data-lucide="sparkles"></i>
+        <span id="dockToastText">Aksi FAB Cepat Dipicu!</span>
+    </div>
+
     <script src="index.js"></script>
 </body>
 </html>
