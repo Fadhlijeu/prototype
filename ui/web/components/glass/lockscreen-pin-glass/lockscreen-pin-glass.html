@@ -83,94 +83,21 @@
             box-shadow: 0 0 2px rgba(56, 189, 248, 0.5);
         }
 
-        /* Phone Top Control Bar (Wallpaper Switcher) */
-        .phone-header-controls {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 12px 18px 0;
-            z-index: 10;
-        }
-
-        .wallpaper-switcher {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            padding: 3px 6px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-        }
-
-        .switcher-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.02em;
-            padding: 0 4px;
-        }
-
-        .btn-wp-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.75);
-            background: transparent;
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-wp-toggle:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-wp-toggle.active {
-            background: rgba(56, 189, 248, 0.22);
-            border-color: rgba(56, 189, 248, 0.45);
-            color: #FFFFFF;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
-        }
-
-        .dot-swatch {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .black-swatch {
-            background: #08080C;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .blob-swatch {
-            background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
-            border: 1px solid #38BDF8;
-        }
-
-        /* Main Lockscreen Content */
+        /* Main Lockscreen Content (1:1 with Reference) */
         .lockscreen-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 18px 20px;
+            padding: 32px 20px 24px;
             z-index: 5;
         }
 
         /* Header: Enter password */
         .lockscreen-header {
             text-align: center;
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         .lockscreen-title {
@@ -475,19 +402,6 @@
         <!-- Punch-hole Front Camera -->
         <div class="phone-punch-hole" aria-hidden="true">
             <div class="camera-lens"></div>
-        </div>
-
-        <!-- Phone Top Control Bar (Wallpaper Switcher: Black / Blob) -->
-        <div class="phone-header-controls">
-            <div class="wallpaper-switcher" title="Ganti Wallpaper Layar HP (Black / Blob)">
-                <span class="switcher-label">Wallpaper:</span>
-                <button type="button" class="btn-wp-toggle" data-bg="black" id="btnWpBlack" onclick="setPhoneWallpaper('black')">
-                    <span class="dot-swatch black-swatch"></span> Black
-                </button>
-                <button type="button" class="btn-wp-toggle active" data-bg="blob" id="btnWpBlob" onclick="setPhoneWallpaper('blob')">
-                    <span class="dot-swatch blob-swatch"></span> Blob
-                </button>
-            </div>
         </div>
 
         <!-- Main Lockscreen Content (1:1 with reference) -->
@@ -821,6 +735,13 @@
                 localStorage.setItem('phone-lockscreen-wp', bg);
             } catch (e) {}
         };
+
+        // Listen for parent window message
+        window.addEventListener('message', function (e) {
+            if (e.data && e.data.type === 'SET_PHONE_BG') {
+                window.setPhoneWallpaper(e.data.bg);
+            }
+        });
 
         // Keyboard support
         window.addEventListener('keydown', function (e) {

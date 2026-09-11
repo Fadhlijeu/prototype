@@ -162,25 +162,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
             position: relative;
         }}
 
-        .ambient-mesh {{
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 0; overflow: hidden;
-        }}
-
-        .blob {{
-            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.32;
-            animation: float 22s infinite alternate ease-in-out;
-        }}
-
-        .blob-1 {{ width: 520px; height: 520px; background: radial-gradient(circle, #3B82F6 0%, transparent 70%); top: -150px; left: -120px; }}
-        .blob-2 {{ width: 560px; height: 560px; background: radial-gradient(circle, #8B5CF6 0%, transparent 70%); top: 30%; right: -150px; animation-delay: -6s; }}
-        .blob-3 {{ width: 480px; height: 480px; background: radial-gradient(circle, #06B6D4 0%, transparent 70%); bottom: -120px; left: 20%; animation-delay: -12s; }}
-
-        @keyframes float {{
-            0% {{ transform: translate(0, 0) scale(1); }}
-            100% {{ transform: translate(60px, 40px) scale(1.08); }}
-        }}
-
         /* Header Bar */
         .showcase-header {{
             position: sticky; top: 0; z-index: 50; padding: 14px 32px;
@@ -325,7 +306,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         /* Grid - Dense Bento Layout (Zero Holes / Gaps) */
         .showcase-grid {{
-            padding: 16px 32px 64px;
+            margin: 12px 24px 48px;
+            padding: 24px !important;
+            width: calc(100% - 48px);
+            box-sizing: border-box;
             display: grid;
             gap: 18px;
             grid-auto-flow: dense;
@@ -334,7 +318,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             transition: all 0.3s ease;
         }}
         .showcase-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }}
-        .showcase-grid.cols-1 {{ grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; width: 100%; }}
+        .showcase-grid.cols-1 {{ grid-template-columns: 1fr; max-width: 900px; margin: 12px auto 48px; width: 100%; }}
         .showcase-grid.cols-2 {{ grid-template-columns: repeat(2, 1fr); }}
         .showcase-grid.cols-3 {{ grid-template-columns: repeat(3, 1fr); }}
         .showcase-grid.cols-4 {{ grid-template-columns: repeat(4, 1fr); }}
@@ -991,6 +975,14 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background-image: none !important;
         }}
 
+        /* Lockscreen PIN Keypad preview zone stays dark obsidian, wallpaper changes inside phone only */
+        #preview-zone-lockscreen-pin-glass,
+        #preview-zone-lockscreen-pin-glass[data-comp-bg="blob"],
+        #preview-zone-lockscreen-pin-glass[data-comp-bg="dark"] {{
+            background-color: #08080C !important;
+            background-image: none !important;
+        }}
+
         /* Full-Width Showcase Grid Container (Landscape 2048x1156px) */
         .showcase-grid[data-grid-bg="blob"] {{
             background-color: #0D0D0D !important;
@@ -1002,15 +994,17 @@ glass_showcase_content = f"""<!DOCTYPE html>
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            margin: 12px 24px 48px;
+            margin: 12px 24px 48px !important;
             padding: 24px !important;
+            width: calc(100% - 48px) !important;
         }}
         .showcase-grid[data-grid-bg="dark"] {{
             background: transparent !important;
-            border: none !important;
+            border: 1px solid transparent !important;
             box-shadow: none !important;
-            margin: 0 auto !important;
-            padding: 20px 36px 60px !important;
+            margin: 12px 24px 48px !important;
+            padding: 24px !important;
+            width: calc(100% - 48px) !important;
         }}
 
         /* Studio Modal Stage Backgrounds */
@@ -1029,12 +1023,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
 </style>
 </head>
 <body>
-
-    <div class="ambient-mesh">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
 
     <header class="showcase-header">
         <div class="brand-cluster">
@@ -1332,8 +1320,19 @@ glass_showcase_content = f"""<!DOCTYPE html>
             iframe.onload = () => {{
                 try {{
                     const doc = iframe.contentDocument;
-                    if (doc && doc.body && curBg === 'blob') {{
-                        doc.body.style.backgroundColor = 'transparent';
+                    if (doc && doc.body) {{
+                        if (folder === 'lockscreen-pin-glass') {{
+                            doc.body.style.backgroundColor = '#08080C';
+                            const phoneViewport = doc.getElementById('phoneViewport');
+                            if (phoneViewport) {{
+                                phoneViewport.setAttribute('data-phone-bg', curBg === 'blob' ? 'blob' : 'black');
+                            }}
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                iframe.contentWindow.setPhoneWallpaper(curBg === 'blob' ? 'blob' : 'black');
+                            }}
+                        }} else if (curBg === 'blob') {{
+                            doc.body.style.backgroundColor = 'transparent';
+                        }}
                     }}
                 }} catch(e) {{}}
             }};
@@ -1654,7 +1653,11 @@ glass_showcase_content = f"""<!DOCTYPE html>
         function setComponentBg(folder, bg, btnEl) {{
             const previewZone = document.getElementById(`preview-zone-${{folder}}`);
             if (previewZone) {{
-                previewZone.setAttribute('data-comp-bg', bg);
+                if (folder === 'lockscreen-pin-glass') {{
+                    previewZone.setAttribute('data-comp-bg', 'dark');
+                }} else {{
+                    previewZone.setAttribute('data-comp-bg', bg);
+                }}
             }}
             const switcher = document.getElementById(`bg-switcher-${{folder}}`);
             if (switcher) {{
@@ -1667,10 +1670,21 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (bg === 'blob') {{
-                            doc.body.style.backgroundColor = 'transparent';
+                        if (folder === 'lockscreen-pin-glass') {{
+                            doc.body.style.backgroundColor = '#08080C';
+                            const phoneViewport = doc.getElementById('phoneViewport');
+                            if (phoneViewport) {{
+                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                            }}
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            }}
                         }} else {{
-                            doc.body.style.backgroundColor = '';
+                            if (bg === 'blob') {{
+                                doc.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                doc.body.style.backgroundColor = '';
+                            }}
                         }}
                     }}
                 }} catch (e) {{}}
@@ -1681,7 +1695,11 @@ glass_showcase_content = f"""<!DOCTYPE html>
         function setStudioBg(bg) {{
             const stage = document.getElementById('studioCanvasStage');
             if (stage) {{
-                stage.setAttribute('data-stage-bg', bg);
+                if (activeFolder === 'lockscreen-pin-glass') {{
+                    stage.setAttribute('data-stage-bg', 'dark');
+                }} else {{
+                    stage.setAttribute('data-stage-bg', bg);
+                }}
             }}
             document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
                 btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
@@ -1691,10 +1709,21 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (bg === 'blob') {{
-                            doc.body.style.backgroundColor = 'transparent';
+                        if (activeFolder === 'lockscreen-pin-glass') {{
+                            doc.body.style.backgroundColor = '#08080C';
+                            const phoneViewport = doc.getElementById('phoneViewport');
+                            if (phoneViewport) {{
+                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                            }}
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            }}
                         }} else {{
-                            doc.body.style.backgroundColor = '';
+                            if (bg === 'blob') {{
+                                doc.body.style.backgroundColor = 'transparent';
+                            }} else {{
+                                doc.body.style.backgroundColor = '';
+                            }}
                         }}
                     }}
                 }} catch (e) {{}}
@@ -1745,7 +1774,16 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (bg === 'blob') {{
+                        if (folder === 'lockscreen-pin-glass') {{
+                            doc.body.style.backgroundColor = '#08080C';
+                            const phoneViewport = doc.getElementById('phoneViewport');
+                            if (phoneViewport) {{
+                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                            }}
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            }}
+                        }} else if (bg === 'blob') {{
                             doc.body.style.backgroundColor = 'transparent';
                         }}
                     }}

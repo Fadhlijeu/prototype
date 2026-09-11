@@ -240,6 +240,13 @@
         } catch (e) {}
     };
 
+    // Listen for parent window message
+    window.addEventListener('message', function (e) {
+        if (e.data && e.data.type === 'SET_PHONE_BG') {
+            window.setPhoneWallpaper(e.data.bg);
+        }
+    });
+
     // Keyboard support (physical numpad and top-row numbers)
     window.addEventListener('keydown', function (e) {
         if (e.key >= '0' && e.key <= '9') {

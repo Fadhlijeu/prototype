@@ -79,94 +79,21 @@ body {
     box-shadow: 0 0 2px rgba(56, 189, 248, 0.5);
 }
 
-/* Phone Top Control Bar (Wallpaper Switcher) */
-.phone-header-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 14px 20px 0;
-    z-index: 10;
-}
-
-.wallpaper-switcher {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 6px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-}
-
-.switcher-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.6);
-    letter-spacing: 0.02em;
-    padding: 0 4px;
-}
-
-.btn-wp-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.75);
-    background: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-wp-toggle:hover {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.btn-wp-toggle.active {
-    background: rgba(56, 189, 248, 0.22);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #FFFFFF;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
-}
-
-.dot-swatch {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-
-.black-swatch {
-    background: #08080C;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.blob-swatch {
-    background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
-    border: 1px solid #38BDF8;
-}
-
-/* Main Lockscreen Content */
+/* Main Lockscreen Content (1:1 with Reference) */
 .lockscreen-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px 24px;
+    padding: 32px 20px 24px;
     z-index: 5;
 }
 
 /* Header: Enter password */
 .lockscreen-header {
     text-align: center;
-    padding-top: 14px;
+    padding-top: 8px;
 }
 
 .lockscreen-title {
