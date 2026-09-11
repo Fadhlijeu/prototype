@@ -42,7 +42,8 @@ glass_components_metadata = [
     ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry", ""),
     ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-tall"),
     ("lockscreen-pin-glass", "Phone Lockscreen PIN Keypad", "Security / PIN Keypad", "Organism", "overlays", "span-tall"),
-    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "overlays", "span-tall")
+    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "overlays", "span-tall"),
+    ("mobile-control-center-glass", "Mobile Control Center Shade", "System / Quick Settings", "Organism", "overlays", "span-tall")
 ]
 
 glass_files_db = {"css.css": shared_css_code}
@@ -139,8 +140,8 @@ glass_showcase_content = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass Dark Premium Showroom — 23 All-in-One Components</title>
-    <meta name="description" content="Koleksi 23 Komponen UI/UX Glass Dark Premium all-in-one mandiri dengan resize preview, multi-file code tabs, dan copy instant.">
+    <title>Glass Dark Premium Showroom — 24 All-in-One Components</title>
+    <meta name="description" content="Koleksi 24 Komponen UI/UX Glass Dark Premium all-in-one mandiri dengan resize preview, multi-file code tabs, dan copy instant.">
     <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -1042,7 +1043,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             </div>
             <div class="brand-text">
                 <h1>Proto<span>type</span> Glass Showcase</h1>
-                <p>23 Komponen Glass Dark Premium All-in-One Mandiri</p>
+                <p>24 Komponen Glass Dark Premium All-in-One Mandiri</p>
             </div>
         </div>
 
@@ -1079,7 +1080,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
     <!-- Controls Bar with Filter and Layout Grid Switcher -->
     <div class="controls-bar">
         <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterCategory('all', this)">Semua (23)</button>
+            <button class="filter-tab active" onclick="filterCategory('all', this)">Semua (24)</button>
             <button class="filter-tab" onclick="filterCategory('inputs', this)">Inputs</button>
             <button class="filter-tab" onclick="filterCategory('cards', this)">Cards</button>
             <button class="filter-tab" onclick="filterCategory('navigation', this)">Navigation</button>
@@ -2276,7 +2277,7 @@ raw_showcase_content = f"""<!DOCTYPE html>
         <div class="header-actions">
             <a href="../../../../index.html" class="nav-link"><i data-lucide="home"></i> Gateway</a>
             <a href="../../../../ui/web/apps.html" class="nav-link"><i data-lucide="folder-kanban"></i> Web Apps</a>
-            <a href="../glass/showcase.html" class="nav-link"><i data-lucide="gem"></i> Glass Dark (23)</a>
+            <a href="../glass/showcase.html" class="nav-link"><i data-lucide="gem"></i> Glass Dark (24)</a>
         </div>
     </header>
 
@@ -3459,7 +3460,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 <i data-lucide="home"></i> Gateway
             </a>
             <a href="components/glass/showcase.html" class="action-link-btn" title="Koleksi Komponen Kaca">
-                <i data-lucide="gem"></i> Glass Components (23)
+                <i data-lucide="gem"></i> Glass Components (24)
             </a>
             <a href="components/raw/showcase.html" class="action-link-btn" title="Koleksi Komponen Baku">
                 <i data-lucide="code-2"></i> Raw HTML (9)

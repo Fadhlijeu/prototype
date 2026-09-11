@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Control Center — Glass Dark All-in-One</title>
+    <meta name="description" content="1:1 Mobile Control Center / Quick Settings Shade dengan tipografi putih murni tanpa biru, slider interaktif, dan wallpaper Black/Blob.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: transparent;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #FFFFFF !important;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 6px;
+            overflow: hidden;
+        }
+
+        /* Phone Viewport Container (9:16 Aspect Ratio) */
+        .control-center-phone {
+            width: 100%;
+            max-width: 380px;
+            height: 800px;
+            border-radius: 44px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px 16px 12px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9),
+                        inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+                        0 0 0 6px #12141D;
+            transition: background 0.35s ease, filter 0.2s ease;
+            user-select: none;
+        }
+
+        /* Wallpaper 1: Obsidian Black */
+        .control-center-phone[data-phone-bg="black"] {
+            background-color: #08080C;
+            background-image: radial-gradient(circle at 50% 15%, #181C26 0%, #0D0F17 45%, #08080C 80%);
+        }
+
+        /* Wallpaper 2: Blob (9:16 Planetary Dual-Arc SVG) */
+        .control-center-phone[data-phone-bg="blob"] {
+            background-color: #0D0D0D;
+            background-image: url('blob_9-16.svg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        /* Wallpaper Switcher Bar */
+        .wp-switcher-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2px;
+            z-index: 10;
+        }
+
+        .wallpaper-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 6px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .wp-label {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+            padding: 0 4px;
+            opacity: 0.8;
+        }
+
+        .btn-wp {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-wp.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .dot-swatch {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .black-swatch {
+            background: #08080C;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .blob-swatch {
+            background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
+            border: 1px solid #FFFFFF;
+        }
+
+        /* 1. Status Bar */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 6px 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+            letter-spacing: -0.01em;
+        }
+
+        .status-left,
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-5g {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 1px 3px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF !important;
+        }
+
+        .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5px;
+            height: 10px;
+        }
+
+        .signal-bars .bar {
+            width: 2.5px;
+            border-radius: 1px;
+            background: #FFFFFF;
+        }
+        .bar-1 { height: 3px; }
+        .bar-2 { height: 5px; }
+        .bar-3 { height: 8px; }
+        .bar-4 { height: 10px; }
+
+        .carrier-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+        }
+
+        .status-icon {
+            width: 14px;
+            height: 14px;
+            color: #FFFFFF !important;
+        }
+
+        .net-speed {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+            margin-left: 2px;
+        }
+
+        .net-speed small {
+            font-size: 8px;
+            font-weight: 500;
+            color: #FFFFFF !important;
+        }
+
+        .battery-pill {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .battery-body {
+            width: 20px;
+            height: 10px;
+            border-radius: 3px;
+            border: 1.2px solid #FFFFFF;
+            padding: 1px;
+            position: relative;
+        }
+
+        .battery-body::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 2px;
+            width: 1.5px;
+            height: 4px;
+            background: #FFFFFF;
+            border-radius: 0 1px 1px 0;
+        }
+
+        .battery-level {
+            height: 100%;
+            background: #FFFFFF;
+            border-radius: 1px;
+        }
+
+        .battery-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+        }
+
+        /* 2. Header: Clock, Date & Tools */
+        .cc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 4px 8px;
+        }
+
+        .clock-date-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cc-clock {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: #FFFFFF !important;
+        }
+
+        .cc-date {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1.15;
+        }
+
+        .date-month-day {
+            font-size: 13px;
+            font-weight: 700;
+            color: #FFFFFF !important;
+        }
+
+        .date-day-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #FFFFFF !important;
+            opacity: 0.85;
+        }
+
+        .header-action-tools {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-round-tool {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-round-tool:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: scale(1.05);
+        }
+
+        .btn-round-tool:active {
+            transform: scale(0.95);
+        }
+
+        /* 3. Dual Connectivity Cards (Row 1) */
+        .connectivity-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .connect-card {
+            height: 62px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.24);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .connect-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .connect-card.active {
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .card-icon-bubble {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF !important;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .connect-card.active .card-icon-bubble {
+            background: #FFFFFF;
+            color: #08080C !important;
+        }
+
+        .connect-card.active .card-icon-bubble svg {
+            stroke: #08080C !important;
+        }
+
+        .card-text-col {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .connect-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #FFFFFF !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .chevron-right {
+            color: #FFFFFF !important;
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        /* 4. Quick Settings Tiles (3x4 Grid in Frosted Panel) */
+        .tiles-glass-panel {
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-top: 1px solid rgba(255, 255, 255, 0.24);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+            padding: 12px 10px 8px;
+            margin-bottom: 8px;
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 10px 6px;
+        }
+
+        .tile-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.15s ease;
+        }
+
+        .tile-item:active {
+            transform: scale(0.92);
+        }
+
+        .tile-bubble {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF !important;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tile-bubble svg {
+            stroke: #FFFFFF !important;
+        }
+
+        /* Active Tile State (Neutral White Contrast, NO BLUE) */
+        .tile-item.active .tile-bubble {
+            background: #FFFFFF;
+            border-color: #FFFFFF;
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.35);
+        }
+
+        .tile-item.active .tile-bubble svg {
+            stroke: #08080C !important;
+            color: #08080C !important;
+        }
+
+        #tileSilent.active .tile-bubble svg {
+            stroke: #EF4444 !important;
+        }
+
+        /* STRICT COLOR CONSTRAINT: FONT IS ALWAYS PURE WHITE, NO BLUE */
+        .tile-label,
+        .tile-label.white-forced {
+            font-size: 11px;
+            font-weight: 500;
+            color: #FFFFFF !important;
+            line-height: 1.2;
+            max-width: 74px;
+            white-space: normal;
+            word-break: break-word;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Pagination Dots */
+        .pagination-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding-top: 8px;
+        }
+
+        .page-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transition: all 0.2s;
+        }
+
+        .page-dot.active {
+            width: 6px;
+            height: 6px;
+            background: #FFFFFF;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+        /* 5. Brightness & Volume Sliders Container */
+        .sliders-glass-panel {
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-top: 1px solid rgba(255, 255, 255, 0.24);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-capsule-track {
+            flex: 1;
+            height: 44px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .slider-fill {
+            height: 100%;
+            background: #FFFFFF;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: width 0.05s linear;
+        }
+
+        .slider-icon-lead {
+            position: absolute;
+            left: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .slider-icon-lead svg {
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+        }
+
+        .btn-slider-action {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-slider-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-slider-action.active {
+            background: #FFFFFF;
+        }
+
+        .btn-slider-action.active .action-symbol {
+            color: #08080C !important;
+        }
+
+        .btn-slider-action.alert-active {
+            background: #FFFFFF;
+        }
+
+        .action-symbol {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF !important;
+        }
+
+        /* 6. Bottom Android 3-Button Navigation Bar */
+        .android-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 4px 0 2px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #FFFFFF !important;
+            opacity: 0.75;
+            padding: 8px 24px;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .nav-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-center-phone" id="phoneViewport" data-phone-bg="black">
+        <!-- Wallpaper Switcher (Black / Blob) -->
+        <div class="wp-switcher-bar">
+            <div class="wallpaper-pill">
+                <span class="wp-label">Latar:</span>
+                <button type="button" class="btn-wp active" data-bg="black" id="btnWpBlack" onclick="setControlCenterBg('black')">
+                    <span class="dot-swatch black-swatch"></span> Black
+                </button>
+                <button type="button" class="btn-wp" data-bg="blob" id="btnWpBlob" onclick="setControlCenterBg('blob')">
+                    <span class="dot-swatch blob-swatch"></span> Blob
+                </button>
+            </div>
+        </div>
+
+        <!-- 1. Status Bar -->
+        <header class="status-bar">
+            <div class="status-left">
+                <span class="badge-5g">5G</span>
+                <div class="signal-bars" aria-label="Signal 4 bars">
+                    <span class="bar bar-1"></span>
+                    <span class="bar bar-2"></span>
+                    <span class="bar bar-3"></span>
+                    <span class="bar bar-4"></span>
+                </div>
+                <span class="carrier-text">3SinyalKuatHer</span>
+                <svg class="status-icon wifi-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                </svg>
+                <span class="net-speed">40.5 <small>KB/s</small></span>
+            </div>
+
+            <div class="status-right">
+                <svg class="status-icon vibrate-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <rect x="7" y="2" width="10" height="20" rx="3"></rect>
+                    <path d="M3 6v12M21 6v12M1 9v6M23 9v6"></path>
+                </svg>
+                <div class="battery-pill">
+                    <div class="battery-body">
+                        <div class="battery-level" style="width: 80%;"></div>
+                    </div>
+                    <span class="battery-text">80%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. Header: Clock, Date & Tools -->
+        <div class="cc-header">
+            <div class="clock-date-group">
+                <span class="cc-clock" id="ccClock">21:48</span>
+                <div class="cc-date">
+                    <span class="date-month-day" id="ccDateDay">Sep 11</span>
+                    <span class="date-day-name" id="ccDateName">Fri</span>
+                </div>
+            </div>
+
+            <div class="header-action-tools">
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('edit')" title="Edit Layout" aria-label="Edit Layout">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('settings')" title="Settings" aria-label="Settings">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('more')" title="More Options" aria-label="More Options">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1.5"/>
+                        <circle cx="12" cy="5" r="1.5"/>
+                        <circle cx="12" cy="19" r="1.5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Dual Connectivity Cards (Row 1) -->
+        <div class="connectivity-row">
+            <div class="connect-card active" id="cardWifi" onclick="toggleConnectCard('wifi')">
+                <div class="card-icon-bubble">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                </div>
+                <div class="card-text-col">
+                    <span class="connect-title">PutraPutri</span>
+                </div>
+                <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </div>
+
+            <div class="connect-card" id="cardData" onclick="toggleConnectCard('data')">
+                <div class="card-icon-bubble">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 20V4m0 0L3 8m4-4l4 4M17 4v16m0 0l4-4m-4 4l-4-4"></path>
+                    </svg>
+                </div>
+                <div class="card-text-col">
+                    <span class="connect-title">Data network</span>
+                </div>
+                <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 4. Quick Settings Tiles (3x4 Grid in Frosted Panel) -->
+        <div class="tiles-glass-panel">
+            <div class="tiles-grid" role="group" aria-label="Quick Settings">
+                <div class="tile-item active" id="tileBluetooth" onclick="toggleTile('tileBluetooth', 'Bluetooth')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m7 7 10 10-5 5V2l5 5L7 17"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Bluetooth &gt;</span>
+                </div>
+
+                <div class="tile-item" id="tileAutoRotate" onclick="toggleTile('tileAutoRotate', 'Auto-rotate')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+                            <path d="M21 12a9 9 0 0 1-9 9m-9-9a9 9 0 0 1 9-9"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Auto-rotate</span>
+                </div>
+
+                <div class="tile-item" id="tileFlashlight" onclick="toggleTile('tileFlashlight', 'Flashlight')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6c0 2-2 4-2 7v6a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-6c0-3-2-5-2-7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"></path>
+                            <line x1="6" y1="6" x2="18" y2="6"></line>
+                            <line x1="12" y1="12" x2="12.01" y2="12"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label white-forced">Flashlight &gt;</span>
+                </div>
+
+                <div class="tile-item active" id="tileSilent" onclick="toggleTile('tileSilent', 'Silent mode')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            <line x1="2" y1="2" x2="22" y2="22"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Silent mode</span>
+                </div>
+
+                <div class="tile-item" id="tileAirplane" onclick="toggleTile('tileAirplane', 'Airplane mode')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Airplane mode</span>
+                </div>
+
+                <div class="tile-item" id="tileLocation" onclick="toggleTile('tileLocation', 'Location')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Location</span>
+                </div>
+
+                <div class="tile-item" id="tileHotspot" onclick="toggleTile('tileHotspot', 'Personal hotspot')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 7.76a6 6 0 0 0 0 8.49"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Personal hotspot</span>
+                </div>
+
+                <div class="tile-item" id="tileDevice" onclick="toggleTile('tileDevice', 'Device controls')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Device controls</span>
+                </div>
+
+                <div class="tile-item" id="tileWallet" onclick="toggleTile('tileWallet', 'Wallet')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a8 8 0 0 1-8 5H4a2 2 0 0 1-2-2V5"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Wallet</span>
+                </div>
+
+                <div class="tile-item" id="tileShare" onclick="toggleTile('tileShare', 'iQOOshare')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">iQOOshare</span>
+                </div>
+
+                <div class="tile-item" id="tileCalc" onclick="toggleTile('tileCalc', 'Calculator')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Calculator</span>
+                </div>
+
+                <div class="tile-item" id="tileExtraDim" onclick="toggleTile('tileExtraDim', 'Extra dim')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Extra dim</span>
+                </div>
+            </div>
+
+            <!-- Pagination Dots -->
+            <div class="pagination-dots">
+                <span class="page-dot"></span>
+                <span class="page-dot active"></span>
+                <span class="page-dot"></span>
+            </div>
+        </div>
+
+        <!-- 5. Brightness & Volume Sliders Container -->
+        <div class="sliders-glass-panel">
+            <div class="slider-row">
+                <div class="slider-capsule-track" id="brightnessTrack">
+                    <div class="slider-fill" id="brightnessFill" style="width: 58%;">
+                        <div class="slider-icon-lead">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F59E0B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-slider-action" id="btnAutoBrightness" onclick="toggleAutoBrightness()" title="Auto Brightness">
+                    <span class="action-symbol">A</span>
+                </button>
+            </div>
+
+            <div class="slider-row">
+                <div class="slider-capsule-track" id="volumeTrack">
+                    <div class="slider-fill" id="volumeFill" style="width: 32%;">
+                        <div class="slider-icon-lead">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-slider-action alert-active" id="btnMuteToggle" onclick="toggleMute()" title="Mute/Silent Mode">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#EF4444" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        <line x1="2" y1="2" x2="22" y2="22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 6. Bottom Android 3-Button Navigation Bar -->
+        <nav class="android-nav-bar" aria-label="System Navigation">
+            <button type="button" class="nav-btn" onclick="handleNav('back')" title="Back">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                </svg>
+            </button>
+            <button type="button" class="nav-btn" onclick="handleNav('home')" title="Home">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <circle cx="12" cy="12" r="8"></circle>
+                </svg>
+            </button>
+            <button type="button" class="nav-btn" onclick="handleNav('recents')" title="Recent Apps">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                </svg>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        let currentVolume = 0.32;
+        let currentBrightness = 0.58;
+        let isAutoBrightness = false;
+        let isMuted = false;
+
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playTactileClick() {
+            if (isMuted || currentVolume <= 0) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                const now = audioCtx.currentTime;
+                osc.frequency.setValueAtTime(620, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.035);
+
+                const masterGain = currentVolume * 0.25;
+                gain.gain.setValueAtTime(masterGain, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.04);
+            } catch (e) {}
+        }
+
+        function triggerHaptic(ms = 15) {
+            if (navigator.vibrate) {
+                try { navigator.vibrate(ms); } catch (e) {}
+            }
+        }
+
+        window.toggleConnectCard = function (cardId) {
+            playTactileClick();
+            triggerHaptic(18);
+
+            const el = cardId === 'wifi' ? document.getElementById('cardWifi') : document.getElementById('cardData');
+            if (el) {
+                el.classList.toggle('active');
+            }
+        };
+
+        window.toggleTile = function (tileId, label) {
+            playTactileClick();
+            triggerHaptic(18);
+
+            const tile = document.getElementById(tileId);
+            if (tile) {
+                const isActive = tile.classList.toggle('active');
+
+                if (tileId === 'tileExtraDim') {
+                    applyBrightnessLevel(isActive ? currentBrightness * 0.5 : currentBrightness);
+                }
+
+                if (tileId === 'tileSilent') {
+                    setMuteState(isActive);
+                }
+            }
+        };
+
+        window.handleToolAction = function (tool) {
+            playTactileClick();
+            triggerHaptic(15);
+            if (tool === 'edit') {
+                alert("Edit Control Center (Simulasi: Atur ulang posisi tile)");
+            } else if (tool === 'settings') {
+                alert("Settings (Simulasi: Buka Pengaturan Perangkat)");
+            } else {
+                alert("More Options (Simulasi: Opsi tambahan)");
+            }
+        };
+
+        const brightnessTrack = document.getElementById('brightnessTrack');
+        const brightnessFill = document.getElementById('brightnessFill');
+        const phoneViewport = document.getElementById('phoneViewport');
+
+        function applyBrightnessLevel(level) {
+            const clamped = Math.max(0.1, Math.min(1.0, level));
+            if (brightnessFill) {
+                brightnessFill.style.width = `${Math.round(clamped * 100)}%`;
+            }
+            if (phoneViewport) {
+                phoneViewport.style.filter = `brightness(${0.45 + clamped * 0.65})`;
+            }
+        }
+
+        function setupSliderDragging(trackEl, onUpdate) {
+            if (!trackEl) return;
+
+            function updateFromPointer(e) {
+                const rect = trackEl.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left);
+                const ratio = (clientX - rect.left) / rect.width;
+                const clamped = Math.max(0, Math.min(1, ratio));
+                onUpdate(clamped);
+            }
+
+            let isDragging = false;
+
+            trackEl.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                trackEl.setPointerCapture(e.pointerId);
+                updateFromPointer(e);
+                playTactileClick();
+                triggerHaptic(12);
+            });
+
+            trackEl.addEventListener('pointermove', (e) => {
+                if (isDragging) {
+                    updateFromPointer(e);
+                }
+            });
+
+            const stopDrag = (e) => {
+                if (isDragging) {
+                    isDragging = false;
+                    try { trackEl.releasePointerCapture(e.pointerId); } catch (err) {}
+                }
+            };
+
+            trackEl.addEventListener('pointerup', stopDrag);
+            trackEl.addEventListener('pointercancel', stopDrag);
+        }
+
+        setupSliderDragging(brightnessTrack, (val) => {
+            currentBrightness = Math.max(0.1, val);
+            applyBrightnessLevel(currentBrightness);
+        });
+
+        window.toggleAutoBrightness = function () {
+            playTactileClick();
+            triggerHaptic(15);
+            isAutoBrightness = !isAutoBrightness;
+            const btn = document.getElementById('btnAutoBrightness');
+            if (btn) btn.classList.toggle('active', isAutoBrightness);
+
+            if (isAutoBrightness) {
+                currentBrightness = 0.58;
+                applyBrightnessLevel(currentBrightness);
+            }
+        };
+
+        const volumeTrack = document.getElementById('volumeTrack');
+        const volumeFill = document.getElementById('volumeFill');
+
+        function applyVolumeLevel(level) {
+            currentVolume = Math.max(0, Math.min(1.0, level));
+            if (volumeFill) {
+                volumeFill.style.width = `${Math.round(currentVolume * 100)}%`;
+            }
+            setMuteState(currentVolume === 0);
+        }
+
+        setupSliderDragging(volumeTrack, (val) => {
+            applyVolumeLevel(val);
+        });
+
+        function setMuteState(mute) {
+            isMuted = mute;
+            const btnMute = document.getElementById('btnMuteToggle');
+            const tileSilent = document.getElementById('tileSilent');
+
+            if (btnMute) {
+                btnMute.classList.toggle('alert-active', isMuted);
+                const svg = btnMute.querySelector('svg');
+                if (svg) {
+                    svg.setAttribute('stroke', isMuted ? '#EF4444' : '#FFFFFF');
+                }
+            }
+            if (tileSilent) {
+                tileSilent.classList.toggle('active', isMuted);
+            }
+        }
+
+        window.toggleMute = function () {
+            playTactileClick();
+            triggerHaptic(20);
+            setMuteState(!isMuted);
+            if (!isMuted && currentVolume === 0) {
+                applyVolumeLevel(0.35);
+            }
+        };
+
+        window.handleNav = function (action) {
+            playTactileClick();
+            triggerHaptic(15);
+        };
+
+        window.setControlCenterBg = function (bg) {
+            if (phoneViewport) {
+                phoneViewport.setAttribute('data-phone-bg', bg);
+            }
+
+            const btnBlack = document.getElementById('btnWpBlack');
+            const btnBlob = document.getElementById('btnWpBlob');
+            if (btnBlack) btnBlack.classList.toggle('active', bg === 'black');
+            if (btnBlob) btnBlob.classList.toggle('active', bg === 'blob');
+
+            try {
+                localStorage.setItem('cc-wallpaper', bg);
+            } catch (e) {}
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyBrightnessLevel(currentBrightness);
+            applyVolumeLevel(currentVolume);
+
+            let savedWp = 'black';
+            try {
+                savedWp = localStorage.getItem('cc-wallpaper') || 'black';
+            } catch (e) {}
+            setControlCenterBg(savedWp);
+        });
+    </script>
+</body>
+</html>

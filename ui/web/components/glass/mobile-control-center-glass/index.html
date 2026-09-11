@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Control Center — Glass Dark Quick Settings</title>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Phone Screen Viewport (9:16 Aspect Ratio) -->
+    <div class="control-center-phone" id="phoneViewport" data-phone-bg="black">
+        <!-- Wallpaper Switcher (Black / Blob) -->
+        <div class="wp-switcher-bar">
+            <div class="wallpaper-pill">
+                <span class="wp-label">Latar:</span>
+                <button type="button" class="btn-wp active" data-bg="black" id="btnWpBlack" onclick="setControlCenterBg('black')">
+                    <span class="dot-swatch black-swatch"></span> Black
+                </button>
+                <button type="button" class="btn-wp" data-bg="blob" id="btnWpBlob" onclick="setControlCenterBg('blob')">
+                    <span class="dot-swatch blob-swatch"></span> Blob
+                </button>
+            </div>
+        </div>
+
+        <!-- 1. Status Bar -->
+        <header class="status-bar">
+            <div class="status-left">
+                <span class="badge-5g">5G</span>
+                <!-- Signal Bars -->
+                <div class="signal-bars" aria-label="Signal 4 bars">
+                    <span class="bar bar-1"></span>
+                    <span class="bar bar-2"></span>
+                    <span class="bar bar-3"></span>
+                    <span class="bar bar-4"></span>
+                </div>
+                <span class="carrier-text">3SinyalKuatHer</span>
+                <!-- Wi-Fi Icon -->
+                <svg class="status-icon wifi-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                </svg>
+                <!-- Speed -->
+                <span class="net-speed">40.5 <small>KB/s</small></span>
+            </div>
+
+            <div class="status-right">
+                <!-- Vibrate/Silent Icon -->
+                <svg class="status-icon vibrate-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <rect x="7" y="2" width="10" height="20" rx="3"></rect>
+                    <path d="M3 6v12M21 6v12M1 9v6M23 9v6"></path>
+                </svg>
+                <!-- Battery Pill with 80% -->
+                <div class="battery-pill">
+                    <div class="battery-body">
+                        <div class="battery-level" style="width: 80%;"></div>
+                    </div>
+                    <span class="battery-text">80%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. Header: Clock, Date & Tools -->
+        <div class="cc-header">
+            <div class="clock-date-group">
+                <span class="cc-clock" id="ccClock">21:48</span>
+                <div class="cc-date">
+                    <span class="date-month-day" id="ccDateDay">Sep 11</span>
+                    <span class="date-day-name" id="ccDateName">Fri</span>
+                </div>
+            </div>
+
+            <div class="header-action-tools">
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('edit')" title="Edit Layout" aria-label="Edit Layout">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('settings')" title="Settings" aria-label="Settings">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn-round-tool" onclick="handleToolAction('more')" title="More Options" aria-label="More Options">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1.5"/>
+                        <circle cx="12" cy="5" r="1.5"/>
+                        <circle cx="12" cy="19" r="1.5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Dual Big Connectivity Cards (Row 1) -->
+        <div class="connectivity-row">
+            <!-- Wi-Fi Card -->
+            <div class="connect-card active" id="cardWifi" onclick="toggleConnectCard('wifi')">
+                <div class="card-icon-bubble">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                </div>
+                <div class="card-text-col">
+                    <span class="connect-title">PutraPutri</span>
+                </div>
+                <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </div>
+
+            <!-- Data Network Card -->
+            <div class="connect-card" id="cardData" onclick="toggleConnectCard('data')">
+                <div class="card-icon-bubble">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 20V4m0 0L3 8m4-4l4 4M17 4v16m0 0l4-4m-4 4l-4-4"></path>
+                    </svg>
+                </div>
+                <div class="card-text-col">
+                    <span class="connect-title">Data network</span>
+                </div>
+                <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 4. Quick Settings Tiles (3x4 Grid in Frosted Panel) -->
+        <div class="tiles-glass-panel">
+            <div class="tiles-grid" role="group" aria-label="Quick Settings">
+                <!-- Tile 1: Bluetooth -->
+                <div class="tile-item active" id="tileBluetooth" onclick="toggleTile('tileBluetooth', 'Bluetooth')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m7 7 10 10-5 5V2l5 5L7 17"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Bluetooth &gt;</span>
+                </div>
+
+                <!-- Tile 2: Auto-rotate -->
+                <div class="tile-item" id="tileAutoRotate" onclick="toggleTile('tileAutoRotate', 'Auto-rotate')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+                            <path d="M21 12a9 9 0 0 1-9 9m-9-9a9 9 0 0 1 9-9"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Auto-rotate</span>
+                </div>
+
+                <!-- Tile 3: Flashlight (WHITE FONT ONLY) -->
+                <div class="tile-item" id="tileFlashlight" onclick="toggleTile('tileFlashlight', 'Flashlight')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6c0 2-2 4-2 7v6a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-6c0-3-2-5-2-7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"></path>
+                            <line x1="6" y1="6" x2="18" y2="6"></line>
+                            <line x1="12" y1="12" x2="12.01" y2="12"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label white-forced">Flashlight &gt;</span>
+                </div>
+
+                <!-- Tile 4: Silent mode -->
+                <div class="tile-item active" id="tileSilent" onclick="toggleTile('tileSilent', 'Silent mode')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            <line x1="2" y1="2" x2="22" y2="22"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Silent mode</span>
+                </div>
+
+                <!-- Tile 5: Airplane mode -->
+                <div class="tile-item" id="tileAirplane" onclick="toggleTile('tileAirplane', 'Airplane mode')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Airplane mode</span>
+                </div>
+
+                <!-- Tile 6: Location -->
+                <div class="tile-item" id="tileLocation" onclick="toggleTile('tileLocation', 'Location')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Location</span>
+                </div>
+
+                <!-- Tile 7: Personal hotspot -->
+                <div class="tile-item" id="tileHotspot" onclick="toggleTile('tileHotspot', 'Personal hotspot')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 7.76a6 6 0 0 0 0 8.49"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Personal hotspot</span>
+                </div>
+
+                <!-- Tile 8: Device controls -->
+                <div class="tile-item" id="tileDevice" onclick="toggleTile('tileDevice', 'Device controls')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Device controls</span>
+                </div>
+
+                <!-- Tile 9: Wallet -->
+                <div class="tile-item" id="tileWallet" onclick="toggleTile('tileWallet', 'Wallet')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a8 8 0 0 1-8 5H4a2 2 0 0 1-2-2V5"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Wallet</span>
+                </div>
+
+                <!-- Tile 10: iQOOshare -->
+                <div class="tile-item" id="tileShare" onclick="toggleTile('tileShare', 'iQOOshare')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">iQOOshare</span>
+                </div>
+
+                <!-- Tile 11: Calculator -->
+                <div class="tile-item" id="tileCalc" onclick="toggleTile('tileCalc', 'Calculator')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Calculator</span>
+                </div>
+
+                <!-- Tile 12: Extra dim -->
+                <div class="tile-item" id="tileExtraDim" onclick="toggleTile('tileExtraDim', 'Extra dim')">
+                    <div class="tile-bubble">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </svg>
+                    </div>
+                    <span class="tile-label">Extra dim</span>
+                </div>
+            </div>
+
+            <!-- Pagination Dots -->
+            <div class="pagination-dots">
+                <span class="page-dot"></span>
+                <span class="page-dot active"></span>
+                <span class="page-dot"></span>
+            </div>
+        </div>
+
+        <!-- 5. Brightness & Volume Sliders Container -->
+        <div class="sliders-glass-panel">
+            <!-- Slider 1: Brightness -->
+            <div class="slider-row">
+                <div class="slider-capsule-track" id="brightnessTrack">
+                    <div class="slider-fill" id="brightnessFill" style="width: 58%;">
+                        <div class="slider-icon-lead">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F59E0B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Auto-Brightness Button -->
+                <button type="button" class="btn-slider-action" id="btnAutoBrightness" onclick="toggleAutoBrightness()" title="Auto Brightness">
+                    <span class="action-symbol">A</span>
+                </button>
+            </div>
+
+            <!-- Slider 2: Volume -->
+            <div class="slider-row">
+                <div class="slider-capsule-track" id="volumeTrack">
+                    <div class="slider-fill" id="volumeFill" style="width: 32%;">
+                        <div class="slider-icon-lead">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Silent/Mute Button -->
+                <button type="button" class="btn-slider-action alert-active" id="btnMuteToggle" onclick="toggleMute()" title="Mute/Silent Mode">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#EF4444" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        <line x1="2" y1="2" x2="22" y2="22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 6. Bottom Android 3-Button Navigation Bar -->
+        <nav class="android-nav-bar" aria-label="System Navigation">
+            <button type="button" class="nav-btn" onclick="handleNav('back')" title="Back">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                </svg>
+            </button>
+            <button type="button" class="nav-btn" onclick="handleNav('home')" title="Home">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <circle cx="12" cy="12" r="8"></circle>
+                </svg>
+            </button>
+            <button type="button" class="nav-btn" onclick="handleNav('recents')" title="Recent Apps">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                </svg>
+            </button>
+        </nav>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
