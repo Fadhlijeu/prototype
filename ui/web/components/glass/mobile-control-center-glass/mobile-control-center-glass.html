@@ -551,6 +551,29 @@
         .nav-btn:active {
             transform: scale(0.9);
         }
+
+        /* ============================================================
+           Scale-to-Fit for Bento Card Preview (≤520px wide iframe)
+           Ensures the full phone mockup is always visible
+           ============================================================ */
+        @media (max-width: 520px) {
+            body {
+                padding: 8px 4px;
+                align-items: flex-start;
+                overflow: hidden;
+            }
+            .control-center-phone {
+                transform: scale(0.72);
+                transform-origin: top center;
+                margin-top: 0;
+            }
+        }
+        @media (max-width: 420px) {
+            .control-center-phone {
+                transform: scale(0.6);
+                transform-origin: top center;
+            }
+        }
     </style>
 </head>
 <body>

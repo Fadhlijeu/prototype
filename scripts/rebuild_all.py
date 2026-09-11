@@ -349,7 +349,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .component-card.span-tall {{
                 grid-column: span 1 !important;
                 grid-row: span 1 !important;
-                min-height: 460px !important;
             }}
         }}
 
@@ -765,7 +764,11 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .toast-notification.active {{ transform: translateY(0); opacity: 1; }}
         .toast-notification svg {{ color: #4ADE80; width: 18px; height: 18px; }}
 
+        /* ============================================================ */
+        /* MOBILE RESPONSIVE — 768px AND BELOW                         */
+        /* ============================================================ */
         @media (max-width: 768px) {{
+            /* --- Header --- */
             .showcase-header {{
                 padding: 10px 14px;
                 flex-direction: column;
@@ -778,23 +781,33 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 white-space: nowrap;
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 4px;
+                scrollbar-width: none;
             }}
+            .header-actions::-webkit-scrollbar {{ display: none; }}
+
+            /* --- Banner --- */
             .app-highlight-banner {{
-                margin: 12px 14px 0;
-                padding: 14px 16px;
+                margin: 8px 12px 0;
+                padding: 12px 14px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 12px;
+                gap: 10px;
             }}
             .btn-banner-cta {{
                 width: 100%;
                 justify-content: center;
             }}
+
+            /* --- Controls Bar --- */
             .controls-bar {{
-                padding: 12px 14px 6px;
+                padding: 10px 12px 6px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 8px;
+            }}
+            /* Hide grid column switcher completely on mobile — always 1 col */
+            .layout-selector {{
+                display: none !important;
             }}
             .filter-tabs {{
                 width: 100%;
@@ -803,6 +816,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }}
+            .filter-tabs::-webkit-scrollbar {{ display: none; }}
             .controls-right {{
                 width: 100%;
                 justify-content: space-between;
@@ -810,6 +824,8 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .search-box {{
                 width: 100%;
             }}
+
+            /* --- Grid: Force Single Column --- */
             .showcase-grid,
             .showcase-grid.cols-auto,
             .showcase-grid.cols-1,
@@ -817,70 +833,158 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .showcase-grid.cols-3,
             .showcase-grid.cols-4 {{
                 grid-template-columns: 1fr !important;
-                padding: 10px 14px 48px !important;
-                gap: 16px !important;
+                width: calc(100% - 24px) !important;
+                margin: 8px 12px 32px !important;
+                padding: 0 !important;
+                gap: 14px !important;
             }}
-            .component-card {{
-                min-height: 440px;
-                border-radius: 16px;
+
+            /* --- Card: Uniform Height on Mobile --- */
+            .component-card,
+            .component-card.span-tall,
+            .component-card.span-wide {{
+                height: 520px !important;
+                min-height: 520px !important;
+                max-height: 520px !important;
+                border-radius: 16px !important;
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
             }}
+
+            /* --- Card Preview Zone: Fixed 400px --- */
             .card-preview-zone {{
-                min-height: 320px;
+                height: 400px !important;
+                min-height: 400px !important;
+                max-height: 400px !important;
+                flex: none !important;
+            }}
+            .card-preview-zone .preview-resizer-wrapper {{
+                height: 100% !important;
+                min-height: 100% !important;
+            }}
+            .card-preview-zone iframe {{
+                height: 100% !important;
+                min-height: 100% !important;
+            }}
+
+            /* --- Card Top & Actions: Compact --- */
+            .card-top {{
+                padding: 10px 14px 8px;
+            }}
+            .card-name {{
+                font-size: 13px;
+            }}
+            .card-actions-bar {{
+                padding: 6px 10px;
+                gap: 6px;
+            }}
+            .btn-card-full {{
+                padding: 5px 10px;
+                font-size: 11px;
+            }}
+            .btn-card-tool {{
+                padding: 4px 8px;
+                font-size: 11px;
+            }}
+            /* Hide non-essential card actions on mobile */
+            .btn-card-tool.solo {{
+                display: none !important;
+            }}
+
+            /* --- Studio Modal: True Fullscreen on Mobile --- */
+            .modal-overlay {{
+                padding: 0 !important;
             }}
             .studio-modal-card {{
-                width: 100vw;
-                height: 100vh;
-                max-height: 100vh;
-                margin: 0;
-                border-radius: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
             }}
-            .modal-overlay {{
-                padding: 0;
-            }}
+
+            /* Studio Header: 2-row layout on mobile */
             .studio-header {{
-                padding: 10px 14px;
+                padding: 8px 12px;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 6px;
+                align-items: center;
             }}
+            .studio-header-left {{
+                flex: 1;
+                min-width: 0;
+            }}
+            .studio-title-block {{
+                min-width: 0;
+            }}
+            .studio-badge-row {{
+                display: none; /* Hide path tag on mobile to save space */
+            }}
+            .studio-title {{
+                font-size: 14px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            /* Mode tabs go full-width on row 2 */
             .studio-mode-switcher {{
-                order: 3;
+                order: 10;
                 width: 100%;
-                justify-content: center;
+                margin-top: 2px;
             }}
             .btn-mode-tab {{
                 flex: 1;
                 justify-content: center;
-            }}
-            .studio-toolbar {{
-                padding: 8px 12px;
-                gap: 8px;
-            }}
-            .presets-group {{
-                overflow-x: auto;
-                width: 100%;
-                padding-bottom: 2px;
-                scrollbar-width: none;
-            }}
-            .presets-group::-webkit-scrollbar {{ display: none; }}
-            .studio-slider-box {{
-                width: 100%;
-                justify-content: space-between;
-            }}
-            .studio-slider-range {{
-                flex: 1;
-                width: auto;
-            }}
-        }}
-
-        @media (max-width: 600px) {{
-            .card-actions-bar {{
                 padding: 6px 10px;
             }}
-            .btn-card-tool.solo {{
+            /* Action buttons: compact, no labels */
+            .studio-header-right {{
+                gap: 5px;
+            }}
+            .btn-studio-action span {{
+                display: none; /* Icon-only on mobile */
+            }}
+            .btn-studio-action {{
+                padding: 6px 8px;
+            }}
+
+            /* Studio Toolbar: Slim single row — BG + Reload only */
+            .studio-toolbar {{
+                padding: 6px 10px;
+                min-height: 42px;
+                gap: 8px;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }}
+            /* Hide desktop preset buttons and slider on mobile */
+            .studio-toolbar-section.presets-group,
+            .studio-toolbar .slider-group,
+            .studio-toolbar-divider,
+            .studio-toolbar-section:has(.btn-studio-preset[data-preset="1440px"]) {{
                 display: none !important;
             }}
-            .layout-selector .btn-layout:nth-child(4),
-            .layout-selector .btn-layout:nth-child(5) {{
+            /* Only show BG selector and Reload */
+            .studio-toolbar .studio-toolbar-section:first-child {{
+                display: flex;
+            }}
+            .studio-toolbar .studio-toolbar-right {{
+                display: flex;
+            }}
+            .studio-toolbar .presets-group {{
+                display: none !important;
+            }}
+
+            /* Studio Canvas: Full remaining height */
+            .studio-canvas-stage {{
+                padding: 0;
+            }}
+            .studio-viewport-wrapper {{
+                border-radius: 0;
+                border: none;
+            }}
+            /* Hide viewport dimension badge on mobile */
+            .viewport-meta-floating {{
                 display: none !important;
             }}
         }}
@@ -2235,6 +2339,7 @@ raw_showcase_content = f"""<!DOCTYPE html>
                 white-space: nowrap;
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 4px;
+                scrollbar-width: none;
             }}
             .controls-bar {{
                 padding: 10px 14px;
@@ -2242,11 +2347,15 @@ raw_showcase_content = f"""<!DOCTYPE html>
                 align-items: stretch;
                 gap: 10px;
             }}
+            .layout-selector {{
+                display: none !important;
+            }}
             .filter-tabs {{
                 width: 100%;
                 overflow-x: auto;
                 white-space: nowrap;
                 -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
             }}
             .raw-grid,
             .raw-grid.cols-auto,
@@ -2255,63 +2364,73 @@ raw_showcase_content = f"""<!DOCTYPE html>
             .raw-grid.cols-3,
             .raw-grid.cols-4 {{
                 grid-template-columns: 1fr !important;
-                padding: 10px 14px 40px !important;
-                gap: 16px !important;
+                padding: 10px 12px 40px !important;
+                gap: 14px !important;
             }}
-            .studio-modal-card {{
-                width: 100vw;
-                height: 100vh;
-                max-height: 100vh;
-                margin: 0;
-                border-radius: 0;
+            .comp-card {{
+                height: 500px !important;
+                min-height: 500px !important;
+                max-height: 500px !important;
+            }}
+            .comp-preview-zone {{
+                height: 380px !important;
+                min-height: 380px !important;
+                max-height: 380px !important;
+                flex: none !important;
             }}
             .modal-overlay {{
-                padding: 0;
+                padding: 0 !important;
+            }}
+            .studio-modal-card {{
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
             }}
             .studio-header {{
-                padding: 10px 14px;
+                padding: 8px 12px;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 6px;
+                align-items: center;
             }}
             .studio-mode-switcher {{
-                order: 3;
+                order: 10;
                 width: 100%;
-                justify-content: center;
             }}
             .btn-mode-tab {{
                 flex: 1;
                 justify-content: center;
             }}
             .studio-toolbar {{
-                padding: 8px 12px;
+                padding: 6px 10px;
+                min-height: 42px;
                 gap: 8px;
             }}
-            .presets-group {{
-                overflow-x: auto;
-                width: 100%;
-                padding-bottom: 2px;
-                scrollbar-width: none;
+            .studio-toolbar-section.presets-group,
+            .studio-toolbar .slider-group,
+            .studio-toolbar-divider,
+            .studio-toolbar-section:has(.btn-studio-preset[data-preset="1440px"]) {{
+                display: none !important;
             }}
-            .presets-group::-webkit-scrollbar {{ display: none; }}
-            .studio-slider-box {{
-                width: 100%;
-                justify-content: space-between;
+            .studio-toolbar .presets-group {{
+                display: none !important;
             }}
-            .studio-slider-range {{
-                flex: 1;
-                width: auto;
+            .studio-canvas-stage {{
+                padding: 0;
+            }}
+            .studio-viewport-wrapper {{
+                border-radius: 0;
+                border: none;
+            }}
+            .viewport-meta-floating {{
+                display: none !important;
             }}
         }}
 
         @media (max-width: 600px) {{
-            .card-actions-bar {{
-                padding: 6px 10px;
-            }}
             .btn-card-tool.solo {{
-                display: none !important;
-            }}
-            .layout-selector .btn-layout:nth-child(4),
-            .layout-selector .btn-layout:nth-child(5) {{
                 display: none !important;
             }}
         }}

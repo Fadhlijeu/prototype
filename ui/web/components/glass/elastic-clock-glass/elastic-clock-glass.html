@@ -103,6 +103,20 @@
         .colon-dot {
             filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
         }
+
+        /* ============================================================
+           Compact Mode for Bento Card Preview (≤520px wide iframe)
+           The SVG clock fills the space naturally via viewBox scaling
+           ============================================================ */
+        @media (max-width: 520px) {
+            .clock-interactive-area {
+                padding: 12px 8px;
+            }
+            .elastic-clock-mesh {
+                max-width: 340px;
+                max-height: 560px;
+            }
+        }
     </style>
 </head>
 <body>
