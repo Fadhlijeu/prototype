@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,18 +11,44 @@
 <body>
 
     <div class="chat-bar-wrapper">
-        <form class="chat-input-bar glass-noise">
-            <button type="button" class="icon-btn" title="Attach file">
+        <!-- Media Upload Preview Container (Above Input) -->
+        <div class="upload-preview-area" id="uploadPreviewArea">
+            <div class="preview-thumb-box" id="previewThumbBox">
+                <i data-lucide="file-text"></i>
+            </div>
+            <div class="preview-meta">
+                <span class="preview-filename" id="previewFilename">image_upload.png</span>
+                <span class="preview-filesize" id="previewFilesize">1.4 MB</span>
+            </div>
+            <button type="button" class="btn-remove-media" id="btnRemoveMedia" title="Hapus media">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <!-- Chat Form -->
+        <form class="chat-input-bar" id="chatForm">
+            <!-- Hidden File Input -->
+            <input type="file" id="chatFileInput" accept="image/*,.pdf,.doc,.docx,.txt" style="display: none;">
+
+            <button type="button" class="icon-btn" id="attachBtn" title="Lampirkan berkas (gambar, dokumen)">
                 <i data-lucide="plus"></i>
             </button>
-            <input type="text" id="chatInput" class="chat-input" placeholder="Ask anything. Images and documents work too..." autocomplete="off">
-            <button type="button" class="icon-btn" title="Voice dictation">
+
+            <input type="text" id="chatInput" class="chat-input" placeholder="Tanyakan apapun. Gambar dan dokumen didukung..." autocomplete="off">
+
+            <button type="button" class="icon-btn" id="micBtn" title="Dikte suara">
                 <i data-lucide="mic"></i>
             </button>
-            <button type="submit" class="icon-btn send-btn" title="Send message">
+
+            <button type="submit" class="icon-btn send-btn" title="Kirim pesan">
                 <i data-lucide="arrow-up"></i>
             </button>
         </form>
+    </div>
+
+    <div class="toast-notification" id="toastBox">
+        <i data-lucide="check-circle-2"></i>
+        <span id="toastText">Pesan terkirim!</span>
     </div>
 
     <script src="index.js"></script>

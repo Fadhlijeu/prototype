@@ -343,7 +343,7 @@
 
                 <div class="modal-actions">
                     <button class="modal-btn cancel" onclick="closeSheet()">Cancel</button>
-                    <button class="modal-btn create" id="createBtn" disabled onclick="alert('Created: ' + document.getElementById('folderInput').value); closeSheet()">Create</button>
+                    <button class="modal-btn create" id="createBtn" disabled onclick="handleFolderCreate()">Create</button>
                 </div>
 
                 <div class="ios-indicator"></div>
@@ -352,6 +352,25 @@
     </div>
 
     <script>
+        function handleFolderCreate() {
+            const input = document.getElementById('folderInput');
+            const val = input ? input.value.trim() : '';
+            if (val) {
+                closeSheet();
+                const title = document.querySelector('.header h1');
+                if (title) {
+                    const orig = title.textContent;
+                    title.textContent = `Folder "${val}" Dibuat`;
+                    title.style.color = '#38BDF8';
+                    setTimeout(() => {
+                        title.textContent = orig;
+                        title.style.color = '';
+                    }, 3000);
+                }
+                input.value = '';
+                updateBtn();
+            }
+        }
         const sheet = document.getElementById('sheet');
         const canvas = document.getElementById('fxCanvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });

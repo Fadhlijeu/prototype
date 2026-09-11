@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,169 +7,255 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-:root {
-    --bg-page: #08080C;
-    --glass-card: rgba(255, 255, 255, 0.06);
-    --glass-card-hover: rgba(255, 255, 255, 0.09);
-    --glass-border-top: rgba(255, 255, 255, 0.24);
-    --glass-border-side: rgba(255, 255, 255, 0.10);
-    --glass-border-bottom: rgba(255, 255, 255, 0.04);
-    --text-primary: #FFFFFF;
-    --text-secondary: rgba(255, 255, 255, 0.65);
-    --text-muted: rgba(255, 255, 255, 0.38);
-    --accent-cyan: #4A9EFF;
-    --accent-blue-1: #4A7BF7;
-    --accent-blue-2: #2E5FD9;
-    --accent-blue-3: #1E3A8A;
-    --accent-green: #10B981;
-    --accent-amber: #F59E0B;
-    --accent-red: #EF4444;
-    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
-}
+        :root {
+            --bg-page: #08080C;
+            --glass-card: rgba(255, 255, 255, 0.06);
+            --glass-border-top: rgba(255, 255, 255, 0.24);
+            --glass-border-side: rgba(255, 255, 255, 0.10);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --text-muted: rgba(255, 255, 255, 0.38);
+            --accent-cyan: #38BDF8;
+            --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+        }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-    background-color: var(--bg-page);
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--text-primary);
-}
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
+        .dropdown-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+        }
 
-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-}
+        .dropdown-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 18px;
+            border-radius: 18px;
+            background: var(--glass-card);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
 
-.dropdown-wrap {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-}
+        .dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-top-color: rgba(255, 255, 255, 0.35);
+        }
 
-.dropdown-trigger {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: 16px;
-    background: var(--glass-card);
-    backdrop-filter: blur(24px);
-    border: 1px solid transparent;
-    border-top-color: var(--glass-border-top);
-    border-left-color: var(--glass-border-side);
-    border-right-color: var(--glass-border-side);
-    border-bottom-color: var(--glass-border-bottom);
-    color: #FFFFFF;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease;
-}
+        .dropdown-wrap.open .dropdown-trigger {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18), 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
 
-.dropdown-trigger svg {
-    width: 16px; height: 16px;
-    color: var(--text-secondary);
-    transition: transform 0.25s var(--ease-spring);
-}
+        .trigger-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.dropdown-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0; width: 100%;
-    background: rgba(15, 15, 22, 0.85);
-    backdrop-filter: blur(28px) saturate(180%);
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-    padding: 6px;
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    z-index: 100;
-}
+        .trigger-left svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent-cyan);
+        }
 
-.dropdown-wrap.open .dropdown-menu {
-    display: flex;
-}
+        .chevron-icon {
+            width: 17px;
+            height: 17px;
+            color: var(--text-secondary);
+            transition: transform 0.25s var(--ease-spring);
+        }
 
-.dropdown-wrap.open .dropdown-trigger svg {
-    transform: rotate(180deg);
-}
+        .dropdown-wrap.open .chevron-icon {
+            transform: rotate(180deg);
+            color: #FFFFFF;
+        }
 
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.18s ease;
-}
+        /* Animated Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: rgba(14, 16, 23, 0.88);
+            backdrop-filter: blur(32px) saturate(180%);
+            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.25s var(--ease-spring), visibility 0.22s;
+        }
 
-.dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.09);
-    color: #FFFFFF;
-}
+        .dropdown-wrap.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
 
-.dropdown-item.selected {
-    background: rgba(74, 158, 255, 0.15);
-    color: var(--accent-cyan);
-    font-weight: 600;
-}
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 14px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            border: 1px solid transparent;
+        }
 
-.dropdown-item svg {
-    width: 16px; height: 16px;
-}
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #FFFFFF;
+        }
 
+        .dropdown-item.selected {
+            background: rgba(56, 189, 248, 0.16);
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-left svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-cyan);
+        }
+
+        .item-check {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-cyan);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s var(--ease-spring);
+        }
+
+        .dropdown-item.selected .item-check {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
 </head>
 <body>
 
-    <div class="dropdown-wrap" id="drop">
+    <div class="dropdown-wrap" id="dropWrap">
         <button type="button" class="dropdown-trigger" onclick="toggleDropdown()">
-            <span id="selectedLabel">Personal Workspace</span>
-            <i data-lucide="chevron-down"></i>
+            <div class="trigger-left">
+                <i data-lucide="layers" id="triggerIcon"></i>
+                <span id="selectedLabel">Personal Workspace</span>
+            </div>
+            <i data-lucide="chevron-down" class="chevron-icon"></i>
         </button>
+
         <div class="dropdown-menu">
-            <div class="dropdown-item selected" onclick="selectOption('Personal Workspace', this)">
-                <i data-lucide="user"></i> Personal Workspace
+            <div class="dropdown-item selected" data-icon="layers" data-value="Personal Workspace" onclick="selectOption(this)">
+                <div class="item-left">
+                    <i data-lucide="layers"></i>
+                    <span>Personal Workspace</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Design System Lab', this)">
-                <i data-lucide="gem"></i> Design System Lab
+
+            <div class="dropdown-item" data-icon="users" data-value="Team Engineering" onclick="selectOption(this)">
+                <div class="item-left">
+                    <i data-lucide="users"></i>
+                    <span>Team Engineering</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Cloud File Manager', this)">
-                <i data-lucide="folder-kanban"></i> Cloud File Manager
+
+            <div class="dropdown-item" data-icon="building" data-value="Enterprise Organization" onclick="selectOption(this)">
+                <div class="item-left">
+                    <i data-lucide="building"></i>
+                    <span>Enterprise Organization</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Production Archive', this)">
-                <i data-lucide="archive"></i> Production Archive
+
+            <div class="dropdown-item" data-icon="sparkles" data-value="AI Prototype Lab" onclick="selectOption(this)">
+                <div class="item-left">
+                    <i data-lucide="sparkles"></i>
+                    <span>AI Prototype Lab</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
         </div>
     </div>
 
     <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
-    <script>
+        lucide.createIcons();
 
-function toggleDropdown() {
-    document.getElementById('drop').classList.toggle('open');
-}
+        function toggleDropdown() {
+            const wrap = document.getElementById('dropWrap');
+            wrap.classList.toggle('open');
+        }
 
-function selectOption(text, el) {
-    document.getElementById('selectedLabel').innerText = text;
-    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('drop').classList.remove('open');
-}
+        function selectOption(el) {
+            document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
 
+            const val = el.getAttribute('data-value');
+            const icon = el.getAttribute('data-icon');
+
+            document.getElementById('selectedLabel').textContent = val;
+            const triggerIcon = document.getElementById('triggerIcon');
+            triggerIcon.setAttribute('data-lucide', icon);
+            lucide.createIcons();
+
+            toggleDropdown();
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrap = document.getElementById('dropWrap');
+            if (!wrap.contains(e.target)) {
+                wrap.classList.remove('open');
+            }
+        });
     </script>
 </body>
 </html>

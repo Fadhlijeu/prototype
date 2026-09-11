@@ -1,11 +1,13 @@
 /**
  * Glass Input Fields Styles
- * Uses tokens from ../css.css
+ * Uses design tokens from ../css.css
  */
 @import url('../css.css');
 
-
 body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -15,10 +17,19 @@ body {
 
 .form-group-wrap {
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
+}
+
+.field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: block;
+    letter-spacing: 0.02em;
 }
 
 .glass-field {
@@ -26,32 +37,35 @@ body {
     display: flex;
     align-items: center;
     background: var(--glass-card);
-    backdrop-filter: blur(20px);
-    border-radius: 14px;
+    backdrop-filter: var(--blur-glass-standard);
+    -webkit-backdrop-filter: var(--blur-glass-standard);
+    border-radius: 16px;
     border: 1px solid transparent;
     border-top-color: var(--glass-border-top);
     border-left-color: var(--glass-border-side);
     border-right-color: var(--glass-border-side);
     border-bottom-color: var(--glass-border-bottom);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     padding: 0 14px;
     transition: all 0.2s ease;
 }
 
 .glass-field:focus-within {
-    border-color: rgba(74, 158, 255, 0.45);
-    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+    border-color: rgba(56, 189, 248, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18), 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.glass-field svg {
+.field-icon {
     color: var(--text-muted);
-    width: 17px; height: 17px;
+    width: 18px;
+    height: 18px;
     stroke-width: 1.5px;
     flex-shrink: 0;
     transition: color 0.2s;
 }
 
-.glass-field:focus-within svg {
+.glass-field:focus-within .field-icon {
     color: var(--accent-cyan);
 }
 
@@ -63,12 +77,45 @@ body {
     border: none;
     outline: none;
     color: #FFFFFF;
-    font-size: 13.5px;
+    font-size: 14px;
     font-family: inherit;
-    padding: 12px 10px;
+    padding: 13px 12px;
 }
 
 .glass-input::placeholder {
     color: var(--text-muted);
 }
 
+/* Anti-white box browser autofill override */
+.glass-input:-webkit-autofill,
+.glass-input:-webkit-autofill:hover,
+.glass-input:-webkit-autofill:focus,
+.glass-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #0E1018 inset !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.field-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.field-action-btn:hover {
+    color: #FFFFFF;
+}
+
+.field-action-btn svg {
+    width: 17px;
+    height: 17px;
+}

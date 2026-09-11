@@ -170,6 +170,19 @@
             .bars-container {
                 gap: 5px;
             }
+        .chart-info-toast {
+            position: relative;
+            z-index: 1;
+            margin-top: 12px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            font-size: 11.5px;
+            color: #38BDF8;
+            text-align: center;
+            letter-spacing: 0.02em;
+            transition: all 0.2s ease;
         }
     </style>
 </head>
@@ -194,18 +207,29 @@
                 <span>6h ago</span>
                 <span>Just now</span>
             </div>
+
+            <div class="chart-info-toast" id="chartToast">
+                Klik kolom grafik untuk inspeksi metrik
+            </div>
         </div>
     </div>
 
     <script>
         const container = document.getElementById('bars');
+        const toast = document.getElementById('chartToast');
         const heights = [45, 62, 50, 78, 58, 88, 68, 94, 72, 60, 80, 92];
         heights.forEach((h, i) => {
             const b = document.createElement('div');
             b.className = 'bar-col';
             b.style.height = h + '%';
             b.title = `Hour ${i + 1}: ${h}% activity load`;
-            b.onclick = () => alert(`Telemetry at hour ${i + 1}: ${h}%`);
+            b.onclick = () => {
+                document.querySelectorAll('.bar-col').forEach(c => c.style.filter = '');
+                b.style.filter = 'brightness(1.4) drop-shadow(0 0 10px #38BDF8)';
+                if (toast) {
+                    toast.textContent = `Jam ke-${i + 1}: Beban ${h}% • Telemetri Stabil`;
+                }
+            };
             container.appendChild(b);
         });
     </script>

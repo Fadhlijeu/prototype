@@ -15,7 +15,7 @@ body {
 </head>
 <body>
 <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-    <button type="button" onclick="alert('Button clicked!')">Standard Button</button>
+    <button type="button" onclick="this.textContent = 'Clicked!'; setTimeout(() => this.textContent = 'Standard Button', 1200)">Standard Button</button>
     <button type="submit">Submit Button</button>
     <button type="reset">Reset Button</button>
     <button disabled>Disabled Button</button>

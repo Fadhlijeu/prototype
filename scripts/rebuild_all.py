@@ -20,33 +20,33 @@ with open(os.path.join(GLASS_DIR, "css.css"), "r", encoding="utf-8") as f:
     shared_css_code = f.read()
 
 glass_components_metadata = [
-    ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "inputs"),
-    ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs"),
-    ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs"),
-    ("prompt-pills-row", "Prompt Pills Quick Scroller", "Chips / Action Pills", "Molecule", "inputs"),
-    ("thinking-effort-selector", "Thinking Effort Selector", "Segmented Stepper", "Atomic", "inputs"),
-    ("toggle-switch-glass", "Glass Toggle Switch", "Control / Switch", "Atomic", "inputs"),
-    ("checkbox-glass", "Glass Checkbox & Radio", "Control / Checkbox", "Atomic", "inputs"),
-    ("dropdown-select-glass", "Glass Floating Dropdown", "Control / Select", "Molecule", "inputs"),
-    ("ai-model-selector", "AI Model Selector Card", "Selection Control", "Molecule", "cards"),
-    ("frosted-folder-card", "Frosted Folder Card", "File System / Card", "Molecule", "cards"),
-    ("aurora-storage-card", "Aurora Storage Card", "Data Display / Gauge", "Molecule", "cards"),
-    ("progress-bar-glass", "Glass Glowing Progress Bar", "Display / Progress", "Atomic", "cards"),
-    ("avatar-badge-glass", "Glass Avatar with Status", "Display / Avatar", "Atomic", "cards"),
-    ("glass-dock-navigation", "Floating Glass Dock", "Navigation / Spring Dock", "Molecule", "navigation"),
-    ("glass-sidepanel", "Productivity Glass Sidepanel", "Navigation / Desktop Drawer", "Organism", "navigation"),
-    ("swirl-bottom-sheet", "Swirl Refraction Bottom Sheet", "Overlay / Canvas 2D Refraction", "Organism", "overlays"),
-    ("modal-dialog-glass", "Glass Modal Dialog", "Overlay / Centered Dialog", "Molecule", "overlays"),
-    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "overlays"),
-    ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "overlays"),
-    ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry"),
-    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery")
+    ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "inputs", ""),
+    ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs", ""),
+    ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs", ""),
+    ("prompt-pills-row", "Prompt Pills Quick Scroller", "Chips / Action Pills", "Molecule", "inputs", ""),
+    ("thinking-effort-selector", "Thinking Effort Selector", "Segmented Stepper", "Atomic", "inputs", ""),
+    ("toggle-switch-glass", "Glass Toggle Switch", "Control / Switch", "Atomic", "inputs", ""),
+    ("checkbox-glass", "Glass Checkbox & Radio", "Control / Checkbox", "Atomic", "inputs", ""),
+    ("dropdown-select-glass", "Glass Floating Dropdown", "Control / Select", "Molecule", "inputs", ""),
+    ("ai-model-selector", "AI Model Selector Card", "Selection Control", "Molecule", "cards", ""),
+    ("frosted-folder-card", "Frosted Folder Card", "File System / Card", "Molecule", "cards", ""),
+    ("aurora-storage-card", "Aurora Storage Card", "Data Display / Gauge", "Molecule", "cards", ""),
+    ("progress-bar-glass", "Glass Glowing Progress Bar", "Display / Progress", "Atomic", "cards", ""),
+    ("avatar-badge-glass", "Glass Avatar with Status", "Display / Avatar", "Atomic", "cards", ""),
+    ("glass-dock-navigation", "Floating Glass Dock", "Navigation / Spring Dock", "Molecule", "navigation", ""),
+    ("glass-sidepanel", "Productivity Glass Sidepanel", "Navigation / Desktop Drawer", "Organism", "navigation", "span-tall"),
+    ("swirl-bottom-sheet", "Swirl Refraction Bottom Sheet", "Overlay / Canvas 2D Refraction", "Organism", "overlays", ""),
+    ("modal-dialog-glass", "Glass Modal Dialog", "Overlay / Centered Dialog", "Molecule", "overlays", ""),
+    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "overlays", ""),
+    ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "overlays", ""),
+    ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry", ""),
+    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-wide")
 ]
 
 glass_files_db = {"css.css": shared_css_code}
 glass_cards_html = ""
 
-for folder, title, cat, badge, filter_cat in glass_components_metadata:
+for folder, title, cat, badge, filter_cat, span_class in glass_components_metadata:
     folder_path = os.path.join(GLASS_DIR, folder)
     glass_files_db[folder] = {}
     
@@ -73,10 +73,11 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
 
     badge_class = "badge-type scenery" if badge == "Scenery" else "badge-type"
     card_id = f"card-{folder}"
+    card_classes = f"component-card {span_class}".strip()
     
     glass_cards_html += f"""
             <!-- Component: {title} -->
-            <article class="component-card" data-cat="{filter_cat}" id="{card_id}">
+            <article class="{card_classes}" data-cat="{filter_cat}" id="{card_id}">
                 <div class="card-top">
                     <div class="card-meta-left">
                         <div class="card-name">{title}</div>
@@ -89,15 +90,12 @@ for folder, title, cat, badge, filter_cat in glass_components_metadata:
                         <i data-lucide="maximize-2"></i> Full
                     </button>
                     <div class="card-actions-tools">
-                        <button class="btn-card-tool" onclick="openComponentStudio('{folder}', '{title}', 'code')" title="Lihat Source Code">
-                            <i data-lucide="code"></i> Lihat Code
-                        </button>
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin Kode All-in-One Langsung">
                             <i data-lucide="copy"></i> Salin
                         </button>
-                        <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
-                            <i data-lucide="external-link"></i> Tab Baru
-                        </a>
+                        <button class="btn-card-tool download" onclick="quickDownloadAllInOne('{folder}')" title="Unduh File HTML All-in-One Langsung">
+                            <i data-lucide="download"></i> Unduh
+                        </button>
                     </div>
                 </div>
                 <div class="card-preview-zone">
@@ -275,16 +273,51 @@ glass_showcase_content = f"""<!DOCTYPE html>
             color: #FFFFFF; width: 100%; font-family: inherit;
         }}
 
-        /* Grid */
+        /* Grid - Dense Bento Layout (Zero Holes / Gaps) */
         .showcase-grid {{
-            padding: 16px 32px 64px; display: grid; gap: 24px; z-index: 5;
+            padding: 16px 32px 64px;
+            display: grid;
+            gap: 18px;
+            grid-auto-flow: dense;
+            grid-auto-rows: minmax(460px, auto);
+            z-index: 5;
             transition: all 0.3s ease;
         }}
-        .showcase-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); }}
+        .showcase-grid.cols-auto {{ grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }}
         .showcase-grid.cols-1 {{ grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; width: 100%; }}
         .showcase-grid.cols-2 {{ grid-template-columns: repeat(2, 1fr); }}
         .showcase-grid.cols-3 {{ grid-template-columns: repeat(3, 1fr); }}
         .showcase-grid.cols-4 {{ grid-template-columns: repeat(4, 1fr); }}
+
+        /* Bento Grid Geometry: Vertical Rectangle & Horizontal Rectangle */
+        @media (min-width: 800px) {{
+            /* Horizontal Rectangle (AI Agent Studio Scenery): Spans 2 Columns */
+            .showcase-grid.cols-auto .component-card.span-wide,
+            .showcase-grid.cols-2 .component-card.span-wide,
+            .showcase-grid.cols-3 .component-card.span-wide,
+            .showcase-grid.cols-4 .component-card.span-wide {{
+                grid-column: span 2;
+                grid-row: span 1;
+            }}
+
+            /* Vertical Rectangle (Productivity Glass Sidepanel): Spans 2 Rows */
+            .showcase-grid.cols-auto .component-card.span-tall,
+            .showcase-grid.cols-2 .component-card.span-tall,
+            .showcase-grid.cols-3 .component-card.span-tall,
+            .showcase-grid.cols-4 .component-card.span-tall {{
+                grid-row: span 2;
+                min-height: 938px;
+            }}
+        }}
+
+        @media (max-width: 799px) {{
+            .component-card.span-wide,
+            .component-card.span-tall {{
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+                min-height: 460px !important;
+            }}
+        }}
 
         /* Component Card - Unified Seamless Flex (No Blank Stretched Space) */
         .component-card {{
@@ -294,7 +327,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             border-bottom-color: var(--glass-border-bottom);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             display: flex; flex-direction: column; overflow: hidden;
-            height: 100%; min-height: 520px;
+            height: 100%; min-height: 460px;
             transition: border-color 0.25s, box-shadow 0.25s;
         }}
         .component-card:hover {{
@@ -386,6 +419,16 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
         .btn-card-tool.highlight:hover {{
             background: rgba(56, 189, 248, 0.22);
+            color: #FFFFFF;
+        }}
+        .btn-card-tool.download {{
+            background: rgba(56, 189, 248, 0.08);
+            border-color: rgba(56, 189, 248, 0.2);
+            color: #7DD3FC;
+        }}
+        .btn-card-tool.download:hover {{
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
             color: #FFFFFF;
         }}
         .btn-card-tool.new-tab,
@@ -878,17 +921,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <button class="btn-layout active" data-cols="auto" onclick="setGridLayout('auto', this)" title="Auto Kolom">Auto</button>
             </div>
 
-            <!-- Global Width Slider -->
-            <div class="card-slider-wrap" title="Slider Lebar Horizontal: Geser untuk mengatur lebar seluruh card sekaligus">
-                <span class="layout-label"><i data-lucide="sliders-horizontal"></i> Slider:</span>
-                <input type="range" id="globalWidthSlider" class="card-slider-range" min="320" max="1200" step="20" value="1200"
-                       oninput="setGlobalCardWidth(this.value)" title="Atur lebar seluruh card sekaligus">
-                <span class="slider-val-badge" id="globalWidthBadge">Auto</span>
-                <button class="btn-reset-slider" onclick="resetGlobalCardWidth()" title="Reset Lebar ke Default (Auto / 100%)">
-                    <i data-lucide="rotate-ccw"></i>
-                </button>
-            </div>
-
             <div class="search-box">
                 <i data-lucide="search"></i>
                 <input type="text" id="searchInput" placeholder="Cari komponen..." oninput="handleSearch(this.value)">
@@ -930,6 +962,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <div class="studio-header-right">
                     <button class="btn-studio-action highlight" id="studioCopyBtn" onclick="copyCurrentStudioCode()" title="Salin Kode ke Clipboard">
                         <i data-lucide="copy"></i> <span>Salin</span>
+                    </button>
+                    <button class="btn-studio-action" id="studioDownloadBtn" onclick="downloadCurrentStudioCode()" title="Unduh File Kode">
+                        <i data-lucide="download"></i> <span>Unduh</span>
                     </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="studioSoloLink" title="Buka Standalone File di Tab Baru">
                         <i data-lucide="external-link"></i> <span>Tab Baru</span>
@@ -1085,30 +1120,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
         let activeTitle = "";
         let activeFile = "";
         let currentMode = "preview";
-
-        function setGlobalCardWidth(val) {{
-            const badge = document.getElementById('globalWidthBadge');
-            const cards = document.querySelectorAll('.component-card');
-            cards.forEach(card => {{
-                const wrapper = card.querySelector('.preview-resizer-wrapper');
-                if (val >= 1200) {{
-                    if (wrapper) wrapper.style.maxWidth = '100%';
-                }} else {{
-                    if (wrapper) wrapper.style.maxWidth = `${{val}}px`;
-                }}
-            }});
-            if (val >= 1200) {{
-                if (badge) badge.innerText = 'Auto';
-            }} else {{
-                if (badge) badge.innerText = `${{val}}px`;
-            }}
-        }}
-
-        function resetGlobalCardWidth() {{
-            const slider = document.getElementById('globalWidthSlider');
-            if (slider) slider.value = 1200;
-            setGlobalCardWidth(1200);
-        }}
 
         function openComponentStudio(folder, title, initialMode = 'preview') {{
             activeFolder = folder;
@@ -1356,6 +1367,58 @@ glass_showcase_content = f"""<!DOCTYPE html>
             }}
         }}
 
+        function downloadFile(filename, content) {{
+            const mime = filename.endsWith('.html') ? 'text/html;charset=utf-8' :
+                         filename.endsWith('.css') ? 'text/css;charset=utf-8' :
+                         filename.endsWith('.js') ? 'text/javascript;charset=utf-8' : 'text/plain;charset=utf-8';
+            const blob = new Blob([content], {{ type: mime }});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`File ${{filename}} berhasil diunduh!`);
+        }}
+
+        function quickDownloadAllInOne(folder) {{
+            const aioFile = `${{folder}}.html`;
+            const code = (COMP_DB[folder] && COMP_DB[folder][aioFile]) || "";
+            if (code) {{
+                downloadFile(aioFile, code);
+            }} else {{
+                showToast("File tidak ditemukan untuk diunduh.");
+            }}
+        }}
+
+        function downloadCurrentStudioCode() {{
+            if (currentMode === 'code') {{
+                let code = "";
+                let fn = activeFile;
+                if (activeFile === "css.css") {{
+                    code = COMP_DB["css.css"] || "";
+                    fn = "glass-tokens.css";
+                }} else {{
+                    code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][activeFile]) || "";
+                }}
+                if (code && fn) {{
+                    downloadFile(fn, code);
+                }} else {{
+                    showToast("Kode tidak tersedia untuk diunduh.");
+                }}
+            }} else {{
+                const aioFile = `${{activeFolder}}.html`;
+                const code = (COMP_DB[activeFolder] && COMP_DB[activeFolder][aioFile]) || "";
+                if (code) {{
+                    downloadFile(aioFile, code);
+                }} else {{
+                    showToast("Kode tidak tersedia untuk diunduh.");
+                }}
+            }}
+        }}
+
         function showToast(msg) {{
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
@@ -1436,6 +1499,9 @@ for folder, title, tag in raw_components:
                         </button>
                         <button class="btn-card-tool highlight" onclick="copyRawAio('{folder}')" title="Salin Kode HTML Murni">
                             <i data-lucide="copy"></i> Salin
+                        </button>
+                        <button class="btn-card-tool" onclick="quickDownloadRawAio('{folder}')" title="Unduh File HTML Baku">
+                            <i data-lucide="download"></i> Unduh
                         </button>
                         <a href="{folder}/{aio_file}" target="_blank" class="btn-card-tool new-tab" title="Buka di Tab Baru">
                             <i data-lucide="external-link"></i> Tab Baru
@@ -1942,6 +2008,9 @@ raw_showcase_content = f"""<!DOCTYPE html>
                     <button class="btn-studio-action highlight" id="rawStudioCopyBtn" onclick="copyCurrentRawStudioCode()" title="Salin Kode ke Clipboard">
                         <i data-lucide="copy"></i> <span>Salin</span>
                     </button>
+                    <button class="btn-studio-action" id="rawStudioDownloadBtn" onclick="downloadCurrentRawStudioCode()" title="Unduh File HTML">
+                        <i data-lucide="download"></i> <span>Unduh</span>
+                    </button>
                     <a href="#" target="_blank" class="btn-studio-action solo-link" id="rawStudioSoloLink" title="Buka Standalone File di Tab Baru">
                         <i data-lucide="external-link"></i> <span>Tab Baru</span>
                     </a>
@@ -2252,6 +2321,50 @@ raw_showcase_content = f"""<!DOCTYPE html>
             if (code) {{
                 await navigator.clipboard.writeText(code);
                 showToast(`Kode raw ${{folder}} disalin!`);
+            }}
+        }}
+
+        function downloadFile(filename, content) {{
+            const mime = filename.endsWith('.html') ? 'text/html;charset=utf-8' :
+                         filename.endsWith('.css') ? 'text/css;charset=utf-8' : 'text/plain;charset=utf-8';
+            const blob = new Blob([content], {{ type: mime }});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`File ${{filename}} berhasil diunduh!`);
+        }}
+
+        function quickDownloadRawAio(folder) {{
+            const aioFile = `${{folder}}.html`;
+            const code = (RAW_DB[folder] && RAW_DB[folder][aioFile]) || "";
+            if (code) {{
+                downloadFile(aioFile, code);
+            }} else {{
+                showToast(`File raw tidak ditemukan.`);
+            }}
+        }}
+
+        function downloadCurrentRawStudioCode() {{
+            if (rawCurrentMode === 'code') {{
+                const code = (RAW_DB[rawActiveFolder] && RAW_DB[rawActiveFolder][rawActiveFile]) || "";
+                if (code && rawActiveFile) {{
+                    downloadFile(rawActiveFile, code);
+                }} else {{
+                    showToast(`Kode tidak tersedia untuk diunduh.`);
+                }}
+            }} else {{
+                const aioFile = `${{rawActiveFolder}}.html`;
+                const code = (RAW_DB[rawActiveFolder] && RAW_DB[rawActiveFolder][aioFile]) || "";
+                if (code) {{
+                    downloadFile(aioFile, code);
+                }} else {{
+                    showToast(`Kode tidak tersedia untuk diunduh.`);
+                }}
             }}
         }}
 

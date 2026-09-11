@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +11,45 @@
 <body>
 
     <div class="progress-card">
-        <div class="prog-head">
-            <span class="prog-title">Cloud Storage Sync</span>
-            <span class="prog-val">72%</span>
+        <div class="ambient-glow"></div>
+
+        <div class="prog-header">
+            <div class="header-title-box">
+                <div class="status-icon-box">
+                    <i data-lucide="cloud-lightning"></i>
+                </div>
+                <div>
+                    <div class="prog-title">Cloud Storage Sync</div>
+                    <div class="prog-sub">Sinkronisasi aset multi-region live</div>
+                </div>
+            </div>
+            <div class="storage-detail" id="storageDetail">78.4 / 100 GB</div>
         </div>
+
+        <div class="metric-row">
+            <div class="big-number-group">
+                <span class="counter-val" id="counterVal">78</span>
+                <span class="percent-sign">%</span>
+            </div>
+        </div>
+
         <div class="glass-track">
-            <div class="glass-fill"></div>
+            <div class="glass-fill" id="glassFill" style="width: 78%;"></div>
+        </div>
+
+        <div class="controls-row">
+            <button type="button" class="btn-prog-ctrl" id="btnMinus">
+                <i data-lucide="minus"></i> -10%
+            </button>
+            <button type="button" class="btn-prog-ctrl" id="btnPlus">
+                <i data-lucide="plus"></i> +10%
+            </button>
+            <button type="button" class="btn-prog-ctrl" id="btnAutoSim">
+                <i data-lucide="play"></i> Auto
+            </button>
         </div>
     </div>
 
-    <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>

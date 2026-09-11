@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Model Selector Card — Glass Dark Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="../css.css">
     <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -19,27 +18,58 @@
         </div>
 
         <div class="layer-2-glass">
-            <div class="model-list">
-                <div class="model-item" onclick="select(this)">
+            <div class="selector-header">
+                <div class="header-title">
+                    <i data-lucide="cpu"></i>
+                    <span>Pilih Arsitektur Model AI</span>
+                </div>
+                <button type="button" class="btn-shuffle" id="btnShuffle" title="Acak urutan & pilihan model">
+                    <i data-lucide="shuffle"></i>
+                    <span>Acak</span>
+                </button>
+            </div>
+
+            <div class="model-list" id="modelList">
+                <div class="model-item active">
                     <div class="model-info">
-                        <span class="model-title">K3</span>
-                        <span class="model-subtitle">Chat & Agent, flagship all-rounder</span>
+                        <div class="model-title-row">
+                            <span class="model-title">Nexus Core 4.0</span>
+                            <span class="model-tag">Flagship</span>
+                        </div>
+                        <span class="model-subtitle">Penalaran kognitif otonom & sintesis multi-modal</span>
                     </div>
                     <i data-lucide="check" class="checkmark"></i>
                 </div>
 
-                <div class="model-item" onclick="select(this)">
+                <div class="model-item">
                     <div class="model-info">
-                        <span class="model-title">K3 Swarm</span>
-                        <span class="model-subtitle">Massive search, multi-agent coordination</span>
+                        <div class="model-title-row">
+                            <span class="model-title">Hyperion Synthetix</span>
+                            <span class="model-tag">Deep Math</span>
+                        </div>
+                        <span class="model-subtitle">Penyelesaian logika tingkat lanjut & verifikasi kode</span>
                     </div>
                     <i data-lucide="check" class="checkmark"></i>
                 </div>
 
-                <div class="model-item active" onclick="select(this)">
+                <div class="model-item">
                     <div class="model-info">
-                        <span class="model-title">Instant</span>
-                        <span class="model-subtitle">Low-latency responses, fast reasoning</span>
+                        <div class="model-title-row">
+                            <span class="model-title">Chronos Flash</span>
+                            <span class="model-tag">Fast Edge</span>
+                        </div>
+                        <span class="model-subtitle">Inferensi ultra-cepat sub-detik untuk chat real-time</span>
+                    </div>
+                    <i data-lucide="check" class="checkmark"></i>
+                </div>
+
+                <div class="model-item">
+                    <div class="model-info">
+                        <div class="model-title-row">
+                            <span class="model-title">Vortex Swarm</span>
+                            <span class="model-tag">Multi-Agent</span>
+                        </div>
+                        <span class="model-subtitle">Koordinasi paralel agen terdistribusi & pencarian masif</span>
                     </div>
                     <i data-lucide="check" class="checkmark"></i>
                 </div>
@@ -47,7 +77,6 @@
         </div>
     </div>
 
-    
     <script src="index.js"></script>
 </body>
 </html>

@@ -1,121 +1,430 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass Avatar with Status Badge — Glass Dark Premium (All-in-One)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Glass Avatar with Status — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-:root {
-    --bg-page: #08080C;
-    --glass-card: rgba(255, 255, 255, 0.06);
-    --glass-card-hover: rgba(255, 255, 255, 0.09);
-    --glass-border-top: rgba(255, 255, 255, 0.24);
-    --glass-border-side: rgba(255, 255, 255, 0.10);
-    --glass-border-bottom: rgba(255, 255, 255, 0.04);
-    --text-primary: #FFFFFF;
-    --text-secondary: rgba(255, 255, 255, 0.65);
-    --text-muted: rgba(255, 255, 255, 0.38);
-    --accent-cyan: #4A9EFF;
-    --accent-blue-1: #4A7BF7;
-    --accent-blue-2: #2E5FD9;
-    --accent-blue-3: #1E3A8A;
-    --accent-green: #10B981;
-    --accent-amber: #F59E0B;
-    --accent-red: #EF4444;
-    --ease-spring: cubic-bezier(0.34, 1.15, 0.64, 1);
-}
+        :root {
+            --bg-page: #08080C;
+            --glass-card: rgba(255, 255, 255, 0.06);
+            --glass-border-top: rgba(255, 255, 255, 0.24);
+            --glass-border-side: rgba(255, 255, 255, 0.10);
+            --glass-border-bottom: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --text-muted: rgba(255, 255, 255, 0.38);
+            --accent-cyan: #38BDF8;
+            --accent-green: #10B981;
+            --accent-purple: #A855F7;
+            --accent-amber: #F59E0B;
+            --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+        }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-    background-color: var(--bg-page);
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--text-primary);
-}
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
+        .avatar-card-container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--glass-card);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border-radius: 26px;
+            padding: 24px;
+            border: 1px solid transparent;
+            border-top-color: var(--glass-border-top);
+            border-left-color: var(--glass-border-side);
+            border-right-color: var(--glass-border-side);
+            border-bottom-color: var(--glass-border-bottom);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
 
-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-}
+        /* Ambient Glow */
+        .ambient-orb {
+            position: absolute;
+            top: -20px; left: -20px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(35px);
+            pointer-events: none;
+        }
 
-.avatar-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+        /* Section 1: Main Autonomous Agent Identity */
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
 
-.glass-avatar-wrap {
-    position: relative;
-    width: 52px; height: 52px;
-}
+        .main-avatar-wrap {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+        }
 
-.glass-avatar {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(74, 123, 247, 0.5), rgba(139, 92, 246, 0.5));
-    border: 2px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 16px;
-    color: #FFFFFF;
-    overflow: hidden;
-}
+        .main-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 2px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.glass-avatar img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-}
+        .avatar-gradient-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #38BDF8, #8B5CF6, #10B981, #38BDF8);
+            opacity: 0.7;
+            animation: rotateRing 8s linear infinite;
+        }
 
-.avatar-badge {
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    border: 2px solid #08080C;
-}
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-.avatar-badge.online {
-    background: #10B981;
-    box-shadow: 0 0 8px #10B981;
-}
+        .avatar-core-icon {
+            position: relative;
+            z-index: 1;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            border-radius: 50%;
+            background: #0B0F19;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #38BDF8;
+        }
 
-.avatar-badge.busy {
-    background: #EF4444;
-}
+        .avatar-core-icon svg {
+            width: 26px;
+            height: 26px;
+        }
 
+        /* Pulsing Status Dot */
+        .status-dot-wrap {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #08080C;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .status-dot-pulse {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 10px #10B981;
+            animation: pulseAura 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseAura {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 8px #10B981; }
+            50% { transform: scale(1.18); box-shadow: 0 0 16px #10B981, 0 0 24px rgba(16, 185, 129, 0.4); }
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .profile-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+        }
+
+        .badge-verified {
+            width: 17px;
+            height: 17px;
+            color: #38BDF8;
+        }
+
+        .role-tag {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 1px 8px;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .status-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+        }
+
+        /* Divider */
+        .card-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.07);
+            width: 100%;
+        }
+
+        /* Section 2: Agent Swarm Avatar Stack */
+        .stack-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stack-label-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stack-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .stack-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .avatar-stack-group {
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+        }
+
+        .stack-item {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #0E1018;
+            margin-left: -12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #FFFFFF;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.25s var(--ease-spring);
+            position: relative;
+        }
+
+        .stack-item:hover {
+            transform: translateY(-4px) scale(1.15);
+            z-index: 10;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .stack-item.agent-1 { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+        .stack-item.agent-2 { background: linear-gradient(135deg, #10B981, #047857); }
+        .stack-item.agent-3 { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+        .stack-item.agent-more {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Section 3: Status State Toggles */
+        .status-modes-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-status-pill {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-status-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #FFFFFF;
+        }
+
+        .btn-status-pill.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .pill-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+        }
+
+        .pill-dot.online { background: #10B981; box-shadow: 0 0 6px #10B981; }
+        .pill-dot.busy { background: #F59E0B; box-shadow: 0 0 6px #F59E0B; }
+        .pill-dot.dnd { background: #EF4444; box-shadow: 0 0 6px #EF4444; }
     </style>
 </head>
 <body>
 
-    <div class="avatar-row">
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar">K3</div>
-            <div class="avatar-badge online"></div>
+    <div class="avatar-card-container">
+        <div class="ambient-orb"></div>
+
+        <!-- Main Autonomous Agent Identity -->
+        <div class="profile-row">
+            <div class="main-avatar-wrap">
+                <div class="main-avatar">
+                    <div class="avatar-gradient-ring"></div>
+                    <div class="avatar-core-icon">
+                        <i data-lucide="bot"></i>
+                    </div>
+                </div>
+                <div class="status-dot-wrap">
+                    <div class="status-dot-pulse" id="mainStatusDot"></div>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <div class="profile-name-row">
+                    <span class="profile-name">Nexus Prime</span>
+                    <i data-lucide="badge-check" class="badge-verified" title="Verified Agent"></i>
+                    <span class="role-tag">Core AI</span>
+                </div>
+                <div class="status-badge-pill">
+                    <span class="live-dot" id="liveDotText"></span>
+                    <span id="statusLabel">Online — Aktif Mensintesis Data</span>
+                </div>
+            </div>
         </div>
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">SW</div>
-            <div class="avatar-badge online"></div>
+
+        <div class="card-divider"></div>
+
+        <!-- Agent Swarm Avatar Stack -->
+        <div class="stack-section">
+            <div class="stack-label-box">
+                <span class="stack-title">Aktif dalam Swarm</span>
+                <span class="stack-sub">4 agen sedang berkolaborasi</span>
+            </div>
+
+            <div class="avatar-stack-group">
+                <div class="stack-item agent-1" title="Logic Agent 01">L1</div>
+                <div class="stack-item agent-2" title="Vision Agent 02">V2</div>
+                <div class="stack-item agent-3" title="Search Swarm 03">S3</div>
+                <div class="stack-item agent-more" title="Lihat 4 agen lainnya">+4</div>
+            </div>
         </div>
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">AG</div>
-            <div class="avatar-badge busy"></div>
+
+        <div class="card-divider"></div>
+
+        <!-- Status Mode Toggles -->
+        <div class="status-modes-row">
+            <button type="button" class="btn-status-pill active" onclick="setStatusMode('online', this)">
+                <span class="pill-dot online"></span> Online
+            </button>
+            <button type="button" class="btn-status-pill" onclick="setStatusMode('busy', this)">
+                <span class="pill-dot busy"></span> Berpikir
+            </button>
+            <button type="button" class="btn-status-pill" onclick="setStatusMode('dnd', this)">
+                <span class="pill-dot dnd"></span> DND
+            </button>
         </div>
     </div>
 
     <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
-    <script>
+        lucide.createIcons();
 
+        function setStatusMode(mode, btn) {
+            document.querySelectorAll('.btn-status-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const dot = document.getElementById('mainStatusDot');
+            const dotText = document.getElementById('liveDotText');
+            const label = document.getElementById('statusLabel');
+
+            if (mode === 'online') {
+                dot.style.background = '#10B981';
+                dot.style.boxShadow = '0 0 12px #10B981';
+                dotText.style.background = '#10B981';
+                label.textContent = 'Online — Aktif Mensintesis Data';
+            } else if (mode === 'busy') {
+                dot.style.background = '#F59E0B';
+                dot.style.boxShadow = '0 0 12px #F59E0B';
+                dotText.style.background = '#F59E0B';
+                label.textContent = 'Berpikir — Proses Penalaran Mendalam';
+            } else if (mode === 'dnd') {
+                dot.style.background = '#EF4444';
+                dot.style.boxShadow = '0 0 12px #EF4444';
+                dotText.style.background = '#EF4444';
+                label.textContent = 'DND — Jangan Ganggu (Silent)';
+            }
+        }
     </script>
 </body>
 </html>

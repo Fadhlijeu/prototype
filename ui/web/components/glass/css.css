@@ -127,3 +127,38 @@ body {
     border-bottom-color: var(--glass-border-bottom);
     box-shadow: var(--shadow-glass);
 }
+
+/* Universal Dark Glass Form Inputs & Autofill Protection (Anti-White Box Glitch) */
+input, textarea, select {
+    font-family: inherit;
+    color: var(--text-primary);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #0B0D13 inset !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Animations for Glass Systems */
+@keyframes glassShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+@keyframes glassPulseGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes glassFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+

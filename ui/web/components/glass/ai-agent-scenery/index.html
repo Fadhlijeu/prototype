@@ -1,89 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Agent Scenery — Glass Dark Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="../css.css">
     <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
     <div class="scenery-container">
         
+        <!-- Top Bar -->
         <header class="top-bar">
-            <div class="icon-btn"><i data-lucide="menu"></i></div>
-            <div class="icon-btn"><i data-lucide="volume-2"></i></div>
+            <div class="top-left-cluster">
+                <button type="button" class="icon-btn" id="menuBtn" title="Buka Konfigurasi Model & Thinking">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="top-brand-badge">
+                    <i data-lucide="sparkles"></i>
+                    <span>AI Studio Scenery</span>
+                </div>
+            </div>
+            
+            <button type="button" class="icon-btn" id="soundBtn" title="Aktifkan / Nonaktifkan Sound Haptic">
+                <i data-lucide="volume-2" id="volumeIcon"></i>
+            </button>
         </header>
 
+        <!-- Main Workspace -->
         <main class="main-workspace">
             <div class="glow-orb"></div>
 
-            <div class="glass-card">
-                <div class="model-item" onclick="selectModel(this)">
-                    <div>
-                        <div class="model-title">K3</div>
-                        <div class="model-subtitle">Chat & Agent, flagship all-rounder</div>
-                    </div>
-                    <i data-lucide="check" class="checkmark"></i>
-                </div>
-
-                <div class="model-item" onclick="selectModel(this)">
-                    <div>
-                        <div class="model-title">K3 Swarm</div>
-                        <div class="model-subtitle">Massive search, batch processing</div>
-                    </div>
-                    <i data-lucide="check" class="checkmark"></i>
-                </div>
-
-                <div class="model-item active" onclick="selectModel(this)">
-                    <div>
-                        <div class="model-title">Instant</div>
-                        <div class="model-subtitle">Fast chat, quick replies</div>
-                    </div>
-                    <i data-lucide="check" class="checkmark"></i>
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="effort-row">
-                    <div>
-                        <div class="model-title">Thinking effort</div>
-                        <div class="model-subtitle">Reasoning depth</div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 12.5px; color: var(--accent-cyan); font-weight: 500;">High</span>
-                        <i data-lucide="chevron-right" style="color: #8E8E93; width: 16px;"></i>
-                    </div>
+            <div class="greeting-section">
+                <h1 class="greeting-title">Halo <span>Muhammad Fadhli</span>,<br>apa yang ingin Anda rancang hari ini?</h1>
+                <p class="greeting-sub">Ruang kerja agentik otonom berbasis arsitektur Glass Dark.</p>
+                <div class="active-config-pill" id="activeConfigPill">
+                    <span id="activeModelTag">Model: <b>Nexus Core 4.0</b></span>
+                    <span>•</span>
+                    <span id="activeEffortTag">Thinking: <b>High</b></span>
+                    <i data-lucide="sliders" style="width: 13px; height: 13px;"></i>
                 </div>
             </div>
 
-            <div class="greeting">
-                Hi <strong>Muhammad Fadhli</strong>, what would<br>you like to prototype today?
+            <!-- Interactive Chat Stream Bubbles -->
+            <div class="chat-stream-area" id="chatStreamArea">
+                <div class="chat-bubble agent">
+                    <div class="agent-header-row">
+                        <i data-lucide="bot"></i>
+                        <span>Nexus Core 4.0 • Autonomous Lead</span>
+                    </div>
+                    Siap membantu mengeksekusi arsitektur web, UI Glassmorphism, atau orkestrasi multi-agent. Pilih prompt cepat di bawah atau ketik permintaan Anda.
+                </div>
             </div>
         </main>
 
+        <!-- Bottom Controls Section -->
         <section class="bottom-section">
             <div class="pills-scroll">
-                <button class="pill"><i data-lucide="monitor-play"></i> Slides</button>
-                <button class="pill"><i data-lucide="bot"></i> Swarm</button>
-                <button class="pill"><i data-lucide="layout-grid"></i> Websites</button>
-                <button class="pill"><i data-lucide="microscope"></i> Deep Research</button>
+                <button type="button" class="pill" data-prompt="Buat presentasi interaktif tentang arsitektur Glass Dark"><i data-lucide="monitor-play"></i> Slides</button>
+                <button type="button" class="pill" data-prompt="Jalankan swarm 4 agen untuk riset dan benchmark otomatis"><i data-lucide="bot"></i> Swarm</button>
+                <button type="button" class="pill" data-prompt="Rancang prototipe halaman web SaaS modern dengan dark mode"><i data-lucide="layout-grid"></i> Websites</button>
+                <button type="button" class="pill" data-prompt="Lakukan deep research multi-langkah dan buat laporannya"><i data-lucide="microscope"></i> Deep Research</button>
             </div>
 
-            <div class="chat-bar">
-                <button class="icon-circle"><i data-lucide="plus"></i></button>
-                <input type="text" class="chat-input" placeholder="Ask anything. Images work too...">
-                <button class="icon-circle"><i data-lucide="mic"></i></button>
-                <button class="icon-circle send-btn"><i data-lucide="arrow-up"></i></button>
+            <!-- Upload Attachment Preview Chip -->
+            <div class="scenery-upload-chip" id="sceneryUploadChip">
+                <div class="chip-meta">
+                    <i data-lucide="file-check"></i>
+                    <span id="sceneryFileName">dokumen_analisis.pdf</span>
+                </div>
+                <button type="button" class="btn-chip-close" id="btnClearUpload" title="Hapus berkas">
+                    <i data-lucide="x"></i>
+                </button>
             </div>
+
+            <form class="chat-bar" id="sceneryChatForm">
+                <!-- Hidden file input -->
+                <input type="file" id="sceneryFileInput" style="display: none;">
+
+                <button type="button" class="icon-circle" id="btnSceneryAttach" title="Upload media atau dokumen">
+                    <i data-lucide="plus"></i>
+                </button>
+
+                <input type="text" id="sceneryInput" class="chat-input" placeholder="Tanyakan apapun. Gambar dan dokumen didukung..." autocomplete="off">
+
+                <button type="button" class="icon-circle" id="btnSceneryMic" title="Input suara (Dictation)">
+                    <i data-lucide="mic"></i>
+                </button>
+
+                <button type="submit" class="icon-circle send-btn" title="Kirim instruksi">
+                    <i data-lucide="arrow-up"></i>
+                </button>
+            </form>
         </section>
+
+        <!-- Hidden Model & Thinking Config Modal (Appears only on Menu Click) -->
+        <div class="config-drawer-overlay" id="configDrawerOverlay">
+            <div class="config-modal-card">
+                <div class="modal-header-row">
+                    <div class="modal-header-title">
+                        <i data-lucide="cpu" style="width: 17px; height: 17px; color: var(--accent-cyan);"></i>
+                        <span>Konfigurasi Model & Thinking</span>
+                    </div>
+                    <button type="button" class="modal-close-btn" id="btnCloseConfigModal">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+
+                <div>
+                    <span class="modal-label">Pilih Model AI</span>
+                    <div class="modal-model-list">
+                        <div class="scenery-model-item active" data-name="Nexus Core 4.0">
+                            <div>
+                                <div class="sm-name">Nexus Core 4.0</div>
+                                <div class="sm-sub">Chat, penalaran otonom, andalan multi-tugas</div>
+                            </div>
+                            <i data-lucide="check" class="sm-check"></i>
+                        </div>
+                        <div class="scenery-model-item" data-name="Vortex Swarm">
+                            <div>
+                                <div class="sm-name">Vortex Swarm</div>
+                                <div class="sm-sub">Pencarian masif, koordinasi agen paralel</div>
+                            </div>
+                            <i data-lucide="check" class="sm-check"></i>
+                        </div>
+                        <div class="scenery-model-item" data-name="Chronos Flash">
+                            <div>
+                                <div class="sm-name">Chronos Flash</div>
+                                <div class="sm-sub">Respon instan, latensi rendah untuk chat cepat</div>
+                            </div>
+                            <i data-lucide="check" class="sm-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="modal-label">Thinking Effort (Level Penalaran)</span>
+                    <div class="thinking-dropdown-wrap">
+                        <button type="button" class="scenery-thinking-trigger" id="sceneryThinkingTrigger">
+                            <span id="curThinkingLabel">High (Deep Thought)</span>
+                            <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
+                        </button>
+                        <div class="thinking-options-box" id="thinkingOptionsBox">
+                            <div class="th-option" data-val="Minimal (Fastest)">Minimal (Fastest)</div>
+                            <div class="th-option" data-val="Low (Efficient)">Low (Efficient)</div>
+                            <div class="th-option" data-val="Medium (Balanced)">Medium (Balanced)</div>
+                            <div class="th-option active" data-val="High (Deep Thought)">High (Deep Thought)</div>
+                            <div class="th-option" data-val="Ultra (Swarm)">Ultra (Swarm)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
-    
+    <!-- Feedback Toast -->
+    <div class="scenery-toast" id="sceneryToast">
+        <i data-lucide="check-circle-2"></i>
+        <span id="sceneryToastText">Pemberitahuan</span>
+    </div>
+
     <script src="index.js"></script>
 </body>
 </html>

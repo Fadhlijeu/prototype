@@ -99,6 +99,26 @@ const sheet = document.getElementById('sheet');
             document.getElementById('createBtn').disabled = !has;
         }
 
+        function handleFolderCreate() {
+            const input = document.getElementById('folderInput');
+            const val = input ? input.value.trim() : '';
+            if (val) {
+                closeSheet();
+                const title = document.querySelector('.header h1');
+                if (title) {
+                    const orig = title.textContent;
+                    title.textContent = `Folder "${val}" Dibuat`;
+                    title.style.color = '#38BDF8';
+                    setTimeout(() => {
+                        title.textContent = orig;
+                        title.style.color = '';
+                    }, 3000);
+                }
+                input.value = '';
+                updateBtn();
+            }
+        }
+
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && active) closeSheet();
         });

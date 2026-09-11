@@ -1,32 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass Avatar with Status Badge — Glass Dark Premium</title>
+    <title>Glass Avatar with Status — Glass Dark Premium</title>
     <link rel="stylesheet" href="../css.css">
     <link rel="stylesheet" href="index.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-    <div class="avatar-row">
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar">K3</div>
-            <div class="avatar-badge online"></div>
+    <div class="avatar-card-container">
+        <div class="ambient-orb"></div>
+
+        <!-- Main Autonomous Agent Identity -->
+        <div class="profile-row">
+            <div class="main-avatar-wrap">
+                <div class="main-avatar">
+                    <div class="avatar-gradient-ring"></div>
+                    <div class="avatar-core-icon">
+                        <i data-lucide="bot"></i>
+                    </div>
+                </div>
+                <div class="status-dot-wrap">
+                    <div class="status-dot-pulse" id="mainStatusDot"></div>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <div class="profile-name-row">
+                    <span class="profile-name">Nexus Prime</span>
+                    <i data-lucide="badge-check" class="badge-verified" title="Verified Agent"></i>
+                    <span class="role-tag">Core AI</span>
+                </div>
+                <div class="status-badge-pill">
+                    <span class="live-dot" id="liveDotText"></span>
+                    <span id="statusLabel">Online — Aktif Mensintesis Data</span>
+                </div>
+            </div>
         </div>
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">SW</div>
-            <div class="avatar-badge online"></div>
+
+        <div class="card-divider"></div>
+
+        <!-- Agent Swarm Avatar Stack -->
+        <div class="stack-section">
+            <div class="stack-label-box">
+                <span class="stack-title">Aktif dalam Swarm</span>
+                <span class="stack-sub">4 agen sedang berkolaborasi</span>
+            </div>
+
+            <div class="avatar-stack-group">
+                <div class="stack-item agent-1" title="Logic Agent 01">L1</div>
+                <div class="stack-item agent-2" title="Vision Agent 02">V2</div>
+                <div class="stack-item agent-3" title="Search Swarm 03">S3</div>
+                <div class="stack-item agent-more" title="Lihat 4 agen lainnya">+4</div>
+            </div>
         </div>
-        <div class="glass-avatar-wrap">
-            <div class="glass-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">AG</div>
-            <div class="avatar-badge busy"></div>
+
+        <div class="card-divider"></div>
+
+        <!-- Status Mode Toggles -->
+        <div class="status-modes-row">
+            <button type="button" class="btn-status-pill active" data-mode="online">
+                <span class="pill-dot online"></span> Online
+            </button>
+            <button type="button" class="btn-status-pill" data-mode="busy">
+                <span class="pill-dot busy"></span> Berpikir
+            </button>
+            <button type="button" class="btn-status-pill" data-mode="dnd">
+                <span class="pill-dot dnd"></span> DND
+            </button>
         </div>
     </div>
 
-    <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>

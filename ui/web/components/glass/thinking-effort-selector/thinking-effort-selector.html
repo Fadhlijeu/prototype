@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thinking Effort Selector — Glass Dark Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Thinking Effort Selector — Glass Dark Premium (All-in-One)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg-page: #0A0A0A;
+            --bg-page: #08080C;
             --glass-card: rgba(255, 255, 255, 0.06);
-            --glass-border-top: rgba(255, 255, 255, 0.22);
+            --glass-border-top: rgba(255, 255, 255, 0.24);
             --glass-border-side: rgba(255, 255, 255, 0.10);
             --glass-border-bottom: rgba(255, 255, 255, 0.04);
             --text-primary: #FFFFFF;
             --text-secondary: rgba(255, 255, 255, 0.65);
-            --accent-cyan: #4A9EFF;
-            --ease-spring: cubic-bezier(0.34, 1.1, 0.64, 1);
+            --text-muted: rgba(255, 255, 255, 0.38);
+            --accent-cyan: #38BDF8;
+            --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,36 +30,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 14px;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(74, 158, 255, 0.4) rgba(0, 0, 0, 0.3);
+            padding: 20px;
         }
 
-        body::-webkit-scrollbar {
-            height: 6px;
-        }
-        body::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 3px;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: rgba(74, 158, 255, 0.4);
-            border-radius: 3px;
-        }
-
-        .glass-card-wrapper {
+        .thinking-card-wrapper {
             position: relative;
             width: 100%;
             max-width: 440px;
         }
 
-        .layer-2-glass {
+        /* Trigger Card */
+        .thinking-trigger-card {
             position: relative;
             background: var(--glass-card);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 24px;
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border-radius: 20px;
             padding: 16px 20px;
             border: 1px solid transparent;
             border-top-color: var(--glass-border-top);
@@ -66,51 +53,43 @@
             border-right-color: var(--glass-border-side);
             border-bottom-color: var(--glass-border-bottom);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
+            transition: all 0.2s ease;
+            user-select: none;
         }
 
-        .layer-2-glass:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .thinking-trigger-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-top-color: rgba(255, 255, 255, 0.35);
         }
 
-        .layer-2-glass:active {
-            transform: scale(0.99);
-        }
-
-        .layer-2-glass::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.04;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
+        .thinking-card-wrapper.open .thinking-trigger-card {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15), 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
         .title-group {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
         }
 
         .title {
             font-size: 15px;
             font-weight: 600;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title svg {
+            width: 17px;
+            height: 17px;
+            color: var(--accent-cyan);
         }
 
         .subtitle {
@@ -121,53 +100,196 @@
         .right-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .effort-badge {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             color: var(--accent-cyan);
-            background: rgba(74, 158, 255, 0.1);
-            border: 1px solid rgba(74, 158, 255, 0.25);
-            padding: 4px 10px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 4px 12px;
             border-radius: 12px;
             transition: all 0.2s ease;
         }
 
-        .chevron {
+        .chevron-icon {
             color: var(--text-secondary);
             width: 18px;
             height: 18px;
-            stroke-width: 1.5px;
+            transition: transform 0.25s var(--ease-spring);
+        }
+
+        .thinking-card-wrapper.open .chevron-icon {
+            transform: rotate(180deg);
+            color: #FFFFFF;
+        }
+
+        /* Animated Dropdown Menu */
+        .thinking-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 24, 0.88);
+            backdrop-filter: blur(32px) saturate(180%);
+            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.96);
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.25s var(--ease-spring), visibility 0.22s;
+        }
+
+        .thinking-card-wrapper.open .thinking-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .level-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            border: 1px solid transparent;
+        }
+
+        .level-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .level-item.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+
+        .level-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .level-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .level-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .level-check {
+            width: 18px;
+            height: 18px;
+            color: var(--accent-cyan);
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 0.2s var(--ease-spring);
+        }
+
+        .level-item.active .level-check {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-card-wrapper">
-        <div class="layer-2-glass" onclick="cycleEffort()">
-            <div class="content">
-                <div class="title-group">
-                    <span class="title">Thinking Effort</span>
-                    <span class="subtitle">Depth of multi-step reasoning</span>
+    <div class="thinking-card-wrapper" id="thinkingWrapper">
+        <div class="thinking-trigger-card" onclick="toggleThinkingDropdown()">
+            <div class="title-group">
+                <span class="title"><i data-lucide="brain"></i> Thinking Effort</span>
+                <span class="subtitle">Kedalaman penalaran agen multi-langkah</span>
+            </div>
+            <div class="right-group">
+                <span class="effort-badge" id="activeLevelBadge">High</span>
+                <i data-lucide="chevron-down" class="chevron-icon"></i>
+            </div>
+        </div>
+
+        <!-- Animated Levels Dropdown -->
+        <div class="thinking-dropdown-menu">
+            <div class="level-item" data-level="Minimal" onclick="selectThinkingLevel('Minimal', this)">
+                <div class="level-info">
+                    <span class="level-name">Minimal (Fastest)</span>
+                    <span class="level-desc">Respon instan tanpa ekstra rantai penalaran</span>
                 </div>
-                <div class="right-group">
-                    <span class="effort-badge" id="effortVal">High</span>
-                    <i data-lucide="chevron-right" class="chevron"></i>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Low" onclick="selectThinkingLevel('Low', this)">
+                <div class="level-info">
+                    <span class="level-name">Low (Efficient)</span>
+                    <span class="level-desc">Verifikasi langkah singkat untuk tugas rutin</span>
                 </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Medium" onclick="selectThinkingLevel('Medium', this)">
+                <div class="level-info">
+                    <span class="level-name">Medium (Balanced)</span>
+                    <span class="level-desc">Penalaran seimbang antara kecepatan dan ketelitian</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item active" data-level="High" onclick="selectThinkingLevel('High', this)">
+                <div class="level-info">
+                    <span class="level-name">High (Deep Thought)</span>
+                    <span class="level-desc">Refleksi multi-tahap dan analisis mendalam</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Ultra" onclick="selectThinkingLevel('Ultra', this)">
+                <div class="level-info">
+                    <span class="level-name">Ultra (Swarm Agentic)</span>
+                    <span class="level-desc">Eksplorasi pohon solusi penuh dan perbaikan mandiri</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
             </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const levels = ['Low', 'Medium', 'High'];
-        let idx = 2;
-        function cycleEffort() {
-            idx = (idx + 1) % levels.length;
-            document.getElementById('effortVal').textContent = levels[idx];
+
+        function toggleThinkingDropdown() {
+            const wrapper = document.getElementById('thinkingWrapper');
+            wrapper.classList.toggle('open');
         }
+
+        function selectThinkingLevel(level, itemEl) {
+            document.querySelectorAll('.level-item').forEach(el => el.classList.remove('active'));
+            itemEl.classList.add('active');
+            document.getElementById('activeLevelBadge').textContent = level;
+            toggleThinkingDropdown();
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('thinkingWrapper');
+            if (!wrapper.contains(e.target)) {
+                wrapper.classList.remove('open');
+            }
+        });
     </script>
 </body>
 </html>

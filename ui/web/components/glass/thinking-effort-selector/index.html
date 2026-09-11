@@ -1,32 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thinking Effort Selector — Glass Dark Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="../css.css">
     <link rel="stylesheet" href="index.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-    <div class="glass-card-wrapper">
-        <div class="layer-2-glass" onclick="cycleEffort()">
-            <div class="content">
-                <div class="title-group">
-                    <span class="title">Thinking Effort</span>
-                    <span class="subtitle">Depth of multi-step reasoning</span>
+    <div class="thinking-card-wrapper" id="thinkingWrapper">
+        <div class="thinking-trigger-card" id="thinkingTrigger">
+            <div class="title-group">
+                <span class="title"><i data-lucide="brain"></i> Thinking Effort</span>
+                <span class="subtitle">Kedalaman penalaran agen multi-langkah</span>
+            </div>
+            <div class="right-group">
+                <span class="effort-badge" id="activeLevelBadge">High</span>
+                <i data-lucide="chevron-down" class="chevron-icon"></i>
+            </div>
+        </div>
+
+        <!-- Animated Levels Dropdown -->
+        <div class="thinking-dropdown-menu">
+            <div class="level-item" data-level="Minimal">
+                <div class="level-info">
+                    <span class="level-name">Minimal (Fastest)</span>
+                    <span class="level-desc">Respon instan tanpa ekstra rantai penalaran</span>
                 </div>
-                <div class="right-group">
-                    <span class="effort-badge" id="effortVal">High</span>
-                    <i data-lucide="chevron-right" class="chevron"></i>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Low">
+                <div class="level-info">
+                    <span class="level-name">Low (Efficient)</span>
+                    <span class="level-desc">Verifikasi langkah singkat untuk tugas rutin</span>
                 </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Medium">
+                <div class="level-info">
+                    <span class="level-name">Medium (Balanced)</span>
+                    <span class="level-desc">Penalaran seimbang antara kecepatan dan ketelitian</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item active" data-level="High">
+                <div class="level-info">
+                    <span class="level-name">High (Deep Thought)</span>
+                    <span class="level-desc">Refleksi multi-tahap dan analisis mendalam</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
+            </div>
+
+            <div class="level-item" data-level="Ultra">
+                <div class="level-info">
+                    <span class="level-name">Ultra (Swarm Agentic)</span>
+                    <span class="level-desc">Eksplorasi pohon solusi penuh dan perbaikan mandiri</span>
+                </div>
+                <i data-lucide="check" class="level-check"></i>
             </div>
         </div>
     </div>
 
-    
     <script src="index.js"></script>
 </body>
 </html>

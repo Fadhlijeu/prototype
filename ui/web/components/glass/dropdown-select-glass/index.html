@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,30 +10,50 @@
 </head>
 <body>
 
-    <div class="dropdown-wrap" id="drop">
-        <button type="button" class="dropdown-trigger" onclick="toggleDropdown()">
-            <span id="selectedLabel">Personal Workspace</span>
-            <i data-lucide="chevron-down"></i>
+    <div class="dropdown-wrap" id="dropWrap">
+        <button type="button" class="dropdown-trigger" id="dropdownTrigger">
+            <div class="trigger-left">
+                <i data-lucide="layers" id="triggerIcon"></i>
+                <span id="selectedLabel">Personal Workspace</span>
+            </div>
+            <i data-lucide="chevron-down" class="chevron-icon"></i>
         </button>
+
         <div class="dropdown-menu">
-            <div class="dropdown-item selected" onclick="selectOption('Personal Workspace', this)">
-                <i data-lucide="user"></i> Personal Workspace
+            <div class="dropdown-item selected" data-icon="layers" data-value="Personal Workspace">
+                <div class="item-left">
+                    <i data-lucide="layers"></i>
+                    <span>Personal Workspace</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Design System Lab', this)">
-                <i data-lucide="gem"></i> Design System Lab
+
+            <div class="dropdown-item" data-icon="users" data-value="Team Engineering">
+                <div class="item-left">
+                    <i data-lucide="users"></i>
+                    <span>Team Engineering</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Cloud File Manager', this)">
-                <i data-lucide="folder-kanban"></i> Cloud File Manager
+
+            <div class="dropdown-item" data-icon="building" data-value="Enterprise Organization">
+                <div class="item-left">
+                    <i data-lucide="building"></i>
+                    <span>Enterprise Organization</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
-            <div class="dropdown-item" onclick="selectOption('Production Archive', this)">
-                <i data-lucide="archive"></i> Production Archive
+
+            <div class="dropdown-item" data-icon="sparkles" data-value="AI Prototype Lab">
+                <div class="item-left">
+                    <i data-lucide="sparkles"></i>
+                    <span>AI Prototype Lab</span>
+                </div>
+                <i data-lucide="check" class="item-check"></i>
             </div>
         </div>
     </div>
 
-    <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
     <script src="index.js"></script>
 </body>
 </html>

@@ -1,140 +1,192 @@
 /**
- * thinking-effort-selector Styles
- * Uses tokens from ../css.css
+ * Thinking Effort Selector Styles
+ * Uses design tokens from ../css.css
  */
 @import url('../css.css');
 
-:root {
-            --bg-page: #0A0A0A;
-            --glass-card: rgba(255, 255, 255, 0.06);
-            --glass-border-top: rgba(255, 255, 255, 0.22);
-            --glass-border-side: rgba(255, 255, 255, 0.10);
-            --glass-border-bottom: rgba(255, 255, 255, 0.04);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.65);
-            --accent-cyan: #4A9EFF;
-            --ease-spring: cubic-bezier(0.34, 1.1, 0.64, 1);
-        }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+.thinking-card-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+}
 
-        body {
-            background-color: var(--bg-page);
-            font-family: 'Inter', system-ui, sans-serif;
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(74, 158, 255, 0.4) rgba(0, 0, 0, 0.3);
-        }
+/* Trigger Card */
+.thinking-trigger-card {
+    position: relative;
+    background: var(--glass-card);
+    backdrop-filter: var(--blur-glass-standard);
+    -webkit-backdrop-filter: var(--blur-glass-standard);
+    border-radius: 20px;
+    padding: 16px 20px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
 
-        body::-webkit-scrollbar {
-            height: 6px;
-        }
-        body::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 3px;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: rgba(74, 158, 255, 0.4);
-            border-radius: 3px;
-        }
+.thinking-trigger-card:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.35);
+}
 
-        .glass-card-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 440px;
-        }
+.thinking-card-wrapper.open .thinking-trigger-card {
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15), 0 8px 32px rgba(0, 0, 0, 0.5);
+}
 
-        .layer-2-glass {
-            position: relative;
-            background: var(--glass-card);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 24px;
-            padding: 16px 20px;
-            border: 1px solid transparent;
-            border-top-color: var(--glass-border-top);
-            border-left-color: var(--glass-border-side);
-            border-right-color: var(--glass-border-side);
-            border-bottom-color: var(--glass-border-bottom);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
-        }
+.title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
 
-        .layer-2-glass:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
+.title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .layer-2-glass:active {
-            transform: scale(0.99);
-        }
+.title svg {
+    width: 17px;
+    height: 17px;
+    color: var(--accent-cyan);
+}
 
-        .layer-2-glass::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.04;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            z-index: 0;
-        }
+.subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
 
-        .content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
+.right-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .title-group {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
+.effort-badge {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 4px 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
 
-        .title {
-            font-size: 15px;
-            font-weight: 600;
-        }
+.chevron-icon {
+    color: var(--text-secondary);
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s var(--ease-spring);
+}
 
-        .subtitle {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
+.thinking-card-wrapper.open .chevron-icon {
+    transform: rotate(180deg);
+    color: #FFFFFF;
+}
 
-        .right-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+/* Animated Dropdown Menu */
+.thinking-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(15, 17, 24, 0.88);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.25s var(--ease-spring), visibility 0.22s;
+}
 
-        .effort-badge {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            background: rgba(74, 158, 255, 0.1);
-            border: 1px solid rgba(74, 158, 255, 0.25);
-            padding: 4px 10px;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-        }
+.thinking-card-wrapper.open .thinking-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
 
-        .chevron {
-            color: var(--text-secondary);
-            width: 18px;
-            height: 18px;
-            stroke-width: 1.5px;
-        }
+.level-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    border: 1px solid transparent;
+}
+
+.level-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.level-item.active {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.35);
+}
+
+.level-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.level-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.level-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.level-check {
+    width: 18px;
+    height: 18px;
+    color: var(--accent-cyan);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.2s var(--ease-spring);
+}
+
+.level-item.active .level-check {
+    opacity: 1;
+    transform: scale(1);
+}

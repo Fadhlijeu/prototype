@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,22 +11,34 @@
 <body>
 
     <div class="form-group-wrap">
-        <div class="glass-field">
-            <i data-lucide="search"></i>
-            <input type="text" class="glass-input" placeholder="Search components, tokens, or files...">
+        <div>
+            <span class="field-label">Pencarian Universal</span>
+            <div class="glass-field">
+                <i data-lucide="search" class="field-icon"></i>
+                <input type="text" class="glass-input" placeholder="Cari komponen, file, token..." autocomplete="off">
+            </div>
         </div>
-        <div class="glass-field">
-            <i data-lucide="mail"></i>
-            <input type="email" class="glass-input" placeholder="Enter email address...">
+
+        <div>
+            <span class="field-label">Email Pengguna</span>
+            <div class="glass-field">
+                <i data-lucide="mail" class="field-icon"></i>
+                <input type="email" class="glass-input" placeholder="nama@domain.com" autocomplete="off">
+            </div>
         </div>
-        <div class="glass-field">
-            <i data-lucide="lock"></i>
-            <input type="password" class="glass-input" placeholder="Enter secure password...">
+
+        <div>
+            <span class="field-label">Kata Sandi Akun</span>
+            <div class="glass-field">
+                <i data-lucide="lock" class="field-icon"></i>
+                <input type="password" id="passInput" class="glass-input" placeholder="Masukkan kata sandi aman..." autocomplete="new-password">
+                <button type="button" class="field-action-btn" id="togglePassBtn" title="Lihat kata sandi">
+                    <i data-lucide="eye" id="eyeIcon"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <script>
-        if (window.lucide) window.lucide.createIcons();
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>

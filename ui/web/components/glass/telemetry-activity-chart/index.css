@@ -157,6 +157,21 @@
             color: var(--text-secondary);
         }
 
+        .chart-info-toast {
+            position: relative;
+            z-index: 1;
+            margin-top: 12px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            font-size: 11.5px;
+            color: #38BDF8;
+            text-align: center;
+            letter-spacing: 0.02em;
+            transition: all 0.2s ease;
+        }
+
         @media (max-width: 440px) {
             .chart-card {
                 padding: 16px 16px;
