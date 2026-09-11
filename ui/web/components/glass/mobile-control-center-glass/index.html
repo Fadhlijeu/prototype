@@ -10,19 +10,6 @@
 <body>
     <!-- Phone Screen Viewport (9:16 Aspect Ratio) -->
     <div class="control-center-phone" id="phoneViewport" data-phone-bg="black">
-        <!-- Wallpaper Switcher (Black / Blob) -->
-        <div class="wp-switcher-bar">
-            <div class="wallpaper-pill">
-                <span class="wp-label">Latar:</span>
-                <button type="button" class="btn-wp active" data-bg="black" id="btnWpBlack" onclick="setControlCenterBg('black')">
-                    <span class="dot-swatch black-swatch"></span> Black
-                </button>
-                <button type="button" class="btn-wp" data-bg="blob" id="btnWpBlob" onclick="setControlCenterBg('blob')">
-                    <span class="dot-swatch blob-swatch"></span> Blob
-                </button>
-            </div>
-        </div>
-
         <!-- 1. Status Bar -->
         <header class="status-bar">
             <div class="status-left">
@@ -34,7 +21,7 @@
                     <span class="bar bar-3"></span>
                     <span class="bar bar-4"></span>
                 </div>
-                <span class="carrier-text">3SinyalKuatHer</span>
+                <span class="carrier-text" id="carrierText">SkyLink 5G</span>
                 <!-- Wi-Fi Icon -->
                 <svg class="status-icon wifi-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
@@ -107,14 +94,14 @@
                     </svg>
                 </div>
                 <div class="card-text-col">
-                    <span class="connect-title">PutraPutri</span>
+                    <span class="connect-title" id="wifiTitle">Quantum-5G</span>
                 </div>
                 <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </div>
 
-            <!-- Data Network Card -->
+            <!-- Cellular Data Card -->
             <div class="connect-card" id="cardData" onclick="toggleConnectCard('data')">
                 <div class="card-icon-bubble">
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -122,7 +109,7 @@
                     </svg>
                 </div>
                 <div class="card-text-col">
-                    <span class="connect-title">Data network</span>
+                    <span class="connect-title">Cellular 5G</span>
                 </div>
                 <svg class="chevron-right" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
@@ -232,15 +219,18 @@
                     <span class="tile-label">Wallet</span>
                 </div>
 
-                <!-- Tile 10: iQOOshare -->
-                <div class="tile-item" id="tileShare" onclick="toggleTile('tileShare', 'iQOOshare')">
+                <!-- Tile 10: Quick Share -->
+                <div class="tile-item" id="tileShare" onclick="toggleTile('tileShare', 'Quick Share')">
                     <div class="tile-bubble">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                         </svg>
                     </div>
-                    <span class="tile-label">iQOOshare</span>
+                    <span class="tile-label">Quick Share</span>
                 </div>
 
                 <!-- Tile 11: Calculator -->

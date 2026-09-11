@@ -18,7 +18,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 8px;
+    padding: 24px 16px;
     overflow-x: hidden;
 }
 
@@ -26,14 +26,14 @@ body {
 .control-center-phone {
     width: 100%;
     max-width: 390px;
-    height: 820px;
+    height: 760px;
     border-radius: 46px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 12px 16px 14px;
+    padding: 14px 16px 16px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9),
                 inset 0 0 0 2px rgba(255, 255, 255, 0.12),
                 0 0 0 6px #12141D;
@@ -50,74 +50,10 @@ body {
 /* Wallpaper 2: Blob (9:16 Planetary Dual-Arc SVG) */
 .control-center-phone[data-phone-bg="blob"] {
     background-color: #0D0D0D;
-    background-image: url('blob_9-16.svg');
+    background-image: url('../blob_9-16.svg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-}
-
-/* Wallpaper Switcher Bar */
-.wp-switcher-bar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 4px;
-    z-index: 10;
-}
-
-.wallpaper-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 2px 6px;
-    border-radius: 16px;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.wp-label {
-    font-size: 9.5px;
-    font-weight: 600;
-    color: #FFFFFF !important;
-    padding: 0 4px;
-    opacity: 0.8;
-}
-
-.btn-wp {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #FFFFFF !important;
-    background: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-wp.active {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-.dot-swatch {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-}
-
-.black-swatch {
-    background: #08080C;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-}
-
-.blob-swatch {
-    background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
-    border: 1px solid #FFFFFF;
 }
 
 /* 1. Status Bar */
@@ -306,12 +242,12 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .connect-card {
-    height: 64px;
-    border-radius: 22px;
+    height: 58px;
+    border-radius: 20px;
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -319,10 +255,11 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.24);
     display: flex;
     align-items: center;
-    padding: 0 12px;
-    gap: 8px;
+    padding: 0 14px;
+    gap: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-width: 0;
 }
 
 .connect-card:hover {
@@ -336,8 +273,8 @@ body {
 }
 
 .card-icon-bubble {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.14);
     display: flex;
@@ -359,11 +296,15 @@ body {
 
 .card-text-col {
     flex: 1;
+    min-width: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .connect-title {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 600;
     color: #FFFFFF !important;
     white-space: nowrap;
@@ -373,9 +314,12 @@ body {
 }
 
 .chevron-right {
+    margin-left: auto;
     color: #FFFFFF !important;
-    opacity: 0.7;
+    opacity: 0.65;
     flex-shrink: 0;
+    width: 14px;
+    height: 14px;
 }
 
 /* 4. Quick Settings Tiles (3x4 Grid in Frosted Panel) */
@@ -387,15 +331,15 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.11);
     border-top: 1px solid rgba(255, 255, 255, 0.24);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-    padding: 14px 10px 10px;
-    margin-bottom: 10px;
+    padding: 12px 10px 8px;
+    margin-bottom: 8px;
 }
 
 .tiles-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, auto);
-    gap: 12px 6px;
+    gap: 10px 4px;
 }
 
 .tile-item {
@@ -487,30 +431,30 @@ body {
 
 /* 5. Brightness & Volume Sliders Container */
 .sliders-glass-panel {
-    border-radius: 26px;
+    border-radius: 24px;
     background: rgba(255, 255, 255, 0.07);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
     border: 1px solid rgba(255, 255, 255, 0.11);
     border-top: 1px solid rgba(255, 255, 255, 0.24);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-    padding: 12px 14px;
+    padding: 10px 14px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 6px;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
 .slider-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .slider-capsule-track {
     flex: 1;
-    height: 44px;
-    border-radius: 22px;
+    height: 42px;
+    border-radius: 21px;
     background: rgba(255, 255, 255, 0.12);
     overflow: hidden;
     position: relative;

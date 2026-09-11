@@ -236,10 +236,52 @@
         } catch (e) {}
     };
 
+    // Live Clock & Date
+    function updateClockAndDate() {
+        const now = new Date();
+        const clockEl = document.getElementById('ccClock');
+        const dayEl = document.getElementById('ccDateDay');
+        const nameEl = document.getElementById('ccDateName');
+
+        if (clockEl) {
+            const hrs = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            clockEl.textContent = `${hrs}:${mins}`;
+        }
+        if (dayEl) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            dayEl.textContent = `${months[now.getMonth()]} ${now.getDate()}`;
+        }
+        if (nameEl) {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            nameEl.textContent = days[now.getDay()];
+        }
+    }
+
+    // Dynamic Randomized Tech Networks
+    const WIFI_NETWORKS = ['Quantum-5G', 'Aether-Net', 'HyperLink-Wi-Fi', 'Nexus-Mesh', 'Nova-Fiber'];
+    const CARRIERS = ['SkyLink 5G', 'Aether Mobile', 'Quantum 5G', 'Nova Cellular'];
+
+    function initRandomizedContent() {
+        const wifiEl = document.getElementById('wifiTitle');
+        const carrierEl = document.getElementById('carrierText');
+        if (wifiEl) {
+            const randWifi = WIFI_NETWORKS[Math.floor(Math.random() * WIFI_NETWORKS.length)];
+            wifiEl.textContent = randWifi;
+        }
+        if (carrierEl) {
+            const randCarrier = CARRIERS[Math.floor(Math.random() * CARRIERS.length)];
+            carrierEl.textContent = randCarrier;
+        }
+    }
+
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
         applyBrightnessLevel(currentBrightness);
         applyVolumeLevel(currentVolume);
+        updateClockAndDate();
+        setInterval(updateClockAndDate, 1000);
+        initRandomizedContent();
 
         let savedWp = 'black';
         try {

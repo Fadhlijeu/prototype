@@ -1,6 +1,8 @@
 /* ======================================================================
-   ELASTIC LOCKSCREEN GLASS CLOCK — PULL-TO-STRETCH PHYSICS
-   1:1 Replication with Downward Sag, Rubber Wobble & Dual Wallpaper
+   ELASTIC LOCKSCREEN GLASS CLOCK — PULL-TO-STRETCH JELLY CLOCK
+   1:1 Reference Replication (media_1789138869520.jpg)
+   Ultra-condensed stadium capsule digits with translucent frosted glass,
+   white specular rim, catenary sag, audio synthesis & spring rebound.
    ====================================================================== */
 
 * {
@@ -10,376 +12,92 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
-    background-color: #08080C;
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background-color: transparent;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     color: #FFFFFF;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Clock Full-Stage Container */
+.clock-container {
+    width: 100%;
+    height: 100%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-}
-
-/* Main Interactive Stage */
-.clock-stage {
-    width: 100%;
-    max-width: 580px;
-    height: 760px;
-    border-radius: 44px;
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85),
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.12),
-                0 0 0 6px #12141D;
     transition: background 0.35s ease;
-    user-select: none;
-    touch-action: none;
 }
 
-/* Background 1: Obsidian Black (Reference Photo Match) */
-.clock-stage[data-stage-bg="black"] {
+/* Background 1: Obsidian Black (1:1 Reference Photo Match) */
+.clock-container[data-clock-bg="black"] {
     background-color: #08080C;
-    background-image: radial-gradient(circle at 50% 35%, #181B28 0%, #0D0F17 48%, #08080C 78%);
+    background-image: radial-gradient(circle at 50% 30%, #151824 0%, #0D0F17 50%, #08080C 85%);
 }
 
-/* Background 2: Blob Wallpaper (Planetary Refraction) */
-.clock-stage[data-stage-bg="blob"] {
+/* Background 2: Blob Wallpaper (Planetary Refraction through Glass) */
+.clock-container[data-clock-bg="blob"] {
     background-color: #0D0D0D;
-    background-image: url('blob_9-16.svg');
+    background-image: url('../blob_9-16.svg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
 }
 
-/* Header Controls Bar */
-.clock-top-bar {
+/* Interactive Drag & Pull Area */
+.clock-interactive-area {
     width: 100%;
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    z-index: 20;
-    padding-bottom: 8px;
-}
-
-.ctrl-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 3px 6px;
-    border-radius: 20px;
-    background: rgba(16, 20, 32, 0.55);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-}
-
-.ctrl-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.55);
-    letter-spacing: 0.03em;
-    padding: 0 4px;
-}
-
-.btn-ctrl {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.75);
-    background: transparent;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-ctrl:hover {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.btn-ctrl.active {
-    background: rgba(56, 189, 248, 0.24);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #FFFFFF;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
-}
-
-.dot-swatch {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-}
-
-.black-swatch {
-    background: #08080C;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-}
-
-.blob-swatch {
-    background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
-    border: 1px solid #38BDF8;
-}
-
-/* Pull Hint Banner */
-.pull-hint {
-    font-size: 12px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.65);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: opacity 0.3s ease;
-    z-index: 10;
-}
-
-.pull-hint.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.pulse-arrow {
-    display: inline-block;
-    color: #38BDF8;
-    font-size: 14px;
-    font-weight: 700;
-    animation: arrowBounce 1.4s infinite ease-in-out;
-}
-
-@keyframes arrowBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(4px); }
-}
-
-/* Tension & Elongation Telemetry HUD */
-.tension-hud {
-    width: 84%;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 6px 14px;
-    border-radius: 14px;
-    background: rgba(14, 18, 28, 0.45);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 10;
-    margin-top: 4px;
-}
-
-.hud-item {
-    display: flex;
-    flex-direction: column;
-    min-width: 60px;
-}
-
-.hud-label {
-    font-size: 9px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.hud-val {
-    font-size: 12px;
-    font-weight: 700;
-    color: #38BDF8;
-    font-variant-numeric: tabular-nums;
-}
-
-.hud-bar-track {
-    flex: 1;
-    height: 5px;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-}
-
-.hud-bar-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, #38BDF8, #F59E0B, #EF4444);
-    transition: width 0.05s linear;
-}
-
-/* Interactive Drag Area */
-.clock-interactive-area {
-    flex: 1;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 10px;
     cursor: grab;
-    position: relative;
-    z-index: 15;
+    touch-action: none;
+    padding: 24px 16px;
 }
 
-.clock-interactive-area:active,
 .clock-interactive-area.dragging {
     cursor: grabbing;
 }
 
-/* Clock Anchor & Elastic Mesh */
-.clock-anchor {
-    width: 100%;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-
+/* Elastic Clock Mesh Wrapper */
 .elastic-clock-mesh {
     width: 100%;
+    max-width: 440px;
+    height: 92%;
+    max-height: 720px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    transform-origin: top center;
-    will-change: transform, filter;
-    transition: filter 0.2s ease;
+    justify-content: center;
+    transform-origin: 50% 12%;
+    will-change: transform;
+    pointer-events: none;
 }
 
-/* SVG Clock Canvas */
+/* SVG Clock Graphic */
 .clock-svg {
     width: 100%;
-    max-height: 420px;
+    height: 100%;
+    max-height: 100%;
+    display: block;
     overflow: visible;
 }
 
-/* Glass Digit Styling */
-.glass-digit {
-    fill: url(#glassFill);
-    stroke: url(#rimStroke);
-    stroke-width: 2.2px;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));
-    transition: stroke 0.2s ease, fill 0.2s ease;
+/* Digit Groups with Catenary Elastic Transformation */
+.digit-col,
+.colon-group {
+    will-change: transform;
 }
 
-/* Colon Dots */
+.glass-digit,
 .colon-dot {
-    fill: url(#glassFill);
-    stroke: url(#rimStroke);
-    stroke-width: 2.2px;
-    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
-    transition: transform 0.1s ease;
-}
-
-/* Tension Glow when pulled tightly */
-.elastic-clock-mesh.high-tension .glass-digit,
-.elastic-clock-mesh.high-tension .colon-dot {
-    stroke: #67E8F9;
-    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.65));
-}
-
-.elastic-clock-mesh.extreme-tension .glass-digit,
-.elastic-clock-mesh.extreme-tension .colon-dot {
-    stroke: #FBBF24;
-    filter: drop-shadow(0 0 28px rgba(245, 158, 11, 0.75));
-}
-
-/* Pull Handle / Ribbon */
-.pull-handle-wrap {
-    margin-top: -10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: grab;
-    padding: 10px;
-}
-
-.pull-handle-wrap:active {
-    cursor: grabbing;
-}
-
-.pull-ribbon {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    transition: all 0.2s ease;
-}
-
-.pull-handle-wrap:hover .pull-ribbon {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(56, 189, 248, 0.4);
-    transform: translateY(2px);
-}
-
-.ribbon-grip {
-    width: 14px;
-    height: 2px;
-    border-radius: 1px;
-    background: rgba(255, 255, 255, 0.4);
-}
-
-.ribbon-text {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.85);
-}
-
-/* Bottom Bar */
-.clock-bottom-bar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    z-index: 20;
-    padding-top: 6px;
-}
-
-.btn-snap-reset {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
-    border-radius: 14px;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.75);
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-snap-reset:hover {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-}
-
-.btn-snap-reset:active {
-    transform: translateY(0) scale(0.96);
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
 }

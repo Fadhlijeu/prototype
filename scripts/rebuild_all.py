@@ -975,31 +975,23 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background-image: none !important;
         }}
 
-        /* Lockscreen PIN Keypad preview zone stays dark obsidian, wallpaper changes inside phone only */
+        /* Phone Viewport Preview Zones (Lockscreen PIN & Control Center) stay dark obsidian outside phone */
         #preview-zone-lockscreen-pin-glass,
         #preview-zone-lockscreen-pin-glass[data-comp-bg="blob"],
-        #preview-zone-lockscreen-pin-glass[data-comp-bg="dark"] {{
+        #preview-zone-lockscreen-pin-glass[data-comp-bg="dark"],
+        #preview-zone-mobile-control-center-glass,
+        #preview-zone-mobile-control-center-glass[data-comp-bg="blob"],
+        #preview-zone-mobile-control-center-glass[data-comp-bg="dark"] {{
             background-color: #08080C !important;
             background-image: none !important;
         }}
 
-        /* Full-Width Showcase Grid Container (Landscape 2048x1156px) */
-        .showcase-grid[data-grid-bg="blob"] {{
-            background-color: #0D0D0D !important;
-            background-image: url('blob_2048x1156px.svg') !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            margin: 12px 24px 48px !important;
-            padding: 24px !important;
-            width: calc(100% - 48px) !important;
-        }}
+        /* Full-Width Showcase Grid Container (Clean solid dark obsidian, never wrapped with blob) */
+        .showcase-grid,
+        .showcase-grid[data-grid-bg="blob"],
         .showcase-grid[data-grid-bg="dark"] {{
             background: transparent !important;
+            background-image: none !important;
             border: 1px solid transparent !important;
             box-shadow: none !important;
             margin: 12px 24px 48px !important;
@@ -1650,10 +1642,14 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 // Per-Component & Grid Background Management
         let currentGridBg = localStorage.getItem('prototype-grid-bg') || 'dark';
 
+        function isPhoneComponent(f) {{
+            return f === 'lockscreen-pin-glass' || f === 'mobile-control-center-glass';
+        }}
+
         function setComponentBg(folder, bg, btnEl) {{
             const previewZone = document.getElementById(`preview-zone-${{folder}}`);
             if (previewZone) {{
-                if (folder === 'lockscreen-pin-glass') {{
+                if (isPhoneComponent(folder)) {{
                     previewZone.setAttribute('data-comp-bg', 'dark');
                 }} else {{
                     previewZone.setAttribute('data-comp-bg', bg);
@@ -1670,15 +1666,25 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (folder === 'lockscreen-pin-glass') {{
+                        if (isPhoneComponent(folder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
                                 phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
                             }}
-                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            if (iframe.contentWindow) {{
+                                if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                    iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                                }}
+                                if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
+                                    iframe.contentWindow.setControlCenterBg(bg === 'blob' ? 'blob' : 'black');
+                                }}
                             }}
+                        }} else if (folder === 'elastic-clock-glass') {{
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
+                                iframe.contentWindow.setClockBg(bg === 'blob' ? 'blob' : 'black');
+                            }}
+                            doc.body.style.backgroundColor = 'transparent';
                         }} else {{
                             if (bg === 'blob') {{
                                 doc.body.style.backgroundColor = 'transparent';
@@ -1695,7 +1701,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
         function setStudioBg(bg) {{
             const stage = document.getElementById('studioCanvasStage');
             if (stage) {{
-                if (activeFolder === 'lockscreen-pin-glass') {{
+                if (isPhoneComponent(activeFolder)) {{
                     stage.setAttribute('data-stage-bg', 'dark');
                 }} else {{
                     stage.setAttribute('data-stage-bg', bg);
@@ -1709,15 +1715,25 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (activeFolder === 'lockscreen-pin-glass') {{
+                        if (isPhoneComponent(activeFolder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
                                 phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
                             }}
-                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            if (iframe.contentWindow) {{
+                                if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                    iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                                }}
+                                if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
+                                    iframe.contentWindow.setControlCenterBg(bg === 'blob' ? 'blob' : 'black');
+                                }}
                             }}
+                        }} else if (activeFolder === 'elastic-clock-glass') {{
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
+                                iframe.contentWindow.setClockBg(bg === 'blob' ? 'blob' : 'black');
+                            }}
+                            doc.body.style.backgroundColor = 'transparent';
                         }} else {{
                             if (bg === 'blob') {{
                                 doc.body.style.backgroundColor = 'transparent';

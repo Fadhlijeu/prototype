@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elastic Lockscreen Glass Clock — Pull to Stretch (07:06)</title>
-    <meta name="description" content="1:1 Lockscreen Glass Clock dengan fisika peregangan kendor ke bawah (pull-to-stretch jelly physics), pantulan pegas, sound synthesizer, dan wallpaper Black/Blob.">
+    <title>Elastic Lockscreen Glass Clock</title>
+    <meta name="description" content="1:1 Lockscreen Glass Clock dengan stadium outline digits, live system time, audio synth, dan fisika peregangan kendor pegas jelly (pull-to-stretch rebound).">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,863 +14,489 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
             background-color: transparent;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: #FFFFFF;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Clock Full-Stage Container */
+        .clock-container {
+            width: 100%;
+            height: 100%;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Main Interactive Stage */
-        .clock-stage {
-            width: 100%;
-            max-width: 560px;
-            height: 740px;
-            border-radius: 44px;
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85),
-                        inset 0 0 0 1.5px rgba(255, 255, 255, 0.12),
-                        0 0 0 6px #12141D;
             transition: background 0.35s ease;
-            user-select: none;
-            touch-action: none;
         }
 
-        /* Background 1: Obsidian Black (Reference Photo Match) */
-        .clock-stage[data-stage-bg="black"] {
+        /* Background 1: Obsidian Black (1:1 Reference Photo Match) */
+        .clock-container[data-clock-bg="black"] {
             background-color: #08080C;
-            background-image: radial-gradient(circle at 50% 35%, #181B28 0%, #0D0F17 48%, #08080C 78%);
+            background-image: radial-gradient(circle at 50% 30%, #151824 0%, #0D0F17 50%, #08080C 85%);
         }
 
-        /* Background 2: Blob Wallpaper (Planetary Refraction) */
-        .clock-stage[data-stage-bg="blob"] {
+        /* Background 2: Blob Wallpaper (Planetary Refraction through Glass) */
+        .clock-container[data-clock-bg="blob"] {
             background-color: #0D0D0D;
-            background-image: url('blob_9-16.svg');
+            background-image: url('../blob_9-16.svg');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
         }
 
-        /* Header Controls Bar */
-        .clock-top-bar {
+        /* Interactive Drag & Pull Area */
+        .clock-interactive-area {
             width: 100%;
+            height: 100%;
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            z-index: 20;
-            padding-bottom: 4px;
-        }
-
-        .ctrl-group {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            padding: 3px 6px;
-            border-radius: 20px;
-            background: rgba(16, 20, 32, 0.55);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        .ctrl-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.55);
-            letter-spacing: 0.03em;
-            padding: 0 4px;
-        }
-
-        .btn-ctrl {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10.5px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.75);
-            background: transparent;
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-ctrl:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-ctrl.active {
-            background: rgba(56, 189, 248, 0.24);
-            border-color: rgba(56, 189, 248, 0.45);
-            color: #FFFFFF;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
-        }
-
-        .dot-swatch {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .black-swatch {
-            background: #08080C;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
-        .blob-swatch {
-            background: linear-gradient(135deg, #38BDF8 0%, #111F38 50%, #F59E0B 100%);
-            border: 1px solid #38BDF8;
-        }
-
-        /* Pull Hint Banner */
-        .pull-hint {
-            font-size: 11.5px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.65);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-
-        .pull-hint.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .pulse-arrow {
-            display: inline-block;
-            color: #38BDF8;
-            font-size: 13px;
-            font-weight: 700;
-            animation: arrowBounce 1.4s infinite ease-in-out;
-        }
-
-        @keyframes arrowBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(4px); }
-        }
-
-        /* Tension & Elongation Telemetry HUD */
-        .tension-hud {
-            width: 86%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 6px 14px;
-            border-radius: 14px;
-            background: rgba(14, 18, 28, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 10;
-            margin-top: 2px;
-        }
-
-        .hud-item {
-            display: flex;
-            flex-direction: column;
-            min-width: 58px;
-        }
-
-        .hud-label {
-            font-size: 9px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .hud-val {
-            font-size: 11.5px;
-            font-weight: 700;
-            color: #38BDF8;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .hud-bar-track {
-            flex: 1;
-            height: 5px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-
-        .hud-bar-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, #38BDF8, #F59E0B, #EF4444);
-            transition: width 0.05s linear;
-        }
-
-        /* Interactive Drag Area */
-        .clock-interactive-area {
-            flex: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding-top: 10px;
             cursor: grab;
-            position: relative;
-            z-index: 15;
+            touch-action: none;
+            padding: 24px 16px;
         }
 
-        .clock-interactive-area:active,
         .clock-interactive-area.dragging {
             cursor: grabbing;
         }
 
-        /* Clock Anchor & Elastic Mesh */
-        .clock-anchor {
-            width: 100%;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
+        /* Elastic Clock Mesh Wrapper */
         .elastic-clock-mesh {
             width: 100%;
+            max-width: 440px;
+            height: 92%;
+            max-height: 720px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            transform-origin: top center;
-            will-change: transform, filter;
-            transition: filter 0.2s ease;
+            justify-content: center;
+            transform-origin: 50% 12%;
+            will-change: transform;
+            pointer-events: none;
         }
 
-        /* SVG Clock Canvas */
+        /* SVG Clock Graphic */
         .clock-svg {
             width: 100%;
-            max-height: 410px;
+            height: 100%;
+            max-height: 100%;
+            display: block;
             overflow: visible;
         }
 
-        /* Glass Digit Styling */
-        .glass-digit {
-            fill: url(#glassFill);
-            stroke: url(#rimStroke);
-            stroke-width: 2.2px;
-            stroke-linejoin: round;
-            stroke-linecap: round;
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));
-            transition: stroke 0.2s ease, fill 0.2s ease;
+        /* Digit Groups with Catenary Elastic Transformation */
+        .digit-col,
+        .colon-group {
+            will-change: transform;
         }
 
-        /* Colon Dots */
+        .glass-digit,
         .colon-dot {
-            fill: url(#glassFill);
-            stroke: url(#rimStroke);
-            stroke-width: 2.2px;
-            filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
-            transition: transform 0.1s ease;
-        }
-
-        /* Tension Glow when pulled tightly */
-        .elastic-clock-mesh.high-tension .glass-digit,
-        .elastic-clock-mesh.high-tension .colon-dot {
-            stroke: #67E8F9;
-            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.65));
-        }
-
-        .elastic-clock-mesh.extreme-tension .glass-digit,
-        .elastic-clock-mesh.extreme-tension .colon-dot {
-            stroke: #FBBF24;
-            filter: drop-shadow(0 0 28px rgba(245, 158, 11, 0.75));
-        }
-
-        /* Pull Handle / Ribbon */
-        .pull-handle-wrap {
-            margin-top: -8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: grab;
-            padding: 8px;
-        }
-
-        .pull-handle-wrap:active {
-            cursor: grabbing;
-        }
-
-        .pull-ribbon {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 18px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-top: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            transition: all 0.2s ease;
-        }
-
-        .pull-handle-wrap:hover .pull-ribbon {
-            background: rgba(255, 255, 255, 0.14);
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(2px);
-        }
-
-        .ribbon-grip {
-            width: 14px;
-            height: 2px;
-            border-radius: 1px;
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .ribbon-text {
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        /* Bottom Bar */
-        .clock-bottom-bar {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 20;
-            padding-top: 4px;
-        }
-
-        .btn-snap-reset {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            border-radius: 14px;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.75);
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-snap-reset:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-        }
-
-        .btn-snap-reset:active {
-            transform: translateY(0) scale(0.96);
+            filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
         }
     </style>
 </head>
 <body>
+    <div class="clock-container" id="clockContainer" data-clock-bg="black">
+        <!-- Draggable Pull-to-Stretch Interaction Area -->
+        <div class="clock-interactive-area" id="clockInteractiveArea" role="region" aria-label="Elastic Glass Clock">
+            <div class="elastic-clock-mesh" id="elasticClockMesh">
+                <svg class="clock-svg" id="clockSvg" viewBox="0 0 430 620" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Translucent Frosted Glass Fill Gradient -->
+                        <linearGradient id="glassFill" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.32" />
+                            <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.14" />
+                            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.26" />
+                        </linearGradient>
 
-    <div class="clock-stage" id="clockStage" data-stage-bg="black">
-        <!-- Floating Controls Bar -->
-        <header class="clock-top-bar">
-            <!-- Wallpaper Switcher -->
-            <div class="ctrl-group">
-                <span class="ctrl-label">Latar:</span>
-                <button type="button" class="btn-ctrl active" data-bg="black" id="btnBgBlack" onclick="setClockBg('black')">
-                    <span class="dot-swatch black-swatch"></span> Black
-                </button>
-                <button type="button" class="btn-ctrl" data-bg="blob" id="btnBgBlob" onclick="setClockBg('blob')">
-                    <span class="dot-swatch blob-swatch"></span> Blob
-                </button>
-            </div>
+                        <!-- White Specular Rim Stroke Gradient -->
+                        <linearGradient id="rimStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+                            <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.65" />
+                            <stop offset="70%" stop-color="#FFFFFF" stop-opacity="0.45" />
+                            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.85" />
+                        </linearGradient>
 
-            <!-- Time Mode Toggle -->
-            <div class="ctrl-group">
-                <span class="ctrl-label">Waktu:</span>
-                <button type="button" class="btn-ctrl active" id="btnTimePhoto" onclick="setTimeMode('photo')">
-                    07:06
-                </button>
-                <button type="button" class="btn-ctrl" id="btnTimeLive" onclick="setTimeMode('live')">
-                    Live
-                </button>
-            </div>
+                        <!-- Glass Drop Shadow Filter -->
+                        <filter id="glassShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000000" flood-opacity="0.75" />
+                        </filter>
+                    </defs>
 
-            <!-- Elasticity Physics Preset -->
-            <div class="ctrl-group">
-                <span class="ctrl-label">Fisika:</span>
-                <button type="button" class="btn-ctrl active" data-elasticity="jelly" onclick="setElasticity('jelly', this)">
-                    Jelly
-                </button>
-                <button type="button" class="btn-ctrl" data-elasticity="rubber" onclick="setElasticity('rubber', this)">
-                    Rubber
-                </button>
-                <button type="button" class="btn-ctrl" data-elasticity="slime" onclick="setElasticity('slime', this)">
-                    Slime
-                </button>
-            </div>
-        </header>
-
-        <!-- Pull Hint Banner -->
-        <div class="pull-hint" id="pullHint">
-            <span class="pulse-arrow">↓</span> Tarik jam ke bawah — semakin ditarik, semakin kendor melar
-        </div>
-
-        <!-- Tension & Elongation Telemetry HUD -->
-        <div class="tension-hud" id="tensionHud">
-            <div class="hud-item">
-                <span class="hud-label">Peregangan</span>
-                <span class="hud-val" id="hudStretchVal">+0%</span>
-            </div>
-            <div class="hud-bar-track">
-                <div class="hud-bar-fill" id="hudBarFill"></div>
-            </div>
-            <div class="hud-item">
-                <span class="hud-label">Tegangan</span>
-                <span class="hud-val" id="hudTensionVal">0.0 N</span>
-            </div>
-        </div>
-
-        <!-- Draggable Clock Wrapper -->
-        <main class="clock-interactive-area" id="clockDragArea">
-            <div class="clock-anchor" id="clockAnchor">
-                <!-- Elastic Clock Graphic Container -->
-                <div class="elastic-clock-mesh" id="elasticClockMesh">
-                    <svg class="clock-svg" id="clockSvg" viewBox="0 0 540 420" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <!-- Frosted Glass Gradient -->
-                            <linearGradient id="glassFill" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22" />
-                                <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.10" />
-                                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.18" />
-                            </linearGradient>
-
-                            <!-- Specular Rim Gradient -->
-                            <linearGradient id="rimStroke" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
-                                <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.55" />
-                                <stop offset="70%" stop-color="#FFFFFF" stop-opacity="0.40" />
-                                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.80" />
-                            </linearGradient>
-
-                            <!-- Tension Internal Glow Filter -->
-                            <filter id="glassGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                            </filter>
-                        </defs>
-
-                        <!-- Digits Group with Dynamic Droop Matrix -->
-                        <g id="digitsGroup" class="digits-group">
-                            <!-- Digit 1 (Tens of Hour) -->
-                            <g id="digitCol0" class="digit-col" transform="translate(18, 0)">
-                                <path id="pathD0" class="glass-digit" d="" />
-                            </g>
-
-                            <!-- Digit 2 (Units of Hour) -->
-                            <g id="digitCol1" class="digit-col" transform="translate(142, 0)">
-                                <path id="pathD1" class="glass-digit" d="" />
-                            </g>
-
-                            <!-- Colon ':' Group (with secondary trailing jelly physics) -->
-                            <g id="colonCol" class="colon-group" transform="translate(262, 0)">
-                                <circle id="colonDotTop" class="colon-dot" cx="12" cy="140" r="14" />
-                                <circle id="colonDotBottom" class="colon-dot" cx="12" cy="275" r="14" />
-                            </g>
-
-                            <!-- Digit 3 (Tens of Minute) -->
-                            <g id="digitCol2" class="digit-col" transform="translate(296, 0)">
-                                <path id="pathD2" class="glass-digit" d="" />
-                            </g>
-
-                            <!-- Digit 4 (Units of Minute) -->
-                            <g id="digitCol3" class="digit-col" transform="translate(420, 0)">
-                                <path id="pathD3" class="glass-digit" d="" />
-                            </g>
+                    <!-- Digits Group with Catenary Sag Physics -->
+                    <g id="digitsGroup" class="digits-group" filter="url(#glassShadow)">
+                        <!-- Digit 1 (Tens of Hour) -->
+                        <g id="digitCol0" class="digit-col" transform="translate(16, 20)">
+                            <path id="pathD0" class="glass-digit" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" fill-rule="evenodd" d="" />
                         </g>
-                    </svg>
 
-                    <!-- Elastic Pull Handle / Ribbon Anchor -->
-                    <div class="pull-handle-wrap" id="pullHandle">
-                        <div class="pull-ribbon">
-                            <span class="ribbon-grip"></span>
-                            <span class="ribbon-text">TARIK KE BAWAH</span>
-                            <span class="ribbon-grip"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+                        <!-- Digit 2 (Units of Hour) -->
+                        <g id="digitCol1" class="digit-col" transform="translate(110, 20)">
+                            <path id="pathD1" class="glass-digit" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" fill-rule="evenodd" d="" />
+                        </g>
 
-        <!-- Elastic Sag Floor Indicator -->
-        <footer class="clock-bottom-bar">
-            <button type="button" class="btn-snap-reset" onclick="triggerSnapBack()">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                    <path d="M3 3v5h5"/>
+                        <!-- Colon ':' Group -->
+                        <g id="colonCol" class="colon-group" transform="translate(202, 20)">
+                            <circle id="colonDotTop" class="colon-dot" cx="13" cy="205" r="13" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" />
+                            <circle id="colonDotBottom" class="colon-dot" cx="13" cy="375" r="13" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" />
+                        </g>
+
+                        <!-- Digit 3 (Tens of Minute) -->
+                        <g id="digitCol2" class="digit-col" transform="translate(240, 20)">
+                            <path id="pathD2" class="glass-digit" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" fill-rule="evenodd" d="" />
+                        </g>
+
+                        <!-- Digit 4 (Units of Minute) -->
+                        <g id="digitCol3" class="digit-col" transform="translate(334, 20)">
+                            <path id="pathD3" class="glass-digit" fill="url(#glassFill)" stroke="url(#rimStroke)" stroke-width="1.8" fill-rule="evenodd" d="" />
+                        </g>
+                    </g>
                 </svg>
-                Kembalikan Bentuk
-            </button>
-        </footer>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Digit Vector Path Definitions (Extra-tall condensed rounded glyphs, matching photo)
-        const DIGIT_PATHS = {
-            '0': "M 16,54 C 16,24 38,0 52,0 C 66,0 88,24 88,54 V 306 C 88,336 66,360 52,360 C 38,360 16,336 16,306 Z M 38,68 V 292 C 38,312 44,326 52,326 C 60,326 66,312 66,292 V 68 C 66,48 60,34 52,34 C 44,34 38,48 38,68 Z",
-            '1': "M 32,46 L 56,22 V 360 H 34 V 42 L 32,46 Z",
-            '2': "M 18,52 C 18,22 40,0 54,0 C 68,0 88,22 88,52 C 88,96 50,150 24,204 V 324 H 88 V 360 H 16 V 314 C 40,260 84,200 84,152 C 84,60 62,34 53,34 C 42,34 26,50 26,72 H 18 Z",
-            '3': "M 18,50 C 18,22 40,0 53,0 C 67,0 88,22 88,50 C 88,88 64,124 50,146 C 66,168 88,206 88,252 C 88,310 66,360 52,360 C 38,360 16,312 16,270 H 26 C 26,304 40,326 52,326 C 64,326 78,284 78,248 C 78,198 56,166 40,166 H 34 V 136 H 40 C 54,136 78,108 78,64 C 78,42 64,34 53,34 C 42,34 26,44 26,68 H 18 Z",
-            '4': "M 70,0 V 240 H 14 V 204 L 68,16 H 70 V 240 H 88 V 276 H 70 V 360 H 48 V 276 H 14 V 230 L 68,0 H 70 Z",
-            '5': "M 84,0 V 36 H 26 V 140 C 34,126 50,118 64,118 C 78,118 88,142 88,184 V 286 C 88,332 68,360 52,360 C 36,360 16,328 16,280 H 26 C 26,314 38,326 52,326 C 66,326 78,300 78,272 V 196 C 78,162 66,146 52,146 C 40,146 30,158 24,176 L 16,168 L 18,0 H 84 Z",
-            '6': "M 82,34 C 74,12 58,0 48,0 C 32,0 16,26 16,68 V 292 C 16,334 34,360 52,360 C 70,360 88,334 88,292 V 222 C 88,178 70,152 52,152 C 38,152 26,168 20,188 V 72 C 20,44 32,32 48,32 C 58,32 70,42 76,58 L 82,34 Z M 38,228 C 42,204 50,184 54,184 C 64,184 76,204 76,238 V 284 C 76,312 66,326 54,326 C 42,326 38,312 38,284 V 228 Z",
-            '7': "M 16,0 H 88 V 36 L 44,360 H 22 L 66,36 H 16 V 0 Z",
-            '8': "M 52,0 C 66,0 86,20 86,54 C 86,88 68,124 54,146 C 70,168 88,206 88,256 C 88,314 68,360 52,360 C 36,360 16,314 16,256 C 16,206 34,168 50,146 C 36,124 18,88 18,54 C 18,20 38,0 52,0 Z M 52,34 C 42,34 30,46 30,68 C 30,102 46,134 52,138 C 58,134 74,102 74,68 C 74,46 62,34 52,34 Z M 52,168 C 44,174 28,210 28,262 C 28,308 40,326 52,326 C 64,326 76,308 76,262 C 76,210 60,174 52,168 Z",
-            '9': "M 22,326 C 30,348 46,360 56,360 C 72,360 88,334 88,292 V 68 C 88,26 70,0 52,0 C 34,0 16,26 16,68 V 138 C 16,182 34,208 52,208 C 66,208 78,192 84,172 V 288 C 84,316 72,328 56,328 C 46,328 34,318 28,302 L 22,326 Z M 66,132 C 62,156 54,176 50,176 C 40,176 28,156 28,122 V 76 C 28,48 38,34 50,34 C 62,34 66,48 66,76 V 132 Z"
-        };
+        (function () {
+            const W = 78;
+            const H = 580;
+            const T = 17;
+            const R = W / 2.0; // 39.0
+            const r = R - T;   // 22.0
 
-        // Physics Presets
-        const ELASTICITY_PRESETS = {
-            jelly: { stiffness: 0.085, damping: 0.81, maxStretch: 340, mass: 1.0, boingFreq: 180 },
-            rubber: { stiffness: 0.14, damping: 0.88, maxStretch: 280, mass: 0.8, boingFreq: 260 },
-            slime: { stiffness: 0.045, damping: 0.76, maxStretch: 420, mass: 1.4, boingFreq: 120 }
-        };
+            // Geometrically accurate stadium capsule glyphs (1:1 with reference photo)
+            const DIGIT_PATHS = {
+                '0': "M 0,39 A 39 39 0 0 1 78,39 V 541 A 39 39 0 0 1 0,541 Z M 18,39 A 21 21 0 0 1 60,39 V 541 A 21 21 0 0 1 18,541 Z",
+                '1': "M 30,9 A 9 9 0 0 1 48,9 V 571 A 9 9 0 0 1 30,571 V 70 L 14,88 A 9 9 0 0 1 1,75 L 30,9 Z",
+                '2': "M 78,580 H 0 V 562 H 9 L 45,150 A 21 21 0 0 0 18,39 A 9 9 0 0 1 0,39 A 39 39 0 0 1 78,39 V 150 L 27,562 H 69 A 9 9 0 0 1 78,571 Z",
+                '3': "M 0,39 A 39 39 0 0 1 78,39 C 78,180 58,265 44,285 C 58,305 78,390 78,541 A 39 39 0 0 1 0,541 A 9 9 0 0 1 18,541 A 21 21 0 0 0 60,541 C 60,395 50,315 28,295 A 9 9 0 0 1 28,275 C 50,255 60,175 60,39 A 21 21 0 0 0 18,39 A 9 9 0 0 1 0,39 Z",
+                '4': "M 60,0 H 78 V 571 A 9 9 0 0 1 60,571 V 410 H 9 A 9 9 0 0 1 0,401 L 60,0 Z M 60,392 V 120 L 22,392 Z",
+                '5': "M 0,0 H 69 A 9 9 0 0 1 69,18 H 18 V 240 C 30,225 50,220 39,220 C 72,220 78,270 78,541 A 39 39 0 0 1 0,541 A 9 9 0 0 1 18,541 A 21 21 0 0 0 60,541 C 60,295 39,238 18,238 H 0 Z",
+                '6': "M 78,170 A 9 9 0 0 0 60,170 V 39 A 21 21 0 0 0 18,39 V 541 A 39 39 0 0 0 78,541 V 320 C 78,280 39,275 39,275 C 28,275 18,295 18,320 H 0 V 39 A 39 39 0 0 1 78,39 Z M 18,340 A 21 16 0 0 1 60,340 V 541 A 21 21 0 0 1 18,541 Z",
+                '7': "M 0,0 H 78 V 18 L 27,571 A 9 9 0 0 1 9,567 L 59,18 H 0 Z",
+                '8': "M 0,39 A 39 39 0 0 1 78,39 C 78,175 66,268 44,285 C 66,302 78,395 78,541 A 39 39 0 0 1 0,541 C 0,395 12,302 34,285 C 12,268 0,175 0,39 Z M 18,39 A 21 21 0 0 1 60,39 C 60,160 52,242 39,268 C 26,242 18,160 18,39 Z M 39,302 C 52,328 60,410 60,541 A 21 21 0 0 1 18,541 C 18,410 26,328 39,302 Z",
+                '9': "M 0,410 A 9 9 0 0 0 18,410 V 39 A 39 39 0 0 1 78,39 V 541 A 39 39 0 0 1 0,541 H 18 V 260 C 18,285 39,290 39,290 C 72,290 60,260 60,260 V 39 A 21 21 0 0 0 18,39 Z M 18,39 A 21 21 0 0 1 60,39 V 240 A 21 16 0 0 1 18,240 Z"
+            };
 
-        let activePreset = ELASTICITY_PRESETS.jelly;
-        let timeMode = 'photo';
-        let clockInterval = null;
+            // Web Audio Synthesizer
+            let audioCtx = null;
+            let tensionOsc = null;
+            let tensionGain = null;
 
-        // Web Audio Synthesizer
-        let audioCtx = null;
-        let tensionOsc = null;
-        let tensionGain = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (AudioContextClass) {
-                    audioCtx = new AudioContextClass();
+            function initAudio() {
+                if (!audioCtx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) {
+                        audioCtx = new AudioContextClass();
+                    }
+                }
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
                 }
             }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
 
-        function startTensionAudio() {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-
-                tensionOsc = audioCtx.createOscillator();
-                tensionGain = audioCtx.createGain();
-
-                tensionOsc.type = 'triangle';
-                tensionOsc.frequency.setValueAtTime(80, audioCtx.currentTime);
-
-                tensionGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-
-                tensionOsc.connect(tensionGain);
-                tensionGain.connect(audioCtx.destination);
-                tensionOsc.start();
-            } catch (e) {}
-        }
-
-        function updateTensionAudio(stretchRatio) {
-            if (!tensionOsc || !tensionGain || !audioCtx) return;
-            try {
-                const freq = 80 + stretchRatio * 280;
-                const vol = Math.min(0.12, stretchRatio * 0.12);
-                tensionOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                tensionGain.gain.setValueAtTime(vol, audioCtx.currentTime);
-            } catch (e) {}
-        }
-
-        function stopTensionAudio() {
-            if (tensionOsc) {
+            function startTensionAudio() {
                 try {
-                    tensionGain.gain.setValueAtTime(0, audioCtx.currentTime);
-                    tensionOsc.stop(audioCtx.currentTime + 0.05);
+                    initAudio();
+                    if (!audioCtx) return;
+
+                    tensionOsc = audioCtx.createOscillator();
+                    tensionGain = audioCtx.createGain();
+
+                    tensionOsc.type = 'triangle';
+                    tensionOsc.frequency.setValueAtTime(75, audioCtx.currentTime);
+                    tensionGain.gain.setValueAtTime(0.005, audioCtx.currentTime);
+
+                    tensionOsc.connect(tensionGain);
+                    tensionGain.connect(audioCtx.destination);
+                    tensionOsc.start();
                 } catch (e) {}
-                tensionOsc = null;
-                tensionGain = null;
             }
-        }
 
-        function playBoingSound(velocity) {
-            try {
-                initAudio();
-                if (!audioCtx) return;
+            function updateTensionAudio(ratio) {
+                if (!tensionOsc || !tensionGain || !audioCtx) return;
+                try {
+                    const freq = 75 + ratio * 240;
+                    const vol = Math.min(0.08, ratio * 0.08);
+                    tensionOsc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    tensionGain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                } catch (e) {}
+            }
 
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+            function stopTensionAudio() {
+                if (tensionOsc) {
+                    try {
+                        tensionGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                        tensionOsc.stop(audioCtx.currentTime + 0.04);
+                    } catch (e) {}
+                    tensionOsc = null;
+                    tensionGain = null;
+                }
+            }
 
-                const baseFreq = activePreset.boingFreq;
-                const now = audioCtx.currentTime;
+            function playBoingSound() {
+                try {
+                    initAudio();
+                    if (!audioCtx) return;
 
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(baseFreq * 1.5, now);
-                osc.frequency.exponentialRampToValueAtTime(baseFreq, now + 0.08);
-                osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.7, now + 0.35);
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const now = audioCtx.currentTime;
 
-                gain.gain.setValueAtTime(0.24, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(280, now);
+                    osc.frequency.exponentialRampToValueAtTime(170, now + 0.08);
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
 
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                    gain.gain.setValueAtTime(0.20, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
 
-                osc.start(now);
-                osc.stop(now + 0.5);
-            } catch (e) {}
-        }
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
 
-        // Time Display Controller
-        function renderDigits(timeStr) {
-            const d0 = timeStr[0] || '0';
-            const d1 = timeStr[1] || '7';
-            const d2 = timeStr[3] || '0';
-            const d3 = timeStr[4] || '6';
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                } catch (e) {}
+            }
 
-            const p0 = document.getElementById('pathD0');
-            const p1 = document.getElementById('pathD1');
-            const p2 = document.getElementById('pathD2');
-            const p3 = document.getElementById('pathD3');
+            // Live Clock Engine
+            let lastRenderedTime = '';
 
-            if (p0) p0.setAttribute('d', DIGIT_PATHS[d0] || DIGIT_PATHS['0']);
-            if (p1) p1.setAttribute('d', DIGIT_PATHS[d1] || DIGIT_PATHS['7']);
-            if (p2) p2.setAttribute('d', DIGIT_PATHS[d2] || DIGIT_PATHS['0']);
-            if (p3) p3.setAttribute('d', DIGIT_PATHS[d3] || DIGIT_PATHS['6']);
-        }
+            function renderDigits(timeStr) {
+                if (timeStr === lastRenderedTime) return;
+                lastRenderedTime = timeStr;
 
-        function updateClock() {
-            if (timeMode === 'photo') {
-                renderDigits("07:06");
-            } else {
+                const d0 = timeStr[0] || '0';
+                const d1 = timeStr[1] || '7';
+                const d2 = timeStr[2] || '0';
+                const d3 = timeStr[3] || '6';
+
+                const p0 = document.getElementById('pathD0');
+                const p1 = document.getElementById('pathD1');
+                const p2 = document.getElementById('pathD2');
+                const p3 = document.getElementById('pathD3');
+
+                if (p0) p0.setAttribute('d', DIGIT_PATHS[d0] || DIGIT_PATHS['0']);
+                if (p1) p1.setAttribute('d', DIGIT_PATHS[d1] || DIGIT_PATHS['7']);
+                if (p2) p2.setAttribute('d', DIGIT_PATHS[d2] || DIGIT_PATHS['0']);
+                if (p3) p3.setAttribute('d', DIGIT_PATHS[d3] || DIGIT_PATHS['6']);
+            }
+
+            function updateLiveClock() {
                 const now = new Date();
                 const hh = String(now.getHours()).padStart(2, '0');
                 const mm = String(now.getMinutes()).padStart(2, '0');
-                renderDigits(`${hh}:${mm}`);
-            }
-        }
-
-        // Gesture & Pull-to-Stretch Physics Engine
-        let isDragging = false;
-        let startPointerY = 0;
-        let currentStretch = 0;
-        let springVelocity = 0;
-        let animFrameId = null;
-
-        const clockMesh = document.getElementById('elasticClockMesh');
-        const dragArea = document.getElementById('clockDragArea');
-        const pullHint = document.getElementById('pullHint');
-        const hudStretchVal = document.getElementById('hudStretchVal');
-        const hudTensionVal = document.getElementById('hudTensionVal');
-        const hudBarFill = document.getElementById('hudBarFill');
-
-        const col0 = document.getElementById('digitCol0');
-        const col1 = document.getElementById('digitCol1');
-        const colonCol = document.getElementById('colonCol');
-        const col2 = document.getElementById('digitCol2');
-        const col3 = document.getElementById('digitCol3');
-
-        function applyStretchDeformation(stretchPx) {
-            currentStretch = stretchPx;
-
-            const ratio = Math.max(0, stretchPx / activePreset.maxStretch);
-
-            const scaleY = 1 + (stretchPx / 260);
-            const scaleX = 1 / Math.sqrt(Math.max(0.6, scaleY));
-            const translateY = stretchPx * 0.45;
-
-            if (clockMesh) {
-                clockMesh.style.transform = `translateY(${translateY}px) scale(${scaleX}, ${scaleY})`;
-
-                clockMesh.classList.toggle('high-tension', ratio > 0.45 && ratio <= 0.8);
-                clockMesh.classList.toggle('extreme-tension', ratio > 0.8);
+                renderDigits(hh + mm);
             }
 
-            const sagCenter = stretchPx * 0.16;
-            const sagEdges = stretchPx * 0.07;
-            const colonLag = stretchPx * 0.22;
+            // DOM References
+            const clockMesh = document.getElementById('elasticClockMesh');
+            const dragArea = document.getElementById('clockInteractiveArea');
 
-            if (col0) col0.style.transform = `translate(18px, ${sagEdges}px)`;
-            if (col1) col1.style.transform = `translate(142px, ${sagCenter}px)`;
-            if (colonCol) colonCol.style.transform = `translate(262px, ${colonLag}px)`;
-            if (col2) col2.style.transform = `translate(296px, ${sagCenter}px)`;
-            if (col3) col3.style.transform = `translate(420px, ${sagEdges}px)`;
+            const col0 = document.getElementById('digitCol0');
+            const col1 = document.getElementById('digitCol1');
+            const colonCol = document.getElementById('colonCol');
+            const col2 = document.getElementById('digitCol2');
+            const col3 = document.getElementById('digitCol3');
 
-            const stretchPercent = Math.round(ratio * 100);
-            const tensionNewton = (ratio * 4.8).toFixed(1);
+            // Gesture & Pull-to-Stretch Physics
+            let isDragging = false;
+            let startY = 0;
+            let currentPullY = 0;
+            let currentTension = 0;
+            let animFrameId = null;
+            let watchdogTimer = null;
 
-            if (hudStretchVal) hudStretchVal.innerText = `+${stretchPercent}%`;
-            if (hudTensionVal) hudTensionVal.innerText = `${tensionNewton} N`;
-            if (hudBarFill) hudBarFill.style.width = `${Math.min(100, stretchPercent)}%`;
-
-            updateTensionAudio(ratio);
-        }
-
-        function onPointerDown(e) {
-            isDragging = true;
-            startPointerY = e.clientY;
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-
-            if (dragArea) dragArea.classList.add('dragging');
-            if (pullHint) pullHint.classList.add('hidden');
-
-            startTensionAudio();
-
-            if (dragArea && dragArea.setPointerCapture) {
-                dragArea.setPointerCapture(e.pointerId);
-            }
-        }
-
-        function onPointerMove(e) {
-            if (!isDragging) return;
-
-            const rawDeltaY = e.clientY - startPointerY;
-
-            if (rawDeltaY > 0) {
-                const damped = rawDeltaY / (1 + rawDeltaY * 0.0018);
-                const clamped = Math.min(activePreset.maxStretch, damped);
-                applyStretchDeformation(clamped);
-            } else {
-                const compressed = Math.max(-30, rawDeltaY * 0.3);
-                applyStretchDeformation(compressed);
-            }
-        }
-
-        function onPointerUp(e) {
-            if (!isDragging) return;
-            isDragging = false;
-
-            if (dragArea) dragArea.classList.remove('dragging');
-            stopTensionAudio();
-
-            if (dragArea && dragArea.releasePointerCapture) {
-                try {
-                    dragArea.releasePointerCapture(e.pointerId);
-                } catch (err) {}
-            }
-
-            if (Math.abs(currentStretch) > 20) {
-                playBoingSound(springVelocity);
-                if (navigator.vibrate) {
-                    try { navigator.vibrate([20, 30, 40]); } catch(e) {}
+            function applyDeformation(pullY, scaleY, scaleX, catenaryRatio) {
+                if (clockMesh) {
+                    clockMesh.style.transform = `translate3d(0, ${pullY * 0.4}px, 0) scale(${scaleX}, ${scaleY})`;
                 }
+
+                // Catenary jelly droop on individual digit columns (preserving X coordinate attributes)
+                const droopCenter = pullY * 0.35 * catenaryRatio;
+                const droopMid = pullY * 0.24 * catenaryRatio;
+                const droopEdge = pullY * 0.08 * catenaryRatio;
+
+                if (col0) col0.setAttribute('transform', `translate(16, ${20 + droopEdge})`);
+                if (col1) col1.setAttribute('transform', `translate(110, ${20 + droopMid})`);
+                if (colonCol) colonCol.setAttribute('transform', `translate(202, ${20 + droopCenter})`);
+                if (col2) col2.setAttribute('transform', `translate(240, ${20 + droopMid})`);
+                if (col3) col3.setAttribute('transform', `translate(334, ${20 + droopEdge})`);
             }
 
-            runSpringSnapAnimation();
-        }
-
-        function runSpringSnapAnimation() {
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-
-            let pos = currentStretch;
-            let vel = springVelocity;
-            const k = activePreset.stiffness;
-            const d = activePreset.damping;
-
-            function springStep() {
-                const force = -k * pos;
-                vel = (vel + force) * d;
-                pos += vel;
-
-                applyStretchDeformation(pos);
-
-                if (Math.abs(pos) > 0.4 || Math.abs(vel) > 0.4) {
-                    animFrameId = requestAnimationFrame(springStep);
-                } else {
-                    applyStretchDeformation(0);
+            function resetToRest() {
+                if (animFrameId) {
+                    cancelAnimationFrame(animFrameId);
                     animFrameId = null;
                 }
+                if (watchdogTimer) {
+                    clearTimeout(watchdogTimer);
+                    watchdogTimer = null;
+                }
+
+                currentPullY = 0;
+                currentTension = 0;
+                isDragging = false;
+
+                if (clockMesh) {
+                    clockMesh.style.transform = '';
+                }
+                if (col0) col0.setAttribute('transform', 'translate(16, 20)');
+                if (col1) col1.setAttribute('transform', 'translate(110, 20)');
+                if (colonCol) colonCol.setAttribute('transform', 'translate(202, 20)');
+                if (col2) col2.setAttribute('transform', 'translate(240, 20)');
+                if (col3) col3.setAttribute('transform', 'translate(334, 20)');
+
+                if (dragArea) {
+                    dragArea.classList.remove('dragging');
+                }
             }
 
-            animFrameId = requestAnimationFrame(springStep);
-        }
+            function onPointerDown(e) {
+                if (animFrameId) {
+                    cancelAnimationFrame(animFrameId);
+                    animFrameId = null;
+                }
+                if (watchdogTimer) {
+                    clearTimeout(watchdogTimer);
+                    watchdogTimer = null;
+                }
 
-        window.triggerSnapBack = function () {
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-            playBoingSound(1.0);
-            applyStretchDeformation(0);
-        };
+                isDragging = true;
+                startY = e.clientY;
 
-        window.setClockBg = function (bg) {
-            const stage = document.getElementById('clockStage');
-            if (stage) {
-                stage.setAttribute('data-stage-bg', bg);
+                if (dragArea) {
+                    dragArea.classList.add('dragging');
+                    if (dragArea.setPointerCapture) {
+                        try { dragArea.setPointerCapture(e.pointerId); } catch (err) {}
+                    }
+                }
+
+                startTensionAudio();
             }
 
-            const btnBlack = document.getElementById('btnBgBlack');
-            const btnBlob = document.getElementById('btnBgBlob');
-            if (btnBlack) btnBlack.classList.toggle('active', bg === 'black');
-            if (btnBlob) btnBlob.classList.toggle('active', bg === 'blob');
+            function onPointerMove(e) {
+                if (!isDragging) return;
 
-            try {
-                localStorage.setItem('elastic-clock-bg', bg);
-            } catch (e) {}
-        };
+                const deltaY = Math.max(-25, e.clientY - startY);
 
-        window.setTimeMode = function (mode) {
-            timeMode = mode;
-            const btnPhoto = document.getElementById('btnTimePhoto');
-            const btnLive = document.getElementById('btnTimeLive');
+                if (deltaY > 0) {
+                    // Logarithmic progressive resistance curve: feels tight and rubbery
+                    const tension = 1 - Math.exp(-deltaY / 280);
+                    currentTension = tension;
+                    currentPullY = tension * 165; // Max 165px downward sag
 
-            if (btnPhoto) btnPhoto.classList.toggle('active', mode === 'photo');
-            if (btnLive) btnLive.classList.toggle('active', mode === 'live');
+                    const scaleY = 1 + tension * 0.36;
+                    const scaleX = 1 / Math.sqrt(scaleY);
 
-            if (clockInterval) clearInterval(clockInterval);
-            if (mode === 'live') {
-                updateClock();
-                clockInterval = setInterval(updateClock, 1000);
-            } else {
-                updateClock();
+                    applyDeformation(currentPullY, scaleY, scaleX, 1.0);
+                    updateTensionAudio(tension);
+                } else {
+                    // Subtle upward spring compression if dragged upwards
+                    const comp = deltaY * 0.2;
+                    const scaleY = Math.max(0.92, 1 + comp / 400);
+                    const scaleX = 1 / Math.sqrt(scaleY);
+                    applyDeformation(comp, scaleY, scaleX, 0.2);
+                    updateTensionAudio(0);
+                }
             }
-        };
 
-        window.setElasticity = function (type, btn) {
-            if (ELASTICITY_PRESETS[type]) {
-                activePreset = ELASTICITY_PRESETS[type];
+            function onPointerUp(e) {
+                if (!isDragging) return;
+                isDragging = false;
+
+                if (dragArea) {
+                    dragArea.classList.remove('dragging');
+                    if (dragArea.releasePointerCapture && e && e.pointerId) {
+                        try { dragArea.releasePointerCapture(e.pointerId); } catch (err) {}
+                    }
+                }
+
+                stopTensionAudio();
+
+                // If pulled sufficiently, play tactile sound and haptics
+                if (Math.abs(currentPullY) > 15) {
+                    playBoingSound();
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate([18, 28, 38]); } catch (e) {}
+                    }
+                }
+
+                // Guaranteed analytical damped harmonic oscillation snap-back
+                const startAmp = currentPullY;
+                const startTension = currentTension;
+                const startTime = performance.now();
+                const decay = 8.8;   // Damping coefficient
+                const omega = 23.0;  // Oscillation frequency
+
+                function snapStep(now) {
+                    const t = (now - startTime) / 1000;
+
+                    if (t < 0.58) {
+                        // Closed-form damped harmonic formula: y(t) = A * e^(-decay*t) * cos(omega*t)
+                        const envelope = Math.exp(-decay * t) * Math.cos(omega * t);
+                        const curY = startAmp * envelope;
+                        const curStretchY = 1 + (startTension * 0.36) * envelope;
+                        const curStretchX = 1 / Math.sqrt(Math.max(0.6, curStretchY));
+
+                        applyDeformation(curY, curStretchY, curStretchX, envelope);
+                        animFrameId = requestAnimationFrame(snapStep);
+                    } else {
+                        resetToRest();
+                    }
+                }
+
+                animFrameId = requestAnimationFrame(snapStep);
+
+                // Hardware Watchdog Fallback: absolutely guarantees return to 0
+                watchdogTimer = setTimeout(() => {
+                    resetToRest();
+                }, 620);
             }
-            document.querySelectorAll('[data-elasticity]').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-        };
 
-        if (dragArea) {
-            dragArea.addEventListener('pointerdown', onPointerDown);
-            window.addEventListener('pointermove', onPointerMove);
-            window.addEventListener('pointerup', onPointerUp);
-            window.addEventListener('pointercancel', onPointerUp);
-        }
+            // Attach interaction listeners
+            if (dragArea) {
+                dragArea.addEventListener('pointerdown', onPointerDown);
+                window.addEventListener('pointermove', onPointerMove);
+                window.addEventListener('pointerup', onPointerUp);
+                window.addEventListener('pointercancel', onPointerUp);
+                window.addEventListener('blur', onPointerUp);
+                document.addEventListener('mouseleave', onPointerUp);
+            }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            updateClock();
+            // Wallpaper Switcher (Called from outer card preview switcher or global Grid BG)
+            window.setClockBg = function (bg) {
+                const container = document.getElementById('clockContainer');
+                if (container) {
+                    container.setAttribute('data-clock-bg', bg === 'blob' ? 'blob' : 'black');
+                }
+                try {
+                    localStorage.setItem('elastic-clock-bg', bg);
+                } catch (e) {}
+            };
 
-            let savedBg = 'black';
-            try {
-                savedBg = localStorage.getItem('elastic-clock-bg') || 'black';
-            } catch (e) {}
-            setClockBg(savedBg);
-        });
+            // Initialization
+            window.addEventListener('DOMContentLoaded', () => {
+                updateLiveClock();
+                setInterval(updateLiveClock, 1000);
+
+                let savedBg = 'black';
+                try {
+                    savedBg = localStorage.getItem('elastic-clock-bg') || 'black';
+                } catch (e) {}
+                window.setClockBg(savedBg);
+            });
+        })();
     </script>
 </body>
 </html>

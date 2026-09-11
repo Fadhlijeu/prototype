@@ -41,7 +41,7 @@ body {
 /* Wallpaper 1: Blob (9:16 Planetary Dual-Arc SVG) */
 .phone-viewport[data-phone-bg="blob"] {
     background-color: #0D0D0D;
-    background-image: url('blob_9-16.svg');
+    background-image: url('../blob_9-16.svg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
