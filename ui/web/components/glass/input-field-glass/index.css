@@ -117,3 +117,13 @@ body {
     width: 17px;
     height: 17px;
 }
+
+@media (max-width: 280px) {
+    body { padding: 8px; }
+    .form-group-wrap { gap: 8px; }
+    .field-label { font-size: 10px; margin-bottom: 2px; }
+    .glass-field { border-radius: 10px; padding: 0 8px; height: 38px; }
+    .glass-input { font-size: 11px; }
+    .field-icon { width: 14px; height: 14px; margin-right: 6px; }
+    .form-group-wrap > div:nth-child(3) { display: none; }
+}

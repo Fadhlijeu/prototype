@@ -42,7 +42,7 @@ glass_components_metadata = [
     ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry", ""),
     ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-tall"),
     ("lockscreen-pin-glass", "Phone Lockscreen PIN Keypad", "Security / PIN Keypad", "Organism", "overlays", "span-tall"),
-    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "overlays", "span-tall"),
+    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "overlays", ""),
     ("mobile-control-center-glass", "Mobile Control Center Shade", "System / Quick Settings", "Organism", "overlays", "span-tall")
 ]
 
@@ -104,24 +104,24 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
                 </div>
                 <div class="card-actions-bar">
                     <button class="btn-card-full" onclick="openComponentStudio('{folder}', '{title}', 'preview')" title="Buka Component Studio Pop-up Full Screen">
-                        <i data-lucide="maximize-2"></i> Full
+                        <i data-lucide="maximize-2"></i> <span class="btn-full-text">Full</span>
                     </button>
-                    <!-- Per-Component Background Switcher (Dark | Blob SVG Ratio: {ratio_label}) -->
-                    <div class="comp-bg-switcher" id="bg-switcher-{folder}" title="Ganti latar khusus komponen ini ({ratio_label})">
-                        <span class="comp-bg-text">BG:</span>
-                        <button type="button" class="btn-comp-bg active" data-bg="dark" onclick="setComponentBg('{folder}', 'dark', this)" title="Latar Hitam Default">
+                    <!-- Per-Component Background Switcher (Obsidian Dark | Mesh Gradient Ratio: {ratio_label}) -->
+                    <div class="comp-bg-switcher" id="bg-switcher-{folder}" title="Ganti latar khusus komponen ini: Obsidian | Mesh Gradient ({ratio_label})">
+                        <span class="comp-bg-text">Latar:</span>
+                        <button type="button" class="btn-comp-bg active" data-bg="dark" onclick="setComponentBg('{folder}', 'dark', this)" title="Latar Obsidian Dark (Default)">
                             <span class="swatch-dot dot-black"></span>
                         </button>
-                        <button type="button" class="btn-comp-bg" data-bg="blob" onclick="setComponentBg('{folder}', 'blob', this)" title="Latar Blob SVG ({ratio_label})">
-                            <span class="swatch-dot dot-blob"></span>
+                        <button type="button" class="btn-comp-bg" data-bg="mesh" onclick="setComponentBg('{folder}', 'mesh', this)" title="Latar Mesh Gradient Ambient ({ratio_label})">
+                            <span class="swatch-dot dot-mesh"></span>
                         </button>
                     </div>
                     <div class="card-actions-tools">
                         <button class="btn-card-tool highlight" onclick="quickCopyAllInOne('{folder}')" title="Salin Kode All-in-One Langsung">
-                            <i data-lucide="copy"></i> Salin
+                            <i data-lucide="copy"></i> <span class="btn-tool-text">Salin</span>
                         </button>
                         <button class="btn-card-tool download" onclick="quickDownloadAllInOne('{folder}')" title="Unduh File HTML All-in-One Langsung">
-                            <i data-lucide="download"></i> Unduh
+                            <i data-lucide="download"></i> <span class="btn-tool-text">Unduh</span>
                         </button>
                     </div>
                 </div>
@@ -345,8 +345,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
 
         @media (max-width: 799px) {{
-            .component-card.span-wide,
-            .component-card.span-tall {{
+            .showcase-grid.cols-1 .component-card.span-wide,
+            .showcase-grid.cols-1 .component-card.span-tall,
+            .showcase-grid.cols-auto .component-card.span-wide,
+            .showcase-grid.cols-auto .component-card.span-tall {{
                 grid-column: span 1 !important;
                 grid-row: span 1 !important;
             }}
@@ -798,14 +800,14 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 justify-content: center;
             }}
 
-            /* --- Controls Bar --- */
+            /* --- Controls Bar on Mobile --- */
             .controls-bar {{
-                padding: 10px 12px 6px;
+                padding: 10px 14px 8px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 8px;
+                gap: 10px;
             }}
-            /* Hide grid column switcher completely on mobile — always 1 col */
+            /* Hide grid column switcher on mobile — strictly single column */
             .layout-selector {{
                 display: none !important;
             }}
@@ -819,13 +821,34 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .filter-tabs::-webkit-scrollbar {{ display: none; }}
             .controls-right {{
                 width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }}
+            .grid-bg-selector {{
+                width: 100%;
+                display: flex;
+                align-items: center;
                 justify-content: space-between;
+                padding: 4px 8px;
+                gap: 4px;
+            }}
+            .grid-bg-label {{
+                font-size: 11.5px;
+                padding: 0 4px;
+            }}
+            .btn-grid-bg {{
+                flex: 1;
+                text-align: center;
+                padding: 5px 10px;
+                font-size: 11.5px;
             }}
             .search-box {{
-                width: 100%;
+                width: 100% !important;
+                padding: 8px 12px;
             }}
 
-            /* --- Grid: Force Single Column --- */
+            /* --- Grid: Pure 1-Column on Mobile (Clean, Spacious, No Narrow Distortions) --- */
             .showcase-grid,
             .showcase-grid.cols-auto,
             .showcase-grid.cols-1,
@@ -833,29 +856,40 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .showcase-grid.cols-3,
             .showcase-grid.cols-4 {{
                 grid-template-columns: 1fr !important;
-                width: calc(100% - 24px) !important;
-                margin: 8px 12px 32px !important;
+                width: calc(100% - 20px) !important;
+                margin: 8px 10px 36px !important;
                 padding: 0 !important;
-                gap: 14px !important;
+                gap: 16px !important;
             }}
 
-            /* --- Card: Uniform Height on Mobile --- */
+            /* --- Card Heights on Mobile --- */
             .component-card,
-            .component-card.span-tall,
             .component-card.span-wide {{
-                height: 520px !important;
-                min-height: 520px !important;
-                max-height: 520px !important;
-                border-radius: 16px !important;
+                height: 440px !important;
+                min-height: 440px !important;
+                max-height: 440px !important;
+                border-radius: 18px !important;
                 grid-column: span 1 !important;
                 grid-row: span 1 !important;
             }}
-
-            /* --- Card Preview Zone: Fixed 400px --- */
+            .component-card.span-tall {{
+                height: 550px !important;
+                min-height: 550px !important;
+                max-height: 550px !important;
+                border-radius: 18px !important;
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+            }}
             .card-preview-zone {{
-                height: 400px !important;
-                min-height: 400px !important;
-                max-height: 400px !important;
+                height: 335px !important;
+                min-height: 335px !important;
+                max-height: 335px !important;
+                flex: none !important;
+            }}
+            .component-card.span-tall .card-preview-zone {{
+                height: 445px !important;
+                min-height: 445px !important;
+                max-height: 445px !important;
                 flex: none !important;
             }}
             .card-preview-zone .preview-resizer-wrapper {{
@@ -867,28 +901,50 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 min-height: 100% !important;
             }}
 
-            /* --- Card Top & Actions: Compact --- */
+            /* --- Card Top & Actions on Mobile --- */
             .card-top {{
                 padding: 10px 14px 8px;
             }}
+            .card-meta-left {{
+                min-width: 0;
+                flex: 1;
+                overflow: hidden;
+            }}
             .card-name {{
-                font-size: 13px;
+                font-size: 13.5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }}
+            .card-category {{
+                font-size: 11px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }}
             .card-actions-bar {{
-                padding: 6px 10px;
-                gap: 6px;
+                padding: 6px 12px;
+                gap: 8px;
             }}
             .btn-card-full {{
-                padding: 5px 10px;
-                font-size: 11px;
+                padding: 5px 12px;
+                font-size: 11.5px;
             }}
             .btn-card-tool {{
-                padding: 4px 8px;
-                font-size: 11px;
+                padding: 5px 10px;
+                font-size: 11.5px;
             }}
-            /* Hide non-essential card actions on mobile */
             .btn-card-tool.solo {{
                 display: none !important;
+            }}
+
+            /* Ultra-narrow fallback for screens <= 340px */
+            @media (max-width: 340px) {{
+                .btn-full-text,
+                .comp-bg-text,
+                .btn-tool-text {{
+                    display: none !important;
+                }}
             }}
 
             /* --- Studio Modal: True Fullscreen on Mobile --- */
@@ -1039,13 +1095,16 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background: #08080C;
             border: 1px solid rgba(255, 255, 255, 0.4);
         }}
+        .dot-mesh,
         .dot-blob {{
             background: radial-gradient(circle at 70% 30%, #38BDF8 0%, #111F38 60%, #F59E0B 100%);
             border: 1px solid #38BDF8;
         }}
 
-        /* Aspect Ratio Adaptive SVG Blob Backgrounds for Component Cards */
+        /* Aspect Ratio Adaptive Mesh Gradient (SVG) Backgrounds for Component Cards */
+        .card-preview-zone.ratio-1-1[data-comp-bg="mesh"],
         .card-preview-zone.ratio-1-1[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="1:1"][data-comp-bg="mesh"],
         .card-preview-zone[data-blob-ratio="1:1"][data-comp-bg="blob"] {{
             background-color: #0D0D0D !important;
             background-image: url('blob_1-1.svg') !important;
@@ -1054,7 +1113,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background-repeat: no-repeat !important;
         }}
 
+        .card-preview-zone.ratio-4-5[data-comp-bg="mesh"],
         .card-preview-zone.ratio-4-5[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="4:5"][data-comp-bg="mesh"],
         .card-preview-zone[data-blob-ratio="4:5"][data-comp-bg="blob"] {{
             background-color: #0D0D0D !important;
             background-image: url('blob_4-5.svg') !important;
@@ -1063,7 +1124,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background-repeat: no-repeat !important;
         }}
 
+        .card-preview-zone.ratio-9-16[data-comp-bg="mesh"],
         .card-preview-zone.ratio-9-16[data-comp-bg="blob"],
+        .card-preview-zone[data-blob-ratio="9:16"][data-comp-bg="mesh"],
         .card-preview-zone[data-blob-ratio="9:16"][data-comp-bg="blob"] {{
             background-color: #0D0D0D !important;
             background-image: url('blob_9-16.svg') !important;
@@ -1079,31 +1142,52 @@ glass_showcase_content = f"""<!DOCTYPE html>
             background-image: none !important;
         }}
 
-        /* Phone Viewport Preview Zones (Lockscreen PIN & Control Center) stay dark obsidian outside phone */
+        /* Phone Viewport Preview Zones stay dark obsidian outside phone */
         #preview-zone-lockscreen-pin-glass,
+        #preview-zone-lockscreen-pin-glass[data-comp-bg="mesh"],
         #preview-zone-lockscreen-pin-glass[data-comp-bg="blob"],
         #preview-zone-lockscreen-pin-glass[data-comp-bg="dark"],
         #preview-zone-mobile-control-center-glass,
+        #preview-zone-mobile-control-center-glass[data-comp-bg="mesh"],
         #preview-zone-mobile-control-center-glass[data-comp-bg="blob"],
         #preview-zone-mobile-control-center-glass[data-comp-bg="dark"] {{
             background-color: #08080C !important;
             background-image: none !important;
         }}
 
-        /* Full-Width Showcase Grid Container (Clean solid dark obsidian, never wrapped with blob) */
+        /* Full-Width Showcase Grid Container */
         .showcase-grid,
+        .showcase-grid[data-grid-bg="mesh"],
         .showcase-grid[data-grid-bg="blob"],
         .showcase-grid[data-grid-bg="dark"] {{
             background: transparent !important;
             background-image: none !important;
             border: 1px solid transparent !important;
             box-shadow: none !important;
-            margin: 12px 24px 48px !important;
-            padding: 24px !important;
-            width: calc(100% - 48px) !important;
+        }}
+        @media (min-width: 769px) {{
+            .showcase-grid,
+            .showcase-grid[data-grid-bg="mesh"],
+            .showcase-grid[data-grid-bg="blob"],
+            .showcase-grid[data-grid-bg="dark"] {{
+                margin: 12px 24px 48px !important;
+                padding: 24px !important;
+                width: calc(100% - 48px) !important;
+            }}
+        }}
+        @media (max-width: 768px) {{
+            .showcase-grid,
+            .showcase-grid[data-grid-bg="mesh"],
+            .showcase-grid[data-grid-bg="blob"],
+            .showcase-grid[data-grid-bg="dark"] {{
+                margin: 8px 10px 36px !important;
+                padding: 0 !important;
+                width: calc(100% - 20px) !important;
+            }}
         }}
 
         /* Studio Modal Stage Backgrounds */
+        .studio-canvas-stage[data-stage-bg="mesh"],
         .studio-canvas-stage[data-stage-bg="blob"] {{
             background-color: #0D0D0D !important;
             background-image: url('blob_2048x1156px.svg') !important;
@@ -1173,11 +1257,11 @@ glass_showcase_content = f"""<!DOCTYPE html>
         </div>
 
         <div class="controls-right">
-            <!-- Grid Background Switcher (Dark | Blob Grid) -->
+            <!-- Grid Background Switcher (Obsidian | Mesh Gradient) -->
             <div class="grid-bg-selector">
-                <span class="grid-bg-label"><i data-lucide="palette"></i> Grid BG:</span>
-                <button type="button" class="btn-grid-bg active" data-bg="dark" onclick="setGridBg('dark')" title="Latar Grid Standar Obsidian">Dark</button>
-                <button type="button" class="btn-grid-bg" data-bg="blob" onclick="setGridBg('blob')" title="Latar Grid Wallpaper Blob (Landscape 2048x1156)">Blob Grid</button>
+                <span class="grid-bg-label"><i data-lucide="palette"></i> Latar:</span>
+                <button type="button" class="btn-grid-bg active" data-bg="dark" onclick="setGridBg('dark')" title="Latar Obsidian Dark (Pekat)">Obsidian</button>
+                <button type="button" class="btn-grid-bg" data-bg="mesh" onclick="setGridBg('mesh')" title="Latar Mesh Gradient (Ambient Fluid Wallpaper)">Mesh Gradient</button>
             </div>
 
             <!-- Grid Layout Selector -->
@@ -1249,10 +1333,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <!-- Studio Toolbar: Presets Pixel & Slider Rasio Ukuran -->
                 <div class="studio-toolbar">
                     <div class="studio-toolbar-section">
-                        <span class="toolbar-label"><i data-lucide="palette"></i> BG:</span>
+                        <span class="toolbar-label"><i data-lucide="palette"></i> Latar:</span>
                         <div class="presets-group">
-                            <button type="button" class="btn-studio-preset btn-studio-bg active" data-bg="dark" onclick="setStudioBg('dark')">Dark</button>
-                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="blob" onclick="setStudioBg('blob')">Blob Wide</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg active" data-bg="dark" onclick="setStudioBg('dark')">Obsidian</button>
+                            <button type="button" class="btn-studio-preset btn-studio-bg" data-bg="mesh" onclick="setStudioBg('mesh')">Mesh Gradient</button>
                         </div>
                     </div>
 
@@ -1353,7 +1437,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
         lucide.createIcons();
 
         // Restore layout preference
-        const savedCols = localStorage.getItem('glass-grid-layout') || 'auto';
+        let savedCols = localStorage.getItem('glass-grid-layout') || 'auto';
+        if (window.innerWidth <= 768 && (savedCols === '3' || savedCols === '4')) {{
+            savedCols = 'auto';
+        }}
         const savedBtn = document.querySelector(`.btn-layout[data-cols="${{savedCols}}"]`);
         if (savedBtn) setGridLayout(savedCols, savedBtn);
 
@@ -1417,16 +1504,28 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (folder === 'lockscreen-pin-glass') {{
+                        const isMesh = (curBg === 'mesh' || curBg === 'blob');
+                        const phoneTheme = isMesh ? 'blob' : 'black';
+                        if (isPhoneComponent(folder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
-                                phoneViewport.setAttribute('data-phone-bg', curBg === 'blob' ? 'blob' : 'black');
+                                phoneViewport.setAttribute('data-phone-bg', phoneTheme);
                             }}
-                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                iframe.contentWindow.setPhoneWallpaper(curBg === 'blob' ? 'blob' : 'black');
+                            if (iframe.contentWindow) {{
+                                if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                    iframe.contentWindow.setPhoneWallpaper(phoneTheme);
+                                }}
+                                if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
+                                    iframe.contentWindow.setControlCenterBg(phoneTheme);
+                                }}
                             }}
-                        }} else if (curBg === 'blob') {{
+                        }} else if (folder === 'elastic-clock-glass') {{
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
+                                iframe.contentWindow.setClockBg(phoneTheme);
+                            }}
+                            doc.body.style.backgroundColor = 'transparent';
+                        }} else if (isMesh) {{
                             doc.body.style.backgroundColor = 'transparent';
                         }}
                     }}
@@ -1741,28 +1840,31 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }});
 
         // ============================================================
-        // COMPONENT & GRID BACKGROUND CONTROLLER (DARK | BLOB SVG)
+        // COMPONENT & GRID BACKGROUND CONTROLLER (OBSIDIAN | MESH GRADIENT)
         // ============================================================
-                // Per-Component & Grid Background Management
         let currentGridBg = localStorage.getItem('prototype-grid-bg') || 'dark';
+        if (currentGridBg === 'blob') currentGridBg = 'mesh';
 
         function isPhoneComponent(f) {{
             return f === 'lockscreen-pin-glass' || f === 'mobile-control-center-glass';
         }}
 
         function setComponentBg(folder, bg, btnEl) {{
+            const isMesh = (bg === 'mesh' || bg === 'blob');
+            const targetBg = isMesh ? 'mesh' : 'dark';
             const previewZone = document.getElementById(`preview-zone-${{folder}}`);
             if (previewZone) {{
                 if (isPhoneComponent(folder)) {{
                     previewZone.setAttribute('data-comp-bg', 'dark');
                 }} else {{
-                    previewZone.setAttribute('data-comp-bg', bg);
+                    previewZone.setAttribute('data-comp-bg', targetBg);
                 }}
             }}
             const switcher = document.getElementById(`bg-switcher-${{folder}}`);
             if (switcher) {{
                 switcher.querySelectorAll('.btn-comp-bg').forEach(b => {{
-                    b.classList.toggle('active', b.getAttribute('data-bg') === bg);
+                    const bBg = b.getAttribute('data-bg');
+                    b.classList.toggle('active', isMesh ? (bBg === 'mesh' || bBg === 'blob') : (bBg === 'dark'));
                 }});
             }}
             const iframe = document.getElementById(`iframe-${{folder}}`);
@@ -1770,27 +1872,28 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
+                        const phoneTheme = isMesh ? 'blob' : 'black';
                         if (isPhoneComponent(folder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
-                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                                phoneViewport.setAttribute('data-phone-bg', phoneTheme);
                             }}
                             if (iframe.contentWindow) {{
                                 if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                    iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                                    iframe.contentWindow.setPhoneWallpaper(phoneTheme);
                                 }}
                                 if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
-                                    iframe.contentWindow.setControlCenterBg(bg === 'blob' ? 'blob' : 'black');
+                                    iframe.contentWindow.setControlCenterBg(phoneTheme);
                                 }}
                             }}
                         }} else if (folder === 'elastic-clock-glass') {{
                             if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
-                                iframe.contentWindow.setClockBg(bg === 'blob' ? 'blob' : 'black');
+                                iframe.contentWindow.setClockBg(phoneTheme);
                             }}
                             doc.body.style.backgroundColor = 'transparent';
                         }} else {{
-                            if (bg === 'blob') {{
+                            if (isMesh) {{
                                 doc.body.style.backgroundColor = 'transparent';
                             }} else {{
                                 doc.body.style.backgroundColor = '';
@@ -1799,47 +1902,51 @@ glass_showcase_content = f"""<!DOCTYPE html>
                     }}
                 }} catch (e) {{}}
             }}
-            localStorage.setItem(`comp-bg-${{folder}}`, bg);
+            localStorage.setItem(`comp-bg-${{folder}}`, targetBg);
         }}
 
         function setStudioBg(bg) {{
+            const isMesh = (bg === 'mesh' || bg === 'blob');
+            const targetBg = isMesh ? 'mesh' : 'dark';
             const stage = document.getElementById('studioCanvasStage');
             if (stage) {{
                 if (isPhoneComponent(activeFolder)) {{
                     stage.setAttribute('data-stage-bg', 'dark');
                 }} else {{
-                    stage.setAttribute('data-stage-bg', bg);
+                    stage.setAttribute('data-stage-bg', targetBg);
                 }}
             }}
             document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
-                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
+                const bBg = btn.getAttribute('data-bg');
+                btn.classList.toggle('active', isMesh ? (bBg === 'mesh' || bBg === 'blob') : (bBg === 'dark'));
             }});
             const iframe = document.getElementById('studioIframe');
             if (iframe) {{
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
+                        const phoneTheme = isMesh ? 'blob' : 'black';
                         if (isPhoneComponent(activeFolder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
-                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                                phoneViewport.setAttribute('data-phone-bg', phoneTheme);
                             }}
                             if (iframe.contentWindow) {{
                                 if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                    iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                                    iframe.contentWindow.setPhoneWallpaper(phoneTheme);
                                 }}
                                 if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
-                                    iframe.contentWindow.setControlCenterBg(bg === 'blob' ? 'blob' : 'black');
+                                    iframe.contentWindow.setControlCenterBg(phoneTheme);
                                 }}
                             }}
                         }} else if (activeFolder === 'elastic-clock-glass') {{
                             if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
-                                iframe.contentWindow.setClockBg(bg === 'blob' ? 'blob' : 'black');
+                                iframe.contentWindow.setClockBg(phoneTheme);
                             }}
                             doc.body.style.backgroundColor = 'transparent';
                         }} else {{
-                            if (bg === 'blob') {{
+                            if (isMesh) {{
                                 doc.body.style.backgroundColor = 'transparent';
                             }} else {{
                                 doc.body.style.backgroundColor = '';
@@ -1851,22 +1958,24 @@ glass_showcase_content = f"""<!DOCTYPE html>
         }}
 
         function setGridBg(bg) {{
-            currentGridBg = bg;
+            const isMesh = (bg === 'mesh' || bg === 'blob');
+            currentGridBg = isMesh ? 'mesh' : 'dark';
             const grid = document.getElementById('componentsGrid');
             if (grid) {{
-                grid.setAttribute('data-grid-bg', bg);
+                grid.setAttribute('data-grid-bg', currentGridBg);
             }}
             document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
-                btn.classList.toggle('active', btn.getAttribute('data-bg') === bg);
+                const bBg = btn.getAttribute('data-bg');
+                btn.classList.toggle('active', isMesh ? (bBg === 'mesh' || bBg === 'blob') : (bBg === 'dark'));
             }});
-            localStorage.setItem('prototype-grid-bg', bg);
+            localStorage.setItem('prototype-grid-bg', currentGridBg);
 
             // Update all individual component backgrounds to match
             document.querySelectorAll('.component-card').forEach(card => {{
                 const folder = card.id.replace('card-', '');
-                setComponentBg(folder, bg);
+                setComponentBg(folder, currentGridBg);
             }});
-            showToast(`Latar Grid diatur ke: ${{bg === 'blob' ? 'BLOB (2048x1156)' : 'DARK OBSIDIAN'}}`);
+            showToast(`Latar Grid diatur ke: ${{isMesh ? 'Mesh Gradient' : 'Obsidian Dark'}}`);
         }}
 
         window.addEventListener('DOMContentLoaded', () => {{
@@ -1876,7 +1985,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 grid.setAttribute('data-grid-bg', currentGridBg);
             }}
             document.querySelectorAll('.btn-grid-bg').forEach(btn => {{
-                btn.classList.toggle('active', btn.getAttribute('data-bg') === currentGridBg);
+                const bBg = btn.getAttribute('data-bg');
+                const isMesh = (currentGridBg === 'mesh' || currentGridBg === 'blob');
+                btn.classList.toggle('active', isMesh ? (bBg === 'mesh' || bBg === 'blob') : (bBg === 'dark'));
             }});
 
             // Restore individual component background preferences
@@ -1894,16 +2005,28 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 try {{
                     const doc = iframe.contentDocument;
                     if (doc && doc.body) {{
-                        if (folder === 'lockscreen-pin-glass') {{
+                        const isMesh = (bg === 'mesh' || bg === 'blob');
+                        const phoneTheme = isMesh ? 'blob' : 'black';
+                        if (isPhoneComponent(folder)) {{
                             doc.body.style.backgroundColor = '#08080C';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
-                                phoneViewport.setAttribute('data-phone-bg', bg === 'blob' ? 'blob' : 'black');
+                                phoneViewport.setAttribute('data-phone-bg', phoneTheme);
                             }}
-                            if (iframe.contentWindow && typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                iframe.contentWindow.setPhoneWallpaper(bg === 'blob' ? 'blob' : 'black');
+                            if (iframe.contentWindow) {{
+                                if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
+                                    iframe.contentWindow.setPhoneWallpaper(phoneTheme);
+                                }}
+                                if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
+                                    iframe.contentWindow.setControlCenterBg(phoneTheme);
+                                }}
                             }}
-                        }} else if (bg === 'blob') {{
+                        }} else if (folder === 'elastic-clock-glass') {{
+                            if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
+                                iframe.contentWindow.setClockBg(phoneTheme);
+                            }}
+                            doc.body.style.backgroundColor = 'transparent';
+                        }} else if (isMesh) {{
                             doc.body.style.backgroundColor = 'transparent';
                         }}
                     }}

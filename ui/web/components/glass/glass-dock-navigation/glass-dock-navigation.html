@@ -199,6 +199,19 @@
             }
         }
 
+        @media (max-width: 280px) {
+            body { padding: 4px; }
+            .dock-container { gap: 4px; }
+            .glass-dock { height: 46px; border-radius: 23px; padding: 0 4px; }
+            .nav-item { height: 38px; gap: 0; }
+            .nav-item .label { display: none !important; }
+            .nav-item svg { width: 17px; height: 17px; transform: scale(1); }
+            .nav-item.active svg { transform: scale(1.12); }
+            .active-pill-bg { height: 38px; border-radius: 19px; top: 4px; }
+            .fab { width: 42px; height: 42px; }
+            .fab svg { width: 18px; height: 18px; }
+        }
+
         /* Separate Floating Action Button (FAB) */
         .fab {
             flex-shrink: 0;

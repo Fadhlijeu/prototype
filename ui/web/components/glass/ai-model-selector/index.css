@@ -207,3 +207,14 @@ body {
     opacity: 1;
     transform: scale(1);
 }
+
+@media (max-width: 280px) {
+    body { padding: 4px; }
+    .layer-2-glass { padding: 8px 10px; border-radius: 18px; }
+    .card-header { margin-bottom: 8px; }
+    .header-title h2 { font-size: 11px; }
+    .model-item { padding: 8px 10px; margin-bottom: 4px; }
+    .model-info h3 { font-size: 11px; }
+    .model-subtitle { display: none; }
+    .model-item:nth-child(n+3) { display: none; }
+}

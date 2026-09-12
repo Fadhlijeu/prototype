@@ -240,6 +240,18 @@
             color: var(--accent-cyan);
             font-weight: 600;
         }
+
+        @media (max-width: 280px) {
+            body { padding: 4px; }
+            .progress-card { padding: 12px 10px; border-radius: 18px; gap: 8px; }
+            .header-title-box { gap: 6px; }
+            .status-icon-box { width: 28px; height: 28px; }
+            .prog-title { font-size: 12px; }
+            .prog-sub { display: none; }
+            .storage-detail { font-size: 10px; }
+            .counter-val { font-size: 32px; }
+            .telemetry-row { display: none; }
+        }
     </style>
 </head>
 <body>

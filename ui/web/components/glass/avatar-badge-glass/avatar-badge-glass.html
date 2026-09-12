@@ -324,6 +324,17 @@
             color: var(--text-primary);
             font-weight: 600;
         }
+
+        @media (max-width: 280px) {
+            body { padding: 4px; }
+            .avatar-card-container { padding: 12px 10px; gap: 10px; border-radius: 18px; }
+            .profile-row { gap: 8px; }
+            .main-avatar-wrap { width: 44px; height: 44px; }
+            .agent-name { font-size: 13px; }
+            .meta-tags { display: none; }
+            .telemetry-grid { display: none; }
+            .swarm-activity-strip { padding-top: 6px; }
+        }
     </style>
 </head>
 <body>

@@ -14,25 +14,33 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            overflow: hidden !important;
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+        }
+
         body {
-            background-color: transparent;
+            background-color: transparent !important;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: #FFFFFF !important;
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
-            overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Phone Viewport Container (9:16 Aspect Ratio) */
+        /* Phone Viewport Container (9:16 Aspect Ratio) - Always Centered */
         .control-center-phone {
-            width: 100%;
-            max-width: 390px;
+            width: 390px;
             height: 760px;
             border-radius: 46px;
-            position: relative;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -43,6 +51,7 @@
                         0 0 0 6px #12141D;
             transition: background 0.35s ease, filter 0.2s ease;
             user-select: none;
+            flex-shrink: 0;
         }
 
         /* Wallpaper 1: Obsidian Black */
@@ -552,28 +561,6 @@
             transform: scale(0.9);
         }
 
-        /* ============================================================
-           Scale-to-Fit for Bento Card Preview (≤520px wide iframe)
-           Ensures the full phone mockup is always visible
-           ============================================================ */
-        @media (max-width: 520px) {
-            body {
-                padding: 8px 4px;
-                align-items: flex-start;
-                overflow: hidden;
-            }
-            .control-center-phone {
-                transform: scale(0.72);
-                transform-origin: top center;
-                margin-top: 0;
-            }
-        }
-        @media (max-width: 420px) {
-            .control-center-phone {
-                transform: scale(0.6);
-                transform-origin: top center;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1137,6 +1124,25 @@
             }
         }
 
+        // Dynamic scale-to-fit: always centered, fills available space gracefully
+        function fitPhone() {
+            const phone = document.getElementById('phoneViewport');
+            if (!phone) return;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const naturalW = 390;
+            const naturalH = 760;
+            const padX = 14;
+            const padY = 14;
+            const scaleW = (vw - padX) / naturalW;
+            const scaleH = (vh - padY) / naturalH;
+            const scale = Math.min(1.0, scaleW, scaleH);
+            phone.style.transform = `translate(-50%, -50%) scale(${Math.max(0.35, scale).toFixed(3)})`;
+        }
+        window.addEventListener('resize', fitPhone);
+        window.addEventListener('DOMContentLoaded', fitPhone);
+        setTimeout(fitPhone, 20);
+
         window.addEventListener('DOMContentLoaded', () => {
             applyBrightnessLevel(currentBrightness);
             applyVolumeLevel(currentVolume);
@@ -1149,6 +1155,7 @@
                 savedWp = localStorage.getItem('cc-wallpaper') || 'black';
             } catch (e) {}
             setControlCenterBg(savedWp);
+            fitPhone();
         });
     </script>
 </body>

@@ -232,3 +232,15 @@
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
             transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
+        @media (max-width: 280px) {
+            body { padding: 4px; }
+            .layer-2-glass { padding: 12px 10px; border-radius: 18px; }
+            .storage-header { margin-bottom: 8px; }
+            .header-text h2 { font-size: 13px; }
+            .header-text p { font-size: 10px; }
+            .icon-glass { width: 36px; height: 36px; }
+            .progress-track { height: 6px; margin: 8px 0 6px; }
+            .metric-stat { font-size: 18px; }
+            .breakdown-row { display: none; }
+        }
