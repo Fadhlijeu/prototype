@@ -18,29 +18,11 @@ function setProgress(val) {
     timeText.textContent = currentVal === 100 ? 'Done' : `${((100 - currentVal) * 0.08).toFixed(1)}s`;
 }
 
-document.getElementById('btnMinus').addEventListener('click', () => {
-    clearInterval(autoInterval);
-    setProgress(currentVal - 10);
-});
-
-document.getElementById('btnPlus').addEventListener('click', () => {
-    clearInterval(autoInterval);
-    setProgress(currentVal + 10);
-});
-
-document.getElementById('btnAutoSweep').addEventListener('click', () => {
-    if (autoInterval) {
-        clearInterval(autoInterval);
-        autoInterval = null;
-        document.getElementById('btnAutoSweep').textContent = 'Auto Pulse';
-    } else {
-        document.getElementById('btnAutoSweep').textContent = 'Stop Pulse';
-        autoInterval = setInterval(() => {
-            let next = currentVal + 6;
-            if (next > 100) next = 10;
-            setProgress(next);
-        }, 400);
-    }
-});
-
 setProgress(84);
+
+// Autonomous organic telemetry pulse
+setInterval(() => {
+    let delta = (Math.random() * 4 - 2);
+    let next = Math.min(96, Math.max(78, Math.round(currentVal + delta)));
+    setProgress(next);
+}, 2400);

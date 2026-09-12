@@ -1,21 +1,22 @@
-const slider = document.getElementById('batRange');
 const fluid = document.getElementById('batFluid');
 const pctText = document.getElementById('batPct');
 const timeText = document.getElementById('batTime');
 const statusText = document.getElementById('batStatus');
 
-slider.addEventListener('input', (e) => {
-    const val = parseInt(e.target.value);
-    fluid.style.width = `${val}%`;
-    pctText.textContent = val;
+let currentBat = 82;
+
+function updateBattery(val) {
+    currentBat = Math.max(5, Math.min(100, val));
+    fluid.style.width = `${currentBat}%`;
+    pctText.textContent = currentBat;
 
     // Color shifting
-    if (val > 50) {
+    if (currentBat > 50) {
         fluid.style.background = 'linear-gradient(90deg, #059669 0%, #10B981 60%, #34D399 100%)';
         fluid.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.5)';
         statusText.style.color = '#10B981';
         statusText.textContent = 'SUPERCHARGING ACTIVE (65W)';
-    } else if (val > 20) {
+    } else if (currentBat > 20) {
         fluid.style.background = 'linear-gradient(90deg, #D97706 0%, #F59E0B 60%, #FCD34D 100%)';
         fluid.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.5)';
         statusText.style.color = '#F59E0B';
@@ -27,7 +28,16 @@ slider.addEventListener('input', (e) => {
         statusText.textContent = 'LOW POWER RESERVE • CONNECT DOCK';
     }
 
-    const hours = Math.floor((val / 100) * 18);
-    const mins = Math.floor(((val / 100) * 18 - hours) * 60);
+    const hours = Math.floor((currentBat / 100) * 18);
+    const mins = Math.floor(((currentBat / 100) * 18 - hours) * 60);
     timeText.textContent = `${hours}h ${mins}m`;
-});
+}
+
+updateBattery(82);
+
+// Autonomous slow quantum trickle charge
+setInterval(() => {
+    let next = currentBat + 1;
+    if (next > 100) next = 82;
+    updateBattery(next);
+}, 3500);

@@ -213,38 +213,6 @@ body {
     color: #FFFFFF;
 }
 
-.battery-slider-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.slider-hint {
-    font-size: 11px;
-    color: var(--text-muted);
-}
-
-.bat-slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
-    outline: none;
-    cursor: pointer;
-}
-
-.bat-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #38BDF8;
-    box-shadow: 0 0 10px #38BDF8;
-    cursor: pointer;
-}
-
     </style>
 </head>
 <body>
@@ -295,34 +263,29 @@ body {
                 <span class="b-val" id="batTime">14h 20m</span>
             </div>
         </div>
-
-        <!-- Controls Interactive Slider -->
-        <div class="battery-slider-wrap">
-            <label for="batRange" class="slider-hint">Simulate Battery Level:</label>
-            <input type="range" min="5" max="100" value="82" class="bat-slider" id="batRange">
-        </div>
     </div>
 
     <script>
 
-const slider = document.getElementById('batRange');
 const fluid = document.getElementById('batFluid');
 const pctText = document.getElementById('batPct');
 const timeText = document.getElementById('batTime');
 const statusText = document.getElementById('batStatus');
 
-slider.addEventListener('input', (e) => {
-    const val = parseInt(e.target.value);
-    fluid.style.width = `${val}%`;
-    pctText.textContent = val;
+let currentBat = 82;
+
+function updateBattery(val) {
+    currentBat = Math.max(5, Math.min(100, val));
+    fluid.style.width = `${currentBat}%`;
+    pctText.textContent = currentBat;
 
     // Color shifting
-    if (val > 50) {
+    if (currentBat > 50) {
         fluid.style.background = 'linear-gradient(90deg, #059669 0%, #10B981 60%, #34D399 100%)';
         fluid.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.5)';
         statusText.style.color = '#10B981';
         statusText.textContent = 'SUPERCHARGING ACTIVE (65W)';
-    } else if (val > 20) {
+    } else if (currentBat > 20) {
         fluid.style.background = 'linear-gradient(90deg, #D97706 0%, #F59E0B 60%, #FCD34D 100%)';
         fluid.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.5)';
         statusText.style.color = '#F59E0B';
@@ -334,10 +297,19 @@ slider.addEventListener('input', (e) => {
         statusText.textContent = 'LOW POWER RESERVE • CONNECT DOCK';
     }
 
-    const hours = Math.floor((val / 100) * 18);
-    const mins = Math.floor(((val / 100) * 18 - hours) * 60);
+    const hours = Math.floor((currentBat / 100) * 18);
+    const mins = Math.floor(((currentBat / 100) * 18 - hours) * 60);
     timeText.textContent = `${hours}h ${mins}m`;
-});
+}
+
+updateBattery(82);
+
+// Autonomous slow quantum trickle charge
+setInterval(() => {
+    let next = currentBat + 1;
+    if (next > 100) next = 82;
+    updateBattery(next);
+}, 3500);
 
         if (window.lucide) lucide.createIcons();
     </script>

@@ -195,48 +195,6 @@ body {
     background: rgba(255, 255, 255, 0.08);
 }
 
-.radial-stepper-bar {
-    width: 100%;
-    display: flex;
-    gap: 8px;
-}
-
-.btn-step {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-step:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
-}
-
-.btn-step-action {
-    flex: 1.5;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    color: #FFFFFF;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-step-action:hover {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.35));
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
-}
-
     </style>
 </head>
 <body>
@@ -298,13 +256,6 @@ body {
                 <div class="stat-val emerald">100%</div>
             </div>
         </div>
-
-        <!-- Stepper Controller -->
-        <div class="radial-stepper-bar">
-            <button type="button" class="btn-step" id="btnMinus">-10%</button>
-            <button type="button" class="btn-step-action" id="btnAutoSweep">Auto Pulse</button>
-            <button type="button" class="btn-step" id="btnPlus">+10%</button>
-        </div>
     </div>
 
     <script>
@@ -329,32 +280,14 @@ function setProgress(val) {
     timeText.textContent = currentVal === 100 ? 'Done' : `${((100 - currentVal) * 0.08).toFixed(1)}s`;
 }
 
-document.getElementById('btnMinus').addEventListener('click', () => {
-    clearInterval(autoInterval);
-    setProgress(currentVal - 10);
-});
-
-document.getElementById('btnPlus').addEventListener('click', () => {
-    clearInterval(autoInterval);
-    setProgress(currentVal + 10);
-});
-
-document.getElementById('btnAutoSweep').addEventListener('click', () => {
-    if (autoInterval) {
-        clearInterval(autoInterval);
-        autoInterval = null;
-        document.getElementById('btnAutoSweep').textContent = 'Auto Pulse';
-    } else {
-        document.getElementById('btnAutoSweep').textContent = 'Stop Pulse';
-        autoInterval = setInterval(() => {
-            let next = currentVal + 6;
-            if (next > 100) next = 10;
-            setProgress(next);
-        }, 400);
-    }
-});
-
 setProgress(84);
+
+// Autonomous organic telemetry pulse
+setInterval(() => {
+    let delta = (Math.random() * 4 - 2);
+    let next = Math.min(96, Math.max(78, Math.round(currentVal + delta)));
+    setProgress(next);
+}, 2400);
 
         if (window.lucide) lucide.createIcons();
     </script>

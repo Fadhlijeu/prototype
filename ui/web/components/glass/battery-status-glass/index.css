@@ -201,35 +201,3 @@ body {
     font-family: 'JetBrains Mono', monospace;
     color: #FFFFFF;
 }
-
-.battery-slider-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.slider-hint {
-    font-size: 11px;
-    color: var(--text-muted);
-}
-
-.bat-slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
-    outline: none;
-    cursor: pointer;
-}
-
-.bat-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #38BDF8;
-    box-shadow: 0 0 10px #38BDF8;
-    cursor: pointer;
-}
