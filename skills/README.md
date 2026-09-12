@@ -12,6 +12,7 @@ Setiap file dalam direktori ini mendefinisikan aturan ketat (*hard constraints*)
 |---|---|
 | [**`glass-ui.md`**](file:///d:/PROJECT/prototype/skills/glass-ui.md) | **Aturan Desain Kaca Glass Dark Premium**: Token CSS, pencahayaan border asimetris, level blur, opasitas permukaan, layer noise SVG, dan palet warna neon. |
 | [**`component.md`**](file:///d:/PROJECT/prototype/skills/component.md) | **Standar Dekomposisi Komponen**: Konvensi 4 berkas (`index.html`, `index.css`, `index.js`, `<name>.html`), isolasi class CSS, pencegahan overflow, dan semantik HTML. |
+| [**`component-maker.md`**](file:///d:/PROJECT/prototype/skills/component-maker.md) | **Component Maker & Anti-Dummy Framework**: Prosedur pembuatan batch 20–40 komponen unik, pelarangan keras kontrol simulasi dummy / AI slop, matriks diferensiasi, dan protokol QA. |
 | [**`motion.md`**](file:///d:/PROJECT/prototype/skills/motion.md) | **Fisika Gerak & Interaksi**: Kurva spring `cubic-bezier`, timing micro-interaction, kontinuitas spasial, dan kepatuhan `@media (prefers-reduced-motion)`. |
 | [**`workflow.md`**](file:///d:/PROJECT/prototype/skills/workflow.md) | **SOP Kerja Agent**: Alur kerja langkah demi langkah, eksekusi script pengujian non-interaktif, sinkronisasi showcase otomatis, dan aturan komit. |
 
