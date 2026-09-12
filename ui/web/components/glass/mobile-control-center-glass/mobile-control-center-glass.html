@@ -1136,8 +1136,19 @@
             const padY = 14;
             const scaleW = (vw - padX) / naturalW;
             const scaleH = (vh - padY) / naturalH;
-            const scale = Math.min(1.0, scaleW, scaleH);
-            phone.style.transform = `translate(-50%, -50%) scale(${Math.max(0.35, scale).toFixed(3)})`;
+            const baseScale = Math.min(1.0, scaleW, scaleH);
+            
+            // On desktop/PC, scale to 8:10 (0.8x) per user specification; on mobile keep 10:10 (1.0x)
+            let isMobile = (vw <= 480);
+            try {
+                if (window.parent && window.parent.innerWidth <= 768) {
+                    isMobile = true;
+                }
+            } catch (e) {}
+            
+            const factor = isMobile ? 1.0 : 0.8;
+            const finalScale = Math.max(0.35, baseScale * factor);
+            phone.style.transform = `translate(-50%, -50%) scale(${finalScale.toFixed(3)})`;
         }
         window.addEventListener('resize', fitPhone);
         window.addEventListener('DOMContentLoaded', fitPhone);

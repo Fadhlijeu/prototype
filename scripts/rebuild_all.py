@@ -20,30 +20,49 @@ with open(os.path.join(GLASS_DIR, "css.css"), "r", encoding="utf-8") as f:
     shared_css_code = f.read()
 
 glass_components_metadata = [
-    ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "inputs", ""),
-    ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs", ""),
-    ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs", ""),
-    ("prompt-pills-row", "Prompt Pills Quick Scroller", "Chips / Action Pills", "Molecule", "inputs", ""),
-    ("thinking-effort-selector", "Thinking Effort Selector", "Segmented Stepper", "Atomic", "inputs", ""),
-    ("toggle-switch-glass", "Glass Toggle Switch", "Control / Switch", "Atomic", "inputs", ""),
-    ("checkbox-glass", "Glass Checkbox & Radio", "Control / Checkbox", "Atomic", "inputs", ""),
-    ("dropdown-select-glass", "Glass Floating Dropdown", "Control / Select", "Molecule", "inputs", ""),
+    # --- 1. UI Kits (5 components) ---
+    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "uikits", "span-tall"),
+    ("mobile-control-center-glass", "Mobile Control Center Shade", "System / Quick Settings", "Organism", "uikits", "span-tall"),
+    ("glass-sidepanel", "Productivity Glass Sidepanel", "Navigation / Desktop Drawer", "Organism", "uikits", "span-tall"),
+    ("glass-dock-navigation", "Floating Glass Dock", "Navigation / Spring Dock", "Molecule", "uikits", ""),
+    ("avatar-badge-glass", "Glass Avatar with Status", "Display / Avatar", "Atomic", "uikits", ""),
+
+    # --- 2. Buttons (3 components) ---
+    ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "buttons", ""),
+    ("prompt-pills-row", "Prompt Pills Quick Scroller", "Chips / Action Pills", "Molecule", "buttons", ""),
+    ("thinking-effort-selector", "Thinking Effort Selector", "Segmented Stepper", "Atomic", "buttons", ""),
+
+    # --- 3. Checkboxes (1 component) ---
+    ("checkbox-glass", "Glass Checkbox & Radio", "Control / Checkbox", "Atomic", "checkboxes", ""),
+
+    # --- 4. Toggle switches (1 component) ---
+    ("toggle-switch-glass", "Glass Toggle Switch", "Control / Switch", "Atomic", "toggles", ""),
+
+    # --- 5. Cards (4 components) ---
     ("ai-model-selector", "AI Model Selector Card", "Selection Control", "Molecule", "cards", ""),
     ("frosted-folder-card", "Frosted Folder Card", "File System / Card", "Molecule", "cards", ""),
     ("aurora-storage-card", "Aurora Storage Card", "Data Display / Gauge", "Molecule", "cards", ""),
-    ("progress-bar-glass", "Glass Glowing Progress Bar", "Display / Progress", "Atomic", "cards", ""),
-    ("avatar-badge-glass", "Glass Avatar with Status", "Display / Avatar", "Atomic", "cards", ""),
-    ("glass-dock-navigation", "Floating Glass Dock", "Navigation / Spring Dock", "Molecule", "navigation", ""),
-    ("glass-sidepanel", "Productivity Glass Sidepanel", "Navigation / Desktop Drawer", "Organism", "navigation", "span-tall"),
-    ("swirl-bottom-sheet", "Swirl Refraction Bottom Sheet", "Overlay / Canvas 2D Refraction", "Organism", "overlays", ""),
-    ("modal-dialog-glass", "Glass Modal Dialog", "Overlay / Centered Dialog", "Molecule", "overlays", ""),
-    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "overlays", ""),
-    ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "overlays", ""),
-    ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "telemetry", ""),
-    ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "scenery", "span-tall"),
-    ("lockscreen-pin-glass", "Phone Lockscreen PIN Keypad", "Security / PIN Keypad", "Organism", "overlays", "span-tall"),
-    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "overlays", ""),
-    ("mobile-control-center-glass", "Mobile Control Center Shade", "System / Quick Settings", "Organism", "overlays", "span-tall")
+    ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "cards", ""),
+
+    # --- 6. Loaders (1 component) ---
+    ("progress-bar-glass", "Glass Glowing Progress Bar", "Display / Progress", "Atomic", "loaders", ""),
+
+    # --- 7. Inputs (3 components) ---
+    ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs", ""),
+    ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs", ""),
+    ("dropdown-select-glass", "Glass Floating Dropdown", "Control / Select", "Molecule", "inputs", ""),
+
+    # --- 8. Forms (2 components) ---
+    ("modal-dialog-glass", "Glass Modal Dialog", "Overlay / Centered Dialog", "Molecule", "forms", ""),
+    ("lockscreen-pin-glass", "Phone Lockscreen PIN Keypad", "Security / PIN Keypad", "Organism", "forms", "span-tall"),
+
+    # --- 9. Patterns (2 components) ---
+    ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "patterns", ""),
+    ("swirl-bottom-sheet", "Swirl Refraction Bottom Sheet", "Overlay / Canvas 2D Refraction", "Organism", "patterns", ""),
+
+    # --- 10. Tooltips (2 components) ---
+    ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "tooltips", ""),
+    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "tooltips", "")
 ]
 
 glass_files_db = {"css.css": shared_css_code}
@@ -259,15 +278,45 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .filter-tabs {{
             display: flex; align-items: center; gap: 6px; padding: 4px;
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            border-radius: 12px; overflow-x: auto; max-width: 100%;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
         }}
+        .filter-tabs::-webkit-scrollbar {{ display: none; }}
         .filter-tab {{
-            padding: 6px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 500;
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
             background: transparent; border: none; color: var(--text-muted); cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;
         }}
-        .filter-tab:hover {{ color: var(--text-primary); }}
+        .filter-tab svg {{ width: 14px; height: 14px; opacity: 0.75; }}
+        .filter-tab:hover {{ color: var(--text-primary); background: rgba(255, 255, 255, 0.05); }}
+        .filter-tab:hover svg {{ opacity: 1; }}
         .filter-tab.active {{ background: rgba(255, 255, 255, 0.12); color: #FFFFFF; font-weight: 600; }}
+        .filter-tab.active svg {{ opacity: 1; color: var(--accent-blue); }}
+        .tab-count {{
+            font-size: 10.5px; opacity: 0.6; font-family: 'JetBrains Mono', monospace;
+            padding: 1px 5px; border-radius: 4px; background: rgba(255, 255, 255, 0.06);
+        }}
+        .filter-tab.active .tab-count {{
+            background: rgba(255, 255, 255, 0.16); opacity: 0.9;
+        }}
+        .tab-badge-new {{
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            color: #F87171; background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 1px 4px; border-radius: 4px; letter-spacing: 0.02em;
+        }}
+        .btn-randomize {{
+            color: #38BDF8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            background: rgba(56, 189, 248, 0.06) !important;
+            margin-left: 4px;
+        }}
+        .btn-randomize:hover {{
+            background: rgba(56, 189, 248, 0.15) !important;
+            border-color: rgba(56, 189, 248, 0.5) !important;
+            color: #FFFFFF !important;
+            transform: translateY(-1px);
+        }}
 
         .controls-right {{ display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }}
 
@@ -682,17 +731,17 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .studio-canvas-stage {{
             flex: 1; width: 100%; min-height: 0;
             background: radial-gradient(circle at center, #13141F 0%, #06070B 100%);
-            overflow: auto; display: flex; align-items: stretch; justify-content: center;
-            padding: 20px; position: relative;
+            overflow: auto; display: flex; align-items: center; justify-content: center;
+            padding: 24px; position: relative;
         }}
         .studio-viewport-wrapper {{
-            width: 100%; max-width: 100%; height: 100%; min-height: 100%;
-            border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); overflow: hidden;
-            background: #07070A;
-            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring);
+            width: 100%; max-width: 100%; height: 100%; min-height: 200px;
+            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7); overflow: hidden;
+            background: transparent !important;
+            transition: max-width 0.25s var(--ease-spring), width 0.25s var(--ease-spring), height 0.25s var(--ease-spring);
             position: relative; display: flex; flex-direction: column;
-            margin: 0 auto;
+            margin: auto; flex-shrink: 0;
         }}
         .studio-viewport-wrapper iframe {{
             width: 100%; height: 100%; flex: 1; border: none; display: block;
@@ -1170,9 +1219,21 @@ glass_showcase_content = f"""<!DOCTYPE html>
             .showcase-grid[data-grid-bg="mesh"],
             .showcase-grid[data-grid-bg="blob"],
             .showcase-grid[data-grid-bg="dark"] {{
-                margin: 12px 24px 48px !important;
+                margin: 12px 24px 48px;
                 padding: 24px !important;
-                width: calc(100% - 48px) !important;
+                width: calc(100% - 48px);
+            }}
+
+            /* Centered 1-Column Layout on PC / Desktop */
+            .showcase-grid.cols-1,
+            .showcase-grid.cols-1[data-grid-bg="mesh"],
+            .showcase-grid.cols-1[data-grid-bg="blob"],
+            .showcase-grid.cols-1[data-grid-bg="dark"] {{
+                grid-template-columns: 1fr !important;
+                max-width: 840px !important;
+                margin: 24px auto 64px !important;
+                width: 100% !important;
+                padding: 0 !important;
             }}
         }}
         @media (max-width: 768px) {{
@@ -1199,6 +1260,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
         .studio-canvas-stage[data-stage-bg="dark"] {{
             background: #08080C !important;
             background-image: none !important;
+        }}
+        .studio-viewport-wrapper {{
+            background: transparent !important;
         }}
 </style>
 </head>
@@ -1247,13 +1311,46 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
     <!-- Controls Bar with Filter and Layout Grid Switcher -->
     <div class="controls-bar">
-        <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterCategory('all', this)">Semua (24)</button>
-            <button class="filter-tab" onclick="filterCategory('inputs', this)">Inputs</button>
-            <button class="filter-tab" onclick="filterCategory('cards', this)">Cards</button>
-            <button class="filter-tab" onclick="filterCategory('navigation', this)">Navigation</button>
-            <button class="filter-tab" onclick="filterCategory('overlays', this)">Overlays</button>
-            <button class="filter-tab" onclick="filterCategory('scenery', this)">Scenery</button>
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-filter="all" onclick="filterCategory('all', this)" title="Tampilkan Semua Komponen">
+                <i data-lucide="book-open"></i> All <span class="tab-count">24</span>
+            </button>
+            <button class="filter-tab" data-filter="uikits" onclick="filterCategory('uikits', this)" title="Koleksi UI Kits Skala Penuh">
+                <i data-lucide="layout-grid"></i> UI Kits <span class="tab-badge-new">New</span> <span class="tab-count">5</span>
+            </button>
+            <button class="filter-tab" data-filter="buttons" onclick="filterCategory('buttons', this)" title="Koleksi Tombol Glass Dark">
+                <i data-lucide="play-circle"></i> Buttons <span class="tab-count">3</span>
+            </button>
+            <button class="filter-tab" data-filter="checkboxes" onclick="filterCategory('checkboxes', this)" title="Koleksi Checkbox">
+                <i data-lucide="check-circle-2"></i> Checkboxes <span class="tab-count">1</span>
+            </button>
+            <button class="filter-tab" data-filter="toggles" onclick="filterCategory('toggles', this)" title="Koleksi Toggle Switches">
+                <i data-lucide="arrow-left-right"></i> Toggle switches <span class="tab-count">1</span>
+            </button>
+            <button class="filter-tab" data-filter="cards" onclick="filterCategory('cards', this)" title="Koleksi Cards & Dashboard Widgets">
+                <i data-lucide="file-text"></i> Cards <span class="tab-count">4</span>
+            </button>
+            <button class="filter-tab" data-filter="loaders" onclick="filterCategory('loaders', this)" title="Koleksi Loaders & Progress Bars">
+                <i data-lucide="loader"></i> Loaders <span class="tab-count">1</span>
+            </button>
+            <button class="filter-tab" data-filter="inputs" onclick="filterCategory('inputs', this)" title="Koleksi Input Form & Fields">
+                <i data-lucide="binary"></i> Inputs <span class="tab-count">3</span>
+            </button>
+            <button class="filter-tab" data-filter="radio" onclick="filterCategory('radio', this)" title="Koleksi Radio Buttons">
+                <i data-lucide="disc"></i> Radio buttons <span class="tab-count">1</span>
+            </button>
+            <button class="filter-tab" data-filter="forms" onclick="filterCategory('forms', this)" title="Koleksi Form Overlays & Dialogs">
+                <i data-lucide="clipboard-list"></i> Forms <span class="tab-count">2</span>
+            </button>
+            <button class="filter-tab" data-filter="patterns" onclick="filterCategory('patterns', this)" title="Koleksi Refraction Patterns & Widgets">
+                <i data-lucide="activity"></i> Patterns <span class="tab-count">2</span>
+            </button>
+            <button class="filter-tab" data-filter="tooltips" onclick="filterCategory('tooltips', this)" title="Koleksi Tooltips & Toast Alerts">
+                <i data-lucide="help-circle"></i> Tooltips <span class="tab-count">2</span>
+            </button>
+            <button type="button" class="filter-tab btn-randomize" onclick="randomizeGrid()" title="Acak urutan komponen secara dinamis">
+                <i data-lucide="shuffle"></i> Randomize
+            </button>
         </div>
 
         <div class="controls-right">
@@ -1386,7 +1483,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 </div>
 
                 <!-- Live Viewport Canvas Stage -->
-                <div class="studio-canvas-stage">
+                <div class="studio-canvas-stage" id="studioCanvasStage" data-stage-bg="dark">
                     <div class="studio-viewport-wrapper" id="studioViewportWrapper">
                         <div class="viewport-meta-floating">
                             <span id="viewportDimensionIndicator">100% (Full Width)</span>
@@ -1456,16 +1553,46 @@ glass_showcase_content = f"""<!DOCTYPE html>
 
         function filterCategory(cat, btn) {{
             document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
 
             const cards = document.querySelectorAll('.component-card');
             cards.forEach(card => {{
-                if (cat === 'all' || card.dataset.cat === cat) {{
+                const cardCat = card.dataset.cat;
+                if (cat === 'all') {{
+                    card.style.display = 'flex';
+                }} else if (cat === 'radio' && card.id === 'card-checkbox-glass') {{
+                    card.style.display = 'flex';
+                }} else if (cardCat === cat) {{
                     card.style.display = 'flex';
                 }} else {{
                     card.style.display = 'none';
                 }}
             }});
+        }}
+
+        function randomizeGrid() {{
+            const grid = document.getElementById('componentsGrid');
+            if (!grid) return;
+            const cards = Array.from(grid.children);
+            if (cards.length <= 1) return;
+            
+            grid.style.opacity = '0.35';
+            grid.style.transform = 'scale(0.995)';
+            grid.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+
+            setTimeout(() => {{
+                for (let i = cards.length - 1; i > 0; i--) {{
+                    const j = Math.floor(Math.random() * (i + 1));
+                    const temp = cards[i];
+                    cards[i] = cards[j];
+                    cards[j] = temp;
+                }}
+                cards.forEach(card => grid.appendChild(card));
+                
+                grid.style.opacity = '1';
+                grid.style.transform = 'scale(1)';
+                showToast('Urutan komponen berhasil diacak (Randomized)');
+            }}, 180);
         }}
 
         function handleSearch(query) {{
@@ -1501,35 +1628,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             const curBg = localStorage.getItem(`comp-bg-${{folder}}`) || currentGridBg || 'dark';
             setStudioBg(curBg);
             iframe.onload = () => {{
-                try {{
-                    const doc = iframe.contentDocument;
-                    if (doc && doc.body) {{
-                        const isMesh = (curBg === 'mesh' || curBg === 'blob');
-                        const phoneTheme = isMesh ? 'blob' : 'black';
-                        if (isPhoneComponent(folder)) {{
-                            doc.body.style.backgroundColor = '#08080C';
-                            const phoneViewport = doc.getElementById('phoneViewport');
-                            if (phoneViewport) {{
-                                phoneViewport.setAttribute('data-phone-bg', phoneTheme);
-                            }}
-                            if (iframe.contentWindow) {{
-                                if (typeof iframe.contentWindow.setPhoneWallpaper === 'function') {{
-                                    iframe.contentWindow.setPhoneWallpaper(phoneTheme);
-                                }}
-                                if (typeof iframe.contentWindow.setControlCenterBg === 'function') {{
-                                    iframe.contentWindow.setControlCenterBg(phoneTheme);
-                                }}
-                            }}
-                        }} else if (folder === 'elastic-clock-glass') {{
-                            if (iframe.contentWindow && typeof iframe.contentWindow.setClockBg === 'function') {{
-                                iframe.contentWindow.setClockBg(phoneTheme);
-                            }}
-                            doc.body.style.backgroundColor = 'transparent';
-                        }} else if (isMesh) {{
-                            doc.body.style.backgroundColor = 'transparent';
-                        }}
-                    }}
-                }} catch(e) {{}}
+                setStudioBg(curBg);
             }};
             
             populateCodeTabs(folder);
@@ -1631,16 +1730,52 @@ glass_showcase_content = f"""<!DOCTYPE html>
             if (width === '100%') {{
                 wrapper.style.maxWidth = '100%';
                 wrapper.style.width = '100%';
+                wrapper.style.height = '100%';
                 if (slider) slider.value = 1440;
                 if (badge) badge.innerText = 'Full (100%)';
                 if (dimIndicator) dimIndicator.innerText = '100% (Full Width)';
+            }} else if (width === '1440px') {{
+                wrapper.style.maxWidth = '1440px';
+                wrapper.style.width = '1440px';
+                wrapper.style.height = '860px';
+                if (slider) slider.value = 1440;
+                if (badge) badge.innerText = '1440px';
+                if (dimIndicator) dimIndicator.innerText = '1440 × 860 (Desktop Ultra)';
+            }} else if (width === '1024px') {{
+                wrapper.style.maxWidth = '1024px';
+                wrapper.style.width = '1024px';
+                wrapper.style.height = '680px';
+                if (slider) slider.value = 1024;
+                if (badge) badge.innerText = '1024px';
+                if (dimIndicator) dimIndicator.innerText = '1024 × 680 (Laptop)';
+            }} else if (width === '768px') {{
+                wrapper.style.maxWidth = '768px';
+                wrapper.style.width = '768px';
+                wrapper.style.height = '960px';
+                if (slider) slider.value = 768;
+                if (badge) badge.innerText = '768px';
+                if (dimIndicator) dimIndicator.innerText = '768 × 960 (Tablet)';
+            }} else if (width === '375px') {{
+                wrapper.style.maxWidth = '375px';
+                wrapper.style.width = '375px';
+                wrapper.style.height = '740px';
+                if (slider) slider.value = 375;
+                if (badge) badge.innerText = '375px';
+                if (dimIndicator) dimIndicator.innerText = '375 × 740 (Mobile 9:16)';
             }} else {{
                 wrapper.style.maxWidth = width;
                 wrapper.style.width = width;
                 const num = parseInt(width);
+                if (num <= 480) {{
+                    const h = Math.round(num * 16 / 9);
+                    wrapper.style.height = `${{h}}px`;
+                    if (dimIndicator) dimIndicator.innerText = `${{width}} × ${{h}} (Mobile Proportional)`;
+                }} else {{
+                    wrapper.style.height = '100%';
+                    if (dimIndicator) dimIndicator.innerText = `${{width}} × auto`;
+                }}
                 if (slider) slider.value = num;
                 if (badge) badge.innerText = width;
-                if (dimIndicator) dimIndicator.innerText = `${{width}} × auto`;
             }}
         }}
 
@@ -1654,6 +1789,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             if (val >= 1440) {{
                 wrapper.style.maxWidth = '100%';
                 wrapper.style.width = '100%';
+                wrapper.style.height = '100%';
                 badge.innerText = 'Full (100%)';
                 dimIndicator.innerText = '100% (Full Width)';
                 const fullBtn = document.querySelector('.btn-studio-preset[data-preset="100%"]');
@@ -1662,8 +1798,15 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 const w = `${{val}}px`;
                 wrapper.style.maxWidth = w;
                 wrapper.style.width = w;
+                if (val <= 480) {{
+                    const h = Math.round(val * 16 / 9);
+                    wrapper.style.height = `${{h}}px`;
+                    dimIndicator.innerText = `${{val}} × ${{h}} (Mobile 9:16)`;
+                }} else {{
+                    wrapper.style.height = '100%';
+                    dimIndicator.innerText = `${{w}} × auto`;
+                }}
                 badge.innerText = w;
-                dimIndicator.innerText = `${{w}} × auto`;
                 const matchBtn = document.querySelector(`.btn-studio-preset[data-preset="${{w}}"]`);
                 if (matchBtn) matchBtn.classList.add('active');
             }}
@@ -1908,13 +2051,9 @@ glass_showcase_content = f"""<!DOCTYPE html>
         function setStudioBg(bg) {{
             const isMesh = (bg === 'mesh' || bg === 'blob');
             const targetBg = isMesh ? 'mesh' : 'dark';
-            const stage = document.getElementById('studioCanvasStage');
+            const stage = document.getElementById('studioCanvasStage') || document.querySelector('.studio-canvas-stage');
             if (stage) {{
-                if (isPhoneComponent(activeFolder)) {{
-                    stage.setAttribute('data-stage-bg', 'dark');
-                }} else {{
-                    stage.setAttribute('data-stage-bg', targetBg);
-                }}
+                stage.setAttribute('data-stage-bg', targetBg);
             }}
             document.querySelectorAll('.btn-studio-bg').forEach(btn => {{
                 const bBg = btn.getAttribute('data-bg');
@@ -1927,7 +2066,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
                     if (doc && doc.body) {{
                         const phoneTheme = isMesh ? 'blob' : 'black';
                         if (isPhoneComponent(activeFolder)) {{
-                            doc.body.style.backgroundColor = '#08080C';
+                            doc.body.style.backgroundColor = 'transparent';
                             const phoneViewport = doc.getElementById('phoneViewport');
                             if (phoneViewport) {{
                                 phoneViewport.setAttribute('data-phone-bg', phoneTheme);
@@ -1954,6 +2093,10 @@ glass_showcase_content = f"""<!DOCTYPE html>
                         }}
                     }}
                 }} catch (e) {{}}
+            }}
+            if (activeFolder) {{
+                localStorage.setItem(`comp-bg-${{activeFolder}}`, targetBg);
+                setComponentBg(activeFolder, targetBg);
             }}
         }}
 
