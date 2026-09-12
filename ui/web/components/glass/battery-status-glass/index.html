@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Glass Battery & Telemetry Capsule — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-battery-card">
+        <div class="battery-top-bar">
+            <div class="battery-badge">
+                <span class="bat-dot"></span>
+                <span>QUANTUM CELL TELEMETRY</span>
+            </div>
+            <span class="bat-health">Health: 99.2%</span>
+        </div>
+
+        <!-- 3D Glass Battery Capsule Container -->
+        <div class="battery-visual-scene">
+            <div class="battery-outer-glass">
+                <div class="battery-terminal-nipple"></div>
+                <!-- Translucent Fluid Liquid Level -->
+                <div class="battery-fluid-fill" id="batFluid" style="width: 82%;">
+                    <div class="fluid-wave"></div>
+                    <div class="fluid-bubbles"></div>
+                </div>
+                <!-- Bolt Icon overlay -->
+                <div class="battery-overlay-icon" id="boltIcon">
+                    <i data-lucide="zap"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="battery-number-display">
+            <span class="pct-big" id="batPct">82</span>
+            <span class="pct-sign">%</span>
+            <span class="charge-status-text" id="batStatus">SUPERCHARGING ACTIVE (65W)</span>
+        </div>
+
+        <!-- Metric Telemetry Grid -->
+        <div class="battery-metrics-row">
+            <div class="b-stat">
+                <span class="b-lbl">VOLTAGE</span>
+                <span class="b-val">4.28 V</span>
+            </div>
+            <div class="b-stat">
+                <span class="b-lbl">TEMPERATURE</span>
+                <span class="b-val">28.4 °C</span>
+            </div>
+            <div class="b-stat">
+                <span class="b-lbl">EST. RUNTIME</span>
+                <span class="b-val" id="batTime">14h 20m</span>
+            </div>
+        </div>
+
+        <!-- Controls Interactive Slider -->
+        <div class="battery-slider-wrap">
+            <label for="batRange" class="slider-hint">Simulate Battery Level:</label>
+            <input type="range" min="5" max="100" value="82" class="bat-slider" id="batRange">
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

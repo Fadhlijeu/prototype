@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Glass Notification Bell & Popover — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-notif-stage">
+        <!-- Top Trigger Bar -->
+        <div class="notif-bar-header">
+            <span class="system-status-text">NOTIFICATIONS DISPATCH</span>
+            <button type="button" class="btn-glass-bell" id="btnBell" aria-label="Toggle notifications">
+                <i data-lucide="bell"></i>
+                <span class="notif-badge-pill" id="bellBadge">3</span>
+            </button>
+        </div>
+
+        <!-- Floating Popover Glass Tray -->
+        <div class="glass-notif-tray" id="notifTray">
+            <div class="tray-top">
+                <h4>System Signals</h4>
+                <button type="button" class="btn-clear-notifs" id="btnClearAll">Mark All Read</button>
+            </div>
+
+            <div class="notif-items-list" id="notifList">
+                <div class="notif-item unread">
+                    <div class="notif-icon-box green"><i data-lucide="server"></i></div>
+                    <div class="notif-content-col">
+                        <div class="notif-title-row">
+                            <span class="n-title">Cluster Provisioned</span>
+                            <span class="n-time">2m ago</span>
+                        </div>
+                        <p class="n-desc">Singapore Edge-01 cluster active with 12 encrypted nodes.</p>
+                    </div>
+                </div>
+
+                <div class="notif-item unread">
+                    <div class="notif-icon-box amber"><i data-lucide="key"></i></div>
+                    <div class="notif-content-col">
+                        <div class="notif-title-row">
+                            <span class="n-title">API Key Rotated</span>
+                            <span class="n-time">14m ago</span>
+                        </div>
+                        <p class="n-desc">Zero-knowledge master key pair rotated successfully.</p>
+                    </div>
+                </div>
+
+                <div class="notif-item unread">
+                    <div class="notif-icon-box cyan"><i data-lucide="database"></i></div>
+                    <div class="notif-content-col">
+                        <div class="notif-title-row">
+                            <span class="n-title">Snapshot Completed</span>
+                            <span class="n-time">1h ago</span>
+                        </div>
+                        <p class="n-desc">Continuous backup verified: 4.8 GB compressed parquet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

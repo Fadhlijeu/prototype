@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Glass Progression Wizard — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-wizard-card">
+        <div class="wizard-header">
+            <div class="wizard-title-block">
+                <span class="wizard-badge">PIPELINE PROVISIONING</span>
+                <h3>Node Setup Wizard</h3>
+            </div>
+            <span class="step-indicator" id="stepCounter">Step 1 of 4</span>
+        </div>
+
+        <!-- Stepper Nodes Bar -->
+        <div class="stepper-track-wrap">
+            <div class="stepper-line-bg"></div>
+            <div class="stepper-line-fill" id="stepperLineFill" style="width: 0%;"></div>
+            
+            <div class="step-node active" data-step="1">
+                <div class="node-circle">1</div>
+                <span class="node-label">Cluster</span>
+            </div>
+            <div class="step-node" data-step="2">
+                <div class="node-circle">2</div>
+                <span class="node-label">Enclave</span>
+            </div>
+            <div class="step-node" data-step="3">
+                <div class="node-circle">3</div>
+                <span class="node-label">Models</span>
+            </div>
+            <div class="step-node" data-step="4">
+                <div class="node-circle">4</div>
+                <span class="node-label">Launch</span>
+            </div>
+        </div>
+
+        <!-- Dynamic Step Content Card -->
+        <div class="step-content-box" id="stepContent">
+            <h4 id="stepHeading">Select Regional Compute Cluster</h4>
+            <p id="stepDesc">Choose the low-latency GPU edge datacenter closest to your primary inference pipeline.</p>
+            <div class="step-sample-select">
+                <div class="radio-pill active"><i data-lucide="server"></i> ap-southeast-1 (Singapore)</div>
+                <div class="radio-pill"><i data-lucide="server"></i> ap-northeast-1 (Tokyo)</div>
+            </div>
+        </div>
+
+        <!-- Wizard Navigation Footer -->
+        <div class="wizard-footer-row">
+            <button type="button" class="btn-step-nav prev" id="btnPrevStep" disabled>Previous</button>
+            <button type="button" class="btn-step-nav next" id="btnNextStep">Continue Step <i data-lucide="arrow-right"></i></button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

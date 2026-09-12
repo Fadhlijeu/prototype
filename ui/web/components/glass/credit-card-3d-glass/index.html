@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Holographic Glass Card — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="card-showcase-container">
+        <!-- 3D Card Scene -->
+        <div class="card-3d-scene" id="cardScene">
+            <div class="card-3d-flipper" id="cardFlipper">
+                <!-- Front Face -->
+                <div class="card-glass-face face-front">
+                    <div class="card-glare-foil" id="cardFoil"></div>
+                    <div class="card-front-top">
+                        <div class="card-brand-logo">
+                            <span class="brand-core">NEXUS</span>
+                            <span class="brand-tag">PLATINUM</span>
+                        </div>
+                        <div class="nfc-icon">
+                            <i data-lucide="rss"></i>
+                        </div>
+                    </div>
+
+                    <div class="chip-and-network">
+                        <div class="gold-chip">
+                            <div class="chip-line"></div>
+                            <div class="chip-line horizontal"></div>
+                        </div>
+                        <div class="network-badge">
+                            <span class="network-circle orange"></span>
+                            <span class="network-circle red"></span>
+                        </div>
+                    </div>
+
+                    <div class="card-number-display">
+                        <span class="num-group">4920</span>
+                        <span class="num-group">8819</span>
+                        <span class="num-group">3200</span>
+                        <span class="num-group">7642</span>
+                    </div>
+
+                    <div class="card-front-bottom">
+                        <div class="card-holder-block">
+                            <div class="card-label">CARDHOLDER</div>
+                            <div class="card-holder-name">ADRIAN PRATAMA</div>
+                        </div>
+                        <div class="card-expiry-block">
+                            <div class="card-label">EXPIRES</div>
+                            <div class="card-expiry-date">09/29</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Face -->
+                <div class="card-glass-face face-back">
+                    <div class="magnetic-strip"></div>
+                    <div class="signature-band">
+                        <span class="sign-label">AUTHORIZED SIGNATURE</span>
+                        <div class="sign-box">
+                            <span class="signature-text">Adrian P.</span>
+                            <div class="cvv-badge">
+                                <span class="cvv-label">CVV</span>
+                                <span class="cvv-value">729</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back-footer">
+                        <p class="disclaimer-text">Issued by Nexus Glass Enclave. Encrypted via Zero-Knowledge biometrics. Non-transferable.</p>
+                        <div class="hologram-seal">SECURE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="card-interactive-controls">
+            <button type="button" class="btn-flip-card" id="btnFlipCard">
+                <i data-lucide="rotate-cw"></i> Flip Card (CVV)
+            </button>
+            <div class="currency-switch">
+                <button type="button" class="btn-curr active" data-cur="USD">$ USD</button>
+                <button type="button" class="btn-curr" data-cur="IDR">Rp IDR</button>
+                <button type="button" class="btn-curr" data-cur="EUR">€ EUR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

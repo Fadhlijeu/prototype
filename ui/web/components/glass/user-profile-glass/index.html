@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frosted Glass Executive Profile Card — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-profile-card">
+        <!-- Cover Banner -->
+        <div class="profile-cover">
+            <div class="cover-mesh-aurora"></div>
+            <div class="badge-role">STAFF ARCHITECT</div>
+        </div>
+
+        <div class="profile-body">
+            <div class="avatar-row">
+                <div class="profile-avatar-aura">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Alina Vance" class="avatar-img">
+                    <span class="avatar-live-beacon" title="Online in Enclave"></span>
+                </div>
+                <button type="button" class="btn-profile-follow" id="btnFollow">
+                    <i data-lucide="user-plus" id="followIcon"></i>
+                    <span id="followText">Follow</span>
+                </button>
+            </div>
+
+            <div class="profile-identity">
+                <div class="name-badge-line">
+                    <h3 class="profile-name">Alina Vance</h3>
+                    <div class="verified-icon" title="Cryptographically Verified Key"><i data-lucide="badge-check"></i></div>
+                </div>
+                <p class="profile-handle">@alina.vance • Enclave Cluster 09</p>
+                <p class="profile-bio">Core contributor to decentralized confidential agent clusters, WebAssembly runtimes, and low-latency P2P meshes.</p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="profile-stats-bar">
+                <div class="p-stat">
+                    <span class="p-num" id="followerCount">14.8k</span>
+                    <span class="p-label">FOLLOWERS</span>
+                </div>
+                <div class="p-stat">
+                    <span class="p-num">342</span>
+                    <span class="p-label">MODULES</span>
+                </div>
+                <div class="p-stat">
+                    <span class="p-num text-emerald">99.9%</span>
+                    <span class="p-label">RELIABILITY</span>
+                </div>
+            </div>
+
+            <!-- Tech Pills -->
+            <div class="profile-tags-row">
+                <span class="p-tag">Rust</span>
+                <span class="p-tag">Confidential AI</span>
+                <span class="p-tag">WASM</span>
+                <span class="p-tag">WireGuard</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

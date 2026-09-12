@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Synthesizer & Equalizer — Glass Dark Standalone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <style>
+
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #38BDF8;
+    --accent-purple: #A855F7;
+    --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.glass-card-eq {
+    width: 100%;
+    max-width: 420px;
+    background: var(--glass-card);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border-radius: 24px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.eq-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.eq-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 10px #10B981;
+    animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.eq-status-text {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #10B981;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.eq-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+}
+
+.eq-mode-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38BDF8;
+    white-space: nowrap;
+}
+
+.eq-canvas-container {
+    width: 100%;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#eqCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.eq-canvas-glare {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.eq-sliders-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 4px;
+}
+
+.eq-band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.band-gain {
+    font-size: 10.5px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.eq-slider-track {
+    height: 110px;
+    width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    position: relative;
+}
+
+.eq-vertical-range {
+    -webkit-appearance: slider-vertical;
+    writing-mode: bt-lr;
+    width: 18px;
+    height: 94px;
+    background: transparent;
+    cursor: pointer;
+    accent-color: var(--accent-cyan);
+}
+
+.band-freq {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.eq-presets-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.btn-eq-preset {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btn-eq-preset:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-eq-preset.active {
+    background: rgba(56, 189, 248, 0.18);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+}
+
+.eq-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-eq-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-eq-toggle:hover {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.35));
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+.btn-eq-toggle svg { width: 14px; height: 14px; }
+
+.eq-sample-rate {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="glass-card-eq">
+        <div class="eq-header">
+            <div class="eq-title-wrap">
+                <div class="eq-status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span class="eq-status-text">NEURAL DSP ACTIVE</span>
+                </div>
+                <h3 class="eq-title">Acoustic Equalizer</h3>
+            </div>
+            <div class="eq-mode-pill" id="eqPresetLabel">Studio Master</div>
+        </div>
+
+        <!-- Live Visualizer Canvas -->
+        <div class="eq-canvas-container">
+            <canvas id="eqCanvas" width="340" height="90"></canvas>
+            <div class="eq-canvas-glare"></div>
+        </div>
+
+        <!-- Sliders Deck -->
+        <div class="eq-sliders-row">
+            <div class="eq-band">
+                <span class="band-gain" id="gain60">0 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="4" data-band="60" orient="vertical">
+                </div>
+                <span class="band-freq">60 Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain250">+2 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="2" data-band="250" orient="vertical">
+                </div>
+                <span class="band-freq">250 Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain1k">-1 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="-1" data-band="1k" orient="vertical">
+                </div>
+                <span class="band-freq">1 kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain4k">+5 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="5" data-band="4k" orient="vertical">
+                </div>
+                <span class="band-freq">4 kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain16k">+3 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="3" data-band="16k" orient="vertical">
+                </div>
+                <span class="band-freq">16 kHz</span>
+            </div>
+        </div>
+
+        <!-- Presets Row -->
+        <div class="eq-presets-bar">
+            <button type="button" class="btn-eq-preset active" data-preset="master">Master</button>
+            <button type="button" class="btn-eq-preset" data-preset="bass">Bass Boost</button>
+            <button type="button" class="btn-eq-preset" data-preset="vocal">Vocal Clarity</button>
+            <button type="button" class="btn-eq-preset" data-preset="electronic">Cyber Electro</button>
+        </div>
+
+        <!-- Bottom Playback Control Bar -->
+        <div class="eq-footer">
+            <button type="button" class="btn-eq-toggle" id="btnEqPlay">
+                <i data-lucide="play" id="eqPlayIcon"></i>
+                <span id="eqPlayText">Play Spectrum Stream</span>
+            </button>
+            <div class="eq-sample-rate">96 kHz • 24-bit PCM</div>
+        </div>
+    </div>
+
+    <script>
+
+const canvas = document.getElementById('eqCanvas');
+const ctx = canvas.getContext('2d');
+let isPlaying = true;
+let animId;
+
+const numBars = 32;
+const barGains = [4, 2, -1, 5, 3];
+
+function drawSpectrum() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const width = canvas.width;
+    const height = canvas.height;
+    const barWidth = (width / numBars) - 2;
+
+    const time = Date.now() * 0.004;
+
+    for (let i = 0; i < numBars; i++) {
+        // synthesize frequency response
+        const bandIndex = Math.min(4, Math.floor((i / numBars) * 5));
+        const boost = (barGains[bandIndex] + 12) / 24; // normalize 0-1
+        
+        let barHeight = 10;
+        if (isPlaying) {
+            const wave = Math.sin(time + i * 0.3) * 0.4 + 0.6;
+            const noise = Math.sin(time * 2.3 + i * 1.2) * 0.25;
+            barHeight = (wave + noise) * (height * 0.75) * (0.4 + boost * 0.8);
+        } else {
+            barHeight = 6 + Math.sin(i * 0.5) * 3;
+        }
+
+        const x = i * (barWidth + 2) + 2;
+        const y = height - barHeight;
+
+        // Gradient
+        const grad = ctx.createLinearGradient(0, height, 0, 0);
+        grad.addColorStop(0, '#38BDF8');
+        grad.addColorStop(0.7, '#818CF8');
+        grad.addColorStop(1, '#C084FC');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barWidth, barHeight, [2, 2, 0, 0]);
+        ctx.fill();
+
+        // Peak dot
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(x, Math.max(0, y - 3), barWidth, 1.5);
+    }
+
+    animId = requestAnimationFrame(drawSpectrum);
+}
+drawSpectrum();
+
+// Vertical Range Inputs
+document.querySelectorAll('.eq-vertical-range').forEach((slider, idx) => {
+    slider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        barGains[idx] = val;
+        const sign = val > 0 ? '+' : '';
+        const bandKey = e.target.dataset.band;
+        const label = document.getElementById('gain' + bandKey);
+        if (label) label.textContent = `${sign}${val} dB`;
+        document.getElementById('eqPresetLabel').textContent = 'Custom Profile';
+        document.querySelectorAll('.btn-eq-preset').forEach(b => b.classList.remove('active'));
+    });
+});
+
+// Presets
+const presets = {
+    master: [4, 2, -1, 5, 3],
+    bass: [9, 6, 1, 0, -2],
+    vocal: [-2, 1, 5, 4, 1],
+    electronic: [7, 3, -2, 6, 8]
+};
+
+document.querySelectorAll('.btn-eq-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-eq-preset').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const pKey = btn.dataset.preset;
+        const gains = presets[pKey];
+        document.getElementById('eqPresetLabel').textContent = btn.textContent;
+        
+        const bands = ['60', '250', '1k', '4k', '16k'];
+        gains.forEach((g, i) => {
+            barGains[i] = g;
+            const slider = document.querySelector(`.eq-vertical-range[data-band="${bands[i]}"]`);
+            if (slider) slider.value = g;
+            const label = document.getElementById('gain' + bands[i]);
+            const sign = g > 0 ? '+' : '';
+            if (label) label.textContent = `${sign}${g} dB`;
+        });
+    });
+});
+
+// Play/Pause
+const btnPlay = document.getElementById('btnEqPlay');
+const playText = document.getElementById('eqPlayText');
+btnPlay.addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    playText.textContent = isPlaying ? 'Pause Spectrum Stream' : 'Resume Spectrum Stream';
+    btnPlay.classList.toggle('playing', isPlaying);
+});
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

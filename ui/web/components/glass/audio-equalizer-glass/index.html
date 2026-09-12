@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Synthesizer & Equalizer — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-card-eq">
+        <div class="eq-header">
+            <div class="eq-title-wrap">
+                <div class="eq-status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span class="eq-status-text">NEURAL DSP ACTIVE</span>
+                </div>
+                <h3 class="eq-title">Acoustic Equalizer</h3>
+            </div>
+            <div class="eq-mode-pill" id="eqPresetLabel">Studio Master</div>
+        </div>
+
+        <!-- Live Visualizer Canvas -->
+        <div class="eq-canvas-container">
+            <canvas id="eqCanvas" width="340" height="90"></canvas>
+            <div class="eq-canvas-glare"></div>
+        </div>
+
+        <!-- Sliders Deck -->
+        <div class="eq-sliders-row">
+            <div class="eq-band">
+                <span class="band-gain" id="gain60">0 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="4" data-band="60" orient="vertical">
+                </div>
+                <span class="band-freq">60 Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain250">+2 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="2" data-band="250" orient="vertical">
+                </div>
+                <span class="band-freq">250 Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain1k">-1 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="-1" data-band="1k" orient="vertical">
+                </div>
+                <span class="band-freq">1 kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain4k">+5 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="5" data-band="4k" orient="vertical">
+                </div>
+                <span class="band-freq">4 kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="band-gain" id="gain16k">+3 dB</span>
+                <div class="eq-slider-track">
+                    <input type="range" class="eq-vertical-range" min="-12" max="12" value="3" data-band="16k" orient="vertical">
+                </div>
+                <span class="band-freq">16 kHz</span>
+            </div>
+        </div>
+
+        <!-- Presets Row -->
+        <div class="eq-presets-bar">
+            <button type="button" class="btn-eq-preset active" data-preset="master">Master</button>
+            <button type="button" class="btn-eq-preset" data-preset="bass">Bass Boost</button>
+            <button type="button" class="btn-eq-preset" data-preset="vocal">Vocal Clarity</button>
+            <button type="button" class="btn-eq-preset" data-preset="electronic">Cyber Electro</button>
+        </div>
+
+        <!-- Bottom Playback Control Bar -->
+        <div class="eq-footer">
+            <button type="button" class="btn-eq-toggle" id="btnEqPlay">
+                <i data-lucide="play" id="eqPlayIcon"></i>
+                <span id="eqPlayText">Play Spectrum Stream</span>
+            </button>
+            <div class="eq-sample-rate">96 kHz • 24-bit PCM</div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

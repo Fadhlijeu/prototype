@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Tier Glass Pricing Card — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-pricing-card">
+        <!-- Animated Conic Border Glare -->
+        <div class="pricing-conic-glow"></div>
+
+        <div class="pricing-top-badge">
+            <span class="neon-pill">MOST POPULAR ENCLAVE</span>
+        </div>
+
+        <div class="pricing-header">
+            <h3 class="tier-title">Pro Agentic Cloud</h3>
+            <p class="tier-tagline">Autonomous LLM agent teams with confidential hardware isolation.</p>
+        </div>
+
+        <!-- Period Toggle -->
+        <div class="billing-switcher">
+            <button type="button" class="btn-bill" data-plan="monthly">Monthly</button>
+            <button type="button" class="btn-bill active" data-plan="annual">
+                Annual <span class="discount-tag">Save 25%</span>
+            </button>
+        </div>
+
+        <div class="price-display-block">
+            <div class="price-main">
+                <span class="dollar-sign">$</span>
+                <span class="price-amount" id="priceAmount">49</span>
+                <span class="price-period">/ month</span>
+            </div>
+            <div class="price-subtext" id="priceSub">Billed annually ($588/year)</div>
+        </div>
+
+        <!-- Feature List -->
+        <ul class="feature-checklist">
+            <li>
+                <div class="check-icon"><i data-lucide="check"></i></div>
+                <span>Unlimited Autonomous Agent Sandboxes</span>
+            </li>
+            <li>
+                <div class="check-icon"><i data-lucide="check"></i></div>
+                <span>AMD SEV-SNP Confidential Hardware Memory</span>
+            </li>
+            <li>
+                <div class="check-icon"><i data-lucide="check"></i></div>
+                <span>Sub-15ms WireGuard Global Anycast Mesh</span>
+            </li>
+            <li>
+                <div class="check-icon"><i data-lucide="check"></i></div>
+                <span>99.99% Guaranteed SLA with P99 Latency Audit</span>
+            </li>
+        </ul>
+
+        <!-- Action Button -->
+        <button type="button" class="btn-pricing-cta" id="btnPricingCta">
+            <span>Upgrade to Pro Enclave</span>
+            <i data-lucide="arrow-right"></i>
+        </button>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

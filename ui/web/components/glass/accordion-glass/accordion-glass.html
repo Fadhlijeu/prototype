@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tier Frosted Glass Accordion — Glass Dark Standalone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <style>
+
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #38BDF8;
+    --accent-purple: #A855F7;
+    --accent-amber: #F59E0B;
+    --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.glass-accordion-container {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.acc-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.acc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    letter-spacing: 0.08em;
+}
+
+.acc-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-top: 2px;
+}
+
+.btn-acc-toggle-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-acc-toggle-all:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+}
+
+.btn-acc-toggle-all svg { width: 14px; height: 14px; }
+
+.accordion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.accordion-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border-radius: 18px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.accordion-card.open {
+    border-top-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.12);
+}
+
+.acc-trigger {
+    width: 100%;
+    padding: 16px 18px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.acc-trigger-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.acc-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.acc-icon-box.cyan {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38BDF8;
+}
+
+.acc-icon-box.purple {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #C084FC;
+}
+
+.acc-icon-box.amber {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #FBBF24;
+}
+
+.acc-icon-box svg { width: 18px; height: 18px; }
+
+.acc-title-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.acc-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.acc-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.acc-trigger-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.acc-status-pill {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.acc-status-pill.green {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #10B981;
+}
+
+.acc-status-pill.blue {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #38BDF8;
+}
+
+.acc-status-pill.amber {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #FBBF24;
+}
+
+.acc-chevron {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s var(--ease-spring);
+}
+
+.acc-chevron svg { width: 18px; height: 18px; }
+
+.accordion-card.open .acc-chevron {
+    transform: rotate(180deg);
+    color: #FFFFFF;
+}
+
+.acc-collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-card.open .acc-collapse {
+    grid-template-rows: 1fr;
+}
+
+.acc-content-inner {
+    overflow: hidden;
+    padding: 0 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.acc-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.acc-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+.acc-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.m-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.m-val {
+    font-size: 11.5px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="glass-accordion-container">
+        <div class="acc-top-bar">
+            <div class="acc-header-info">
+                <span class="acc-tag">SYSTEM ARCHITECTURE</span>
+                <h3 class="acc-heading">Enclave Configuration</h3>
+            </div>
+            <button type="button" class="btn-acc-toggle-all" id="btnToggleAll">
+                <i data-lucide="chevrons-up-down"></i> Expand All
+            </button>
+        </div>
+
+        <div class="accordion-list">
+            <!-- Item 1 -->
+            <div class="accordion-card open" id="accItem1">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem1')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box cyan"><i data-lucide="shield-alert"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">Hardware Enclave (ZK)</span>
+                            <span class="acc-subtitle">AMD SEV-SNP Isolation</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill green">99.9% SECURE</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Memory encryption keys are generated directly inside the hardware root of trust. No hypervisor or host OS can read cryptographic memory registers.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">ENCLAVE ATTESTATION</span>
+                                <span class="m-val">VERIFIED (SHA-384)</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">MEMORY ISOLATION</span>
+                                <span class="m-val">64 GB DEDICATED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="accordion-card" id="accItem2">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem2')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box purple"><i data-lucide="cpu"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">Neural Quantization</span>
+                            <span class="acc-subtitle">FlashAttention-3 FP8</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill blue">110 TOK/S</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Continuous batching pipeline with dynamically allocated PagedAttention kernels. Reduces token time-to-first-byte down to 12 milliseconds.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">CACHE UTILIZATION</span>
+                                <span class="m-val">42.8 GB / 80 GB</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">QUANT SCHEME</span>
+                                <span class="m-val">W8A8 INT-SCALED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="accordion-card" id="accItem3">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem3')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box amber"><i data-lucide="network"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">WireGuard Mesh Network</span>
+                            <span class="acc-subtitle">Multi-Region Anycast</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill amber">16 REGIONS</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Decentralized P2P mesh network automatically routes streaming agent packets through the lowest-latency optical interconnect path.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">MEAN PING</span>
+                                <span class="m-val">14 MS GLOBAL</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">HANDSHAKE PROTOCOL</span>
+                                <span class="m-val">NOISE-IK NO-LOG</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+function toggleAccordion(id) {
+    const card = document.getElementById(id);
+    if (!card) return;
+    card.classList.toggle('open');
+}
+
+const btnToggleAll = document.getElementById('btnToggleAll');
+let allExpanded = false;
+
+btnToggleAll.addEventListener('click', () => {
+    allExpanded = !allExpanded;
+    document.querySelectorAll('.accordion-card').forEach(card => {
+        card.classList.toggle('open', allExpanded);
+    });
+    btnToggleAll.innerHTML = allExpanded 
+        ? '<i data-lucide="chevrons-down-up"></i> Collapse All' 
+        : '<i data-lucide="chevrons-up-down"></i> Expand All';
+    if (window.lucide) lucide.createIcons();
+});
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

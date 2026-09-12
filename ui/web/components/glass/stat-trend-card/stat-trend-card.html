@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive KPI & Trend Sparkline Card — Glass Dark Standalone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <style>
+
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #38BDF8;
+    --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.glass-stat-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--glass-card);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border-radius: 24px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.stat-category-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+}
+
+.stat-main-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.currency-symbol {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.value-text {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.trend-badge.positive {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #10B981;
+}
+
+.trend-badge svg { width: 14px; height: 14px; }
+
+.timeframe-tabs-bar {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 4px;
+}
+
+.btn-time {
+    flex: 1;
+    padding: 5px 0;
+    border-radius: 7px;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-time:hover {
+    color: #FFFFFF;
+}
+
+.btn-time.active {
+    background: rgba(56, 189, 248, 0.18);
+    color: #38BDF8;
+}
+
+.sparkline-chart-stage {
+    position: relative;
+    width: 100%;
+    height: 90px;
+    cursor: crosshair;
+}
+
+.sparkline-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.spark-cursor-point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #38BDF8;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 10px #38BDF8;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    display: none;
+}
+
+.spark-tooltip {
+    position: absolute;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #FFFFFF;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    transform: translate(-50%, -130%);
+    pointer-events: none;
+    display: none;
+}
+
+.stat-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.footer-kpi.right {
+    align-items: flex-end;
+}
+
+.kpi-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
+
+.kpi-value {
+    font-size: 11.5px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: #FFFFFF;
+}
+
+.kpi-value.text-emerald {
+    color: #10B981;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="glass-stat-card">
+        <div class="stat-top-row">
+            <div class="stat-badge-box">
+                <span class="stat-category-tag">ENTERPRISE CLOUD REVENUE</span>
+                <div class="stat-main-metric">
+                    <span class="currency-symbol">$</span>
+                    <span class="value-text" id="statRevenue">148,620</span>
+                </div>
+            </div>
+            <div class="trend-badge positive">
+                <i data-lucide="trending-up"></i>
+                <span>+24.8%</span>
+            </div>
+        </div>
+
+        <div class="timeframe-tabs-bar">
+            <button type="button" class="btn-time active" data-tf="24h">24H</button>
+            <button type="button" class="btn-time" data-tf="7d">7D</button>
+            <button type="button" class="btn-time" data-tf="30d">30D</button>
+            <button type="button" class="btn-time" data-tf="1y">1Y</button>
+        </div>
+
+        <!-- Interactive SVG Sparkline Chart -->
+        <div class="sparkline-chart-stage" id="chartStage">
+            <svg class="sparkline-svg" viewBox="0 0 320 90" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="sparkAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.0"/>
+                    </linearGradient>
+                </defs>
+                <path class="spark-area" id="sparkArea" d="M0,70 Q40,55 80,60 T160,35 T240,40 T320,15 L320,90 L0,90 Z" fill="url(#sparkAreaGrad)"/>
+                <path class="spark-line" id="sparkLine" d="M0,70 Q40,55 80,60 T160,35 T240,40 T320,15" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <div class="spark-cursor-point" id="cursorPoint"></div>
+            <div class="spark-tooltip" id="chartTooltip">$148,620</div>
+        </div>
+
+        <div class="stat-footer-bar">
+            <div class="footer-kpi">
+                <span class="kpi-label">AVG DAILY RUN RATE</span>
+                <span class="kpi-value">$4,954 / DAY</span>
+            </div>
+            <div class="footer-kpi right">
+                <span class="kpi-label">P99 INVOICE VELOCITY</span>
+                <span class="kpi-value text-emerald">SUB-SECOND</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+const stage = document.getElementById('chartStage');
+const point = document.getElementById('cursorPoint');
+const tooltip = document.getElementById('chartTooltip');
+const revenueText = document.getElementById('statRevenue');
+
+const tfData = {
+    '24h': { rev: '148,620', area: 'M0,70 Q40,55 80,60 T160,35 T240,40 T320,15 L320,90 L0,90 Z', line: 'M0,70 Q40,55 80,60 T160,35 T240,40 T320,15' },
+    '7d': { rev: '412,890', area: 'M0,80 Q50,60 100,50 T200,45 T280,25 T320,20 L320,90 L0,90 Z', line: 'M0,80 Q50,60 100,50 T200,45 T280,25 T320,20' },
+    '30d': { rev: '1,894,300', area: 'M0,65 Q60,40 120,45 T220,30 T300,15 T320,10 L320,90 L0,90 Z', line: 'M0,65 Q60,40 120,45 T220,30 T300,15 T320,10' },
+    '1y': { rev: '18,450,200', area: 'M0,85 Q80,70 140,55 T240,30 T300,10 T320,5 L320,90 L0,90 Z', line: 'M0,85 Q80,70 140,55 T240,30 T300,10 T320,5' }
+};
+
+document.querySelectorAll('.btn-time').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tf = btn.dataset.tf;
+        const d = tfData[tf];
+        revenueText.textContent = d.rev;
+        document.getElementById('sparkArea').setAttribute('d', d.area);
+        document.getElementById('sparkLine').setAttribute('d', d.line);
+    });
+});
+
+stage.addEventListener('mousemove', (e) => {
+    const rect = stage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = Math.max(10, Math.min(80, e.clientY - rect.top));
+    
+    point.style.display = 'block';
+    point.style.left = `${x}px`;
+    point.style.top = `${y}px`;
+
+    tooltip.style.display = 'block';
+    tooltip.style.left = `${x}px`;
+    tooltip.style.top = `${y}px`;
+    
+    const approxVal = Math.floor(130000 + (x / rect.width) * 35000);
+    tooltip.textContent = `$${approxVal.toLocaleString()}`;
+});
+
+stage.addEventListener('mouseleave', () => {
+    point.style.display = 'none';
+    tooltip.style.display = 'none';
+});
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

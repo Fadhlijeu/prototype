@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tier Frosted Glass Accordion — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-accordion-container">
+        <div class="acc-top-bar">
+            <div class="acc-header-info">
+                <span class="acc-tag">SYSTEM ARCHITECTURE</span>
+                <h3 class="acc-heading">Enclave Configuration</h3>
+            </div>
+            <button type="button" class="btn-acc-toggle-all" id="btnToggleAll">
+                <i data-lucide="chevrons-up-down"></i> Expand All
+            </button>
+        </div>
+
+        <div class="accordion-list">
+            <!-- Item 1 -->
+            <div class="accordion-card open" id="accItem1">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem1')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box cyan"><i data-lucide="shield-alert"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">Hardware Enclave (ZK)</span>
+                            <span class="acc-subtitle">AMD SEV-SNP Isolation</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill green">99.9% SECURE</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Memory encryption keys are generated directly inside the hardware root of trust. No hypervisor or host OS can read cryptographic memory registers.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">ENCLAVE ATTESTATION</span>
+                                <span class="m-val">VERIFIED (SHA-384)</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">MEMORY ISOLATION</span>
+                                <span class="m-val">64 GB DEDICATED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="accordion-card" id="accItem2">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem2')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box purple"><i data-lucide="cpu"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">Neural Quantization</span>
+                            <span class="acc-subtitle">FlashAttention-3 FP8</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill blue">110 TOK/S</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Continuous batching pipeline with dynamically allocated PagedAttention kernels. Reduces token time-to-first-byte down to 12 milliseconds.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">CACHE UTILIZATION</span>
+                                <span class="m-val">42.8 GB / 80 GB</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">QUANT SCHEME</span>
+                                <span class="m-val">W8A8 INT-SCALED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="accordion-card" id="accItem3">
+                <button type="button" class="acc-trigger" onclick="toggleAccordion('accItem3')">
+                    <div class="acc-trigger-left">
+                        <div class="acc-icon-box amber"><i data-lucide="network"></i></div>
+                        <div class="acc-title-group">
+                            <span class="acc-title">WireGuard Mesh Network</span>
+                            <span class="acc-subtitle">Multi-Region Anycast</span>
+                        </div>
+                    </div>
+                    <div class="acc-trigger-right">
+                        <span class="acc-status-pill amber">16 REGIONS</span>
+                        <div class="acc-chevron"><i data-lucide="chevron-down"></i></div>
+                    </div>
+                </button>
+                <div class="acc-collapse">
+                    <div class="acc-content-inner">
+                        <p class="acc-desc">Decentralized P2P mesh network automatically routes streaming agent packets through the lowest-latency optical interconnect path.</p>
+                        <div class="acc-metrics-grid">
+                            <div class="acc-metric-item">
+                                <span class="m-label">MEAN PING</span>
+                                <span class="m-val">14 MS GLOBAL</span>
+                            </div>
+                            <div class="acc-metric-item">
+                                <span class="m-label">HANDSHAKE PROTOCOL</span>
+                                <span class="m-val">NOISE-IK NO-LOG</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

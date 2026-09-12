@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Desk Calendar & Daily Planner — Glass Dark Standalone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <style>
+
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #38BDF8;
+    --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.glass-calendar-widget {
+    width: 100%;
+    max-width: 360px;
+    background: var(--glass-card);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border-radius: 24px;
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cal-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cal-month-title {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.cal-month-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.cal-year-num {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.cal-nav-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-cal-nav {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cal-nav:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+}
+
+.btn-cal-nav svg { width: 15px; height: 15px; }
+
+.cal-weekdays-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.cal-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-day-cell {
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cal-day-cell:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+}
+
+.cal-day-cell.other-month {
+    color: rgba(255, 255, 255, 0.15);
+}
+
+.cal-day-cell.today {
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+.cal-day-cell.selected {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.25));
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    color: #FFFFFF;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.event-dot {
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+}
+
+.cal-agenda-card {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.agenda-time-badge {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38BDF8;
+    white-space: nowrap;
+}
+
+.agenda-content h4 {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.agenda-content p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="glass-calendar-widget">
+        <!-- Calendar Top Month Bar -->
+        <div class="cal-month-nav">
+            <div class="cal-month-title">
+                <span class="cal-month-name">September</span>
+                <span class="cal-year-num">2026</span>
+            </div>
+            <div class="cal-nav-buttons">
+                <button type="button" class="btn-cal-nav" id="btnPrevMonth"><i data-lucide="chevron-left"></i></button>
+                <button type="button" class="btn-cal-nav" id="btnNextMonth"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Day Names Row -->
+        <div class="cal-weekdays-row">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+        </div>
+
+        <!-- 7x5 Date Grid -->
+        <div class="cal-days-grid" id="daysGrid">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Selected Day Agenda Card -->
+        <div class="cal-agenda-card">
+            <div class="agenda-time-badge">14:00 - 15:30</div>
+            <div class="agenda-content">
+                <h4 id="agendaTitle">Agent Architecture Review</h4>
+                <p id="agendaMeta">Enclave cluster synchronization demo</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+const daysGrid = document.getElementById('daysGrid');
+const agendaTitle = document.getElementById('agendaTitle');
+const agendaMeta = document.getElementById('agendaMeta');
+
+const eventsMap = {
+    12: { title: 'Agent Architecture Review', meta: 'Enclave cluster synchronization demo' },
+    15: { title: 'Model Quantization Sprint', meta: 'FlashAttention-3 FP8 benchmark' },
+    24: { title: 'Mainnet Security Audit', meta: 'Zero-Knowledge verification check' }
+};
+
+let selectedDay = 12;
+
+function renderDays() {
+    daysGrid.innerHTML = '';
+    // Sep 2026 starts on Tuesday (1 offset)
+    // Prev month padding (31st of Aug)
+    const prevCell = document.createElement('div');
+    prevCell.className = 'cal-day-cell other-month';
+    prevCell.textContent = '31';
+    daysGrid.appendChild(prevCell);
+
+    for (let day = 1; day <= 30; day++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell';
+        if (day === 12) cell.classList.add('today');
+        if (day === selectedDay) cell.classList.add('selected');
+        cell.textContent = day;
+
+        if (eventsMap[day]) {
+            const dot = document.createElement('span');
+            dot.className = 'event-dot';
+            cell.appendChild(dot);
+        }
+
+        cell.addEventListener('click', () => {
+            document.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('selected'));
+            cell.classList.add('selected');
+            selectedDay = day;
+            if (eventsMap[day]) {
+                agendaTitle.textContent = eventsMap[day].title;
+                agendaMeta.textContent = eventsMap[day].meta;
+            } else {
+                agendaTitle.textContent = `Schedule for Sep ${day}`;
+                agendaMeta.textContent = 'No critical incidents scheduled';
+            }
+        });
+
+        daysGrid.appendChild(cell);
+    }
+}
+renderDays();
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

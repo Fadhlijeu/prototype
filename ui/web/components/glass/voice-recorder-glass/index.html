@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Glass Audio Voice Memo Capsule — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-voice-card">
+        <div class="voice-top-header">
+            <div class="voice-status-group">
+                <span class="recording-beacon active" id="beacon"></span>
+                <span class="voice-status-label" id="statusLabel">LIVE AUDIO STREAM</span>
+            </div>
+            <span class="voice-format-tag">FLAC • 48 kHz</span>
+        </div>
+
+        <!-- Live Sine Wave Canvas -->
+        <div class="voice-canvas-wrap">
+            <canvas id="voiceCanvas" width="340" height="70"></canvas>
+            <div class="voice-scan-line"></div>
+        </div>
+
+        <!-- Timeline Counter & Scrubber -->
+        <div class="voice-timing-row">
+            <span class="timer-digits" id="timerCount">00:18</span>
+            <div class="scrubber-track">
+                <div class="scrubber-progress" style="width: 32%;"></div>
+            </div>
+            <span class="timer-total">02:30</span>
+        </div>
+
+        <!-- Transcript Pill -->
+        <div class="transcript-preview-pill">
+            <i data-lucide="sparkles"></i>
+            <span class="transcript-text">"Synchronize Singapore edge nodes to consensus..."</span>
+        </div>
+
+        <!-- Audio Controls Deck -->
+        <div class="voice-controls-bar">
+            <button type="button" class="btn-audio-action" id="btnPauseVoice" title="Pause">
+                <i data-lucide="pause"></i>
+            </button>
+            <button type="button" class="btn-audio-record active" id="btnRecordToggle" title="Record">
+                <i data-lucide="mic" id="micIcon"></i>
+            </button>
+            <button type="button" class="btn-audio-action" id="btnStopVoice" title="Stop">
+                <i data-lucide="square"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

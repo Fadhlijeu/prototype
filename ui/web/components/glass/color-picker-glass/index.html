@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Glass Palette & Hue Picker — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-palette-card">
+        <div class="palette-header">
+            <div class="palette-title-group">
+                <i data-lucide="palette"></i>
+                <h3>Studio Color Synthesizer</h3>
+            </div>
+            <span class="contrast-badge ok" id="contrastBadge">AAA Contrast</span>
+        </div>
+
+        <!-- 2D Saturation/Lightness Gradient Canvas -->
+        <div class="color-field-container">
+            <canvas id="colorCanvas" width="330" height="130"></canvas>
+            <div class="picker-thumb" id="pickerThumb"></div>
+        </div>
+
+        <!-- Hue Spectrum Slider -->
+        <div class="hue-slider-wrap">
+            <input type="range" min="0" max="360" value="199" class="hue-slider" id="hueSlider">
+        </div>
+
+        <!-- Output Code & Swatches -->
+        <div class="color-output-row">
+            <div class="color-preview-swatch" id="swatchPreview"></div>
+            <div class="color-inputs-wrap">
+                <div class="code-box">
+                    <span class="code-prefix">HEX</span>
+                    <input type="text" id="hexInput" value="#38BDF8" readonly>
+                </div>
+                <button type="button" class="btn-copy-hex" id="btnCopyHex" title="Copy HEX">
+                    <i data-lucide="copy" id="copyIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Presets Palette -->
+        <div class="preset-swatches-row">
+            <button type="button" class="preset-dot active" style="background: #38BDF8;" data-hex="#38BDF8" title="Neon Cyan"></button>
+            <button type="button" class="preset-dot" style="background: #A855F7;" data-hex="#A855F7" title="Deep Violet"></button>
+            <button type="button" class="preset-dot" style="background: #10B981;" data-hex="#10B981" title="Emerald Mint"></button>
+            <button type="button" class="preset-dot" style="background: #F59E0B;" data-hex="#F59E0B" title="Electric Amber"></button>
+            <button type="button" class="preset-dot" style="background: #EC4899;" data-hex="#EC4899" title="Rose Quartz"></button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

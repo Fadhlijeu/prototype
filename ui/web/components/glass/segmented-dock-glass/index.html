@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Fluid Glass Segmented Dock — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="dock-showcase-wrapper">
+        <div class="dock-meta-tag">
+            <span class="dock-dot"></span>
+            <span class="dock-tag-text">ACTIVE WORKSPACE NAVIGATION</span>
+        </div>
+
+        <nav class="glass-segmented-dock" id="segmentedDock">
+            <div class="magnetic-indicator-pill" id="dockIndicator"></div>
+            
+            <button type="button" class="dock-item active" data-tab="overview">
+                <i data-lucide="layout-dashboard"></i>
+                <span class="dock-label">Overview</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="analytics">
+                <i data-lucide="bar-chart-2"></i>
+                <span class="dock-label">Analytics</span>
+                <span class="dock-badge">Live</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="workflows">
+                <i data-lucide="git-branch"></i>
+                <span class="dock-label">Workflows</span>
+                <span class="dock-badge count">3</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="security">
+                <i data-lucide="shield-check"></i>
+                <span class="dock-label">Security</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="settings">
+                <i data-lucide="sliders"></i>
+                <span class="dock-label">Settings</span>
+            </button>
+        </nav>
+
+        <div class="dock-feedback-card" id="dockFeedback">
+            <div class="feedback-icon" id="fbIcon"><i data-lucide="layout-dashboard"></i></div>
+            <div class="feedback-content">
+                <h4 id="fbTitle">Cluster Overview</h4>
+                <p id="fbDesc">Real-time status of active instances, health probes, and edge telemetry.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

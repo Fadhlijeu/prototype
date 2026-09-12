@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Glass 3D Radio Matrix Selector — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-radio-card">
+        <div class="radio-card-header">
+            <span class="radio-tag">INFERENCE ENGINE CONFIGURATION</span>
+            <h3>Precision & Quantization Mode</h3>
+        </div>
+
+        <div class="radio-options-column" role="radiogroup">
+            <!-- Option 1 -->
+            <label class="glass-radio-option active" data-val="balanced">
+                <input type="radio" name="precisionMode" value="balanced" checked>
+                <div class="radio-orb">
+                    <div class="orb-core"></div>
+                </div>
+                <div class="radio-info-block">
+                    <div class="radio-title-line">
+                        <span class="option-title">Balanced Quantization (W8A8)</span>
+                        <span class="option-pill best">RECOMMENDED</span>
+                    </div>
+                    <p class="option-desc">Optimal trade-off: 45 tokens/s on standard GPU nodes with near-zero loss in reasoning benchmarks.</p>
+                </div>
+            </label>
+
+            <!-- Option 2 -->
+            <label class="glass-radio-option" data-val="speed">
+                <input type="radio" name="precisionMode" value="speed">
+                <div class="radio-orb">
+                    <div class="orb-core"></div>
+                </div>
+                <div class="radio-info-block">
+                    <div class="radio-title-line">
+                        <span class="option-title">Ultra-High Velocity (Q4_K_M)</span>
+                        <span class="option-pill">110 TOK/S</span>
+                    </div>
+                    <p class="option-desc">Aggressive 4-bit edge memory footprint. Ideal for streaming UI agents and real-time chat loops.</p>
+                </div>
+            </label>
+
+            <!-- Option 3 -->
+            <label class="glass-radio-option" data-val="full">
+                <input type="radio" name="precisionMode" value="full">
+                <div class="radio-orb">
+                    <div class="orb-core"></div>
+                </div>
+                <div class="radio-info-block">
+                    <div class="radio-title-line">
+                        <span class="option-title">Full Precision (FP16 Uncompressed)</span>
+                        <span class="option-pill purple">RESEARCH</span>
+                    </div>
+                    <p class="option-desc">Maximum analytical fidelity for formal code verification and cryptographic audit routines.</p>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

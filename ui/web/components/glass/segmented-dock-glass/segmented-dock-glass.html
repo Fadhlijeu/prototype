@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Fluid Glass Segmented Dock — Glass Dark Standalone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <style>
+
+:root {
+    --bg-page: #08080C;
+    --glass-card: rgba(255, 255, 255, 0.06);
+    --glass-border-top: rgba(255, 255, 255, 0.24);
+    --glass-border-side: rgba(255, 255, 255, 0.10);
+    --glass-border-bottom: rgba(255, 255, 255, 0.04);
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.38);
+    --accent-cyan: #38BDF8;
+    --ease-spring: cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-color: var(--bg-page);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.dock-showcase-wrapper {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.dock-meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dock-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.dock-tag-text {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+}
+
+.glass-segmented-dock {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid transparent;
+    border-top-color: var(--glass-border-top);
+    border-left-color: var(--glass-border-side);
+    border-right-color: var(--glass-border-side);
+    border-bottom-color: var(--glass-border-bottom);
+    border-radius: 20px;
+    padding: 6px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    width: 100%;
+    overflow-x: auto;
+}
+
+.magnetic-indicator-pill {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(168, 85, 247, 0.18) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.35s var(--ease-spring);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.dock-item {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border-radius: 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.dock-item:hover {
+    color: var(--text-primary);
+}
+
+.dock-item.active {
+    color: #FFFFFF;
+}
+
+.dock-item svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s var(--ease-spring);
+}
+
+.dock-item.active svg {
+    transform: scale(1.12);
+    color: var(--accent-cyan);
+}
+
+.dock-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.dock-badge {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 999px;
+    background: #10B981;
+    color: #FFFFFF;
+    line-height: 1.2;
+    z-index: 5;
+}
+
+.dock-badge.count {
+    background: #38BDF8;
+}
+
+.dock-feedback-card {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.feedback-icon svg { width: 20px; height: 20px; }
+
+.feedback-content h4 {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.feedback-content p {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="dock-showcase-wrapper">
+        <div class="dock-meta-tag">
+            <span class="dock-dot"></span>
+            <span class="dock-tag-text">ACTIVE WORKSPACE NAVIGATION</span>
+        </div>
+
+        <nav class="glass-segmented-dock" id="segmentedDock">
+            <div class="magnetic-indicator-pill" id="dockIndicator"></div>
+            
+            <button type="button" class="dock-item active" data-tab="overview">
+                <i data-lucide="layout-dashboard"></i>
+                <span class="dock-label">Overview</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="analytics">
+                <i data-lucide="bar-chart-2"></i>
+                <span class="dock-label">Analytics</span>
+                <span class="dock-badge">Live</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="workflows">
+                <i data-lucide="git-branch"></i>
+                <span class="dock-label">Workflows</span>
+                <span class="dock-badge count">3</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="security">
+                <i data-lucide="shield-check"></i>
+                <span class="dock-label">Security</span>
+            </button>
+            <button type="button" class="dock-item" data-tab="settings">
+                <i data-lucide="sliders"></i>
+                <span class="dock-label">Settings</span>
+            </button>
+        </nav>
+
+        <div class="dock-feedback-card" id="dockFeedback">
+            <div class="feedback-icon" id="fbIcon"><i data-lucide="layout-dashboard"></i></div>
+            <div class="feedback-content">
+                <h4 id="fbTitle">Cluster Overview</h4>
+                <p id="fbDesc">Real-time status of active instances, health probes, and edge telemetry.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+const items = document.querySelectorAll('.dock-item');
+const indicator = document.getElementById('dockIndicator');
+
+const tabsData = {
+    overview: {
+        title: 'Cluster Overview',
+        desc: 'Real-time status of active instances, health probes, and edge telemetry.',
+        icon: 'layout-dashboard'
+    },
+    analytics: {
+        title: 'High-Throughput Analytics',
+        desc: 'Live streaming metrics: 82.4k req/sec with sub-5ms P99 latency.',
+        icon: 'bar-chart-2'
+    },
+    workflows: {
+        title: 'Autonomous Workflows',
+        desc: '3 agent pipelines currently executing tasks across Singapore and Tokyo.',
+        icon: 'git-branch'
+    },
+    security: {
+        title: 'Enclave Security Shield',
+        desc: 'Zero-knowledge verification active. Zero unauthorized attempts detected.',
+        icon: 'shield-check'
+    },
+    settings: {
+        title: 'System Preferences',
+        desc: 'Configure environment variables, API key rotation, and rate quotas.',
+        icon: 'sliders'
+    }
+};
+
+function updateIndicator(el) {
+    indicator.style.left = el.offsetLeft + 'px';
+    indicator.style.width = el.offsetWidth + 'px';
+}
+
+// Initial position
+const activeItem = document.querySelector('.dock-item.active');
+if (activeItem) {
+    setTimeout(() => updateIndicator(activeItem), 50);
+}
+
+items.forEach(item => {
+    item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        updateIndicator(item);
+
+        const tabKey = item.dataset.tab;
+        const data = tabsData[tabKey];
+        if (data) {
+            document.getElementById('fbTitle').textContent = data.title;
+            document.getElementById('fbDesc').textContent = data.desc;
+            const iconWrap = document.getElementById('fbIcon');
+            iconWrap.innerHTML = `<i data-lucide="${data.icon}"></i>`;
+            if (window.lucide) lucide.createIcons();
+        }
+    });
+});
+
+window.addEventListener('resize', () => {
+    const cur = document.querySelector('.dock-item.active');
+    if (cur) updateIndicator(cur);
+});
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

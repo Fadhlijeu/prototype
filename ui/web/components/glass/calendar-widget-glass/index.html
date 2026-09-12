@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Desk Calendar & Daily Planner — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-calendar-widget">
+        <!-- Calendar Top Month Bar -->
+        <div class="cal-month-nav">
+            <div class="cal-month-title">
+                <span class="cal-month-name">September</span>
+                <span class="cal-year-num">2026</span>
+            </div>
+            <div class="cal-nav-buttons">
+                <button type="button" class="btn-cal-nav" id="btnPrevMonth"><i data-lucide="chevron-left"></i></button>
+                <button type="button" class="btn-cal-nav" id="btnNextMonth"><i data-lucide="chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Day Names Row -->
+        <div class="cal-weekdays-row">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+        </div>
+
+        <!-- 7x5 Date Grid -->
+        <div class="cal-days-grid" id="daysGrid">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Selected Day Agenda Card -->
+        <div class="cal-agenda-card">
+            <div class="agenda-time-badge">14:00 - 15:30</div>
+            <div class="agenda-content">
+                <h4 id="agendaTitle">Agent Architecture Review</h4>
+                <p id="agendaMeta">Enclave cluster synchronization demo</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

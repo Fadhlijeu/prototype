@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Glass Filter Tag Cloud — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-tag-cloud-card">
+        <div class="tag-header">
+            <div class="tag-header-left">
+                <i data-lucide="tags"></i>
+                <h3>Telemetry Signal Tags</h3>
+            </div>
+            <span class="tag-counter" id="activeCount">5 Active</span>
+        </div>
+
+        <!-- Tag Cloud Area -->
+        <div class="tag-cloud-wrap" id="tagCloud">
+            <span class="glass-tag active" data-name="Production Enclave">
+                <span class="tag-glow-dot green"></span>
+                <span class="tag-name">Production Enclave</span>
+                <button type="button" class="btn-remove-tag"><i data-lucide="x"></i></button>
+            </span>
+            <span class="glass-tag active" data-name="Sub-15ms Latency">
+                <span class="tag-glow-dot cyan"></span>
+                <span class="tag-name">Sub-15ms Latency</span>
+                <button type="button" class="btn-remove-tag"><i data-lucide="x"></i></button>
+            </span>
+            <span class="glass-tag active" data-name="ZK Attested">
+                <span class="tag-glow-dot purple"></span>
+                <span class="tag-name">ZK Attested</span>
+                <button type="button" class="btn-remove-tag"><i data-lucide="x"></i></button>
+            </span>
+            <span class="glass-tag" data-name="WASM Runtime">
+                <span class="tag-glow-dot amber"></span>
+                <span class="tag-name">WASM Runtime</span>
+                <button type="button" class="btn-remove-tag"><i data-lucide="x"></i></button>
+            </span>
+            <span class="glass-tag" data-name="FlashAttention-3">
+                <span class="tag-glow-dot blue"></span>
+                <span class="tag-name">FlashAttention-3</span>
+                <button type="button" class="btn-remove-tag"><i data-lucide="x"></i></button>
+            </span>
+        </div>
+
+        <!-- Add Custom Tag Input -->
+        <div class="add-tag-box">
+            <input type="text" id="newTagInput" placeholder="Add custom filter tag (Press Enter)...">
+            <button type="button" class="btn-add-tag-action" id="btnAddTag">
+                <i data-lucide="plus"></i> Add
+            </button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

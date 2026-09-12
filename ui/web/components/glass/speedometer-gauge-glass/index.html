@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Glass Network Speedometer Gauge — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-speed-card">
+        <div class="speed-header">
+            <div class="speed-title-block">
+                <i data-lucide="gauge"></i>
+                <h3>Network Velocity Gauge</h3>
+            </div>
+            <span class="server-tag">Singapore Edge-01</span>
+        </div>
+
+        <!-- Gauge Visual Arc Stage -->
+        <div class="gauge-arc-stage">
+            <svg class="speedo-svg" viewBox="0 0 240 140">
+                <defs>
+                    <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#38BDF8"/>
+                        <stop offset="50%" stop-color="#818CF8"/>
+                        <stop offset="100%" stop-color="#EC4899"/>
+                    </linearGradient>
+                </defs>
+                <!-- Gray background arc: 180deg to 0deg (semicircle) -->
+                <path d="M 30,120 A 90,90 0 0,1 210,120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14" stroke-linecap="round"/>
+                <!-- Dynamic gradient arc -->
+                <path id="gaugePath" d="M 30,120 A 90,90 0 0,1 210,120" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="56"/>
+            </svg>
+
+            <!-- Center Digital Counter -->
+            <div class="speedo-center-readout">
+                <span class="speedo-val" id="speedoVal">842.6</span>
+                <span class="speedo-unit">Mbps</span>
+            </div>
+        </div>
+
+        <!-- Latency / Jitter Readouts -->
+        <div class="speedo-stats-row">
+            <div class="s-kpi">
+                <span class="s-lbl">DOWNLOAD</span>
+                <span class="s-val text-cyan" id="downVal">842.6 Mbps</span>
+            </div>
+            <div class="s-divider"></div>
+            <div class="s-kpi">
+                <span class="s-lbl">UPLOAD</span>
+                <span class="s-val text-purple">124.8 Mbps</span>
+            </div>
+            <div class="s-divider"></div>
+            <div class="s-kpi">
+                <span class="s-lbl">LATENCY</span>
+                <span class="s-val text-emerald">8 ms</span>
+            </div>
+        </div>
+
+        <button type="button" class="btn-test-speed" id="btnTestSpeed">
+            <i data-lucide="zap"></i> Start Speed Velocity Test
+        </button>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

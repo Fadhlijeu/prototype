@@ -20,17 +20,19 @@ with open(os.path.join(GLASS_DIR, "css.css"), "r", encoding="utf-8") as f:
     shared_css_code = f.read()
 
 glass_components_metadata = [
-    # --- 1. UI Kits (5 components) ---
+    # --- 1. UI Kits (6 components) ---
     ("ai-agent-scenery", "AI Agent Studio Scenery", "Complete Workspace Scenery", "Scenery", "uikits", "span-tall"),
     ("mobile-control-center-glass", "Mobile Control Center Shade", "System / Quick Settings", "Organism", "uikits", "span-tall"),
     ("glass-sidepanel", "Productivity Glass Sidepanel", "Navigation / Desktop Drawer", "Organism", "uikits", "span-tall"),
     ("glass-dock-navigation", "Floating Glass Dock", "Navigation / Spring Dock", "Molecule", "uikits", ""),
     ("avatar-badge-glass", "Glass Avatar with Status", "Display / Avatar", "Atomic", "uikits", ""),
+    ("segmented-dock-glass", "Magnetic Fluid Glass Segmented Dock", "Navigation / Dock", "Molecule", "uikits", ""),
 
-    # --- 2. Buttons (3 components) ---
+    # --- 2. Buttons (4 components) ---
     ("button-glass", "Glass Buttons Collection", "Action / Buttons", "Molecule", "buttons", ""),
     ("prompt-pills-row", "Prompt Pills Quick Scroller", "Chips / Action Pills", "Molecule", "buttons", ""),
     ("thinking-effort-selector", "Thinking Effort Selector", "Segmented Stepper", "Atomic", "buttons", ""),
+    ("radial-menu-glass", "Blooming Orbital Radial Glass FAB", "Action / Floating Button", "Molecule", "buttons", ""),
 
     # --- 3. Checkboxes (1 component) ---
     ("checkbox-glass", "Glass Checkbox & Radio", "Control / Checkbox", "Atomic", "checkboxes", ""),
@@ -38,31 +40,51 @@ glass_components_metadata = [
     # --- 4. Toggle switches (1 component) ---
     ("toggle-switch-glass", "Glass Toggle Switch", "Control / Switch", "Atomic", "toggles", ""),
 
-    # --- 5. Cards (4 components) ---
+    # --- 5. Cards (10 components) ---
     ("ai-model-selector", "AI Model Selector Card", "Selection Control", "Molecule", "cards", ""),
     ("frosted-folder-card", "Frosted Folder Card", "File System / Card", "Molecule", "cards", ""),
     ("aurora-storage-card", "Aurora Storage Card", "Data Display / Gauge", "Molecule", "cards", ""),
     ("telemetry-activity-chart", "Telemetry Activity Chart", "Analytics / Bar Histogram", "Molecule", "cards", ""),
+    ("credit-card-3d-glass", "3D Holographic Glass Card", "Fintech / Parallax Card", "Molecule", "cards", ""),
+    ("stat-trend-card", "Executive KPI & Trend Sparkline Card", "Analytics / Metric Card", "Molecule", "cards", ""),
+    ("calendar-widget-glass", "Glass Desk Calendar & Daily Planner", "Productivity / Calendar", "Molecule", "cards", ""),
+    ("pricing-tier-glass", "Enterprise Tier Glass Pricing Card", "Commerce / Pricing Plan", "Molecule", "cards", ""),
+    ("speedometer-gauge-glass", "Cyberpunk Glass Network Speedometer Gauge", "Diagnostics / Speedometer", "Organism", "cards", ""),
+    ("user-profile-glass", "Frosted Glass Executive Profile Card", "Social / Identity Card", "Molecule", "cards", ""),
 
-    # --- 6. Loaders (1 component) ---
+    # --- 6. Loaders (3 components) ---
     ("progress-bar-glass", "Glass Glowing Progress Bar", "Display / Progress", "Atomic", "loaders", ""),
+    ("circular-progress-glass", "Biometric Glass Radial Gauge", "Loaders / Radial Progress", "Molecule", "loaders", ""),
+    ("battery-status-glass", "Futuristic Glass Battery & Telemetry Capsule", "Loaders / Battery Status", "Molecule", "loaders", ""),
 
-    # --- 7. Inputs (3 components) ---
+    # --- 7. Inputs (5 components) ---
     ("input-field-glass", "Glass Form Input Fields", "Form / Inputs", "Molecule", "inputs", ""),
     ("chat-input-bar", "Glass Chat Input Bar", "Form Input / AI Prompt", "Molecule", "inputs", ""),
     ("dropdown-select-glass", "Glass Floating Dropdown", "Control / Select", "Molecule", "inputs", ""),
+    ("color-picker-glass", "Studio Glass Palette & Hue Picker", "Inputs / Color Picker", "Organism", "inputs", ""),
+    ("otp-input-glass", "6-Digit Glass Security OTP Keypad", "Inputs / Security Token", "Molecule", "inputs", ""),
 
-    # --- 8. Forms (2 components) ---
+    # --- 8. Radio buttons (1 component) ---
+    ("segmented-radio-glass", "Premium Glass 3D Radio Matrix Selector", "Control / Radio Matrix", "Molecule", "radio", ""),
+
+    # --- 9. Forms (5 components) ---
     ("modal-dialog-glass", "Glass Modal Dialog", "Overlay / Centered Dialog", "Molecule", "forms", ""),
     ("lockscreen-pin-glass", "Phone Lockscreen PIN Keypad", "Security / PIN Keypad", "Organism", "forms", "span-tall"),
+    ("accordion-glass", "Multi-Tier Frosted Glass Accordion", "Forms / Accordion", "Molecule", "forms", ""),
+    ("file-upload-glass", "Frosted Glass Drag & Drop File Zone", "Forms / File Upload", "Organism", "forms", ""),
+    ("stepper-wizard-glass", "Horizontal Glass Progression Wizard", "Forms / Step Wizard", "Molecule", "forms", ""),
 
-    # --- 9. Patterns (2 components) ---
+    # --- 10. Patterns (4 components) ---
     ("elastic-clock-glass", "Elastic Lockscreen Glass Clock", "Widget / Clock & Gestures", "Organism", "patterns", ""),
     ("swirl-bottom-sheet", "Swirl Refraction Bottom Sheet", "Overlay / Canvas 2D Refraction", "Organism", "patterns", ""),
+    ("audio-equalizer-glass", "Audio Synthesizer & Equalizer", "Patterns / Audio DSP", "Organism", "patterns", ""),
+    ("voice-recorder-glass", "Dynamic Glass Audio Voice Memo Capsule", "Patterns / Audio Recorder", "Organism", "patterns", ""),
 
-    # --- 10. Tooltips (2 components) ---
+    # --- 11. Tooltips (4 components) ---
     ("tooltip-glass", "Glass Micro Tooltip", "Feedback / Tooltip", "Atomic", "tooltips", ""),
-    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "tooltips", "")
+    ("toast-notification-glass", "Glass Toast Notification", "Feedback / Toast Alert", "Molecule", "tooltips", ""),
+    ("badge-group-glass", "Interactive Glass Filter Tag Cloud", "Tooltips / Tag Cloud", "Molecule", "tooltips", ""),
+    ("notification-bell-glass", "Interactive Glass Notification Bell & Popover", "Tooltips / Notification Flyout", "Molecule", "tooltips", "")
 ]
 
 glass_files_db = {"css.css": shared_css_code}
@@ -102,7 +124,13 @@ for folder, title, cat, badge, filter_cat, span_class in glass_components_metada
         ratio_attr = "9:16"
         ratio_class = "ratio-9-16"
         ratio_label = "9:16"
-    elif folder in ["button-glass", "toggle-switch-glass", "checkbox-glass", "dropdown-select-glass", "avatar-badge-glass", "thinking-effort-selector", "progress-bar-glass", "prompt-pills-row", "toast-notification-glass", "tooltip-glass", "glass-dock-navigation"]:
+    elif folder in [
+        "button-glass", "toggle-switch-glass", "checkbox-glass", "dropdown-select-glass",
+        "avatar-badge-glass", "thinking-effort-selector", "progress-bar-glass", "prompt-pills-row",
+        "toast-notification-glass", "tooltip-glass", "glass-dock-navigation", "radial-menu-glass",
+        "circular-progress-glass", "segmented-dock-glass", "calendar-widget-glass",
+        "badge-group-glass", "notification-bell-glass"
+    ]:
         ratio_attr = "1:1"
         ratio_class = "ratio-1-1"
         ratio_label = "1:1"
@@ -1275,7 +1303,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             </div>
             <div class="brand-text">
                 <h1>Proto<span>type</span> Glass Showcase</h1>
-                <p>24 Komponen Glass Dark Premium All-in-One Mandiri</p>
+                <p>{len(glass_components_metadata)} Komponen Glass Dark Premium All-in-One Mandiri</p>
             </div>
         </div>
 
@@ -1313,13 +1341,13 @@ glass_showcase_content = f"""<!DOCTYPE html>
     <div class="controls-bar">
         <div class="filter-tabs" id="filterTabs">
             <button class="filter-tab active" data-filter="all" onclick="filterCategory('all', this)" title="Tampilkan Semua Komponen">
-                <i data-lucide="book-open"></i> All <span class="tab-count">24</span>
+                <i data-lucide="book-open"></i> All <span class="tab-count">44</span>
             </button>
             <button class="filter-tab" data-filter="uikits" onclick="filterCategory('uikits', this)" title="Koleksi UI Kits Skala Penuh">
-                <i data-lucide="layout-grid"></i> UI Kits <span class="tab-badge-new">New</span> <span class="tab-count">5</span>
+                <i data-lucide="layout-grid"></i> UI Kits <span class="tab-badge-new">New</span> <span class="tab-count">6</span>
             </button>
             <button class="filter-tab" data-filter="buttons" onclick="filterCategory('buttons', this)" title="Koleksi Tombol Glass Dark">
-                <i data-lucide="play-circle"></i> Buttons <span class="tab-count">3</span>
+                <i data-lucide="play-circle"></i> Buttons <span class="tab-count">4</span>
             </button>
             <button class="filter-tab" data-filter="checkboxes" onclick="filterCategory('checkboxes', this)" title="Koleksi Checkbox">
                 <i data-lucide="check-circle-2"></i> Checkboxes <span class="tab-count">1</span>
@@ -1328,25 +1356,25 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <i data-lucide="arrow-left-right"></i> Toggle switches <span class="tab-count">1</span>
             </button>
             <button class="filter-tab" data-filter="cards" onclick="filterCategory('cards', this)" title="Koleksi Cards & Dashboard Widgets">
-                <i data-lucide="file-text"></i> Cards <span class="tab-count">4</span>
+                <i data-lucide="file-text"></i> Cards <span class="tab-count">10</span>
             </button>
             <button class="filter-tab" data-filter="loaders" onclick="filterCategory('loaders', this)" title="Koleksi Loaders & Progress Bars">
-                <i data-lucide="loader"></i> Loaders <span class="tab-count">1</span>
+                <i data-lucide="loader"></i> Loaders <span class="tab-count">3</span>
             </button>
             <button class="filter-tab" data-filter="inputs" onclick="filterCategory('inputs', this)" title="Koleksi Input Form & Fields">
-                <i data-lucide="binary"></i> Inputs <span class="tab-count">3</span>
+                <i data-lucide="binary"></i> Inputs <span class="tab-count">5</span>
             </button>
             <button class="filter-tab" data-filter="radio" onclick="filterCategory('radio', this)" title="Koleksi Radio Buttons">
                 <i data-lucide="disc"></i> Radio buttons <span class="tab-count">1</span>
             </button>
             <button class="filter-tab" data-filter="forms" onclick="filterCategory('forms', this)" title="Koleksi Form Overlays & Dialogs">
-                <i data-lucide="clipboard-list"></i> Forms <span class="tab-count">2</span>
+                <i data-lucide="clipboard-list"></i> Forms <span class="tab-count">5</span>
             </button>
             <button class="filter-tab" data-filter="patterns" onclick="filterCategory('patterns', this)" title="Koleksi Refraction Patterns & Widgets">
-                <i data-lucide="activity"></i> Patterns <span class="tab-count">2</span>
+                <i data-lucide="activity"></i> Patterns <span class="tab-count">4</span>
             </button>
             <button class="filter-tab" data-filter="tooltips" onclick="filterCategory('tooltips', this)" title="Koleksi Tooltips & Toast Alerts">
-                <i data-lucide="help-circle"></i> Tooltips <span class="tab-count">2</span>
+                <i data-lucide="help-circle"></i> Tooltips <span class="tab-count">4</span>
             </button>
             <button type="button" class="filter-tab btn-randomize" onclick="randomizeGrid()" title="Acak urutan komponen secara dinamis">
                 <i data-lucide="shuffle"></i> Randomize

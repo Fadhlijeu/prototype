@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frosted Glass Drag & Drop File Zone — Glass Dark Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="glass-upload-card">
+        <div class="upload-header">
+            <div class="upload-title-box">
+                <i data-lucide="cloud-upload"></i>
+                <h3>Enclave File Transfer</h3>
+            </div>
+            <span class="upload-limit-badge">AES-256 GCM</span>
+        </div>
+
+        <!-- Dropzone Area -->
+        <div class="glass-dropzone" id="dropzone">
+            <div class="dropzone-ambient-glow"></div>
+            <div class="dropzone-icon">
+                <i data-lucide="upload-cloud"></i>
+            </div>
+            <div class="dropzone-text">
+                <p class="primary-text">Drag & drop neural weights or datasets</p>
+                <p class="secondary-text">Supported: .safetensors, .parquet, .onnx up to 500 MB</p>
+            </div>
+            <button type="button" class="btn-browse-file" id="btnBrowse">Browse Files</button>
+            <input type="file" id="realFileInput" style="display: none;">
+        </div>
+
+        <!-- Active File Queue Item -->
+        <div class="file-queue-list" id="fileQueue">
+            <div class="queue-item" id="demoFileItem">
+                <div class="file-type-icon"><i data-lucide="file-code"></i></div>
+                <div class="file-info-col">
+                    <div class="file-name-row">
+                        <span class="file-name">llama_3_8b_q4_k_m.gguf</span>
+                        <span class="file-progress-pct" id="filePct">74%</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="fileFill" style="width: 74%;"></div>
+                    </div>
+                    <div class="file-meta-row">
+                        <span>4.2 GB of 5.8 GB • 42 MB/s</span>
+                        <span class="eta-text">ETA: 38s</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-cancel-file" id="btnCancelFile" title="Cancel">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="button" class="btn-add-demo-file" id="btnAddDemo">
+            <i data-lucide="plus"></i> Add Verified Dataset Chip
+        </button>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>
