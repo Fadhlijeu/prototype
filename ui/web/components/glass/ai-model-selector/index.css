@@ -97,33 +97,6 @@ body {
     color: var(--accent-cyan);
 }
 
-.btn-shuffle {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: var(--text-secondary);
-    font-size: 11.5px;
-    font-weight: 500;
-    padding: 4px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.2s ease;
-}
-
-.btn-shuffle:hover {
-    background: rgba(56, 189, 248, 0.2);
-    border-color: rgba(56, 189, 248, 0.4);
-    color: var(--text-primary);
-    transform: scale(1.04);
-}
-
-.btn-shuffle svg {
-    width: 13px;
-    height: 13px;
-}
-
 .model-list {
     position: relative;
     z-index: 1;

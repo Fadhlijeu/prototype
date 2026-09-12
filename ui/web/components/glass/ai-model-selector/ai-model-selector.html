@@ -117,34 +117,7 @@
             color: var(--accent-cyan);
         }
 
-        .btn-shuffle {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-secondary);
-            font-size: 11.5px;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-shuffle:hover {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: rgba(56, 189, 248, 0.4);
-            color: var(--text-primary);
-            transform: scale(1.04);
-        }
-
-        .btn-shuffle svg {
-            width: 13px;
-            height: 13px;
-        }
-
-        .model-list {
+.model-list {
             position: relative;
             z-index: 1;
             display: flex;
@@ -255,10 +228,6 @@
                     <i data-lucide="cpu"></i>
                     <span>Pilih Arsitektur Model AI</span>
                 </div>
-                <button type="button" class="btn-shuffle" onclick="shuffleModels()" title="Acak urutan & pilihan model">
-                    <i data-lucide="shuffle"></i>
-                    <span>Acak</span>
-                </button>
             </div>
 
             <div class="model-list" id="modelList">
@@ -315,40 +284,6 @@
         function selectModel(el) {
             document.querySelectorAll('.model-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
-        }
-
-        const modelPool = [
-            { name: "Nexus Core 4.0", tag: "Flagship", desc: "Penalaran kognitif otonom & sintesis multi-modal" },
-            { name: "Hyperion Synthetix", tag: "Deep Math", desc: "Penyelesaian logika tingkat lanjut & verifikasi kode" },
-            { name: "Chronos Flash", tag: "Fast Edge", desc: "Inferensi ultra-cepat sub-detik untuk chat real-time" },
-            { name: "Vortex Swarm", tag: "Multi-Agent", desc: "Koordinasi paralel agen terdistribusi & pencarian masif" },
-            { name: "Aether Quantum", tag: "Reflection", desc: "Sistem penalaran berbobot dengan loop koreksi mandiri" },
-            { name: "Pulse Neural", tag: "Streaming", desc: "Arsitektur hemat daya dengan latensi nol untuk perangkat lokal" }
-        ];
-
-        function shuffleModels() {
-            const shuffled = [...modelPool].sort(() => 0.5 - Math.random()).slice(0, 4);
-            const container = document.getElementById('modelList');
-            container.innerHTML = '';
-
-            shuffled.forEach((m, idx) => {
-                const item = document.createElement('div');
-                item.className = `model-item ${idx === 0 ? 'active' : ''}`;
-                item.onclick = function() { selectModel(this); };
-                item.innerHTML = `
-                    <div class="model-info">
-                        <div class="model-title-row">
-                            <span class="model-title">${m.name}</span>
-                            <span class="model-tag">${m.tag}</span>
-                        </div>
-                        <span class="model-subtitle">${m.desc}</span>
-                    </div>
-                    <i data-lucide="check" class="checkmark"></i>
-                `;
-                container.appendChild(item);
-            });
-
-            lucide.createIcons();
         }
     </script>
 </body>
