@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dot = document.getElementById('mainStatusDot');
         const dotText = document.getElementById('liveDotText');
         const label = document.getElementById('statusLabel');
-        const modeBold = document.getElementById('modeBoldText');
-        const latencyTag = document.getElementById('latencyTag');
 
         if (dot) {
             dot.style.background = state.color;
@@ -33,14 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (label) {
             label.textContent = state.label;
-        }
-        if (modeBold) {
-            modeBold.textContent = state.name;
-            modeBold.style.color = state.color;
-        }
-        if (latencyTag) {
-            const lat = Math.floor(Math.random() * 12) + 12;
-            latencyTag.innerHTML = `Latency: <b>${lat}ms</b>`;
         }
     }
 

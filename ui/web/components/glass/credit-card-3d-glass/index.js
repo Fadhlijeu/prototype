@@ -1,7 +1,6 @@
 const scene = document.getElementById('cardScene');
 const flipper = document.getElementById('cardFlipper');
 const foil = document.getElementById('cardFoil');
-const btnFlip = document.getElementById('btnFlipCard');
 
 let isFlipped = false;
 
@@ -28,16 +27,8 @@ scene.addEventListener('mouseleave', () => {
     }
 });
 
-// Flip Button
-btnFlip.addEventListener('click', () => {
+// Flip card on click
+scene.addEventListener('click', () => {
     isFlipped = !isFlipped;
     flipper.classList.toggle('flipped', isFlipped);
-});
-
-// Currency Switcher
-document.querySelectorAll('.btn-curr').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn-curr').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    });
 });

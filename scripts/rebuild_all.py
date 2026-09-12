@@ -331,21 +331,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
             font-size: 9px; font-weight: 700; text-transform: uppercase;
             color: #F87171; background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 1px 4px; border-radius: 4px; letter-spacing: 0.02em;
-        }}
-        .btn-randomize {{
-            color: #38BDF8 !important;
-            border: 1px solid rgba(56, 189, 248, 0.25) !important;
-            background: rgba(56, 189, 248, 0.06) !important;
-            margin-left: 4px;
-        }}
-        .btn-randomize:hover {{
-            background: rgba(56, 189, 248, 0.15) !important;
-            border-color: rgba(56, 189, 248, 0.5) !important;
-            color: #FFFFFF !important;
-            transform: translateY(-1px);
-        }}
-
         .controls-right {{ display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }}
 
         /* Layout Switcher (1, 2, 3, 4, Auto Kolom) */
@@ -1376,9 +1361,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
             <button class="filter-tab" data-filter="tooltips" onclick="filterCategory('tooltips', this)" title="Koleksi Tooltips & Toast Alerts">
                 <i data-lucide="help-circle"></i> Tooltips <span class="tab-count">4</span>
             </button>
-            <button type="button" class="filter-tab btn-randomize" onclick="randomizeGrid()" title="Acak urutan komponen secara dinamis">
-                <i data-lucide="shuffle"></i> Randomize
-            </button>
         </div>
 
         <div class="controls-right">
@@ -1596,31 +1578,6 @@ glass_showcase_content = f"""<!DOCTYPE html>
                     card.style.display = 'none';
                 }}
             }});
-        }}
-
-        function randomizeGrid() {{
-            const grid = document.getElementById('componentsGrid');
-            if (!grid) return;
-            const cards = Array.from(grid.children);
-            if (cards.length <= 1) return;
-            
-            grid.style.opacity = '0.35';
-            grid.style.transform = 'scale(0.995)';
-            grid.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-
-            setTimeout(() => {{
-                for (let i = cards.length - 1; i > 0; i--) {{
-                    const j = Math.floor(Math.random() * (i + 1));
-                    const temp = cards[i];
-                    cards[i] = cards[j];
-                    cards[j] = temp;
-                }}
-                cards.forEach(card => grid.appendChild(card));
-                
-                grid.style.opacity = '1';
-                grid.style.transform = 'scale(1)';
-                showToast('Urutan komponen berhasil diacak (Randomized)');
-            }}, 180);
         }}
 
         function handleSearch(query) {{

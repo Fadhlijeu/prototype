@@ -288,43 +288,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Section 3: Status State Toggles */
-        /* Live Agent Telemetry Footer */
-        .agent-telemetry-panel {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .telemetry-chip {
-            flex: 1;
-            padding: 6px 8px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-secondary);
-            font-size: 11px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        .telemetry-chip svg {
-            width: 12px;
-            height: 12px;
-            color: var(--accent-cyan);
-        }
-
-        .telemetry-chip b {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
         @media (max-width: 280px) {
             body { padding: 4px; }
             .avatar-card-container { padding: 12px 10px; gap: 10px; border-radius: 18px; }
@@ -385,24 +348,6 @@
                 <div class="stack-item agent-more" title="Lihat 4 agen lainnya">+4</div>
             </div>
         </div>
-
-        <div class="card-divider"></div>
-
-        <!-- Live Agent Telemetry (Zero dummy buttons, autonomous status!) -->
-        <div class="agent-telemetry-panel">
-            <div class="telemetry-chip">
-                <i data-lucide="cpu"></i>
-                <span id="latencyTag">Latency: <b>18ms</b></span>
-            </div>
-            <div class="telemetry-chip">
-                <i data-lucide="shield-check"></i>
-                <span>Enclave: <b>Active</b></span>
-            </div>
-            <div class="telemetry-chip">
-                <i data-lucide="activity"></i>
-                <span id="modeCycleTag">Mode: <b id="modeBoldText">Online</b></span>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -422,8 +367,6 @@
             const dot = document.getElementById('mainStatusDot');
             const dotText = document.getElementById('liveDotText');
             const label = document.getElementById('statusLabel');
-            const modeBold = document.getElementById('modeBoldText');
-            const latencyTag = document.getElementById('latencyTag');
 
             if (dot) {
                 dot.style.background = state.color;
@@ -435,14 +378,6 @@
             }
             if (label) {
                 label.textContent = state.label;
-            }
-            if (modeBold) {
-                modeBold.textContent = state.name;
-                modeBold.style.color = state.color;
-            }
-            if (latencyTag) {
-                const lat = Math.floor(Math.random() * 12) + 12;
-                latencyTag.innerHTML = `Latency: <b>${lat}ms</b>`;
             }
         }
 

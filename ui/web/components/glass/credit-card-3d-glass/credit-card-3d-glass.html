@@ -301,63 +301,6 @@ body {
     color: #FFFFFF;
 }
 
-/* Controls */
-.card-interactive-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 370px;
-    gap: 10px;
-}
-
-.btn-flip-card {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 14px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #FFFFFF;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-flip-card:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-}
-
-.btn-flip-card svg { width: 14px; height: 14px; }
-
-.currency-switch {
-    display: flex;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    padding: 2px;
-}
-
-.btn-curr {
-    padding: 5px 9px;
-    font-size: 11px;
-    font-weight: 600;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-curr.active {
-    background: rgba(56, 189, 248, 0.2);
-    color: #38BDF8;
-}
-
     </style>
 </head>
 <body>
@@ -429,18 +372,6 @@ body {
                 </div>
             </div>
         </div>
-
-        <!-- Controls Toolbar -->
-        <div class="card-interactive-controls">
-            <button type="button" class="btn-flip-card" id="btnFlipCard">
-                <i data-lucide="rotate-cw"></i> Flip Card (CVV)
-            </button>
-            <div class="currency-switch">
-                <button type="button" class="btn-curr active" data-cur="USD">$ USD</button>
-                <button type="button" class="btn-curr" data-cur="IDR">Rp IDR</button>
-                <button type="button" class="btn-curr" data-cur="EUR">€ EUR</button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -448,7 +379,6 @@ body {
 const scene = document.getElementById('cardScene');
 const flipper = document.getElementById('cardFlipper');
 const foil = document.getElementById('cardFoil');
-const btnFlip = document.getElementById('btnFlipCard');
 
 let isFlipped = false;
 
@@ -475,18 +405,10 @@ scene.addEventListener('mouseleave', () => {
     }
 });
 
-// Flip Button
-btnFlip.addEventListener('click', () => {
+// Flip card on click
+scene.addEventListener('click', () => {
     isFlipped = !isFlipped;
     flipper.classList.toggle('flipped', isFlipped);
-});
-
-// Currency Switcher
-document.querySelectorAll('.btn-curr').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn-curr').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    });
 });
 
         if (window.lucide) lucide.createIcons();

@@ -43,31 +43,6 @@ body {
     gap: 20px;
 }
 
-.dock-meta-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.dock-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-cyan);
-    box-shadow: 0 0 8px var(--accent-cyan);
-}
-
-.dock-tag-text {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--text-secondary);
-}
-
 .glass-segmented-dock {
     position: relative;
     display: flex;
@@ -208,11 +183,6 @@ body {
 <body>
 
     <div class="dock-showcase-wrapper">
-        <div class="dock-meta-tag">
-            <span class="dock-dot"></span>
-            <span class="dock-tag-text">ACTIVE WORKSPACE NAVIGATION</span>
-        </div>
-
         <nav class="glass-segmented-dock" id="segmentedDock">
             <div class="magnetic-indicator-pill" id="dockIndicator"></div>
             
