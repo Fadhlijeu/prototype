@@ -1,18 +1,160 @@
 /* ==========================================================================
-   COMPANION GUIDE & FERALUI BLOB STYLES
+   TATA COMPANION & FERALUI BLOB STYLES
    Playful, physics-driven jelly mascot with frosted glass speech bubble,
-   diagonal corner peeking, and interactive spotlight tour.
+   fullscreen introduction backdrop blur, wandering walks, and mobile ergonomics.
    ========================================================================== */
 
 :root {
-    --gelly-cyan: #38BDF8;
-    --gelly-indigo: #6366F1;
-    --gelly-purple: #8B5CF6;
-    --gelly-glow: rgba(56, 189, 248, 0.35);
+    --tata-cyan: #38BDF8;
+    --tata-indigo: #6366F1;
+    --tata-purple: #8B5CF6;
+    --tata-glow: rgba(56, 189, 248, 0.35);
 }
 
 /* --------------------------------------------------------------------------
-   1. Corner Blob Wrapper (Peeking diagonally from bottom-right)
+   1. Grand Introduction Modal & Fullscreen Website Blur
+   -------------------------------------------------------------------------- */
+.tata-intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100010;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(4, 6, 14, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
+}
+
+.tata-intro-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tata-intro-card {
+    position: relative;
+    max-width: 440px;
+    width: 100%;
+    background: rgba(13, 17, 28, 0.85);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top-color: rgba(56, 189, 248, 0.55);
+    border-radius: 28px;
+    padding: 28px 24px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 36px rgba(56, 189, 248, 0.22);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.5s cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+.tata-intro-overlay.active .tata-intro-card {
+    transform: scale(1) translateY(0);
+}
+
+.tata-intro-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #38BDF8, #6366F1 65%, #4C1D95);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 28px rgba(56, 189, 248, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    animation: tataAvatarFloat 3s infinite ease-in-out;
+}
+
+@keyframes tataAvatarFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(4deg); }
+}
+
+.tata-intro-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #38BDF8;
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tata-intro-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.3;
+}
+
+.tata-intro-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tata-intro-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 6px;
+}
+
+.tata-intro-actions button {
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-intro-primary {
+    background: linear-gradient(135deg, #0284C7, #6366F1);
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 4px 18px rgba(2, 132, 199, 0.45);
+}
+
+.btn-intro-primary:hover {
+    background: linear-gradient(135deg, #0EA5E9, #818CF8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(14, 165, 233, 0.55);
+}
+
+.btn-intro-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-intro-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   2. Corner Blob Wrapper (Peeking diagonally from bottom-right)
    -------------------------------------------------------------------------- */
 .gelly-companion-container {
     position: fixed;
@@ -21,13 +163,23 @@
     width: 140px;
     height: 140px;
     z-index: 99990;
-    pointer-events: none; /* Allows clicks to pass through transparent areas */
+    pointer-events: none;
     user-select: none;
-    transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+    transition: bottom 1.4s cubic-bezier(0.25, 1, 0.5, 1), right 1.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1);
 }
 
+/* When minimized: Tata doesn't disappear! Her eyes and top body stay peeking gently */
 .gelly-companion-container.minimized {
-    transform: translate(52px, 52px);
+    transform: translate(32px, 32px) scale(0.9);
+}
+
+/* Wandering state: crawling or hopping upwards */
+.gelly-companion-container.walking {
+    pointer-events: none;
+}
+
+.gelly-companion-container.returning {
+    transition: bottom 0.65s cubic-bezier(0.34, 1.35, 0.64, 1), right 0.65s cubic-bezier(0.34, 1.35, 0.64, 1), transform 0.45s cubic-bezier(0.34, 1.35, 0.64, 1) !important;
 }
 
 /* The interactive canvas where physics jelly blob is rendered */
@@ -44,7 +196,20 @@
     filter: drop-shadow(0 10px 30px rgba(56, 189, 248, 0.45)) drop-shadow(0 16px 36px rgba(0, 0, 0, 0.6));
 }
 
-/* Unread Tip Ping Indicator on Gelly */
+/* Theme Adaptations on Canvas Aura */
+.page-theme-glass .gelly-canvas {
+    filter: drop-shadow(0 8px 24px rgba(56, 189, 248, 0.35)) drop-shadow(0 14px 32px rgba(0, 0, 0, 0.5));
+}
+
+.page-theme-webapps .gelly-canvas {
+    filter: drop-shadow(0 8px 24px rgba(6, 182, 212, 0.4)) drop-shadow(0 14px 32px rgba(0, 0, 0, 0.5));
+}
+
+.page-theme-raw .gelly-canvas {
+    filter: drop-shadow(0 8px 24px rgba(96, 165, 250, 0.3)) drop-shadow(0 14px 32px rgba(0, 0, 0, 0.5));
+}
+
+/* Unread Tip Ping Indicator on Tata */
 .gelly-ping-dot {
     position: absolute;
     top: 24px;
@@ -71,13 +236,13 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Frosted Glass Speech Bubble
+   3. Frosted Glass Speech Bubble (Translucent & Non-Intrusive)
    -------------------------------------------------------------------------- */
 .gelly-bubble-wrapper {
     position: fixed;
     bottom: 125px;
     right: 24px;
-    width: min(360px, calc(100vw - 48px));
+    width: min(350px, calc(100vw - 44px));
     z-index: 99995;
     pointer-events: auto;
     opacity: 0;
@@ -93,38 +258,39 @@
     transform: translateY(0) scale(1);
 }
 
+/* Ultra-translucent dark glass so background elements remain visible */
 .gelly-bubble {
     position: relative;
-    background: rgba(13, 16, 26, 0.88);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border-radius: 22px;
-    padding: 16px 18px 14px;
+    background: rgba(10, 13, 24, 0.58);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 20px;
+    padding: 14px 16px 12px;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-top-color: rgba(255, 255, 255, 0.28);
+    border-top-color: rgba(255, 255, 255, 0.25);
     box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.65),
-        0 0 24px rgba(56, 189, 248, 0.12),
-        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        0 16px 36px rgba(0, 0, 0, 0.5),
+        0 0 22px rgba(56, 189, 248, 0.12),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12);
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
 }
 
-/* Little tail pointing down-right toward Gelly */
+/* Little tail pointing down-right toward Tata */
 .gelly-bubble::after {
     content: '';
     position: absolute;
-    bottom: -9px;
-    right: 36px;
-    width: 18px;
-    height: 18px;
-    background: rgba(13, 16, 26, 0.9);
+    bottom: -8px;
+    right: 34px;
+    width: 16px;
+    height: 16px;
+    background: rgba(10, 13, 24, 0.65);
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     transform: rotate(45deg);
-    border-radius: 0 0 4px 0;
+    border-radius: 0 0 3px 0;
 }
 
 /* Bubble Header */
@@ -144,8 +310,8 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #38BDF8;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.25);
+    background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     padding: 3px 8px;
     border-radius: 999px;
 }
@@ -173,7 +339,7 @@
 .gelly-tool-btn {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.55);
     cursor: pointer;
     padding: 4px;
     border-radius: 6px;
@@ -185,7 +351,7 @@
 
 .gelly-tool-btn:hover {
     color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .gelly-tool-btn svg {
@@ -197,20 +363,20 @@
 .gelly-bubble-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
 .gelly-title {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     color: #F8FAFC;
     line-height: 1.35;
 }
 
 .gelly-message {
-    font-size: 12.5px;
+    font-size: 12px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.82);
 }
 
 .gelly-message strong {
@@ -218,11 +384,11 @@
     font-weight: 600;
 }
 
-/* Quick Topic Pills Row */
+/* Quick Topic Pills Row (No manual Basa-Basi button, automatic banter!) */
 .gelly-topics-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     flex-wrap: wrap;
     padding-top: 4px;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -231,10 +397,10 @@
 .gelly-topic-pill {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 11px;
-    padding: 4px 9px;
-    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 10.5px;
+    padding: 4px 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -254,17 +420,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    padding-top: 6px;
+    gap: 6px;
+    padding-top: 4px;
 }
 
 .gelly-btn-action {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 6px 13px;
-    border-radius: 10px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 9px;
+    font-size: 11.5px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -307,7 +473,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Interactive Spotlight Highlighting (Crystal Clear Cutout, No Blur)
+   4. Interactive Spotlight Highlighting (Crystal Clear Cutout, Zero Blur)
    -------------------------------------------------------------------------- */
 .gelly-spotlight-overlay {
     position: fixed;
@@ -316,12 +482,12 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease;
-    background: transparent; /* No blur over target element! */
+    background: transparent;
 }
 
 .gelly-spotlight-overlay.active {
     opacity: 1;
-    pointer-events: auto; /* Click overlay to dismiss spotlight */
+    pointer-events: auto;
 }
 
 /* Pulsing highlight frame with box-shadow dimming outside */
@@ -376,7 +542,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. Mobile Responsiveness & Touch Ergonomics (Designed for Small Screens)
+   5. Mobile Responsiveness & Touch Ergonomics (Designed for Small Screens)
    -------------------------------------------------------------------------- */
 @media (max-width: 680px) {
     .gelly-companion-container {
@@ -397,9 +563,9 @@
         max-width: calc(100vw - 20px);
     }
     .gelly-bubble {
-        padding: 14px 14px 12px;
+        padding: 12px 14px 10px;
         border-radius: 18px;
-        max-height: 68vh;
+        max-height: 65vh;
         overflow-y: auto;
     }
     .gelly-bubble::after {
@@ -409,22 +575,22 @@
         height: 14px;
     }
     .gelly-title {
-        font-size: 13.5px;
+        font-size: 13px;
     }
     .gelly-message {
-        font-size: 12px;
+        font-size: 11.5px;
         line-height: 1.45;
     }
     .gelly-topic-pill {
-        font-size: 10.5px;
-        padding: 4px 8px;
+        font-size: 10px;
+        padding: 4px 7px;
     }
     .gelly-actions-footer {
         padding-top: 4px;
     }
     .gelly-btn-action {
-        padding: 8px 12px;
-        font-size: 12px;
+        padding: 7px 11px;
+        font-size: 11.5px;
         min-height: 38px;
     }
     .gelly-pointer-badge {
