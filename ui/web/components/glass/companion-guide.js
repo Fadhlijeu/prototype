@@ -3,24 +3,24 @@
  * TATA — Interactive Physics-Driven Blob Companion & Guidance System
  * Inspired by FeralUI playful physics elements (https://feralui.dev/blob)
  * 
- * Features:
- * - Mascot official name: "TATA"
- * - Full English casual conversational dialogues & short playful yappings
- * - Dramatic first-time fullscreen website backdrop blur introduction
- * - Active mobile touch tracking (touchstart/touchmove follows user's finger)
- * - Page-adaptive theme colors (Glass, Web Apps, Raw Semantic, Gateway)
- * - Zero idle jiggle: calm and stable when still; only jiggles when walking!
- * - Super slow, gentle, relaxing walking motion along screen edge
- * - Instant playful slide return when tapped during walking ("Eep! You caught me!")
- * - Non-disappearing peek minimize (eyes keep watching and blinking)
- * - Ultra-translucent glass speech popup with minimal buttons to prevent confusion
+ * New Upgrades:
+ * - Auto-advancing guidance with smooth delays (NO Next button, NO Focus button)
+ * - Typewriter text effect with synchronized mouth movement
+ * - Edge Drag & Drop: Drag Tata vertically; snaps to screen edges
+ * - Disappointed pout reaction if user picks "Explore Myself"
+ * - Auto-wander when minimized or after guidance finishes
+ * - Zero idle jiggle: completely calm and stable when still
+ * - Ultra-slow, relaxing jiggle walk
+ * - Single-time site intro bug fix (does NOT re-trigger on page switch)
+ * - Finished tour leads to friendly help menu (does NOT loop back)
+ * - Mobile check: skips desktop-only column selector on small screens
+ * - Plain bubble header without name tag
  * ==========================================================================
  */
 
 (function () {
     'use strict';
 
-    // Prevent duplicate initialization
     if (window.__TATA_COMPANION_INITIALIZED__) return;
     window.__TATA_COMPANION_INITIALIZED__ = true;
 
@@ -42,9 +42,7 @@
         try {
             initAudio();
             if (!audioCtx) return;
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
@@ -78,7 +76,6 @@
                 osc.start(now);
                 osc.stop(now + 0.14);
             } else if (type === 'slide') {
-                // Cartoon slide whistle return sound
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(650, now);
                 osc.frequency.exponentialRampToValueAtTime(220, now + 0.3);
@@ -86,14 +83,20 @@
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
                 osc.start(now);
                 osc.stop(now + 0.35);
+            } else if (type === 'sad') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(420, now);
+                osc.frequency.exponentialRampToValueAtTime(280, now + 0.25);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+                osc.start(now);
+                osc.stop(now + 0.3);
             }
-        } catch (e) {
-            // Audio policy or unsupported fallback
-        }
+        } catch (e) {}
     }
 
     /* --------------------------------------------------------------------------
-       2. PAGE IDENTIFICATION & THEME ADAPTATION
+       2. PAGE IDENTIFICATION & THEME
        -------------------------------------------------------------------------- */
     const path = window.location.pathname.toLowerCase();
     const isGlassShowcase = path.includes('glass/showcase.html') || (path.includes('showcase.html') && !path.includes('raw'));
@@ -108,228 +111,130 @@
 
     document.body.classList.add(`page-theme-${currentPageKey}`);
 
-    const pageGreetings = {
-        gateway: {
-            title: "HIII! I'm Tata 👋",
-            message: "Welcome to <strong>Prototype Gateway</strong>! Curious about what this website is? It connects 44 glass components, standalone web apps, and raw HTML. Want a quick tour?",
-            badge: "Gateway Portal"
-        },
-        glass: {
-            title: "HIII! I'm Tata 👋",
-            message: "Welcome to the <strong>Glass Showroom</strong>! 44 dark glass components live here. Curious to see how it works, or want to test the <strong>Randomize</strong> button?",
-            badge: "Glass Showroom"
-        },
-        webapps: {
-            title: "HIII! I'm Tata 👋",
-            message: "You made it to <strong>Web Applications Studio</strong>! These are full working apps, not just isolated snippets. Try toggling between <strong>Mobile</strong> and <strong>Desktop</strong> viewports!",
-            badge: "Web Apps Studio"
-        },
-        raw: {
-            title: "HIII! I'm Tata 👋",
-            message: "Welcome to <strong>Raw HTML Showcase</strong>! Pure semantic HTML5 components with zero CSS, perfect for structural and accessibility reference.",
-            badge: "Raw Semantic"
-        }
-    };
-
     /* --------------------------------------------------------------------------
-       3. CASUAL SHORT YAPPINGS & FUN FACTS (Pure natural dialogue, no buttons!)
+       3. CASUAL SHORT YAPPINGS & FUN FACTS
        -------------------------------------------------------------------------- */
     const casualDialogues = [
-        {
-            title: "hi.",
-            message: "just wanted to say hi.",
-            expression: 'happy'
-        },
-        {
-            title: "Hello beauty... ✨",
-            message: "You're looking sharp today! What kind of cool web stuff are we building?",
-            expression: 'wink'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "All 44 components here are 100% standalone—no npm, no node_modules, no build tools required!",
-            expression: 'surprised'
-        },
-        {
-            title: "staring contest 👀",
-            message: "3... 2... 1... ha! You blinked first! Don't worry, my eyes are always open.",
-            expression: 'laugh'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "The Randomize button shuffles all 44 component cards into a fresh layout in a blink!",
-            expression: 'happy'
-        },
-        {
-            title: "poke me! 🫧",
-            message: "poke me again and I might wobble for you! I'm made of squishy jelly.",
-            expression: 'happy'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "Glassmorphism uses real-time backdrop blur to guide focus directly to your primary content.",
-            expression: 'ponder'
-        },
-        {
-            title: "just vibing ☕",
-            message: "just hanging out in the corner, don't mind me. Take your time exploring.",
-            expression: 'ponder'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "Clicking 'Full' on any card unlocks a live interactive sandbox with device resizers.",
-            expression: 'surprised'
-        },
-        {
-            title: "bloop bloop 🫧",
-            message: "bloop bloop bloop... okay, I'm done. Back to serious coding mode!",
-            expression: 'laugh'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "Dark mode actually saves battery life on OLED and AMOLED phone screens!",
-            expression: 'happy'
-        },
-        {
-            title: "hey you!",
-            message: "take a sip of water and stretch your shoulders. Coding posture is important!",
-            expression: 'happy'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "There are zero fake AI buttons here. Every slider, tab, and card really works.",
-            expression: 'laugh'
-        },
-        {
-            title: "watch out! 💨",
-            message: "if you leave me alone for a bit, I might go for a slow walk up your screen!",
-            expression: 'wink'
-        },
-        {
-            title: "Did you know? 💡",
-            message: "Web Applications Studio has full apps like Cloud File Manager with synthesized sound!",
-            expression: 'surprised'
-        },
-        {
-            title: "Curious? 🧭",
-            message: "Want to know how this whole showroom works? Tap the tour button below!",
-            expression: 'happy'
-        }
+        { title: "hi.", message: "just wanted to say hi.", expression: 'happy' },
+        { title: "Hello beauty... ✨", message: "You're looking sharp today! What are we building?", expression: 'wink' },
+        { title: "Did you know? 💡", message: "All 44 components here are 100% standalone—no npm, no node_modules required!", expression: 'surprised' },
+        { title: "staring contest 👀", message: "3... 2... 1... ha! You blinked first! My eyes are always watching.", expression: 'laugh' },
+        { title: "Did you know? 💡", message: "The Randomize button shuffles all 44 component cards instantly!", expression: 'happy' },
+        { title: "poke me! 🫧", message: "poke me again and I might wobble for you!", expression: 'happy' },
+        { title: "Did you know? 💡", message: "Glassmorphism uses backdrop blur so you focus right on primary actions.", expression: 'ponder' },
+        { title: "just vibing ☕", message: "just hanging out by the edge, don't mind me. Take your time.", expression: 'ponder' },
+        { title: "Did you know? 💡", message: "Clicking 'Full' on any card unlocks a live interactive device resizer!", expression: 'surprised' },
+        { title: "bloop bloop 🫧", message: "bloop bloop bloop... okay, I'm done. Back to coding mode!", expression: 'laugh' },
+        { title: "Did you know? 💡", message: "Dark mode saves battery life on modern OLED phone screens!", expression: 'happy' },
+        { title: "hey you!", message: "take a sip of water and stretch those shoulders.", expression: 'happy' },
+        { title: "Did you know? 💡", message: "There are zero dummy AI buttons here. Every single component works!", expression: 'laugh' },
+        { title: "watch out! 💨", message: "if you leave me alone, I might go for a slow stroll up your screen!", expression: 'wink' },
+        { title: "Did you know? 💡", message: "You can drag me up and down along the side of your screen!", expression: 'wink' }
     ];
 
     let dialogueIdx = 0;
-    let currentExpression = 'happy'; // 'happy', 'laugh', 'wink', 'surprised', 'ponder'
+    let currentExpression = 'happy'; // 'happy', 'laugh', 'wink', 'surprised', 'ponder', 'pout'
+    let isTalking = false;
 
     /* --------------------------------------------------------------------------
-       4. CONCISE TOUR CONFIGURATIONS (Simple, clean, English)
+       4. CONCISE TOUR CONFIGURATIONS (Simplified, Beginner-Friendly)
        -------------------------------------------------------------------------- */
+    const isMobileDevice = window.innerWidth <= 680;
+
     const showcaseTour = [
         {
-            title: "1. Category Filter",
-            message: "Filter components by type: <strong>Buttons</strong>, <strong>Cards</strong>, <strong>Inputs</strong>, or full <strong>UI Kits</strong>.",
+            title: "Category Filter",
+            message: "Filter cards by type: Buttons, Cards, Inputs, or full UI Kits.",
             selector: "#filterTabs, .filter-tabs",
-            pointerText: "👉 Category Filter",
-            btnText: "Next"
+            pointerText: "👉 Category Filter"
         },
-        {
-            title: "2. Grid Layout Switcher",
-            message: "Adjust the grid layout to <strong>1, 2, 3, 4 columns, or Auto</strong> to suit your display.",
+        // Only include Grid Columns switcher if on desktop (hidden on mobile)
+        ...(!isMobileDevice ? [{
+            title: "Grid Columns",
+            message: "Switch between 1, 2, 3, 4 columns or Auto to fit your screen.",
             selector: ".layout-selector, .controls-right",
-            pointerText: "👉 Grid Columns",
-            btnText: "Next"
-        },
+            pointerText: "👉 Grid Columns"
+        }] : []),
         {
-            title: "3. Component Showroom (44 Items)",
-            message: "Here's the main showroom! All 44 interactive glass components are ready to test and inspect.",
+            title: "44 Glass Components",
+            message: "Here's the main grid! All 44 interactive dark glass components are live.",
             selector: "#componentsGrid, .components-grid",
-            pointerText: "👉 44 Components Grid",
-            btnText: "Next"
+            pointerText: "👉 44 Components Grid"
         },
         {
-            title: "4. Background Theme Switcher",
-            message: "Toggle between deep <strong>Obsidian Dark</strong> and colorful <strong>Mesh Gradient</strong> wallpapers.",
+            title: "Background Theme",
+            message: "Toggle between deep Obsidian Dark and colorful Mesh Gradient wallpapers.",
             selector: ".grid-bg-selector",
-            pointerText: "👉 Background Theme",
-            btnText: "Next"
+            pointerText: "👉 Background Theme"
         },
         {
-            title: "5. One-Click Code Copy",
-            message: "Every component is <strong>standalone</strong>. Click <strong>Copy</strong> to grab the complete HTML, CSS, and JS code instantly!",
+            title: "One-Click Copy",
+            message: "Every component is standalone. Click Copy to grab HTML, CSS, and JS code instantly!",
             selector: ".card-actions-tools, .component-card:first-of-type .card-actions-tools",
-            pointerText: "👉 Copy Standalone Code",
-            btnText: "Next"
+            pointerText: "👉 Copy Code"
         },
         {
-            title: "6. Fullscreen Component Sandbox",
-            message: "Click <strong>Full</strong> on any card to open the fullscreen sandbox with multi-device resizers.",
+            title: "Fullscreen Studio",
+            message: "Click Full on any card to test it with interactive device screen resizers.",
             selector: ".btn-card-full, .component-card:first-of-type .btn-card-full",
-            pointerText: "👉 Full Sandbox",
-            btnText: "Finish ✦"
+            pointerText: "👉 Full Studio"
         }
     ];
 
     const gatewayTour = [
         {
-            title: "1. Web Applications Studio",
-            message: "Explore full-scale production apps like <strong>Cloud File Manager</strong> and <strong>AI Agent Studio</strong>.",
+            title: "Web Applications Studio",
+            message: "Full-scale production apps like Cloud File Manager and AI Studio.",
             selector: ".hub-card[href*='apps.html'], .hub-grid a:first-child",
-            pointerText: "👉 Web Apps Studio",
-            btnText: "Next"
+            pointerText: "👉 Web Apps"
         },
         {
-            title: "2. Glass Style Showcase",
-            message: "Catalog of <strong>44 Glass Dark Premium</strong> components with live previews and copyable code.",
+            title: "Glass Style Showcase",
+            message: "Catalog of 44 Glass Dark components with live copyable code.",
             selector: ".hub-card[href*='showcase.html'], .hub-grid a:nth-child(2)",
-            pointerText: "👉 Glass Showcase",
-            btnText: "Next"
+            pointerText: "👉 Glass Showcase"
         },
         {
-            title: "3. Raw Semantic HTML & Taxonomy",
-            message: "Unstyled semantic HTML5 components and taxonomy reference with 120+ standard elements.",
+            title: "Raw HTML5 Showcase",
+            message: "Unstyled semantic HTML5 elements for anatomy and accessibility reference.",
             selector: ".hub-card[href*='raw/showcase.html'], .hub-grid a:nth-child(3)",
-            pointerText: "👉 Raw HTML5",
-            btnText: "Finish ✦"
+            pointerText: "👉 Raw HTML"
         }
     ];
 
     const webappsTour = [
         {
-            title: "1. App Simulator Canvas",
-            message: "Live interactive canvas displaying the active web application.",
+            title: "Live App Simulator",
+            message: "Interact with live web applications directly inside this canvas.",
             selector: "#stageSection, .app-showcase-box",
-            pointerText: "👉 Live Simulator",
-            btnText: "Next"
+            pointerText: "👉 Live App"
         },
         {
-            title: "2. Multi-Device Viewport Switcher",
-            message: "Test responsive behavior by switching between <strong>Mobile</strong>, <strong>Tablet</strong>, and <strong>Desktop</strong> sizes!",
+            title: "Viewport Switcher",
+            message: "Test responsive layouts for Mobile, Tablet, and Desktop sizes!",
             selector: ".viewport-buttons, .mode-toggle-cluster",
-            pointerText: "👉 Viewport Switcher",
-            btnText: "Next"
+            pointerText: "👉 Viewport Switcher"
         },
         {
-            title: "3. Project Selector Tabs",
-            message: "Select which project to launch: Cloud File Manager, AI Studio, and future projects.",
+            title: "Choose Web App",
+            message: "Select which project to launch: Cloud File Manager or AI Studio.",
             selector: ".project-tabs-cluster, .projects-selection-bar",
-            pointerText: "👉 Choose App",
-            btnText: "Finish ✦"
+            pointerText: "👉 Choose App"
         }
     ];
 
     const rawTour = [
         {
-            title: "1. Raw HTML5 Components",
-            message: "Catalog of browser native forms, tables, meters, and dialogs without any CSS styling.",
+            title: "Raw HTML5 Components",
+            message: "Catalog of browser native forms, tables, and dialogs without CSS styling.",
             selector: ".raw-grid, .components-grid",
-            pointerText: "👉 Raw Components",
-            btnText: "Next"
+            pointerText: "👉 Raw Components"
         },
         {
-            title: "2. Navigation",
-            message: "Use the top header links to return to Gateway or jump into the Glass Showcase.",
+            title: "Header Navigation",
+            message: "Jump back to Master Gateway or visit the Glass Showcase.",
             selector: ".header-actions",
-            pointerText: "👉 Navigation",
-            btnText: "Finish ✦"
+            pointerText: "👉 Navigation"
         }
     ];
 
@@ -340,31 +245,60 @@
 
     let currentStepIndex = 0;
     let isTourActive = false;
+    let autoAdvanceTimer = null;
+    let typewriterTimer = null;
 
     /* --------------------------------------------------------------------------
-       5. INJECT DOM ELEMENTS & GRAND INTRO OVERLAY (Clean, no button overload!)
+       5. TYPEWRITER EFFECT ENGINE
+       -------------------------------------------------------------------------- */
+    function typeText(targetEl, text, speed = 20, onComplete) {
+        clearTimeout(typewriterTimer);
+        targetEl.innerHTML = '';
+        isTalking = true;
+
+        const cursor = document.createElement('span');
+        cursor.className = 'tata-typing-cursor';
+        targetEl.appendChild(cursor);
+
+        let i = 0;
+        function tick() {
+            if (i < text.length) {
+                const char = text.charAt(i);
+                cursor.insertAdjacentText('beforebegin', char);
+                i++;
+                typewriterTimer = setTimeout(tick, speed);
+            } else {
+                cursor.remove();
+                isTalking = false;
+                if (typeof onComplete === 'function') onComplete();
+            }
+        }
+        tick();
+    }
+
+    /* --------------------------------------------------------------------------
+       6. DOM INJECTION (Plain & Clean, No Clutter)
        -------------------------------------------------------------------------- */
     function injectCompanionUI() {
-        // 1. Fullscreen First-Time Intro Overlay (Blurs entire website!)
+        // 1. First-time Intro Modal (Plain, Tata talks directly in 1st person)
         const introOverlay = document.createElement('div');
         introOverlay.id = 'tataIntroOverlay';
         introOverlay.className = 'tata-intro-overlay';
         introOverlay.innerHTML = `
             <div class="tata-intro-card">
                 <div class="tata-intro-avatar">🐾</div>
-                <div class="tata-intro-tag">✨ Meet Tata</div>
-                <h3 class="tata-intro-title">HIII! I'm Tata 👋</h3>
+                <h3 class="tata-intro-title">Hiiiiiii! I am Tata! ✨</h3>
                 <p class="tata-intro-desc">
-                    Your squishy companion in <strong>Prototype</strong>! Curious about this website? I'm here to show you 44 dark glass components, web apps, or just hang out. Ready to explore?
+                    Welcome to <strong>Prototype</strong>! Should we take a quick look around all 44 glass components and web apps? Let's goooo! 🚀
                 </p>
                 <div class="tata-intro-actions">
-                    <button type="button" class="btn-intro-secondary" id="btnIntroSkip">Explore Myself</button>
-                    <button type="button" class="btn-intro-primary" id="btnIntroStart">Show me around! 🚀</button>
+                    <button type="button" class="btn-intro-secondary" id="btnIntroMyself">I'll explore myself</button>
+                    <button type="button" class="btn-intro-primary" id="btnIntroGuide">Yes, let's goooo! 🚀</button>
                 </div>
             </div>
         `;
 
-        // 2. Spotlight elements (Crystal clear cutout)
+        // 2. Spotlight Elements
         const overlay = document.createElement('div');
         overlay.id = 'gellySpotlightOverlay';
         overlay.className = 'gelly-spotlight-overlay';
@@ -379,28 +313,27 @@
         badge.id = 'gellyPointerBadge';
         badge.className = 'gelly-pointer-badge';
         badge.style.display = 'none';
-        badge.innerHTML = `<i data-lucide="sparkles"></i> <span id="gellyPointerText">Guide</span>`;
+        badge.innerHTML = `<i data-lucide="sparkles"></i> <span id="gellyPointerText">Look here</span>`;
 
-        // 3. Blob Mascot Container
+        // 3. Companion Mascot Container (Draggable along sides)
         const companion = document.createElement('div');
         companion.id = 'gellyCompanionContainer';
-        companion.className = 'gelly-companion-container';
+        companion.className = 'gelly-companion-container dock-right';
 
         const canvas = document.createElement('canvas');
         canvas.id = 'gellyCanvas';
         canvas.className = 'gelly-canvas';
         canvas.width = 280;
         canvas.height = 280;
-        canvas.title = "Hiii! I'm Tata. Tap me to chat or take a tour.";
+        canvas.title = "Hiii! I'm Tata. Drag me along the edge, or tap to chat!";
 
         const pingDot = document.createElement('div');
         pingDot.className = 'gelly-ping-dot';
-        pingDot.title = "New tip from Tata!";
 
         companion.appendChild(canvas);
         companion.appendChild(pingDot);
 
-        // 4. Speech Bubble Wrapper (Ultra-translucent frosted glass, NO button overload!)
+        // 4. Speech Bubble (Plain minimal header, auto progress bar, help menu)
         const bubbleWrapper = document.createElement('div');
         bubbleWrapper.id = 'gellyBubbleWrapper';
         bubbleWrapper.className = 'gelly-bubble-wrapper';
@@ -408,16 +341,15 @@
         bubbleWrapper.innerHTML = `
             <div class="gelly-bubble">
                 <div class="gelly-bubble-header">
-                    <div class="gelly-badge">
+                    <div class="gelly-status-indicator">
                         <span class="gelly-badge-dot"></span>
-                        <span id="gellyBadgeText">Tata ✦</span>
-                        <span class="gelly-step-counter" id="gellyStepCounter"></span>
+                        <span id="gellyTourProgressText"></span>
                     </div>
                     <div class="gelly-header-tools">
                         <button type="button" class="gelly-tool-btn" id="gellySoundBtn" title="Toggle Sound">
                             <i data-lucide="${isMuted ? 'volume-x' : 'volume-2'}"></i>
                         </button>
-                        <button type="button" class="gelly-tool-btn" id="gellyMinimizeBtn" title="Minimize Tata">
+                        <button type="button" class="gelly-tool-btn" id="gellyMinimizeBtn" title="Minimize">
                             <i data-lucide="minus"></i>
                         </button>
                         <button type="button" class="gelly-tool-btn" id="gellyCloseBtn" title="Close">
@@ -427,19 +359,18 @@
                 </div>
 
                 <div class="gelly-bubble-content">
-                    <h4 class="gelly-title" id="gellyTitle">${pageGreetings[currentPageKey].title}</h4>
-                    <p class="gelly-message" id="gellyMessage">${pageGreetings[currentPageKey].message}</p>
+                    <h4 class="gelly-title" id="gellyTitle">Hiii! I am Tata 👋</h4>
+                    <p class="gelly-message" id="gellyMessage"></p>
+                    <div class="tata-auto-progress" id="tataAutoProgress">
+                        <div class="tata-auto-progress-fill" id="tataAutoProgressFill"></div>
+                    </div>
+                    <!-- Post-Guidance Help Menu (Populated when tour ends) -->
+                    <div class="tata-help-menu" id="tataHelpMenu" style="display: none;"></div>
                 </div>
 
-                <!-- Clean Actions Footer (NO button clutter!) -->
-                <div class="gelly-actions-footer">
-                    <button type="button" class="gelly-btn-action secondary" id="gellyPrevBtn" style="display: none;">
-                        <i data-lucide="arrow-left"></i> Back
-                    </button>
-                    <button type="button" class="gelly-btn-action highlight" id="gellyHighlightBtn" style="display: none;">
-                        <i data-lucide="crosshair"></i> Focus
-                    </button>
-                    <button type="button" class="gelly-btn-action primary" id="gellyNextBtn" style="width: 100%; justify-content: center;">
+                <!-- Footer with minimal single action button -->
+                <div class="gelly-actions-footer" id="gellyActionsFooter">
+                    <button type="button" class="gelly-btn-action primary" id="gellyMainBtn">
                         Show me around ✨
                     </button>
                 </div>
@@ -459,7 +390,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       6. SPOTLIGHT HIGHLIGHTING ENGINE (Zero Blur, Zoom-Aware)
+       7. SPOTLIGHT HIGHLIGHTING ENGINE (Zero Blur, Zoom-Aware)
        -------------------------------------------------------------------------- */
     let currentHighlightedElement = null;
 
@@ -470,7 +401,7 @@
         }
 
         const el = document.querySelector(selector);
-        if (!el) {
+        if (!el || window.getComputedStyle(el).display === 'none') {
             hideSpotlight();
             return;
         }
@@ -506,9 +437,7 @@
         box.style.width = `${width}px`;
         box.style.height = `${height}px`;
 
-        if (badgeText && pointerText) {
-            badgeText.innerText = pointerText;
-        }
+        if (badgeText && pointerText) badgeText.innerText = pointerText;
 
         badge.style.display = 'flex';
         if (top > 60) {
@@ -550,7 +479,7 @@
     });
 
     /* --------------------------------------------------------------------------
-       7. SPEECH BUBBLE CONTROLS & SPONTANEOUS DIALOGUES
+       8. AUTO-ADVANCING TOUR FLOW (No Next Button, No Focus Button)
        -------------------------------------------------------------------------- */
     let isBubbleOpen = false;
 
@@ -560,6 +489,7 @@
         if (bubble) bubble.classList.add('active');
         if (container) container.classList.remove('minimized', 'has-unread');
         isBubbleOpen = true;
+        updateBubblePosition();
         playSound('pop');
     }
 
@@ -567,96 +497,209 @@
         const bubble = document.getElementById('gellyBubbleWrapper');
         if (bubble) bubble.classList.remove('active');
         isBubbleOpen = false;
+        clearTimeout(autoAdvanceTimer);
+        clearTimeout(typewriterTimer);
         hideSpotlight();
     }
 
     function toggleBubble() {
-        if (isBubbleOpen) {
-            hideBubble();
-        } else {
-            showBubble();
-        }
+        if (isBubbleOpen) hideBubble();
+        else showBubble();
     }
 
     function renderTourStep(index) {
+        clearTimeout(autoAdvanceTimer);
+        clearTimeout(typewriterTimer);
         isTourActive = true;
+
         if (index < 0) index = 0;
+
+        // When guidance finishes: Show helpful assistant list! Do NOT restart tour!
         if (index >= activeTourSteps.length) {
-            hideSpotlight();
-            playSound('chime');
-            currentStepIndex = 0;
-            isTourActive = false;
-            currentExpression = 'laugh';
-            document.getElementById('gellyBadgeText').innerText = "Tata ✦";
-            document.getElementById('gellyTitle').innerText = "You're All Set! 🎉";
-            document.getElementById('gellyMessage').innerHTML = "You've seen all the main features. Tap me anytime for a quick chat, or just explore on your own!";
-            document.getElementById('gellyStepCounter').innerText = "";
-            document.getElementById('gellyPrevBtn').style.display = 'none';
-            document.getElementById('gellyHighlightBtn').style.display = 'none';
-            document.getElementById('gellyNextBtn').style.width = '100%';
-            document.getElementById('gellyNextBtn').innerHTML = `Got it! <i data-lucide="check"></i>`;
-            if (window.lucide) window.lucide.createIcons();
+            finishTourAndShowHelpList();
             return;
         }
 
         currentStepIndex = index;
         const step = activeTourSteps[currentStepIndex];
 
+        // If target element is hidden/missing, advance to next step immediately
+        if (step.selector) {
+            const target = document.querySelector(step.selector);
+            if (!target || window.getComputedStyle(target).display === 'none') {
+                renderTourStep(index + 1);
+                return;
+            }
+        }
+
         currentExpression = (index % 2 === 0) ? 'happy' : 'wink';
-        document.getElementById('gellyBadgeText').innerText = "Tata's Tour";
+        document.getElementById('gellyTourProgressText').innerText = `${currentStepIndex + 1}/${activeTourSteps.length}`;
         document.getElementById('gellyTitle').innerText = step.title;
-        document.getElementById('gellyMessage').innerHTML = step.message;
-        document.getElementById('gellyStepCounter').innerText = `(${currentStepIndex + 1}/${activeTourSteps.length})`;
+        document.getElementById('tataHelpMenu').style.display = 'none';
 
-        const prevBtn = document.getElementById('gellyPrevBtn');
-        const nextBtn = document.getElementById('gellyNextBtn');
-        const hlBtn = document.getElementById('gellyHighlightBtn');
+        // Hide main button during auto-tour (NO button clutter!)
+        const footer = document.getElementById('gellyActionsFooter');
+        footer.style.display = 'none';
 
-        prevBtn.style.display = currentStepIndex > 0 ? 'inline-flex' : 'none';
-        nextBtn.style.width = currentStepIndex > 0 ? 'auto' : '100%';
-        
-        if (step.selector && document.querySelector(step.selector)) {
-            hlBtn.style.display = 'inline-flex';
+        // Trigger spotlight
+        if (step.selector) {
             highlightElement(step.selector, step.pointerText);
         } else {
-            hlBtn.style.display = 'none';
             hideSpotlight();
         }
 
-        const isLast = currentStepIndex === activeTourSteps.length - 1;
-        nextBtn.innerHTML = isLast ? `Finish <i data-lucide="check"></i>` : `${step.btnText || 'Next'} <i data-lucide="arrow-right"></i>`;
+        // Progress countdown bar
+        const prog = document.getElementById('tataAutoProgress');
+        const fill = document.getElementById('tataAutoProgressFill');
+        prog.classList.add('active');
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
 
-        if (window.lucide) window.lucide.createIcons();
+        // Typewriter text
+        const msgEl = document.getElementById('gellyMessage');
         playSound('pop');
+
+        typeText(msgEl, step.message, 20, () => {
+            // After typing finishes, auto-advance after delay
+            const delayMs = 4500;
+            fill.style.transition = `width ${delayMs}ms linear`;
+            fill.style.width = '100%';
+
+            autoAdvanceTimer = setTimeout(() => {
+                renderTourStep(currentStepIndex + 1);
+            }, delayMs);
+        });
+
+        showBubble();
     }
 
-    // Spontaneous natural yapping & fun facts when user taps Tata
+    // Post-guidance helpful menu
+    function finishTourAndShowHelpList() {
+        clearTimeout(autoAdvanceTimer);
+        hideSpotlight();
+        isTourActive = false;
+        currentExpression = 'laugh';
+        playSound('chime');
+
+        document.getElementById('tataAutoProgress').classList.remove('active');
+        document.getElementById('gellyTourProgressText').innerText = "All Set!";
+        document.getElementById('gellyTitle').innerText = "All set! Can I help you with anything? 🌟";
+        document.getElementById('gellyMessage').innerHTML = "";
+
+        const helpMenu = document.getElementById('tataHelpMenu');
+        helpMenu.innerHTML = `
+            <div class="tata-help-item" data-action="copy">
+                <i data-lucide="copy"></i> How to copy component code
+            </div>
+            ${isGlassShowcase ? `
+            <div class="tata-help-item" data-action="bg">
+                <i data-lucide="palette"></i> Switch to Mesh Wallpaper
+            </div>
+            <div class="tata-help-item" data-action="random">
+                <i data-lucide="shuffle"></i> Shuffle components layout
+            </div>
+            ` : ''}
+            <div class="tata-help-item" data-action="apps">
+                <i data-lucide="layout"></i> Jump to Web Apps Studio
+            </div>
+            <div class="tata-help-item" data-action="bye">
+                <i data-lucide="smile"></i> I'm good, thanks!
+            </div>
+        `;
+        helpMenu.style.display = 'flex';
+
+        const footer = document.getElementById('gellyActionsFooter');
+        footer.style.display = 'none'; // Clean, no extra buttons!
+
+        if (window.lucide) window.lucide.createIcons();
+
+        // Bind help items
+        helpMenu.querySelectorAll('.tata-help-item').forEach(item => {
+            item.onclick = function () {
+                const act = this.getAttribute('data-action');
+                if (act === 'copy') {
+                    highlightElement('.card-actions-tools, .component-card:first-of-type .card-actions-tools', "👉 Click Copy Button");
+                    document.getElementById('gellyTitle').innerText = "Copy Standalone Code";
+                    document.getElementById('gellyMessage').innerText = "Just click the Copy button on any card. Complete HTML, CSS, and JS is instantly copied!";
+                    helpMenu.style.display = 'none';
+                    footer.style.display = 'flex';
+                    document.getElementById('gellyMainBtn').innerText = "Got it! 👍";
+                    document.getElementById('gellyMainBtn').onclick = () => {
+                        hideBubble();
+                        startWanderWalk();
+                    };
+                } else if (act === 'bg') {
+                    highlightElement('.grid-bg-selector', "👉 Theme Switcher");
+                    const meshBtn = document.querySelector('.grid-bg-btn[data-bg="mesh"]');
+                    if (meshBtn) meshBtn.click();
+                    document.getElementById('gellyTitle').innerText = "Mesh Wallpaper";
+                    document.getElementById('gellyMessage').innerText = "Enjoy the colorful ambient mesh refraction!";
+                    helpMenu.style.display = 'none';
+                    footer.style.display = 'flex';
+                    document.getElementById('gellyMainBtn').innerText = "Looks great! 🎨";
+                    document.getElementById('gellyMainBtn').onclick = () => {
+                        hideBubble();
+                        startWanderWalk();
+                    };
+                } else if (act === 'random') {
+                    if (typeof window.randomizeGrid === 'function') window.randomizeGrid();
+                    document.getElementById('gellyTitle').innerText = "Shuffled! 🎲";
+                    document.getElementById('gellyMessage').innerText = "All cards have been randomly shuffled!";
+                    helpMenu.style.display = 'none';
+                    footer.style.display = 'flex';
+                    document.getElementById('gellyMainBtn').innerText = "Cool! 🎲";
+                    document.getElementById('gellyMainBtn').onclick = () => {
+                        hideBubble();
+                        startWanderWalk();
+                    };
+                } else if (act === 'apps') {
+                    window.location.href = isGlassShowcase ? '../../apps.html' : 'ui/web/apps.html';
+                } else if (act === 'bye') {
+                    document.getElementById('gellyTitle').innerText = "Have fun exploring! 👋";
+                    document.getElementById('gellyMessage').innerText = "I'll be right here if you need me!";
+                    helpMenu.style.display = 'none';
+                    setTimeout(() => {
+                        hideBubble();
+                        startWanderWalk(); // Automatic wander!
+                    }, 1800);
+                }
+            };
+        });
+    }
+
+    // Spontaneous casual dialogue / yapping
     function triggerSpontaneousDialogue() {
         isTourActive = false;
         hideSpotlight();
+        clearTimeout(autoAdvanceTimer);
+        clearTimeout(typewriterTimer);
+
         const dlg = casualDialogues[dialogueIdx % casualDialogues.length];
         dialogueIdx++;
 
         currentExpression = dlg.expression || 'happy';
-        document.getElementById('gellyBadgeText').innerText = "Tata ✦";
-        document.getElementById('gellyStepCounter').innerText = "";
+        document.getElementById('gellyTourProgressText').innerText = "";
         document.getElementById('gellyTitle').innerText = dlg.title;
-        document.getElementById('gellyMessage').innerHTML = dlg.message;
+        document.getElementById('tataHelpMenu').style.display = 'none';
+        document.getElementById('tataAutoProgress').classList.remove('active');
 
-        document.getElementById('gellyPrevBtn').style.display = 'none';
-        document.getElementById('gellyHighlightBtn').style.display = 'none';
-        const nextBtn = document.getElementById('gellyNextBtn');
-        nextBtn.style.width = '100%';
-        nextBtn.innerHTML = `Show me around ✨`;
+        const footer = document.getElementById('gellyActionsFooter');
+        footer.style.display = 'flex';
+        const mainBtn = document.getElementById('gellyMainBtn');
+        mainBtn.innerText = "Show me around ✨";
+        mainBtn.onclick = () => renderTourStep(0);
+
+        const msgEl = document.getElementById('gellyMessage');
+        typeText(msgEl, dlg.message, 18);
 
         showBubble();
         playSound('chime');
     }
 
     /* --------------------------------------------------------------------------
-       8. RANDOM WANDERING & JIGGLE WALKING ALONG SCREEN EDGE (Super Slow!)
+       9. RANDOM WANDERING & JIGGLE WALKING (Ultra-Slow, Automatic on Minimize)
        -------------------------------------------------------------------------- */
-    let companionState = 'idle'; // 'idle', 'walking', 'returning'
+    let companionState = 'idle'; // 'idle', 'walking', 'returning', 'dragging'
     let walkInterval = null;
     let idleTimer = null;
 
@@ -670,14 +713,12 @@
         currentExpression = 'surprised';
         container.classList.add('walking');
 
-        // Pick gentle height on the right side of the screen (between 160px and 50vh)
-        const randomBottom = Math.floor(160 + Math.random() * (window.innerHeight * 0.4));
+        // Drift gently upwards
+        const randomBottom = Math.floor(180 + Math.random() * (window.innerHeight * 0.38));
         container.style.bottom = `${randomBottom}px`;
-        container.style.right = `-5px`;
 
         playSound('squish');
 
-        // Auto return after 18 seconds of slow walk if user doesn't touch her
         clearTimeout(walkInterval);
         walkInterval = setTimeout(() => {
             if (companionState === 'walking') {
@@ -686,7 +727,6 @@
         }, 18000);
     }
 
-    // When clicked/tapped during walking: instant playful slide return back to home corner!
     function returnToHomeCorner(byClick = true) {
         const container = document.getElementById('gellyCompanionContainer');
         if (!container) return;
@@ -697,19 +737,23 @@
         container.classList.add('returning');
 
         container.style.bottom = '-15px';
-        container.style.right = '-15px';
 
         if (byClick) {
             currentExpression = 'wink';
             playSound('slide');
-            // Friendly caught-red-handed quip!
-            document.getElementById('gellyBadgeText').innerText = "Tata ✦";
+            document.getElementById('gellyTourProgressText').innerText = "";
             document.getElementById('gellyTitle').innerText = "Eep! You caught me 💨";
-            document.getElementById('gellyMessage').innerHTML = "I was just taking a slow stroll up your screen... sliding right back to my corner!";
-            document.getElementById('gellyPrevBtn').style.display = 'none';
-            document.getElementById('gellyHighlightBtn').style.display = 'none';
-            document.getElementById('gellyNextBtn').style.width = '100%';
-            document.getElementById('gellyNextBtn').innerHTML = `Show me around ✨`;
+            document.getElementById('tataHelpMenu').style.display = 'none';
+            document.getElementById('tataAutoProgress').classList.remove('active');
+
+            const footer = document.getElementById('gellyActionsFooter');
+            footer.style.display = 'flex';
+            const mainBtn = document.getElementById('gellyMainBtn');
+            mainBtn.innerText = "Show me around ✨";
+            mainBtn.onclick = () => renderTourStep(0);
+
+            const msgEl = document.getElementById('gellyMessage');
+            typeText(msgEl, "I was just taking a slow stroll up your screen... sliding right back to my corner!", 18);
             showBubble();
         } else {
             currentExpression = 'happy';
@@ -718,64 +762,182 @@
         setTimeout(() => {
             container.classList.remove('returning');
             companionState = 'idle';
-        }, 1100);
+        }, 1200);
     }
 
     function resetIdleTimer() {
         clearTimeout(idleTimer);
-        // Start slow wander walk after 28 seconds of quiet idle
+        // Fully randomized interval between 18s and 40s!
+        const randomDelay = Math.floor(18000 + Math.random() * 22000);
         idleTimer = setTimeout(() => {
             if (companionState === 'idle' && !isBubbleOpen) {
                 startWanderWalk();
             }
-        }, 28000);
+        }, randomDelay);
     }
 
     window.addEventListener('mousemove', resetIdleTimer, { passive: true });
     window.addEventListener('touchstart', resetIdleTimer, { passive: true });
     window.addEventListener('scroll', resetIdleTimer, { passive: true });
 
+    /* --------------------------------------------------------------------------
+       10. DRAG & DROP SUPPORT (Docked to screen sides)
+       -------------------------------------------------------------------------- */
+    let isDragging = false;
+    let dragStartY = 0;
+    let dragStartBottom = 0;
+    let hasMoved = false;
+
+    function initDragAndDrop() {
+        const container = document.getElementById('gellyCompanionContainer');
+        const canvas = document.getElementById('gellyCanvas');
+        if (!container || !canvas) return;
+
+        function startDrag(clientY) {
+            if (companionState === 'walking') {
+                returnToHomeCorner(true);
+                return false;
+            }
+            isDragging = true;
+            hasMoved = false;
+            dragStartY = clientY;
+            const rect = container.getBoundingClientRect();
+            dragStartBottom = window.innerHeight - rect.bottom;
+            container.classList.add('dragging');
+            return true;
+        }
+
+        function moveDrag(clientX, clientY) {
+            if (!isDragging) return;
+            const deltaY = dragStartY - clientY;
+            if (Math.abs(deltaY) > 5) hasMoved = true;
+
+            const newBottom = Math.max(-15, Math.min(window.innerHeight - 130, dragStartBottom + deltaY));
+            container.style.bottom = `${newBottom}px`;
+
+            // Snap to left or right if dragged past halfway
+            if (clientX < window.innerWidth * 0.4) {
+                container.classList.add('dock-left');
+                container.classList.remove('dock-right');
+            } else if (clientX > window.innerWidth * 0.6) {
+                container.classList.add('dock-right');
+                container.classList.remove('dock-left');
+            }
+
+            updateBubblePosition();
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            container.classList.remove('dragging');
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            startDrag(e.clientY);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            moveDrag(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('mouseup', endDrag);
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches[0]) {
+                startDrag(e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', endDrag);
+    }
+
+    function updateBubblePosition() {
+        const container = document.getElementById('gellyCompanionContainer');
+        const bubble = document.getElementById('gellyBubbleWrapper');
+        if (!container || !bubble) return;
+
+        const isLeft = container.classList.contains('dock-left');
+        bubble.classList.toggle('dock-left', isLeft);
+
+        const bottomVal = parseFloat(container.style.bottom) || -15;
+        bubble.style.bottom = `${Math.min(window.innerHeight - 300, Math.max(80, bottomVal + 140))}px`;
+    }
+
+    /* --------------------------------------------------------------------------
+       11. EVENT LISTENERS SETUP
+       -------------------------------------------------------------------------- */
     function setupBubbleEvents() {
         const closeBtn = document.getElementById('gellyCloseBtn');
         const minBtn = document.getElementById('gellyMinimizeBtn');
         const soundBtn = document.getElementById('gellySoundBtn');
-        const nextBtn = document.getElementById('gellyNextBtn');
-        const prevBtn = document.getElementById('gellyPrevBtn');
-        const hlBtn = document.getElementById('gellyHighlightBtn');
+        const mainBtn = document.getElementById('gellyMainBtn');
 
         // Intro modal buttons
-        const introStart = document.getElementById('btnIntroStart');
-        const introSkip = document.getElementById('btnIntroSkip');
+        const btnGuide = document.getElementById('btnIntroGuide');
+        const btnMyself = document.getElementById('btnIntroMyself');
         const introOverlay = document.getElementById('tataIntroOverlay');
 
-        function dismissIntro(startTour = false) {
-            if (introOverlay) {
+        // Option 1: "Yes, let's goooo! 🚀" -> Starts auto-advancing guidance
+        if (btnGuide) {
+            btnGuide.onclick = () => {
                 introOverlay.classList.remove('active');
-                localStorage.setItem('tata_intro_seen_v4', 'true');
+                localStorage.setItem('tata_site_introduced_v7', 'true');
                 playSound('chime');
                 setTimeout(() => {
-                    if (startTour) {
-                        showBubble();
-                        renderTourStep(0);
-                    } else {
-                        showBubble();
-                    }
+                    renderTourStep(0);
                 }, 400);
-            }
+            };
         }
 
-        if (introStart) introStart.onclick = () => dismissIntro(true);
-        if (introSkip) introSkip.onclick = () => dismissIntro(false);
+        // Option 2: "I'll explore myself" -> Pout disappointed reaction, then warm encouragement
+        if (btnMyself) {
+            btnMyself.onclick = () => {
+                introOverlay.classList.remove('active');
+                localStorage.setItem('tata_site_introduced_v7', 'true');
+                playSound('sad');
 
-        if (closeBtn) closeBtn.onclick = () => hideBubble();
-        
-        // Minimize: Tata doesn't disappear! Her eyes keep peeking gently
+                currentExpression = 'pout'; // Disappointed cute pout!
+                document.getElementById('gellyTourProgressText').innerText = "";
+                document.getElementById('gellyTitle').innerText = "Aww, okay... (｡•́︿•̀｡)";
+                document.getElementById('tataHelpMenu').style.display = 'none';
+
+                const footer = document.getElementById('gellyActionsFooter');
+                footer.style.display = 'none';
+
+                const msgEl = document.getElementById('gellyMessage');
+                typeText(msgEl, "No worries! But remember, if you ever need anything, just tap me anytime! I'll be right here watching over you. 🌟", 18, () => {
+                    setTimeout(() => {
+                        hideBubble();
+                        startWanderWalk(); // Automatic wander!
+                    }, 4000);
+                });
+
+                showBubble();
+            };
+        }
+
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                hideBubble();
+                setTimeout(() => startWanderWalk(), 800); // Auto wander on close!
+            };
+        }
+
+        // Minimize: NO SHRINK! Stays normal scale, and automatically starts wandering!
         if (minBtn) {
             minBtn.onclick = () => {
                 hideBubble();
                 const container = document.getElementById('gellyCompanionContainer');
                 if (container) container.classList.add('minimized');
                 playSound('squish');
+                setTimeout(() => startWanderWalk(), 1200); // Auto wander when minimized!
             };
         }
 
@@ -789,38 +951,20 @@
             };
         }
 
-        if (nextBtn) {
-            nextBtn.onclick = () => {
-                if (nextBtn.innerText.includes('Show me around')) {
+        if (mainBtn) {
+            mainBtn.onclick = () => {
+                if (mainBtn.innerText.includes('Show me around')) {
                     renderTourStep(0);
-                } else if (currentStepIndex >= activeTourSteps.length - 1 && nextBtn.innerText.includes('Got it')) {
-                    hideBubble();
                 } else {
-                    renderTourStep(currentStepIndex + 1);
-                }
-            };
-        }
-
-        if (prevBtn) {
-            prevBtn.onclick = () => {
-                renderTourStep(currentStepIndex - 1);
-            };
-        }
-
-        if (hlBtn) {
-            hlBtn.onclick = () => {
-                const step = activeTourSteps[currentStepIndex];
-                if (step && step.selector) {
-                    highlightElement(step.selector, step.pointerText);
-                    playSound('chime');
+                    hideBubble();
                 }
             };
         }
     }
 
     /* --------------------------------------------------------------------------
-       9. FERALUI-INSPIRED SOFT-BODY SPRING PHYSICS JELLY BLOB (Canvas 2D)
-       NO IDLE JIGGLE: Perfectly calm and stable when still!
+       12. FERALUI-INSPIRED SOFT-BODY SPRING PHYSICS JELLY BLOB (Canvas 2D)
+       Zero idle jiggle! Ultra-slow gentle hop when walking!
        -------------------------------------------------------------------------- */
     function initGellyPhysicsCanvas() {
         const canvas = document.getElementById('gellyCanvas');
@@ -862,7 +1006,6 @@
         let isBlinking = false;
         let nextBlinkTime = Date.now() + 3000;
 
-        // Desktop Mouse Tracking
         window.addEventListener('mousemove', (e) => {
             mouseScreenX = e.clientX;
             mouseScreenY = e.clientY;
@@ -876,58 +1019,38 @@
                 const mouseAngle = Math.atan2(canvasY * 2 - cy, canvasX * 2 - cx);
                 points.forEach(p => {
                     const diff = Math.abs(p.angle - mouseAngle);
-                    if (diff < 0.6 || Math.abs(diff - Math.PI * 2) < 0.6) {
-                        p.vr += 3.0;
-                    }
+                    if (diff < 0.6 || Math.abs(diff - Math.PI * 2) < 0.6) p.vr += 3.0;
                 });
             } else {
                 isHovered = false;
             }
         });
 
-        // Mobile Touch Tracking (Finger tracking on touch devices!)
-        function handleTouchTracking(e) {
+        function handleTouch(e) {
             if (e.touches && e.touches[0]) {
                 mouseScreenX = e.touches[0].clientX;
                 mouseScreenY = e.touches[0].clientY;
-
-                const rect = canvas.getBoundingClientRect();
-                const canvasX = e.touches[0].clientX - rect.left;
-                const canvasY = e.touches[0].clientY - rect.top;
-
-                if (canvasX >= 0 && canvasX <= rect.width && canvasY >= 0 && canvasY <= rect.height) {
-                    const touchAngle = Math.atan2(canvasY * 2 - cy, canvasX * 2 - cx);
-                    points.forEach(p => {
-                        const diff = Math.abs(p.angle - touchAngle);
-                        if (diff < 0.7 || Math.abs(diff - Math.PI * 2) < 0.7) {
-                            p.vr += 3.5;
-                        }
-                    });
-                }
             }
         }
+        window.addEventListener('touchstart', handleTouch, { passive: true });
+        window.addEventListener('touchmove', handleTouch, { passive: true });
 
-        window.addEventListener('touchstart', handleTouchTracking, { passive: true });
-        window.addEventListener('touchmove', handleTouchTracking, { passive: true });
-
-        // Click / Touch on Tata Mascot
         canvas.addEventListener('click', (e) => {
+            if (hasMoved) return; // Don't trigger click if it was a drag!
             e.stopPropagation();
 
-            // IF TATA IS WALKING: Play slide return back to home corner!
             if (companionState === 'walking') {
                 returnToHomeCorner(true);
                 return;
             }
 
-            // Normal click: Squish and spontaneous casual dialogue!
             squashX = 1.30;
             squashY = 0.75;
-            squashVx = -0.18;
-            squashVy = 0.18;
+            squashVx = -0.16;
+            squashVy = 0.16;
 
             points.forEach((p) => {
-                p.vr += (Math.random() - 0.5) * 16;
+                p.vr += (Math.random() - 0.5) * 14;
             });
 
             playSound('squish');
@@ -937,7 +1060,6 @@
                 container.classList.remove('minimized');
                 showBubble();
             } else if (!isBubbleOpen) {
-                // Spontaneous funny remark / fun fact when clicked!
                 triggerSpontaneousDialogue();
             } else {
                 toggleBubble();
@@ -950,14 +1072,14 @@
             const dt = Math.min((now - lastTime) / 1000, 0.1);
             lastTime = now;
 
-            // SUPER SLOW WALKING JIGGLE (Only active while walking!)
+            // ULTRA-SLOW GENTLE JIGGLE (Only active when walking!)
             if (companionState === 'walking') {
-                squashY = 1 + Math.sin(now * 0.003) * 0.10;
-                squashX = 1 - Math.sin(now * 0.003) * 0.06;
+                squashY = 1 + Math.sin(now * 0.0016) * 0.09;
+                squashX = 1 - Math.sin(now * 0.0016) * 0.05;
             } else {
-                // Return smoothly to 1.0 and STAY STILL (NO IDLE JIGGLE!)
-                const springK = 80;
-                const springDamp = 8.0;
+                // Return smoothly to 1.0 and stay motionless when idle (ZERO IDLE JIGGLE!)
+                const springK = 85;
+                const springDamp = 8.5;
 
                 const fx = (1 - squashX) * springK - squashVx * springDamp;
                 squashVx += fx * dt;
@@ -969,15 +1091,15 @@
             }
 
             // Radial Spring simulation:
-            // When IDLE: target is strictly baseRadius with ZERO sinus wave! Smooth & calm!
-            // When WALKING: subtle gentle crawl wave!
+            // When IDLE: target is baseRadius without ANY wave! Perfectly calm and still.
+            // When WALKING: super slow gentle wave.
             const pSpringK = 85;
-            const pDamp = 7.5;
+            const pDamp = 8.0;
 
             points.forEach((p, i) => {
                 let target = p.baseRadius;
                 if (companionState === 'walking') {
-                    target += Math.sin(now * 0.003 + i * 0.6) * 3.0; // gentle walk wave
+                    target += Math.sin(now * 0.0016 + i * 0.6) * 2.8;
                 }
                 const force = (target - p.currentRadius) * pSpringK - p.vr * pDamp;
                 p.vr += force * dt;
@@ -1024,7 +1146,7 @@
             }
             ctx.closePath();
 
-            // Page-Adaptive Gradient Colors for Tata
+            // Page-Adaptive Gradient Colors
             const grad = ctx.createRadialGradient(cx - 35, cy - 35, 15, cx, cy, baseRadius * 1.3);
             if (isWebApps) {
                 grad.addColorStop(0, '#22D3EE');
@@ -1062,7 +1184,7 @@
             ctx.lineWidth = 2.5;
             ctx.stroke();
 
-            // Eyes & Pupil tracking (Follows mouse or touch coordinates!)
+            // Eye & Pupil Tracking
             const rect = canvas.getBoundingClientRect();
             const eye1Center = { x: cx - 42, y: cy - 38 };
             const eye2Center = { x: cx - 6, y: cy - 46 };
@@ -1099,6 +1221,8 @@
                     ctx.scale(1, 0.15);
                 } else if (currentExpression === 'laugh') {
                     ctx.scale(1, 0.25);
+                } else if (currentExpression === 'pout') {
+                    ctx.scale(1, 0.65); // Slightly drooping sad eyes
                 } else {
                     ctx.scale(1, blinkFactor);
                 }
@@ -1135,7 +1259,18 @@
             ctx.lineCap = 'round';
             const mouthCenter = { x: cx - 22, y: cy - 14 };
 
-            if (currentExpression === 'laugh') {
+            if (isTalking) {
+                // Animated speaking mouth synchronized with typewriter!
+                const talkOpen = Math.abs(Math.sin(now * 0.015)) * 6 + 3;
+                ctx.beginPath();
+                ctx.arc(mouthCenter.x, mouthCenter.y, talkOpen, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (currentExpression === 'pout') {
+                // Cute disappointed pout curve (｡•́︿•̀｡)
+                ctx.beginPath();
+                ctx.arc(mouthCenter.x, mouthCenter.y + 4, 6, 1.2 * Math.PI, 1.8 * Math.PI, false);
+                ctx.stroke();
+            } else if (currentExpression === 'laugh') {
                 ctx.beginPath();
                 ctx.arc(mouthCenter.x, mouthCenter.y - 2, 9, 0, Math.PI, false);
                 ctx.fill();
@@ -1177,16 +1312,18 @@
     }
 
     /* --------------------------------------------------------------------------
-       10. INITIALIZE ON PAGE LOAD WITH FIRST-TIME INTRO BLUR
+       13. INITIALIZE ON PAGE LOAD (Fixed Single-Time Intro Across Entire Site!)
        -------------------------------------------------------------------------- */
     function init() {
         injectCompanionUI();
         setupBubbleEvents();
         initGellyPhysicsCanvas();
+        initDragAndDrop();
         resetIdleTimer();
 
         // 1. Check if first-time visitor needs the grand introduction with website blur!
-        const hasSeenIntro = localStorage.getItem('tata_intro_seen_v5');
+        // FIXED BUG: Only shows ONCE globally across the whole website! Never re-triggers on page switch.
+        const hasSeenIntro = localStorage.getItem('tata_site_introduced_v7');
         if (!hasSeenIntro) {
             const intro = document.getElementById('tataIntroOverlay');
             if (intro) {
@@ -1196,19 +1333,15 @@
                 }, 350);
             }
         } else {
-            // Check if page switched for contextual greeting
+            // Contextual welcome without re-running the grand blur intro
             const lastPage = sessionStorage.getItem('tata_last_page');
             const isPageSwitch = lastPage && lastPage !== currentPageKey;
             sessionStorage.setItem('tata_last_page', currentPageKey);
 
-            if (isPageSwitch || !sessionStorage.getItem('tata_welcomed')) {
-                sessionStorage.setItem('tata_welcomed', 'true');
+            if (isPageSwitch) {
                 setTimeout(() => {
-                    showBubble();
-                }, 600);
-            } else {
-                const container = document.getElementById('gellyCompanionContainer');
-                if (container) container.classList.add('has-unread');
+                    triggerSpontaneousDialogue();
+                }, 800);
             }
         }
     }
