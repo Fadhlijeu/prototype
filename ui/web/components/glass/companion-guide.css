@@ -307,7 +307,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Interactive Spotlight Highlighting
+   3. Interactive Spotlight Highlighting (Crystal Clear Cutout, No Blur)
    -------------------------------------------------------------------------- */
 .gelly-spotlight-overlay {
     position: fixed;
@@ -315,35 +315,39 @@
     z-index: 99980;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.35s ease;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    transition: opacity 0.3s ease;
+    background: transparent; /* No blur over target element! */
 }
 
 .gelly-spotlight-overlay.active {
     opacity: 1;
     pointer-events: auto; /* Click overlay to dismiss spotlight */
-    background: rgba(3, 4, 8, 0.68);
 }
 
-/* Pulsing highlight frame placed directly around target element */
+/* Pulsing highlight frame with box-shadow dimming outside */
 .gelly-spotlight-box {
     position: fixed;
     pointer-events: none;
-    border-radius: 16px;
+    border-radius: 18px;
     border: 2px solid #38BDF8;
     box-shadow: 
-        0 0 0 9999px rgba(3, 4, 8, 0.65),
-        0 0 24px rgba(56, 189, 248, 0.5),
-        inset 0 0 16px rgba(56, 189, 248, 0.2);
+        0 0 0 9999px rgba(4, 6, 14, 0.76),
+        0 0 28px rgba(56, 189, 248, 0.55),
+        inset 0 0 16px rgba(56, 189, 248, 0.18);
     z-index: 99985;
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     animation: gellyBoxGlow 2.5s infinite alternate ease-in-out;
 }
 
 @keyframes gellyBoxGlow {
-    0% { border-color: #38BDF8; box-shadow: 0 0 0 9999px rgba(3, 4, 8, 0.65), 0 0 16px rgba(56, 189, 248, 0.4); }
-    100% { border-color: #818CF8; box-shadow: 0 0 0 9999px rgba(3, 4, 8, 0.65), 0 0 32px rgba(129, 140, 248, 0.65); }
+    0% { 
+        border-color: #38BDF8; 
+        box-shadow: 0 0 0 9999px rgba(4, 6, 14, 0.76), 0 0 16px rgba(56, 189, 248, 0.4); 
+    }
+    100% { 
+        border-color: #818CF8; 
+        box-shadow: 0 0 0 9999px rgba(4, 6, 14, 0.76), 0 0 32px rgba(129, 140, 248, 0.65); 
+    }
 }
 
 /* Floating pointer indicator beside highlighted element */
@@ -354,15 +358,16 @@
     color: #FFFFFF;
     font-size: 11.5px;
     font-weight: 700;
-    padding: 6px 12px;
+    padding: 7px 14px;
     border-radius: 999px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 16px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.45);
     pointer-events: none;
     display: flex;
     align-items: center;
     gap: 6px;
     animation: gellyFloatBadge 2s infinite ease-in-out;
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 @keyframes gellyFloatBadge {
@@ -371,26 +376,59 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. Mobile Responsiveness
+   4. Mobile Responsiveness & Touch Ergonomics (Designed for Small Screens)
    -------------------------------------------------------------------------- */
-@media (max-width: 600px) {
+@media (max-width: 680px) {
     .gelly-companion-container {
-        width: 110px;
-        height: 110px;
+        width: 100px;
+        height: 100px;
         bottom: -10px;
         right: -10px;
     }
     .gelly-canvas {
-        width: 110px;
-        height: 110px;
+        width: 100px;
+        height: 100px;
     }
     .gelly-bubble-wrapper {
-        bottom: 100px;
-        right: 12px;
-        left: 12px;
+        bottom: 86px;
+        right: 10px;
+        left: 10px;
         width: auto;
+        max-width: calc(100vw - 20px);
+    }
+    .gelly-bubble {
+        padding: 14px 14px 12px;
+        border-radius: 18px;
+        max-height: 68vh;
+        overflow-y: auto;
     }
     .gelly-bubble::after {
-        right: 28px;
+        right: 26px;
+        bottom: -7px;
+        width: 14px;
+        height: 14px;
+    }
+    .gelly-title {
+        font-size: 13.5px;
+    }
+    .gelly-message {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+    .gelly-topic-pill {
+        font-size: 10.5px;
+        padding: 4px 8px;
+    }
+    .gelly-actions-footer {
+        padding-top: 4px;
+    }
+    .gelly-btn-action {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 38px;
+    }
+    .gelly-pointer-badge {
+        font-size: 10.5px;
+        padding: 5px 10px;
     }
 }

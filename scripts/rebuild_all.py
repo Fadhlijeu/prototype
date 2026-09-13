@@ -2302,6 +2302,8 @@ raw_showcase_content = f"""<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Interactive Blob Companion Guidance Styles -->
+    <link rel="stylesheet" href="../glass/companion-guide.css">
     <style>
         :root {{
             --bg-page: #0C0D12;
@@ -3177,6 +3179,8 @@ raw_showcase_content = f"""<!DOCTYPE html>
             }}
         }});
     </script>
+    <!-- Interactive Blob Companion Guidance System -->
+    <script src="../glass/companion-guide.js"></script>
 </body>
 </html>
 """

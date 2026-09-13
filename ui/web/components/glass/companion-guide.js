@@ -8,9 +8,11 @@
  * - Eye tracking with pupils following mouse cursor across the entire screen
  * - Natural blinking intervals & expressive mouth expressions
  * - Frosted glass chat speech bubble peeking diagonally from bottom-right
- * - Step-by-step beginner friendly interactive tour
- * - Dynamic spotlight overlay highlighting page elements with floating badges
- * - Procedural Web Audio API sound effects (no external audio assets)
+ * - Step-by-step beginner friendly interactive tour with crystal clear spotlight
+ * - Contextual conversations on page navigation (Gateway, Glass, Web Apps, Raw)
+ * - Casual banter / "Basa-Basi" conversation engine with witty trivia
+ * - Fully responsive & ergonomic on mobile screens (<=680px)
+ * - Procedural Web Audio API sound effects (pop, chime, squish)
  * ==========================================================================
  */
 
@@ -50,26 +52,23 @@
             gain.connect(audioCtx.destination);
 
             if (type === 'pop') {
-                // Friendly soft bubble pop
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(460, now);
+                osc.frequency.setValueAtTime(480, now);
                 osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
                 gain.gain.setValueAtTime(0.14, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
                 osc.start(now);
                 osc.stop(now + 0.1);
             } else if (type === 'chime') {
-                // Success chime arpeggio
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, now); // C5
-                osc.frequency.setValueAtTime(659.25, now + 0.07); // E5
-                osc.frequency.setValueAtTime(783.99, now + 0.14); // G5
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.07);
+                osc.frequency.setValueAtTime(783.99, now + 0.14);
                 gain.gain.setValueAtTime(0.12, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
                 osc.start(now);
                 osc.stop(now + 0.3);
             } else if (type === 'squish') {
-                // Jelly squish sound
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(320, now);
                 osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
@@ -84,19 +83,98 @@
     }
 
     /* --------------------------------------------------------------------------
-       2. TOUR SCRIPTS CONFIGURATION (Tailored per page)
+       2. PAGE IDENTIFICATION & CONTEXTUAL GREETINGS
        -------------------------------------------------------------------------- */
-    const isShowcase = window.location.pathname.includes('showcase.html');
-    const isWebApps = window.location.pathname.includes('apps.html');
+    const path = window.location.pathname.toLowerCase();
+    const isGlassShowcase = path.includes('glass/showcase.html') || (path.includes('showcase.html') && !path.includes('raw'));
+    const isRawShowcase = path.includes('raw/showcase.html') || path.includes('raw');
+    const isWebApps = path.includes('apps.html') || path.includes('web-apps');
+    const isGateway = !isGlassShowcase && !isRawShowcase && !isWebApps;
 
-    const showcaseTour = [
-        {
-            title: "Halo! Aku Gelly 👋",
-            message: "Aku pemandumu di <strong>Prototype Glass Showroom</strong>. Mau tahu cara menjelajahi dan menyalin komponen ini dengan cepat?",
-            selector: null,
-            pointerText: null,
-            btnText: "Mulai Tur 🧭"
+    let currentPageKey = 'gateway';
+    if (isGlassShowcase) currentPageKey = 'glass';
+    else if (isWebApps) currentPageKey = 'webapps';
+    else if (isRawShowcase) currentPageKey = 'raw';
+
+    const pageGreetings = {
+        gateway: {
+            title: "Halo di Master Gateway! 🏛️",
+            message: "Ini beranda utama <strong>Prototype</strong>! Dari sini kamu bisa meluncur ke <strong>Glass Showcase</strong> (44 komponen kaca), <strong>Web Apps Studio</strong> (aplikasi web utuh), atau <strong>Raw HTML</strong> (komponen murni). Mau mulai eksplorasi?",
+            badge: "Gateway Portal"
         },
+        glass: {
+            title: "Showroom Glass Dark! ✨",
+            message: "Wah, kamu sampai di <strong>Glass Showroom</strong>! Di sini ada 44 komponen dark glass mandiri. Mau coba acak susunan pakai tombol <strong>Randomize</strong>, atau mau kuantar keliling melihat seluruh grid dan kodenya?",
+            badge: "Glass Showroom"
+        },
+        webapps: {
+            title: "Web Applications Studio! 🚀",
+            message: "Ini dia <strong>Web Applications Studio</strong>! Di sini bukan cuma potongan komponen terpisah, tapi aplikasi web utuh yang jalan beneran (Cloud File Manager & AI Studio). Coba ganti ke simulator <strong>Mobile</strong> atau <strong>Desktop</strong>!",
+            badge: "Web Apps Studio"
+        },
+        raw: {
+            title: "Raw HTML5 Showcase! 📐",
+            message: "Selamat datang di <strong>Raw Showcase</strong>! Komponen di sini murni HTML5 semantik tanpa sentuhan CSS, pas banget buat referensi anatomi baku dan peran ARIA sebelum dihias.",
+            badge: "Raw Semantic"
+        }
+    };
+
+    /* --------------------------------------------------------------------------
+       3. CONVERSATIONS BASA-BASI (Casual Banter & Fun Trivia)
+       -------------------------------------------------------------------------- */
+    const casualBanterList = [
+        {
+            title: "Kenapa Desain Kaca? 💎",
+            message: "Pernah kepikiran kenapa efek glassmorphism disukai? Pantulan blur dan border halusnya bikin mata kita reflek fokus ke konten inti tanpa ngerasa terdistraksi!"
+        },
+        {
+            title: "Bebas dari NPM & Build Tool! 🚀",
+            message: "Semua komponen di web ini 100% mandiri lho! Kamu nggak perlu pusing install paket npm atau bundler berat, cukup copas dan jalan langsung di browser."
+        },
+        {
+            title: "Sensasi Acak Grid 🎲",
+            message: "Ngaku deh, kamu tadi sempat klik tombol Randomize di atas kan? Seru banget ya ngeliat 44 kartu komponennya saling bertukar posisi secara dinamis!"
+        },
+        {
+            title: "Rahasia Background Switcher 🎨",
+            message: "Di samping tombol Salin tiap kartu ada switch dot hitam dan gradien. Itu berguna banget buat ngetes apakah komponen kaca terbaca jelas di berbagai jenis wallpaper!"
+        },
+        {
+            title: "Dark Mode Ramah Mata 🌙",
+            message: "Tema Obsidian Dark di sini didesain dengan saturasi seimbang. Mau coding sampai larut malam pun mata tetap adem dan nggak gampang lelah."
+        },
+        {
+            title: "Responsif di Semua Layar 📱",
+            message: "Kalau kamu buka Prototype di layar HP atau tablet, tampilanku otomatis menyesuaikan diri biar jempolmu tetap leluasa berselancar tanpa terhalang!"
+        },
+        {
+            title: "Component Studio Tersembunyi 🔍",
+            message: "Klik tombol 'Full' di pojok kartu mana pun! Di situ kamu bisa tarik resizer layarnya buat simulasi ukuran HP, tablet, maupun layar desktop."
+        },
+        {
+            title: "Fisika Kenyal FeralUI 🐾",
+            message: "Fisika tubuhku ini terinspirasi dari FeralUI Blob lho. Coba gerak-gerakin kursor mepet ke aku atau klik sekali, kenyal banget kan?"
+        },
+        {
+            title: "AI Model Selector Card 🧠",
+            message: "Sekarang kartu arsitektur AI sudah bersih dari tombol acak dummy. Tampilannya jauh lebih rapi, terstruktur, dan siap dipakai produksi!"
+        },
+        {
+            title: "Jelajahi Web Apps Studio 📦",
+            message: "Udah mampir ke Web Applications Studio belum? Di sana ada Cloud File Manager dan AI Agent Studio yang jalan beneran layaknya aplikasi utuh!"
+        },
+        {
+            title: "Selalu Siap Membantu ✨",
+            message: "Aku bakal tetap standby di pojokan sini ya. Kalau kamu butuh panduan, petunjuk fitur, atau sekadar pengen disapa, klik aku kapan pun!"
+        }
+    ];
+
+    let banterIndex = 0;
+
+    /* --------------------------------------------------------------------------
+       4. STEP-BY-STEP TOUR CONFIGURATIONS
+       -------------------------------------------------------------------------- */
+    const showcaseTour = [
         {
             title: "1. Filter Kategori Komponen",
             message: "Gunakan bilah filter ini untuk menyaring komponen berdasarkan tipe: <strong>Buttons</strong>, <strong>Cards</strong>, <strong>Inputs</strong>, hingga <strong>UI Kits</strong> lengkap.",
@@ -112,21 +190,28 @@
             btnText: "Lanjut"
         },
         {
-            title: "3. Ganti Latar Kaca (Obsidian / Mesh)",
+            title: "3. Grid Showroom Komponen (44 Kartu)",
+            message: "Ini dia <strong>grid utama showroom</strong> yang memuat seluruh 44 komponen interaktif mandiri! Setiap kartu dapat langsung kamu coba dan interaksikan.",
+            selector: "#componentsGrid, .components-grid",
+            pointerText: "👉 Grid 44 Komponen Kaca",
+            btnText: "Lanjut"
+        },
+        {
+            title: "4. Ganti Latar Kaca (Obsidian / Mesh)",
             message: "Ganti latar halaman antara <strong>Obsidian Dark</strong> pekat atau <strong>Mesh Gradient</strong> untuk melihat efek refraksi kaca secara dramatis!",
             selector: ".grid-bg-selector",
             pointerText: "👉 Ganti Latar Belakang",
             btnText: "Lanjut"
         },
         {
-            title: "4. Salin Kode All-in-One Instant",
+            title: "5. Salin Kode All-in-One Instant",
             message: "Setiap komponen bersifat <strong>mandiri (all-in-one)</strong>. Cukup klik tombol <strong>Salin</strong> untuk copy seluruh kode HTML+CSS+JS tanpa perlu install library!",
             selector: ".card-actions-tools, .component-card:first-of-type .card-actions-tools",
             pointerText: "👉 Salin Kode Sekali Klik",
             btnText: "Lanjut"
         },
         {
-            title: "5. Component Studio Fullscreen",
+            title: "6. Component Studio Fullscreen",
             message: "Klik tombol <strong>Full</strong> pada kartu mana pun untuk membuka playground interaktif dengan pengatur ukuran layar dan tab editor kode multi-file.",
             selector: ".btn-card-full, .component-card:first-of-type .btn-card-full",
             pointerText: "👉 Buka Playground Studio",
@@ -135,13 +220,6 @@
     ];
 
     const gatewayTour = [
-        {
-            title: "Halo! Aku Gelly 👋",
-            message: "Selamat datang di <strong>Master Gateway Prototype</strong>! Ini adalah pusat eksplorasi komponen web modern dan aplikasi utuh.",
-            selector: null,
-            pointerText: null,
-            btnText: "Jelajahi Workspace"
-        },
         {
             title: "1. Web Applications Studio",
             message: "Jelajahi proyek aplikasi web siap pakai seperti <strong>Cloud File Manager</strong> dan <strong>AI Agent Studio</strong> lengkap dengan simulator multi-perangkat.",
@@ -165,11 +243,57 @@
         }
     ];
 
-    const activeTourSteps = isShowcase ? showcaseTour : gatewayTour;
+    const webappsTour = [
+        {
+            title: "1. Panggung Simulator Aplikasi",
+            message: "Area ini menampilkan aplikasi web aktif secara live di dalam simulator interaktif.",
+            selector: "#stageSection, .app-showcase-box",
+            pointerText: "👉 Panggung Simulator",
+            btnText: "Lanjut"
+        },
+        {
+            title: "2. Pengatur Ukuran Layar Multi-Device",
+            message: "Uji coba responsivitas aplikasi dengan tombol switch ke ukuran <strong>Mobile</strong>, <strong>Tablet</strong>, atau <strong>Desktop</strong>!",
+            selector: ".viewport-buttons, .mode-toggle-cluster",
+            pointerText: "👉 Switch Ukuran Layar",
+            btnText: "Lanjut"
+        },
+        {
+            title: "3. Pilihan Proyek Aplikasi",
+            message: "Ganti proyek aplikasi yang ingin kamu buka (Cloud File Manager, AI Studio) menggunakan tab ini.",
+            selector: ".project-tabs-cluster, .projects-selection-bar",
+            pointerText: "👉 Pilih Proyek Web",
+            btnText: "Selesai ✦"
+        }
+    ];
+
+    const rawTour = [
+        {
+            title: "1. Koleksi Komponen Murni HTML5",
+            message: "Katalog seluruh elemen form baku, tabel, progress meter, dan modal bawaan peramban tanpa gaya CSS.",
+            selector: ".raw-grid, .components-grid",
+            pointerText: "👉 Komponen Murni",
+            btnText: "Lanjut"
+        },
+        {
+            title: "2. Navigasi & Master Gateway",
+            message: "Gunakan navigasi atas untuk kembali ke Master Gateway atau beralih ke Glass Dark Showcase.",
+            selector: ".header-actions",
+            pointerText: "👉 Navigasi Kembali",
+            btnText: "Selesai ✦"
+        }
+    ];
+
+    let activeTourSteps = showcaseTour;
+    if (isWebApps) activeTourSteps = webappsTour;
+    else if (isRawShowcase) activeTourSteps = rawTour;
+    else if (isGateway) activeTourSteps = gatewayTour;
+
     let currentStepIndex = 0;
+    let isBanterMode = false;
 
     /* --------------------------------------------------------------------------
-       3. INJECT DOM ELEMENTS
+       5. INJECT DOM ELEMENTS
        -------------------------------------------------------------------------- */
     function injectCompanionUI() {
         // Spotlight elements
@@ -199,7 +323,7 @@
         canvas.className = 'gelly-canvas';
         canvas.width = 280;
         canvas.height = 280;
-        canvas.title = "Hai! Klik aku untuk membuka panduan.";
+        canvas.title = "Hai! Klik aku untuk membuka panduan atau ngobrol.";
 
         const pingDot = document.createElement('div');
         pingDot.className = 'gelly-ping-dot';
@@ -218,7 +342,7 @@
                 <div class="gelly-bubble-header">
                     <div class="gelly-badge">
                         <span class="gelly-badge-dot"></span>
-                        <span>Panduan</span>
+                        <span id="gellyBadgeText">${pageGreetings[currentPageKey].badge}</span>
                         <span class="gelly-step-counter" id="gellyStepCounter"></span>
                     </div>
                     <div class="gelly-header-tools">
@@ -235,14 +359,21 @@
                 </div>
 
                 <div class="gelly-bubble-content">
-                    <h4 class="gelly-title" id="gellyTitle">Pemandu Prototype</h4>
-                    <p class="gelly-message" id="gellyMessage">Memuat panduan interaktif...</p>
+                    <h4 class="gelly-title" id="gellyTitle">${pageGreetings[currentPageKey].title}</h4>
+                    <p class="gelly-message" id="gellyMessage">${pageGreetings[currentPageKey].message}</p>
                 </div>
 
-                <!-- Quick Topic Selector -->
+                <!-- Quick Topic Selector Row -->
                 <div class="gelly-topics-row">
                     <button type="button" class="gelly-topic-pill" data-topic="tour">
                         <i data-lucide="compass"></i> Tur Cepat
+                    </button>
+                    <button type="button" class="gelly-topic-pill" data-topic="chat">
+                        <i data-lucide="message-circle"></i> Basa-Basi
+                    </button>
+                    ${isGlassShowcase ? `
+                    <button type="button" class="gelly-topic-pill" data-topic="grid">
+                        <i data-lucide="layout-grid"></i> Lihat Grid
                     </button>
                     <button type="button" class="gelly-topic-pill" data-topic="copy">
                         <i data-lucide="copy"></i> Salin Kode
@@ -250,9 +381,14 @@
                     <button type="button" class="gelly-topic-pill" data-topic="bg">
                         <i data-lucide="palette"></i> Ganti Latar
                     </button>
+                    ` : `
                     <button type="button" class="gelly-topic-pill" data-topic="apps">
                         <i data-lucide="folder-kanban"></i> Web Apps
                     </button>
+                    <button type="button" class="gelly-topic-pill" data-topic="glass">
+                        <i data-lucide="gem"></i> Glass Showroom
+                    </button>
+                    `}
                 </div>
 
                 <div class="gelly-actions-footer">
@@ -263,7 +399,7 @@
                         <i data-lucide="crosshair"></i> Tunjukkan
                     </button>
                     <button type="button" class="gelly-btn-action primary" id="gellyNextBtn">
-                        Lanjut <i data-lucide="arrow-right"></i>
+                        Mulai Tur 🧭
                     </button>
                 </div>
             </div>
@@ -281,7 +417,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       4. SPOTLIGHT HIGHLIGHTING ENGINE
+       6. SPOTLIGHT HIGHLIGHTING ENGINE (Zero Blur, Zoom-Aware)
        -------------------------------------------------------------------------- */
     let currentHighlightedElement = null;
 
@@ -299,12 +435,12 @@
 
         currentHighlightedElement = el;
 
-        // Smooth scroll to target element
+        // Smooth scroll into center view
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         setTimeout(() => {
             updateSpotlightRect(el, pointerText);
-        }, 250);
+        }, 260);
     }
 
     function updateSpotlightRect(el, pointerText) {
@@ -318,7 +454,7 @@
         if (!overlay || !box || !badge) return;
 
         const zoom = parseFloat(getComputedStyle(document.documentElement).zoom) || 1;
-        const pad = 8;
+        const pad = 10;
         const top = (rect.top / zoom) - pad;
         const left = (rect.left / zoom) - pad;
         const width = (rect.width / zoom) + (pad * 2);
@@ -337,7 +473,7 @@
         badge.style.display = 'flex';
         // Position badge above or below depending on available space
         if (top > 60) {
-            badge.style.top = `${top - 42}px`;
+            badge.style.top = `${top - 44}px`;
             badge.style.left = `${Math.min((window.innerWidth / zoom) - 180, Math.max(12, left))}px`;
         } else {
             badge.style.top = `${top + height + 14}px`;
@@ -358,7 +494,6 @@
         currentHighlightedElement = null;
     }
 
-    // Keep spotlight aligned during scroll/resize
     window.addEventListener('scroll', () => {
         if (currentHighlightedElement) {
             const badge = document.getElementById('gellyPointerBadge');
@@ -376,7 +511,7 @@
     });
 
     /* --------------------------------------------------------------------------
-       5. SPEECH BUBBLE CONTROLS
+       7. SPEECH BUBBLE CONTROLS & CONVERSATIONS
        -------------------------------------------------------------------------- */
     let isBubbleOpen = false;
 
@@ -386,7 +521,6 @@
         if (bubble) bubble.classList.add('active');
         if (container) container.classList.remove('minimized', 'has-unread');
         isBubbleOpen = true;
-        renderTourStep(currentStepIndex);
         playSound('pop');
     }
 
@@ -406,15 +540,16 @@
     }
 
     function renderTourStep(index) {
+        isBanterMode = false;
         if (index < 0) index = 0;
         if (index >= activeTourSteps.length) {
-            // Tour finished!
             hideSpotlight();
             playSound('chime');
             currentStepIndex = 0;
+            document.getElementById('gellyBadgeText').innerText = "Selesai";
             document.getElementById('gellyTitle').innerText = "Kamu Siap Bereksplorasi! 🎉";
-            document.getElementById('gellyMessage').innerHTML = "Semua fitur utama sudah kamu kenali. Klik aku lagi kapan pun kamu butuh tips atau panduan.";
-            document.getElementById('gellyStepCounter').innerText = "Selesai";
+            document.getElementById('gellyMessage').innerHTML = "Semua fitur utama sudah kamu kenali. Klik tombol <strong>Basa-Basi</strong> kalau mau ngobrol santai, atau panggil aku kapan pun!";
+            document.getElementById('gellyStepCounter').innerText = "";
             document.getElementById('gellyPrevBtn').style.display = 'none';
             document.getElementById('gellyHighlightBtn').style.display = 'none';
             document.getElementById('gellyNextBtn').innerHTML = `Tutup <i data-lucide="check"></i>`;
@@ -425,6 +560,7 @@
         currentStepIndex = index;
         const step = activeTourSteps[currentStepIndex];
 
+        document.getElementById('gellyBadgeText').innerText = "Tur Interaktif";
         document.getElementById('gellyTitle').innerText = step.title;
         document.getElementById('gellyMessage').innerHTML = step.message;
         document.getElementById('gellyStepCounter').innerText = `(${currentStepIndex + 1}/${activeTourSteps.length})`;
@@ -437,7 +573,6 @@
         
         if (step.selector && document.querySelector(step.selector)) {
             hlBtn.style.display = 'inline-flex';
-            // Auto highlight step element
             highlightElement(step.selector, step.pointerText);
         } else {
             hlBtn.style.display = 'none';
@@ -449,6 +584,25 @@
 
         if (window.lucide) window.lucide.createIcons();
         playSound('pop');
+    }
+
+    function renderCasualBanter() {
+        isBanterMode = true;
+        hideSpotlight();
+        const banter = casualBanterList[banterIndex % casualBanterList.length];
+        banterIndex++;
+
+        document.getElementById('gellyBadgeText').innerText = "Basa-Basi 💬";
+        document.getElementById('gellyStepCounter').innerText = "";
+        document.getElementById('gellyTitle').innerText = banter.title;
+        document.getElementById('gellyMessage').innerHTML = banter.message;
+
+        document.getElementById('gellyPrevBtn').style.display = 'none';
+        document.getElementById('gellyHighlightBtn').style.display = 'none';
+        document.getElementById('gellyNextBtn').innerHTML = `Obrolan Lain 🎲`;
+
+        if (window.lucide) window.lucide.createIcons();
+        playSound('chime');
     }
 
     function setupBubbleEvents() {
@@ -482,7 +636,11 @@
 
         if (nextBtn) {
             nextBtn.onclick = () => {
-                if (currentStepIndex >= activeTourSteps.length - 1 && nextBtn.innerText.includes('Tutup')) {
+                if (isBanterMode) {
+                    renderCasualBanter();
+                } else if (nextBtn.innerText.includes('Mulai Tur')) {
+                    renderTourStep(0);
+                } else if (currentStepIndex >= activeTourSteps.length - 1 && nextBtn.innerText.includes('Tutup')) {
                     hideBubble();
                 } else {
                     renderTourStep(currentStepIndex + 1);
@@ -512,28 +670,43 @@
                 const topic = this.getAttribute('data-topic');
                 if (topic === 'tour') {
                     renderTourStep(0);
+                } else if (topic === 'chat') {
+                    renderCasualBanter();
+                } else if (topic === 'grid') {
+                    isBanterMode = false;
+                    document.getElementById('gellyBadgeText').innerText = "Showroom Grid";
+                    document.getElementById('gellyTitle').innerText = "Grid 44 Komponen Kaca";
+                    document.getElementById('gellyMessage').innerHTML = "Ini dia grid showroom lengkap yang menampung 44 komponen interaktif! Kamu bisa mencoba langsung setiap komponen di dalam kartunya.";
+                    highlightElement("#componentsGrid, .components-grid", "👉 Grid 44 Komponen Kaca");
+                    document.getElementById('gellyNextBtn').innerHTML = `Lanjut <i data-lucide="arrow-right"></i>`;
+                    playSound('pop');
                 } else if (topic === 'copy') {
+                    isBanterMode = false;
+                    document.getElementById('gellyBadgeText').innerText = "Salin Kode";
                     document.getElementById('gellyTitle').innerText = "Cara Salin Kode Mandiri";
                     document.getElementById('gellyMessage').innerHTML = "Setiap kartu memiliki tombol <strong>Salin</strong>. Begitu diklik, seluruh HTML, CSS variabel, dan JavaScript interaktif langsung tersalin ke clipboard tanpa perlu install dependency.";
                     highlightElement('.card-actions-tools, .component-card:first-of-type .card-actions-tools', "👉 Tombol Salin Instan");
+                    document.getElementById('gellyNextBtn').innerHTML = `Lanjut <i data-lucide="arrow-right"></i>`;
                     playSound('pop');
                 } else if (topic === 'bg') {
+                    isBanterMode = false;
+                    document.getElementById('gellyBadgeText').innerText = "Tema Latar";
                     document.getElementById('gellyTitle').innerText = "Ganti Tema Latar Kaca";
                     document.getElementById('gellyMessage').innerHTML = "Pilih tombol <strong>Mesh Gradient</strong> pada header untuk mengaktifkan wallpaper dinamis, atau gunakan switch per kartu untuk menguji kontras.";
                     highlightElement('.grid-bg-selector', "👉 Switcher Tema Latar");
+                    document.getElementById('gellyNextBtn').innerHTML = `Lanjut <i data-lucide="arrow-right"></i>`;
                     playSound('pop');
                 } else if (topic === 'apps') {
-                    document.getElementById('gellyTitle').innerText = "Web Applications Studio";
-                    document.getElementById('gellyMessage').innerHTML = "Mau melihat aplikasi skala penuh? Kunjungi <strong>Web Applications Studio</strong> untuk simulator multi-perangkat (Mobile & Desktop).";
-                    highlightElement("a[href*='apps.html']", "👉 Buka Web Applications");
-                    playSound('pop');
+                    window.location.href = isGlassShowcase ? '../../apps.html' : 'ui/web/apps.html';
+                } else if (topic === 'glass') {
+                    window.location.href = isWebApps ? 'components/glass/showcase.html' : 'ui/web/components/glass/showcase.html';
                 }
             };
         });
     }
 
     /* --------------------------------------------------------------------------
-       6. FERALUI-INSPIRED SOFT-BODY SPRING PHYSICS JELLY BLOB
+       8. FERALUI-INSPIRED SOFT-BODY SPRING PHYSICS JELLY BLOB (Canvas 2D)
        -------------------------------------------------------------------------- */
     function initGellyPhysicsCanvas() {
         const canvas = document.getElementById('gellyCanvas');
@@ -543,11 +716,10 @@
 
         const width = 280;
         const height = 280;
-        const cx = 180; // Center offset towards bottom-right so blob peeks out diagonally
+        const cx = 180; // Offset towards bottom-right so blob peeks out diagonally
         const cy = 180;
         const baseRadius = 100;
 
-        // Create 18 spring points on the perimeter
         const numPoints = 18;
         const points = [];
         for (let i = 0; i < numPoints; i++) {
@@ -564,33 +736,28 @@
             });
         }
 
-        // Global squish impulse variables
         let squashX = 1;
         let squashY = 1;
         let squashVx = 0;
         let squashVy = 0;
 
-        // Eye tracking & blinking
         let mouseScreenX = window.innerWidth / 2;
         let mouseScreenY = window.innerHeight / 2;
         let isHovered = false;
         let blinkProgress = 0;
         let isBlinking = false;
         let nextBlinkTime = Date.now() + 3000;
-        let talkBounce = 0;
 
         window.addEventListener('mousemove', (e) => {
             mouseScreenX = e.clientX;
             mouseScreenY = e.clientY;
 
-            // Check if cursor is near Gelly's bottom-right corner
             const rect = canvas.getBoundingClientRect();
             const canvasX = e.clientX - rect.left;
             const canvasY = e.clientY - rect.top;
 
             if (canvasX >= 0 && canvasX <= rect.width && canvasY >= 0 && canvasY <= rect.height) {
                 isHovered = true;
-                // Deform closest vertex slightly
                 const mouseAngle = Math.atan2(canvasY * 2 - cy, canvasX * 2 - cx);
                 points.forEach(p => {
                     const diff = Math.abs(p.angle - mouseAngle);
@@ -603,16 +770,21 @@
             }
         });
 
-        // Click / Squish interaction
+        // Touch support on mobile
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+                mouseScreenX = e.touches[0].clientX;
+                mouseScreenY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
         canvas.addEventListener('click', () => {
-            // Elastic squish impulse
             squashX = 1.35;
             squashY = 0.72;
             squashVx = -0.2;
             squashVy = 0.2;
 
-            // Perturb points randomly for organic jiggle
-            points.forEach((p, idx) => {
+            points.forEach((p) => {
                 p.vr += (Math.random() - 0.5) * 20;
             });
 
@@ -620,14 +792,12 @@
             toggleBubble();
         });
 
-        // Animation Loop
         let lastTime = performance.now();
 
         function render(now) {
             const dt = Math.min((now - lastTime) / 1000, 0.1);
             lastTime = now;
 
-            // 1. Spring physics simulation for overall squish
             const springK = 75;
             const springDamp = 6.5;
 
@@ -639,13 +809,11 @@
             squashVy += fy * dt;
             squashY += squashVy * dt;
 
-            // 2. Point vertices radial spring simulation
             const pSpringK = 80;
             const pDamp = 6;
             const waveTime = now * 0.002;
 
             points.forEach((p, i) => {
-                // Subtle organic idle breathing wave
                 const idleOffset = Math.sin(waveTime + i * 0.8) * 3.5;
                 const target = p.baseRadius + idleOffset;
 
@@ -654,7 +822,6 @@
                 p.currentRadius += p.vr * dt;
             });
 
-            // 3. Eye blinking logic
             if (now > nextBlinkTime && !isBlinking) {
                 isBlinking = true;
                 blinkProgress = 0;
@@ -669,23 +836,19 @@
                 }
             }
 
-            // 4. Render Blob
             ctx.clearRect(0, 0, width, height);
             ctx.save();
 
-            // Apply squish centered on (cx, cy)
             ctx.translate(cx, cy);
             ctx.scale(squashX, squashY);
             ctx.translate(-cx, -cy);
 
-            // Compute polygon points
             const coords = points.map(p => {
                 const x = cx + Math.cos(p.angle) * p.currentRadius;
                 const y = cy + Math.sin(p.angle) * p.currentRadius;
                 return { x, y };
             });
 
-            // Draw jelly shape using smooth curves
             ctx.beginPath();
             ctx.moveTo((coords[0].x + coords[coords.length - 1].x) / 2, (coords[0].y + coords[coords.length - 1].y) / 2);
 
@@ -698,7 +861,7 @@
             }
             ctx.closePath();
 
-            // Gradient fill (Cyber cyan -> Deep Indigo -> Purple glow)
+            // Vibrant gradient
             const grad = ctx.createRadialGradient(cx - 35, cy - 35, 15, cx, cy, baseRadius * 1.3);
             grad.addColorStop(0, '#38BDF8');
             grad.addColorStop(0.4, '#0284C7');
@@ -707,7 +870,7 @@
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // Caustic Specular Gloss Highlight (top-left inner shine)
+            // Specular gloss
             ctx.save();
             ctx.clip();
             const specGrad = ctx.createRadialGradient(cx - 50, cy - 50, 5, cx - 35, cy - 35, 60);
@@ -720,12 +883,11 @@
             ctx.fill();
             ctx.restore();
 
-            // Specular perimeter stroke
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
             ctx.lineWidth = 2.5;
             ctx.stroke();
 
-            // 5. Draw Cartoon Eyes & Pupils (Pupils follow mouse cursor)
+            // Eyes & Pupil tracking
             const rect = canvas.getBoundingClientRect();
             const eye1Center = { x: cx - 42, y: cy - 38 };
             const eye2Center = { x: cx - 6, y: cy - 46 };
@@ -752,7 +914,6 @@
                 y: eye2Center.y + Math.sin(angle2) * maxPupilOffset
             };
 
-            // Blink factor (1 = open, 0.08 = closed)
             const blinkFactor = isBlinking ? (1 - Math.sin(blinkProgress * Math.PI) * 0.92) : 1;
 
             function drawEye(center, pupil, radius) {
@@ -761,20 +922,17 @@
                 ctx.scale(1, blinkFactor);
                 ctx.translate(-center.x, -center.y);
 
-                // White sclera with soft shadow
                 ctx.fillStyle = '#FFFFFF';
                 ctx.beginPath();
                 ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
                 ctx.fill();
 
                 if (blinkFactor > 0.3) {
-                    // Dark pupil
                     ctx.fillStyle = '#0F172A';
                     ctx.beginPath();
                     ctx.arc(pupil.x, pupil.y, radius * 0.52, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // White sparkle reflection
                     ctx.fillStyle = '#FFFFFF';
                     ctx.beginPath();
                     ctx.arc(pupil.x - 2.5, pupil.y - 2.5, radius * 0.2, 0, Math.PI * 2);
@@ -787,24 +945,22 @@
             drawEye(eye1Center, pupil1, 15);
             drawEye(eye2Center, pupil2, 14);
 
-            // Cute Happy Mouth
+            // Cute smiling mouth
             ctx.save();
             ctx.strokeStyle = '#0F172A';
             ctx.lineWidth = 3;
             ctx.lineCap = 'round';
             ctx.beginPath();
             const mouthCenter = { x: cx - 22, y: cy - 14 };
-            if (isHovered || isBubbleOpen) {
-                // Wide happy smile
+            if (isHovered || isBubbleOpen || isBanterMode) {
                 ctx.arc(mouthCenter.x, mouthCenter.y, 8, 0.15 * Math.PI, 0.85 * Math.PI, false);
             } else {
-                // Subtle calm curve
                 ctx.arc(mouthCenter.x, mouthCenter.y, 6, 0.2 * Math.PI, 0.8 * Math.PI, false);
             }
             ctx.stroke();
             ctx.restore();
 
-            // Cheerful Cheek Blush
+            // Blush
             ctx.fillStyle = 'rgba(244, 114, 182, 0.4)';
             ctx.beginPath();
             ctx.arc(cx - 56, cy - 24, 7, 0, Math.PI * 2);
@@ -821,23 +977,26 @@
     }
 
     /* --------------------------------------------------------------------------
-       7. INITIALIZE WHEN DOM IS READY
+       9. INITIALIZE ON PAGE LOAD WITH CONTEXTUAL NAVIGATION SPEECH
        -------------------------------------------------------------------------- */
     function init() {
         injectCompanionUI();
         setupBubbleEvents();
         initGellyPhysicsCanvas();
 
-        // Check if user is first-time visitor on showcase or home
-        const hasSeenTour = localStorage.getItem('gelly_tour_seen_v2');
-        if (!hasSeenTour) {
-            // Friendly automatic introduction after 900ms
+        // Check if page switched
+        const lastPage = sessionStorage.getItem('gelly_last_page');
+        const isPageSwitch = lastPage && lastPage !== currentPageKey;
+        sessionStorage.setItem('gelly_last_page', currentPageKey);
+
+        // If newly switched to a page or first visit: greet user with contextual intro!
+        if (isPageSwitch || !sessionStorage.getItem('gelly_welcomed')) {
+            sessionStorage.setItem('gelly_welcomed', 'true');
             setTimeout(() => {
                 showBubble();
-                localStorage.setItem('gelly_tour_seen_v2', 'true');
-            }, 900);
+            }, 600);
         } else {
-            // Show subtle notification ping dot on Gelly
+            // Subtle ping dot
             const container = document.getElementById('gellyCompanionContainer');
             if (container) container.classList.add('has-unread');
         }
