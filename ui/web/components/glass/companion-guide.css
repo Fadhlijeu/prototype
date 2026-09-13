@@ -151,7 +151,7 @@
     pointer-events: none;
     user-select: none;
     touch-action: none;
-    transition: bottom 4.8s cubic-bezier(0.25, 1, 0.5, 1), top 4.8s cubic-bezier(0.25, 1, 0.5, 1), right 0.4s ease, left 0.4s ease, transform 0.4s ease;
+    transition: bottom 2.4s cubic-bezier(0.25, 1, 0.5, 1), top 2.4s cubic-bezier(0.25, 1, 0.5, 1), right 0.4s ease, left 0.4s ease, transform 0.4s ease;
 }
 
 /* While dragging: instant follow, no transitions */
@@ -186,7 +186,7 @@
 }
 
 .gelly-companion-container.returning {
-    transition: bottom 1.2s cubic-bezier(0.34, 1.25, 0.64, 1), top 1.2s cubic-bezier(0.34, 1.25, 0.64, 1), right 0.4s ease, left 0.4s ease, transform 0.4s ease !important;
+    transition: bottom 0.9s cubic-bezier(0.34, 1.25, 0.64, 1), top 0.9s cubic-bezier(0.34, 1.25, 0.64, 1), right 0.4s ease, left 0.4s ease, transform 0.4s ease !important;
 }
 
 /* The interactive canvas where physics jelly blob is rendered */

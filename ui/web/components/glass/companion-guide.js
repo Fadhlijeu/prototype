@@ -284,9 +284,12 @@
         const introOverlay = document.createElement('div');
         introOverlay.id = 'tataIntroOverlay';
         introOverlay.className = 'tata-intro-overlay';
+        const avatarSrc = isGlassShowcase ? 'tata_avatar.jpg' : (isWebApps ? 'components/glass/tata_avatar.jpg' : 'ui/web/components/glass/tata_avatar.jpg');
         introOverlay.innerHTML = `
             <div class="tata-intro-card">
-                <div class="tata-intro-avatar">🐾</div>
+                <div class="tata-intro-avatar" style="overflow: hidden; padding: 0;">
+                    <img src="${avatarSrc}" alt="Tata" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">
+                </div>
                 <h3 class="tata-intro-title">Hiiiiiii! I am Tata! ✨</h3>
                 <p class="tata-intro-desc">
                     Welcome to <strong>Prototype</strong>! Should we take a quick look around all 44 glass components and web apps? Let's goooo! 🚀
@@ -667,12 +670,14 @@
         });
     }
 
-    // Spontaneous casual dialogue / yapping
-    function triggerSpontaneousDialogue() {
+    // Spontaneous casual dialogue / yapping with auto-dismiss
+    let autoBanterDismissTimer = null;
+    function triggerSpontaneousDialogue(isAuto = false) {
         isTourActive = false;
         hideSpotlight();
         clearTimeout(autoAdvanceTimer);
         clearTimeout(typewriterTimer);
+        clearTimeout(autoBanterDismissTimer);
 
         const dlg = casualDialogues[dialogueIdx % casualDialogues.length];
         dialogueIdx++;
@@ -690,21 +695,44 @@
         mainBtn.onclick = () => renderTourStep(0);
 
         const msgEl = document.getElementById('gellyMessage');
-        typeText(msgEl, dlg.message, 18);
+        typeText(msgEl, dlg.message, 18, () => {
+            if (isAuto) {
+                // Auto-fade banter after 5 seconds if left untouched
+                autoBanterDismissTimer = setTimeout(() => {
+                    if (!isTourActive && isBubbleOpen) {
+                        hideBubble();
+                        startWanderWalk();
+                    }
+                }, 5000);
+            }
+        });
 
         showBubble();
         playSound('chime');
     }
 
+    // Banter scheduler (Frequent banter every 8-15 seconds!)
+    let banterSchedulerTimer = null;
+    function scheduleNextBanter(delayMs) {
+        clearTimeout(banterSchedulerTimer);
+        const delay = delayMs !== undefined ? delayMs : Math.floor(8000 + Math.random() * 7000);
+        banterSchedulerTimer = setTimeout(() => {
+            if (!isBubbleOpen && !isTourActive && !isDragging) {
+                triggerSpontaneousDialogue(true);
+            }
+            scheduleNextBanter();
+        }, delay);
+    }
+
     /* --------------------------------------------------------------------------
-       9. RANDOM WANDERING & JIGGLE WALKING (Ultra-Slow, Automatic on Minimize)
+       9. RANDOM WANDERING & JIGGLE WALKING (Immediate on close/minimize)
        -------------------------------------------------------------------------- */
     let companionState = 'idle'; // 'idle', 'walking', 'returning', 'dragging'
     let walkInterval = null;
-    let idleTimer = null;
 
     function startWanderWalk() {
-        if (companionState !== 'idle' || isBubbleOpen) return;
+        if (companionState === 'walking' || isDragging) return;
+        hideBubble();
 
         const container = document.getElementById('gellyCompanionContainer');
         if (!container) return;
@@ -714,7 +742,7 @@
         container.classList.add('walking');
 
         // Drift gently upwards
-        const randomBottom = Math.floor(180 + Math.random() * (window.innerHeight * 0.38));
+        const randomBottom = Math.floor(140 + Math.random() * (window.innerHeight * 0.40));
         container.style.bottom = `${randomBottom}px`;
 
         playSound('squish');
@@ -724,7 +752,7 @@
             if (companionState === 'walking') {
                 returnToHomeCorner(false);
             }
-        }, 18000);
+        }, 11000);
     }
 
     function returnToHomeCorner(byClick = true) {
@@ -912,11 +940,11 @@
                 footer.style.display = 'none';
 
                 const msgEl = document.getElementById('gellyMessage');
-                typeText(msgEl, "No worries! But remember, if you ever need anything, just tap me anytime! I'll be right here watching over you. 🌟", 18, () => {
+                typeText(msgEl, "No worries! But remember, if you ever need anything, just tap me anytime! 🌟", 18, () => {
                     setTimeout(() => {
                         hideBubble();
-                        startWanderWalk(); // Automatic wander!
-                    }, 4000);
+                        startWanderWalk(); // Automatic wander immediately!
+                    }, 1500);
                 });
 
                 showBubble();
@@ -926,18 +954,18 @@
         if (closeBtn) {
             closeBtn.onclick = () => {
                 hideBubble();
-                setTimeout(() => startWanderWalk(), 800); // Auto wander on close!
+                startWanderWalk(); // Walk immediately!
             };
         }
 
-        // Minimize: NO SHRINK! Stays normal scale, and automatically starts wandering!
+        // Minimize: NO SHRINK! Stays normal scale, and immediately starts wandering!
         if (minBtn) {
             minBtn.onclick = () => {
                 hideBubble();
                 const container = document.getElementById('gellyCompanionContainer');
                 if (container) container.classList.add('minimized');
                 playSound('squish');
-                setTimeout(() => startWanderWalk(), 1200); // Auto wander when minimized!
+                startWanderWalk(); // Walk immediately!
             };
         }
 
@@ -1320,6 +1348,7 @@
         initGellyPhysicsCanvas();
         initDragAndDrop();
         resetIdleTimer();
+        scheduleNextBanter(3500); // Frequent banter starts within 3.5s!
 
         // 1. Check if first-time visitor needs the grand introduction with website blur!
         // FIXED BUG: Only shows ONCE globally across the whole website! Never re-triggers on page switch.
