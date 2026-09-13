@@ -187,13 +187,15 @@ glass_showcase_content = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass Dark Premium Showroom — 24 All-in-One Components</title>
-    <meta name="description" content="Koleksi 24 Komponen UI/UX Glass Dark Premium all-in-one mandiri dengan resize preview, multi-file code tabs, dan copy instant.">
+    <title>Glass Dark Premium Showroom — {len(glass_components_metadata)} All-in-One Components</title>
+    <meta name="description" content="Koleksi {len(glass_components_metadata)} Komponen UI/UX interaktif all-in-one mandiri dengan live preview dan editor kode.">
     <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="css.css">
+    <!-- Interactive Blob Companion Guidance Styles -->
+    <link rel="stylesheet" href="companion-guide.css">
     <style>
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -1307,7 +1309,7 @@ glass_showcase_content = f"""<!DOCTYPE html>
             </div>
             <div class="brand-text">
                 <h1>Proto<span>type</span> Glass Showcase</h1>
-                <p>{len(glass_components_metadata)} Komponen Glass Dark Premium All-in-One Mandiri</p>
+                <p>{len(glass_components_metadata)} Komponen UI Interaktif Mandiri</p>
             </div>
         </div>
 
@@ -1332,12 +1334,12 @@ glass_showcase_content = f"""<!DOCTYPE html>
                 <i data-lucide="folder-kanban"></i>
             </div>
             <div class="banner-text">
-                <h3>Koleksi Aplikasi Web Utuh (Projects Workspace)</h3>
-                <p>Seluruh aplikasi web utuh berada di dalam folder <code>apps/</code> dan ditampilkan pada halaman studio tersendiri.</p>
+                <h3>Web Applications Studio</h3>
+                <p>Eksplorasi prototipe aplikasi lengkap dengan simulator multi-perangkat.</p>
             </div>
         </div>
         <a href="../../../../ui/web/apps.html" class="btn-banner-cta">
-            <i data-lucide="folder-kanban"></i> Buka Web Applications Studio <i data-lucide="arrow-right"></i>
+            <i data-lucide="folder-kanban"></i> Buka Studio <i data-lucide="arrow-right"></i>
         </a>
     </div>
 
@@ -2209,6 +2211,8 @@ glass_showcase_content = f"""<!DOCTYPE html>
             }});
         }});
     </script>
+    <!-- Interactive Blob Companion Guidance System -->
+    <script src="companion-guide.js"></script>
 </body>
 </html>
 """
@@ -3340,6 +3344,8 @@ web_apps_html_content = f"""<!DOCTYPE html>
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="components/glass/css.css">
+    <!-- Interactive Blob Companion Guidance Styles -->
+    <link rel="stylesheet" href="components/glass/companion-guide.css">
     <style>
 
         * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -3931,7 +3937,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
                 <i data-lucide="home"></i> Gateway
             </a>
             <a href="components/glass/showcase.html" class="action-link-btn" title="Koleksi Komponen Kaca">
-                <i data-lucide="gem"></i> Glass Components (24)
+                <i data-lucide="gem"></i> Glass Components (44)
             </a>
             <a href="components/raw/showcase.html" class="action-link-btn" title="Koleksi Komponen Baku">
                 <i data-lucide="code-2"></i> Raw HTML (9)
@@ -3943,10 +3949,10 @@ web_apps_html_content = f"""<!DOCTYPE html>
 
         <!-- Hero Banner -->
         <section class="hero-banner">
-            <span class="hero-tag"><i data-lucide="boxes"></i> Projects Collection Layer</span>
+            <span class="hero-tag"><i data-lucide="boxes"></i> Projects Collection</span>
             <h2 class="hero-title">Koleksi Aplikasi Web Mandiri</h2>
             <p class="hero-desc">
-                Ruang kerja terpusat untuk menguji dan mengeksplorasi seluruh aplikasi web utuh yang berada di dalam folder <code>apps/</code>. Setiap proyek siap dijalankan dalam simulator multi-viewport atau diluncurkan penuh ke tab browser baru.
+                Eksplorasi aplikasi web interaktif utuh dengan simulator multi-viewport dan peluncur layar penuh.
             </p>
         </section>
 
@@ -4297,6 +4303,8 @@ web_apps_html_content = f"""<!DOCTYPE html>
         }});
 
         </script>
+        <!-- Interactive Blob Companion Guidance System -->
+        <script src="components/glass/companion-guide.js"></script>
 </body>
 </html>
 """

@@ -10,6 +10,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Shared Design System Tokens (Single Source of Truth) -->
     <link rel="stylesheet" href="ui/web/components/glass/css.css">
+    <!-- Interactive Blob Companion Guidance Styles -->
+    <link rel="stylesheet" href="ui/web/components/glass/companion-guide.css">
     <style>
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -543,16 +545,16 @@
         <!-- Hero Section -->
         <section class="hero-banner">
 
-            <h2 class="hero-title">Eksplorasi, Uji Coba, & Salin Komponen UI Modern</h2>
+            <h2 class="hero-title">UI Component & Application Workbench</h2>
             <p class="hero-desc">
-                Portal terpusat untuk menjelajahi komponen web interaktif dalam gaya <strong>Glass Dark Premium</strong>, mempelajari anatomi dasar komponen web murni (<strong>Raw HTML</strong>), serta melihat implementasi aplikasi komposit utuh.
+                Eksplorasi komponen web interaktif, prototipe aplikasi utuh, dan template kode all-in-one siap pakai.
             </p>
             <div class="hero-actions">
                 <a href="ui/web/apps.html" class="btn-primary" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">
-                    <i data-lucide="folder-kanban"></i> Web Applications Studio (Apps)
+                    <i data-lucide="folder-kanban"></i> Web Applications Studio
                 </a>
                 <a href="ui/web/components/glass/showcase.html" class="btn-primary">
-                    <i data-lucide="gem"></i> Glass Components (21)
+                    <i data-lucide="gem"></i> Glass Components (44)
                 </a>
                 <a href="ui/web/components/raw/showcase.html" class="btn-secondary">
                     <i data-lucide="code-2"></i> Raw Semantic HTML (9)
@@ -578,10 +580,10 @@
                     </div>
                     <div class="card-title">
                         <span>Web Applications Studio</span>
-                        <span class="card-badge" style="background: rgba(6, 182, 212, 0.2); color: #22D3EE;">Projects Collection</span>
+                        <span class="card-badge" style="background: rgba(6, 182, 212, 0.2); color: #22D3EE;">Projects</span>
                     </div>
                     <p class="card-desc">
-                        Koleksi aplikasi web utuh dari direktori <code>apps/</code> (Cloud File Manager, AI Agent Studio, dll.) dengan simulator viewport multi-perangkat dan peluncur layar penuh.
+                        Koleksi aplikasi web utuh (Cloud File Manager, AI Agent Studio) dengan simulator multi-perangkat.
                     </p>
                 </div>
                 <span class="card-cta">Buka Web Applications Studio <i data-lucide="arrow-right"></i></span>
@@ -595,10 +597,10 @@
                     </div>
                     <div class="card-title">
                         <span>Glass Style Showcase</span>
-                        <span class="card-badge">21 Components</span>
+                        <span class="card-badge">44 Components</span>
                     </div>
                     <p class="card-desc">
-                        Showroom khusus desain Glass Dark Premium: 21 komponen all-in-one mandiri bebas error, simulator responsive, selektor kolom grid (1-4 kolom), dan multi-file code modal.
+                        Showroom 44 komponen UI interaktif mandiri dengan live preview responsif dan editor kode multi-file.
                     </p>
                 </div>
                 <span class="card-cta">Eksplorasi Glass <i data-lucide="arrow-right"></i></span>
@@ -615,7 +617,7 @@
                         <span class="card-badge">9 HTML5 Baku</span>
                     </div>
                     <p class="card-desc">
-                        Katalog murni komponen web tanpa styling CSS. Berisi input field, checkbox, radio, dropdown, progress, tabel, hingga modal dialog standar untuk belajar anatomi.
+                        Katalog elemen web baku tanpa styling bawaan untuk referensi anatomi dan struktur semantik murni.
                     </p>
                 </div>
                 <span class="card-cta">Lihat Komponen Murni <i data-lucide="arrow-right"></i></span>
@@ -632,20 +634,19 @@
                         <span class="card-badge">120+ Komponen</span>
                     </div>
                     <p class="card-desc">
-                        Dokumentasi master audit 120+ komponen web universal yang design-agnostic, mencakup 12 tingkatan anatomi, atribut HTML5 standar, dan peran ARIA.
+                        Dokumentasi master audit 120+ elemen web universal, standar atribut HTML5, dan peran ARIA.
                     </p>
                 </div>
                 <span class="card-cta">Baca Taksonomi <i data-lucide="arrow-right"></i></span>
             </a>
         </div>
 
-
-
     </main>
 
     <script>
         lucide.createIcons();
     </script>
-
+    <!-- Interactive Blob Companion Guidance System -->
+    <script src="ui/web/components/glass/companion-guide.js"></script>
 </body>
 </html>
