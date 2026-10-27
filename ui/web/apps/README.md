@@ -15,9 +15,13 @@ projects/
 │   ├── index.html             # Aplikasi web utuh mandiri (Single-File Architecture)
 │   └── PROJECT_SPEC.md        # Spesifikasi arsitektur & komponen terintegrasi
 │
-└── ai-studio/                 # Proyek: AI Agent Studio Workspace
-    ├── index.html             # Ruang kerja agentik AI interaktif
-    └── PROJECT_SPEC.md        # Spesifikasi arsitektur AI studio
+├── ai-studio/                 # Proyek: AI Agent Studio Workspace
+│   ├── index.html             # Ruang kerja agentik AI interaktif
+│   └── PROJECT_SPEC.md        # Spesifikasi arsitektur AI studio
+│
+└── ai-landing-page/           # Proyek: Kurage Cyber-Organic AI Landing Page
+    ├── index.html             # Landing page panggung ubur-ubur ASCII & AI workspace
+    └── PROJECT_SPEC.md        # Spesifikasi arsitektur AI landing page
 ```
 
 ---
@@ -28,6 +32,7 @@ projects/
 |---|---|---|---|---|
 | **Cloud File Manager** | v2.4 | `[production-ready]` | [`ui/web/apps/file-manager/`](file-manager/) | [`web-apps.html#project-file-manager`](../apps.html#project-file-manager) |
 | **AI Agent Studio** | v1.0 | `[production-ready]` | [`ui/web/apps/ai-studio/`](ai-studio/) | [`web-apps.html#project-ai-studio`](../apps.html#project-ai-studio) |
+| **Kurage AI Landing Page** | v1.0 | `[production-ready]` | [`ui/web/apps/ai-landing-page/`](ai-landing-page/) | [`web-apps.html#project-ai-landing-page`](../apps.html#project-ai-landing-page) |
 
 ---
 

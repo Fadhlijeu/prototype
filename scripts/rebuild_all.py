@@ -3247,6 +3247,30 @@ projects_registry = [
             "Synthesizer Sine Wave Haptic Audio Feedback",
             "Adaptive Fluid Viewport for Mobile & Desktop"
         ]
+    },
+    {
+        "id": "ai-landing-page",
+        "title": "Kurage AI Landing Page",
+        "version": "v1.0",
+        "status": "Production Ready",
+        "desc": "Landing page & ruang kerja cerdas cyber-organic berbasis Glass Dark dengan simulasi ubur-ubur ASCII prosedural 60 FPS, pergantian headline motion blur dinamis, dan simulator respons AI interaktif.",
+        "icon": "globe",
+        "folder": "apps/ai-landing-page",
+        "components": [
+            ("Procedural ASCII Canvas", "terminal", "components/glass/showcase.html#card-ai-agent-scenery"),
+            ("AI Model Selector Card", "cpu", "components/glass/showcase.html#card-ai-model-selector"),
+            ("Prompt Pills Quick Scroller", "tag", "components/glass/showcase.html#card-prompt-pills-row"),
+            ("Glass Chat Input Bar", "send", "components/glass/showcase.html#card-chat-input-bar"),
+            ("Floating Glass Dock", "compass", "components/glass/showcase.html#card-glass-dock-navigation"),
+            ("3D Holographic Card", "sparkles", "components/glass/showcase.html#card-credit-card-3d-glass"),
+        ],
+        "features": [
+            "Procedural ASCII Jellyfish & Physics Simulation (60 FPS)",
+            "Dynamic Motion Blur Headline Morphing Engine",
+            "Cinematic Camera Stage Zoom & Pan Showcase (00:07 Tour)",
+            "Token-by-Token Streaming Response Simulator with Citations",
+            "Command Palette & History Dialog (Ctrl+K)"
+        ]
     }
 ]
 
@@ -3335,6 +3359,16 @@ gallery_cards_html += """
             </div>
         </article>
 """
+
+# Generate Project Tabs HTML
+project_tabs_html = ""
+for idx, p in enumerate(projects_registry):
+    active_cls = " active" if idx == 0 else ""
+    project_tabs_html += f"""                <button class="proj-tab-btn{active_cls}" id="tab-{p['id']}" onclick="switchToProject('{p['id']}')">
+                    <i data-lucide="{p['icon']}"></i> {p['title']}
+                    <span class="badge-pill">{p['version']}</span>
+                </button>\n"""
+
 
 web_apps_html_content = f"""<!DOCTYPE html>
 <html lang="id">
@@ -3963,15 +3997,7 @@ web_apps_html_content = f"""<!DOCTYPE html>
         <!-- Project Selection & View Mode Bar -->
         <div class="projects-selection-bar">
             <div class="project-tabs-cluster">
-                <button class="proj-tab-btn active" id="tab-file-manager" onclick="switchToProject('file-manager')">
-                    <i data-lucide="cloud"></i> Cloud File Manager
-                    <span class="badge-pill">v2.4</span>
-                </button>
-                <button class="proj-tab-btn" id="tab-ai-studio" onclick="switchToProject('ai-studio')">
-                    <i data-lucide="sparkles"></i> AI Agent Studio
-                    <span class="badge-pill">v1.0</span>
-                </button>
-            </div>
+{project_tabs_html}            </div>
 
             <div class="mode-toggle-cluster">
                 <button class="btn-mode active" id="mode-stage" onclick="setViewMode('stage')">
