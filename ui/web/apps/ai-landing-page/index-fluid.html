@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aqualis — Cybernetic Manta Ray & Nano-School</title>
+  <title>Aetheris — Chromatic Fluid & Neural Aurora Workspace</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -177,11 +177,11 @@
       <!-- Top Sidebar Group -->
       <div class="flex flex-col items-center gap-3">
         <!-- Pixel Jellyfish Brand Logo (Matches 00:07 close-up) -->
-        <button id="logo-btn" title="Trigger Cinematic Zoom (00:07)" class="w-9 h-9 flex items-center justify-center rounded-lg text-white/90 hover:text-white transition-transform hover:scale-105 focus:outline-none"><svg width="22" height="22" viewBox="0 0 11 11" fill="currentColor">
-            <rect x="5" y="1" width="1" height="2" /><rect x="4" y="2" width="3" height="2" />
-            <rect x="0" y="4" width="11" height="1" /><rect x="1" y="5" width="9" height="1" /><rect x="2" y="6" width="7" height="1" /><rect x="4" y="7" width="3" height="1" />
-            <!-- Tail -->
-            <rect x="5" y="8" width="1" height="3" opacity="0.75" />
+        <button id="logo-btn" title="Trigger Cinematic Zoom (00:07)" class="w-9 h-9 flex items-center justify-center rounded-lg text-white/90 hover:text-white transition-transform hover:scale-105 focus:outline-none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-cyan-300">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-dasharray="4 2" opacity="0.6"/>
+            <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" transform="rotate(-30 12 12)" opacity="0.85"/>
+            <ellipse cx="12" cy="12" rx="9" ry="4" stroke="currentColor" transform="rotate(30 12 12)" opacity="0.85"/>
+            <circle cx="12" cy="12" r="2.5" fill="#38bdf8"/>
           </svg></button>
 
         <!-- Active Button: New Prompt / Compose -->
@@ -213,22 +213,6 @@
         <button onclick="showToast('Saved prompts & bookmarks (0)')" title="Bookmarks" class="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center text-white/45 hover:text-white/85 hover:bg-white/[0.04] transition-all">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
-          </svg>
-        </button>
-
-        
-        <!-- Theme Switcher Icon -->
-        <button onclick="toggleThemeSwitcherModal()" title="Switch ASCII Subject (6 Themes)" class="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center text-teal-300 bg-teal-400/10 border border-teal-400/25 hover:bg-teal-400/20 transition-all hover:scale-105">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-          </svg>
-        </button>
-
-        
-        <!-- Theme Switcher Icon -->
-        <button onclick="toggleThemeSwitcherModal()" title="Switch ASCII Subject (6 Themes)" class="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center text-teal-300 bg-teal-400/10 border border-teal-400/25 hover:bg-teal-400/20 transition-all hover:scale-105">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
           </svg>
         </button>
 
@@ -278,13 +262,13 @@
 
     <!-- 3. TOP-RIGHT FLOATING CONTROLS (History Ctrl+K) -->
     <header class="fixed top-3.5 right-4 z-30 flex items-center gap-2">
-            <!-- Theme Switcher Pill -->
-      <button onclick="toggleThemeSwitcherModal()" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-teal-400/30 bg-teal-500/10 hover:bg-teal-500/20 transition-all">
-        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-        <span class="font-mono-code font-semibold">Kurage</span>
-        <span class="text-white/40 text-[11px] hidden sm:inline">(Jellyfish)</span>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white/60"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
+            <!-- Version / Switcher Pill -->
+      <a href="index.html" title="Kembali ke Kurage (Versi Asli)" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-cyan-400/30 bg-cyan-500/10 hover:bg-cyan-500/20 transition-all">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]"></span>
+        <span class="font-mono-code font-semibold">Aetheris Fluid</span>
+        <span class="text-white/40 text-[11px] hidden sm:inline">(Non-ASCII)</span>
+        <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 ml-1">Switch to Kurage</span>
+      </a>
 
       <!-- History Button (1:1 Match) -->
       <button onclick="toggleHistoryModal()" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/80 hover:text-white text-[12px] font-medium">
@@ -483,106 +467,6 @@
     </div>
   </div>
 
-  
-  <!-- ASCII Theme Variations Switcher Modal -->
-  <div id="theme-switcher-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden transition-opacity">
-    <div class="kurage-glass-card w-[94%] max-w-[620px] p-5 sm:p-6 rounded-2xl relative border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.85)] max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-white/10">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-300">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1 1.275-1.275L12 3Z"/></svg>
-          </div>
-          <div>
-            <h3 class="text-sm font-semibold text-white">ASCII Subject Variations (6 Themes)</h3>
-            <p class="text-[11px] text-white/50">Pilih simulasi latar belakang prosedural kanvas favorit Anda</p>
-          </div>
-        </div>
-        <button onclick="toggleThemeSwitcherModal()" class="w-7 h-7 rounded-lg flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all">✕</button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-
-        <a href="index.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-teal-400/60 bg-teal-500/15 ring-1 ring-teal-400/30 transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Ku
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Kurage <span class="text-[11px] text-white/40 font-normal">(Jellyfish)</span></h4>
-              <span class="text-[10px] font-mono-code font-bold px-1.5 py-0.5 rounded bg-teal-400/20 text-teal-300 border border-teal-400/40">Active</span>
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Simulasi 4 ubur-ubur biologis dengan tentakel sinusoidal dan gelembung partikel apung</p>
-          </div>
-        </a>
-        <a href="index-blackhole.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-white/10 hover:border-white/25 hover:bg-white/[0.04] transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Si
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Singularity <span class="text-[11px] text-white/40 font-normal">(Black Hole)</span></h4>
-              
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Lubang hitam relativistik dengan cincin foton bersinar, Doppler beaming, dan semburan jet partikel</p>
-          </div>
-        </a>
-        <a href="index-manta.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-white/10 hover:border-white/25 hover:bg-white/[0.04] transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Aq
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Aqualis <span class="text-[11px] text-white/40 font-normal">(Manta Ray)</span></h4>
-              
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Ikan pari futuristik mengepakkan sayap fluida sinusoidal diiringi 18 nanobot boid bioluminesensi</p>
-          </div>
-        </a>
-        <a href="index-torus.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-white/10 hover:border-white/25 hover:bg-white/[0.04] transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Te
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Tesseract <span class="text-[11px] text-white/40 font-normal">(3D Torus Knot)</span></h4>
-              
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Knot trefoil topologi 3D berputar kontinu dengan proyeksi kedalaman ortografis dan soliton denyut</p>
-          </div>
-        </a>
-        <a href="index-dragon.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-white/10 hover:border-white/25 hover:bg-white/[0.04] transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Ry
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Ryūjin <span class="text-[11px] text-white/40 font-normal">(Celestial Dragon)</span></h4>
-              
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Naga kosmik 42 vertebra kinematika berantai dengan kumis sutra melambai dan mutiara energi sakral</p>
-          </div>
-        </a>
-        <a href="index-lotus.html" class="kurage-glass-pill p-3 rounded-xl flex items-start gap-3 border border-white/10 hover:border-white/25 hover:bg-white/[0.04] transition-all hover:scale-[1.02] block text-left group">
-          <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold font-mono-code text-xs">
-            Ni
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <h4 class="text-[13px] font-semibold text-white group-hover:text-teal-200 transition-colors truncate">Nirvana <span class="text-[11px] text-white/40 font-normal">(Cyber Lotus)</span></h4>
-              
-            </div>
-            <p class="text-[11px] text-white/55 line-clamp-2 leading-tight">Mandala bunga teratai fraktal 4 lapis kelopak mekar berdenyut dengan gelombang aura riak resonansi</p>
-          </div>
-        </a>
-      </div>
-
-      <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/45">
-        <span>Tekan tombol di sidebar / topbar untuk membuka switcher kapan saja</span>
-        <button onclick="toggleThemeSwitcherModal()" class="text-teal-300 hover:underline">Tutup</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Subtle Notification Toast -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
     <div class="kurage-glass-pill px-4 py-1.5 rounded-full font-mono-code text-xs text-teal-200 border border-teal-400/25">
@@ -594,28 +478,13 @@
     /*************************************************************************
      * 1. HERO HEADLINE CHARACTER-WAVE MOTION BLUR ENGINE (Matches 00:01 & 00:11)
      *************************************************************************/
-    const HERO_PHRASES = [
-      {
-            "text": "navigate deep neural oceans",
-            "accentStart": 14
-      },
-      {
-            "text": "bioluminescent swarm logic",
-            "accentStart": 14
-      },
-      {
-            "text": "glide through latent currents",
-            "accentStart": 14
-      },
-      {
-            "text": "hydro-cybernetic synthesis",
-            "accentStart": 17
-      },
-      {
-            "text": "what shall we discover?",
-            "accentStart": 11
-      }
-];
+        const HERO_PHRASES = [
+      { text: "synthesize chromatic ideas", accentStart: 18 },
+      { text: "fluid intelligence in motion", accentStart: 19 },
+      { text: "navigate generative currents", accentStart: 19 },
+      { text: "seamless neural resonance", accentStart: 16 },
+      { text: "what shall we create today?", accentStart: 11 }
+    ];
 
     const heroContainer = document.getElementById('hero-title-container');
     let currentPhraseIndex = 0;
@@ -698,27 +567,31 @@
 
     
     /*************************************************************************
-     * 2. PROCEDURAL ASCII MANTA RAY (AQUALIS) & OCEANIC SWARM ENGINE
+     * 2. NON-ASCII VOLUMETRIC LIQUID PLASMA, CHROMATIC AURORA & NEURAL MESH
      *************************************************************************/
     const canvas = document.getElementById('kurage-canvas');
-    const ctx = canvas.getContext('2d', { alpha: false });
-
-    const CELL_SIZE = 13;
-    const ASCII_RAMP = ['.', "'", ':', ';', 'o', 't', '+', 'S', 'X', '%', '8', '@', '#'];
+    const ctx = canvas.getContext('2d', { alpha: true });
 
     let width = 0;
     let height = 0;
-    let cols = 0;
-    let rows = 0;
     let dpr = 1;
     let isSimulationPaused = false;
     let simTime = 0;
 
     let mouseX = -1000;
     let mouseY = -1000;
+    let targetMouseX = -1000;
+    let targetMouseY = -1000;
+    let isMouseActive = false;
+
     window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      targetMouseX = e.clientX;
+      targetMouseY = e.clientY;
+      isMouseActive = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      isMouseActive = false;
     });
 
     function resizeCanvas() {
@@ -728,153 +601,284 @@
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cols = Math.ceil(width / CELL_SIZE);
-      rows = Math.ceil(height / CELL_SIZE);
+      initParticles();
+    }
+
+    // -----------------------------------------------------------------------
+    // PARTICLE CONSTELLATION MESH (Non-ASCII, Smooth Glowing Vector Orbs)
+    // -----------------------------------------------------------------------
+    const PARTICLE_COUNT = 180;
+    const particles = [];
+
+    const PALETTE = [
+      { r: 56,  g: 189, b: 248 }, // Cyan (#38BDF8)
+      { r: 45,  g: 212, b: 191 }, // Mint Aqua (#2DD4BF)
+      { r: 192, g: 132, b: 252 }, // Purple (#C084FC)
+      { r: 244, g: 114, b: 182 }, // Rose Pink (#F472B6)
+      { r: 253, g: 224, b: 71  }  // Amber Gold (#FDE047)
+    ];
+
+    function initParticles() {
+      particles.length = 0;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.75,
+          vy: (Math.random() - 0.5) * 0.75,
+          radius: 1.2 + Math.random() * 2.2,
+          baseAlpha: 0.25 + Math.random() * 0.65,
+          pulseSpeed: 1 + Math.random() * 2,
+          pulsePhase: Math.random() * Math.PI * 2,
+          color: col
+        });
+      }
     }
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function sampleManta(cx, cy, heading, wingSpan, bodyLen, t, wx, wy) {
-      const dx = wx - cx;
-      const dy = wy - cy;
-      const cosH = Math.cos(heading);
-      const sinH = Math.sin(heading);
-      const lx = dx * cosH + dy * sinH;
-      const ly = -dx * sinH + dy * cosH;
-
-      const halfSpan = wingSpan * 0.5;
-      if (Math.abs(lx) > halfSpan || ly < -bodyLen * 0.6 || ly > bodyLen * 1.5) {
-        return 0;
+    // -----------------------------------------------------------------------
+    // LIQUID PLASMA BLOBS (Volumetric Bioluminescent Gradient Fields)
+    // -----------------------------------------------------------------------
+    const BLOBS = [
+      {
+        baseX: 0.26, baseY: 0.32,
+        radius: 280,
+        speedX: 0.35, speedY: 0.42,
+        r1: 6, g1: 182, b1: 212, // Cyan Core
+        r2: 59, g2: 130, b2: 246  // Blue Edge
+      },
+      {
+        baseX: 0.72, baseY: 0.38,
+        radius: 310,
+        speedX: 0.28, speedY: 0.36,
+        r1: 168, g1: 85, b1: 247, // Violet Core
+        r2: 236, g2: 72, b2: 153  // Pink Edge
+      },
+      {
+        baseX: 0.50, baseY: 0.72,
+        radius: 340,
+        speedX: 0.45, speedY: 0.25,
+        r1: 45,  g1: 212, b1: 191, // Mint Core
+        r2: 14,  g2: 165, b2: 233  // Sky Edge
+      },
+      {
+        baseX: 0.85, baseY: 0.78,
+        radius: 240,
+        speedX: 0.32, speedY: 0.48,
+        r1: 244, g1: 114, b1: 182, // Rose Core
+        r2: 139, g2: 92,  b2: 246  // Indigo Edge
       }
+    ];
 
-      const flapZ = Math.sin(Math.abs(lx) * 0.024 - t * 3.4) * (Math.abs(lx) * 0.22);
-      const normX = Math.abs(lx) / halfSpan;
-      
-      // Triangular wing profile with curved trailing edge
-      const frontEdge = -bodyLen * 0.45 + normX * bodyLen * 0.35;
-      const backEdge = bodyLen * 0.55 - Math.pow(normX, 1.4) * bodyLen * 0.42 + flapZ * 0.25;
-
-      let density = 0;
-      if (ly >= frontEdge && ly <= backEdge) {
-        const wingDist = 1 - normX;
-        const spanFalloff = Math.pow(wingDist, 0.55);
-        const thickness = 1 - Math.abs(ly - (frontEdge + backEdge) * 0.5) / ((backEdge - frontEdge) * 0.55);
-        density = Math.max(0, spanFalloff * Math.max(0, thickness) * 0.95);
-
-        // Spine glow
-        if (Math.abs(lx) < 22) {
-          density = Math.min(1, density + 0.35 * (1 - Math.abs(lx) / 22));
-        }
-      }
-
-      // Cephalic horns at snout
-      if (ly < frontEdge && ly > frontEdge - 28 && Math.abs(lx) > 12 && Math.abs(lx) < 38) {
-        const hornDist = 1 - (Math.abs(lx) - 25) * (Math.abs(lx) - 25) / 169;
-        if (hornDist > 0) density = Math.max(density, hornDist * 0.85);
-      }
-
-      // Whip tail trailing behind
-      if (ly > backEdge && ly < backEdge + 240) {
-        const tailU = (ly - backEdge) / 240;
-        const tailWave = Math.sin(tailU * 8.5 - t * 3.8) * (20 * tailU);
-        const distToTail = Math.abs(lx - tailWave);
-        if (distToTail < 9 * (1 - tailU * 0.7)) {
-          const tailDensity = (1 - distToTail / (9 * (1 - tailU * 0.7))) * (1 - tailU * 0.85) * 0.85;
-          density = Math.max(density, tailDensity);
-        }
-      }
-
-      return Math.min(1, density);
-    }
-
+    // -----------------------------------------------------------------------
+    // MAIN RENDER LOOP (60 FPS Native Canvas 2D)
+    // -----------------------------------------------------------------------
     function renderLoop(timestamp) {
       if (!isSimulationPaused) {
         simTime += 0.016;
       }
 
-      ctx.fillStyle = '#03070d';
+      // Smooth mouse interpolation
+      if (isMouseActive) {
+        mouseX += (targetMouseX - mouseX) * 0.12;
+        mouseY += (targetMouseY - mouseY) * 0.12;
+      } else {
+        mouseX = width * 0.5 + Math.sin(simTime * 0.4) * 120;
+        mouseY = height * 0.5 + Math.cos(simTime * 0.5) * 80;
+      }
+
+      // 1. Clear with deep void (#04060A)
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#04060a';
       ctx.fillRect(0, 0, width, height);
 
-      // Grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+      // 2. Draw Subtle 1px Technical Grid (Matches Glass aesthetic)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.024)';
       ctx.lineWidth = 1;
+      const GRID_STEP = 44;
       ctx.beginPath();
-      for (let c = 0; c <= cols; c++) {
-        const x = c * CELL_SIZE + 0.5;
-        ctx.moveTo(x, 0); ctx.lineTo(x, height);
+      for (let x = 0; x <= width; x += GRID_STEP) {
+        ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, height);
       }
-      for (let r = 0; r <= rows; r++) {
-        const y = r * CELL_SIZE + 0.5;
-        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      for (let y = 0; y <= height; y += GRID_STEP) {
+        ctx.moveTo(0, y + 0.5); ctx.lineTo(width, y + 0.5);
       }
       ctx.stroke();
 
-      ctx.font = '500 10.5px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      // 3. Render Volumetric Liquid Plasma Blobs (Chromatic Screen Blending)
+      ctx.globalCompositeOperation = 'screen';
+      for (let i = 0; i < BLOBS.length; i++) {
+        const b = BLOBS[i];
+        const driftX = Math.sin(simTime * b.speedX + i * 1.5) * (width * 0.08);
+        const driftY = Math.cos(simTime * b.speedY + i * 1.2) * (height * 0.08);
+        const bx = b.baseX * width + driftX;
+        const by = b.baseY * height + driftY;
 
-      // Primary Manta Center
-      const m1x = width * 0.55 + Math.sin(simTime * 0.42) * 28;
-      const m1y = height * 0.48 + Math.cos(simTime * 0.35) * 18;
-      // Secondary Manta Center
-      const m2x = width * 0.22 + Math.cos(simTime * 0.38) * 22;
-      const m2y = height * 0.26 + Math.sin(simTime * 0.45) * 15;
+        // Radial breathing expansion
+        const curR = b.radius * (1 + 0.12 * Math.sin(simTime * 1.4 + i));
 
-      for (let r = 0; r < rows; r++) {
-        const wy = r * CELL_SIZE + CELL_SIZE * 0.5;
+        const grad = ctx.createRadialGradient(bx, by, 0, bx, by, curR);
+        grad.addColorStop(0, `rgba(${b.r1}, ${b.g1}, ${b.b1}, 0.28)`);
+        grad.addColorStop(0.45, `rgba(${b.r2}, ${b.g2}, ${b.b2}, 0.14)`);
+        grad.addColorStop(0.85, `rgba(${b.r2}, ${b.g2}, ${b.b2}, 0.03)`);
+        grad.addColorStop(1, 'transparent');
 
-        for (let c = 0; c < cols; c++) {
-          const wx = c * CELL_SIZE + CELL_SIZE * 0.5;
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(bx, by, curR, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-          // Sample primary manta (large)
-          let d1 = sampleManta(m1x, m1y, -0.22, 280, 190, simTime, wx, wy);
-          // Sample secondary manta (smaller escort)
-          let d2 = sampleManta(m2x, m2y, 0.35, 170, 115, simTime + 1.5, wx, wy);
+      // 4. Render Harmonic Aurora Waves (Smooth Chromatic Bézier Ribbons)
+      const WAVE_COUNT = 3;
+      for (let w = 0; w < WAVE_COUNT; w++) {
+        const waveBaseY = height * (0.35 + w * 0.16);
+        const waveAmp = 45 + w * 20;
+        const waveSpeed = 0.85 + w * 0.35;
+        const phase = simTime * waveSpeed + w * 2.1;
 
-          let density = Math.max(d1, d2);
-          let cr = 45, cg = 212, cb = 191; // Mint Aqua
+        ctx.beginPath();
+        const SEGMENTS = 12;
+        const segWidth = width / SEGMENTS;
+        ctx.moveTo(0, waveBaseY);
 
-          // 18 Nanobot Fish Swarm (Lissajous curves)
-          for (let k = 0; k < 18; k++) {
-            const boidPhase = simTime * 1.8 + k * 0.42;
-            const bx = m1x + Math.sin(boidPhase) * (180 + k * 8) + Math.cos(boidPhase * 0.5) * 45;
-            const by = m1y + Math.cos(boidPhase * 0.8) * (90 + k * 4) + Math.sin(boidPhase * 1.2) * 35;
-            const fdx = wx - bx;
-            const fdy = wy - by;
-            if (fdx * fdx + fdy * fdy < 95) {
-              density = Math.max(density, 0.88);
-              cr = 56; cg = 189; cb = 248; // Cyan swarm
-            }
+        for (let s = 0; s <= SEGMENTS; s++) {
+          const sx = s * segWidth;
+          const u = s / SEGMENTS;
+          
+          // Sine + Cosine harmonic displacement
+          let sy = waveBaseY +
+            Math.sin(u * 5.2 + phase) * waveAmp +
+            Math.cos(u * 2.8 - phase * 0.6) * (waveAmp * 0.45);
+
+          // Dynamic mouse wave repulsion
+          const dmx = sx - mouseX;
+          const dmy = sy - mouseY;
+          const mDistSq = dmx * dmx + dmy * dmy;
+          if (mDistSq < 45000) {
+            const mFactor = (1 - mDistSq / 45000);
+            sy += Math.sin(dmx * 0.05) * (40 * mFactor);
           }
 
-          if (density > 0.075) {
-            const cellX = c * CELL_SIZE;
-            const cellY = r * CELL_SIZE;
-            const cellHash = ((c * 374761393 + r * 668265263) ^ Math.floor(simTime * 3.5)) & 0xff;
-            const jitter = ((cellHash / 255) - 0.5) * 0.12;
-            const dJit = Math.max(0.05, Math.min(0.999, density + jitter));
-
-            const bgAlpha = Math.min(0.42, density * 0.36);
-            ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${bgAlpha.toFixed(3)})`;
-            ctx.fillRect(cellX + 1, cellY + 1, CELL_SIZE - 1, CELL_SIZE - 1);
-
-            if (dJit > 0.83) {
-              ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, 0.78)`;
-              ctx.fillRect(cellX + 2, cellY + 2, CELL_SIZE - 3, CELL_SIZE - 3);
-              ctx.fillStyle = '#03070d';
-              ctx.fillRect(cellX + 5, cellY + 5, CELL_SIZE - 9, CELL_SIZE - 9);
-            } else {
-              const charIndex = Math.min(ASCII_RAMP.length - 1, Math.floor(dJit * ASCII_RAMP.length));
-              const glyph = ASCII_RAMP[charIndex];
-              const textAlpha = Math.min(1, 0.4 + density * 0.72);
-              ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${textAlpha.toFixed(3)})`;
-              ctx.fillText(glyph, wx, wy + 0.5);
-            }
+          if (s === 0) {
+            ctx.moveTo(sx, sy);
+          } else {
+            const prevX = (s - 1) * segWidth;
+            const cpx = (prevX + sx) * 0.5;
+            ctx.quadraticCurveTo(prevX, sy, cpx, sy);
           }
+        }
+
+        // Aurora Ribbon Stroke
+        const ribbonGrad = ctx.createLinearGradient(0, 0, width, 0);
+        if (w === 0) {
+          ribbonGrad.addColorStop(0, 'rgba(56, 189, 248, 0.05)');
+          ribbonGrad.addColorStop(0.3, 'rgba(45, 212, 191, 0.45)');
+          ribbonGrad.addColorStop(0.7, 'rgba(59, 130, 246, 0.38)');
+          ribbonGrad.addColorStop(1, 'rgba(168, 85, 247, 0.05)');
+        } else if (w === 1) {
+          ribbonGrad.addColorStop(0, 'rgba(168, 85, 247, 0.05)');
+          ribbonGrad.addColorStop(0.4, 'rgba(244, 114, 182, 0.42)');
+          ribbonGrad.addColorStop(0.8, 'rgba(253, 224, 71, 0.35)');
+          ribbonGrad.addColorStop(1, 'rgba(45, 212, 191, 0.05)');
+        } else {
+          ribbonGrad.addColorStop(0, 'rgba(45, 212, 191, 0.05)');
+          ribbonGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.32)');
+          ribbonGrad.addColorStop(1, 'rgba(139, 92, 246, 0.05)');
+        }
+
+        ctx.strokeStyle = ribbonGrad;
+        ctx.lineWidth = 2.2 + (2 - w) * 0.8;
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = w === 0 ? 'rgba(56, 189, 248, 0.6)' : 'rgba(236, 72, 153, 0.5)';
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // 5. Render Interactive Particle Constellation Mesh
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Update position
+        p.x += p.vx + Math.sin(simTime * 0.8 + p.pulsePhase) * 0.25;
+        p.y += p.vy + Math.cos(simTime * 0.6 + p.pulsePhase) * 0.25;
+
+        // Wrap around screen edges
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = height + 10;
+        if (p.y > height + 10) p.y = -10;
+
+        // Mouse vortex / repulsive physics
+        const dx = p.x - mouseX;
+        const dy = p.y - mouseY;
+        const distSq = dx * dx + dy * dy;
+        const MOUSE_RADIUS = 150;
+        if (distSq < MOUSE_RADIUS * MOUSE_RADIUS) {
+          const dist = Math.sqrt(distSq) || 1;
+          const force = (1 - dist / MOUSE_RADIUS) * 2.8;
+          // Normal push
+          p.x += (dx / dist) * force;
+          p.y += (dy / dist) * force;
+          // Tangential swirl
+          p.x += (-dy / dist) * (force * 0.6);
+          p.y += (dx / dist) * (force * 0.6);
+        }
+
+        // Pulse alpha
+        const curAlpha = p.baseAlpha * (0.65 + 0.35 * Math.sin(simTime * p.pulseSpeed + p.pulsePhase));
+
+        // Connect nearby particles with delicate laser filaments
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const cdx = p.x - p2.x;
+          const cdy = p.y - p2.y;
+          const connDistSq = cdx * cdx + cdy * cdy;
+          const MAX_CONN_SQ = 78 * 78;
+
+          if (connDistSq < MAX_CONN_SQ) {
+            const lineAlpha = (1 - connDistSq / MAX_CONN_SQ) * 0.22 * Math.min(curAlpha, p2.baseAlpha);
+            ctx.strokeStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${lineAlpha.toFixed(3)})`;
+            ctx.lineWidth = 0.85;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        // Draw glowing particle orb
+        ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${curAlpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // High intensity specular core on larger particles
+        if (p.radius > 2.2) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${(curAlpha * 0.85).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * 0.45, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
 
+      // 6. Interactive Mouse Glowing Cursor Aura
+      if (isMouseActive) {
+        const mouseGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 110);
+        mouseGlow.addColorStop(0, 'rgba(56, 189, 248, 0.24)');
+        mouseGlow.addColorStop(0.5, 'rgba(168, 85, 247, 0.08)');
+        mouseGlow.addColorStop(1, 'transparent');
+        ctx.fillStyle = mouseGlow;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 110, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.globalCompositeOperation = 'source-over';
       requestAnimationFrame(renderLoop);
     }
 
@@ -929,20 +933,6 @@
         historyModal.classList.add('hidden');
         modelDropdown.classList.add('hidden');
         closeResponsePreview();
-      }
-    });
-
-    
-    function toggleThemeSwitcherModal() {
-      const modal = document.getElementById('theme-switcher-modal');
-      if (modal) modal.classList.toggle('hidden');
-    }
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        const modal = document.getElementById('theme-switcher-modal');
-        if (modal && !modal.classList.contains('hidden')) {
-          modal.classList.add('hidden');
-        }
       }
     });
 
