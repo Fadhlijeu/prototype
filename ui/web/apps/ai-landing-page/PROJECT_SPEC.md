@@ -1,15 +1,15 @@
-# Project Specification: Kurage & Aetheris Fluid — Cyber-Organic AI Workspace
+# Project Specification: Kurage & Terrain Grid Matrix — Cyber-Organic AI Workspace
 
-> Ruang kerja cerdas dan landing page interaktif berbasis Glass Dark Cyber-Organic dengan dua edisi visual latar belakang kanvas: **Kurage Original (ASCII Jellyfish)** dan **Aetheris Fluid (Non-ASCII Chromatic Aurora & Quantum Particle Mesh)**.
+> Ruang kerja cerdas dan landing page interaktif berbasis Glass Dark Cyber-Organic dengan dua edisi visual latar belakang kanvas: **Kurage Original (ASCII Jellyfish)** dan **Grid Matrix Edition (Non-ASCII 3D Topographic Perspective Terrain & LiDAR Scan)**.
 
 ---
 
 ## 1. Ikhtisar Proyek
-- **Nama Proyek**: Kurage & Aetheris Fluid AI Landing Page
+- **Nama Proyek**: Kurage & Grid Matrix AI Landing Page
 - **File Utama**:
   - [`index.html`](index.html): **Kurage Original** (ASCII Jellyfish biological physics simulation)
-  - [`index-fluid.html`](index-fluid.html): **Aetheris Fluid** (Non-ASCII volumetric liquid plasma, Bézier aurora ribbons & interactive particle mesh)
-- **Tema Desain**: Glass Dark Premium & Cyber-Organic (`#04060a`, cyan glow `#4fd1c5`, lavender accent `#c4b5fd`, neon magenta `#ec4899`)
+  - [`index-fluid.html`](index-fluid.html): **Grid Matrix Edition** (Non-ASCII 3D Topographic Perspective Terrain wireframe, vector crosshairs, and horizontal LiDAR sweep)
+- **Tema Desain**: Glass Dark Premium & Cyber-Organic (`#05070a`, cyan glow `#4fd1c5`, lavender accent `#c4b5fd`, slate `#94a3b8`)
 - **Target Perangkat**: Responsif (Mobile 375px, Tablet 768px, Desktop 1280px+)
 - **Status Produksi**: `[Interactive Prototype / Production Ready]`
 
@@ -17,13 +17,13 @@
 
 ## 2. Perbandingan Dua Varian Visual
 
-| Karakteristik | Kurage Original (`index.html`) | Aetheris Fluid (`index-fluid.html`) |
+| Karakteristik | Kurage Original (`index.html`) | Grid Matrix Edition (`index-fluid.html`) |
 |---|---|---|
-| **Paradigma Render** | Procedural ASCII Character Ramp (`.` `'` `:` `;` `o` `t` `+` `S` `X` `%` `8` `@` `#`) | Smooth Graphical Canvas 2D (Pure Non-ASCII) |
-| **Elemen Visual** | 4 ubur-ubur biologis dengan kubah & tentakel sinusoidal | 4 gumpalan plasma cair volumetrik, 3 pita gelombang aurora Bézier, & 180 partikel kuantum |
-| **Interaksi Mouse** | Ripple riak lembut saat mouse mendekat | Vortex pusaran gravitasi interaktif & lenturan gelombang aurora |
-| **Palet Warna** | Mint Cyan & Indigo Lavender | Prismatic Cyan, Neon Mint, Electric Violet, Rose & Amber |
-| **Gaya Logo Brand** | Pixel Jellyfish Dome & Tentacles (11x11) | Quantum Orbital Rings & Cyan Core (24x24) |
+| **Paradigma Render** | Procedural ASCII Character Ramp (`.` `'` `:` `;` `o` `t` `+` `S` `X` `%` `8` `@` `#`) | Smooth 3D Perspective Vector Geometry (Pure Non-ASCII) |
+| **Elemen Visual Latar Belakang** | 4 ubur-ubur biologis dengan kubah & tentakel sinusoidal | 3D Topographic Perspective Terrain Wireframe (perbukitan lembah di samping, horizon glow, koordinat telemetry langit) |
+| **Interaksi Mouse** | Ripple riak lembut saat mouse mendekat | Deformasi elastis gravitasi terrain saat kursor melintas |
+| **Palet Warna** | Mint Cyan & Indigo Lavender | Monokromatik Obsidian Pekat (`#05070a`), Tech Cyan (`#4fd1c5`), dan Slate Gray |
+| **Tombol Glass & Teks UI** | Kartu kaca, pil aksi, greeting, prompt, shortcuts | **100% Identik & Sama Persis** dengan versi Kurage asli |
 
 ---
 
@@ -31,8 +31,8 @@
 
 | Komponen | Level | Peran & Penempatan | Detail Desain & Interaksi |
 |---|---|---|---|
-| **Fluid / ASCII Toggle Pill** | Atomic | Bar atas (`header`) | Tombol alih cepat antara edisi Kurage (ASCII) dan Aetheris Fluid (Non-ASCII) |
-| **Procedural Canvas Engine** | Organism | Latar belakang panggung (`#kurage-canvas`) | Mesin render kanvas 2D grid 60 FPS dengan respons gravitasi kursor |
+| **Screen Grid Switcher Pill** | Atomic | Bar atas (`header`) | Tombol alih instan antara Kurage (ASCII) dan Grid Matrix (Non-ASCII) |
+| **Procedural Canvas Engine** | Organism | Latar belakang panggung (`#kurage-canvas`) | Mesin render kanvas 2D vektor presisi 60 FPS dengan horizon LiDAR sweep |
 | **Morphing Hero Title** | Molecule | Bagian atas tengah (`.hero-title-wrapper`) | Animasi pergantian frasa dinamis huruf demi huruf dengan efek motion blur |
 | **Kurage Glass Prompt Box** | Molecule | Pusat interaksi input (`.kurage-glass-card`) | Kartu kaca berkilau dengan textarea adaptif, pemilih model, toggle web grounding, dan haptic audio |
 | **Suggestion Action Pills** | Molecule | Baris prompt instan (`.kurage-glass-pill`) | Pil aksi berkilau untuk injeksi prompt sekali sentuh |
@@ -45,5 +45,5 @@
 ## 4. Cara Menjalankan & Eksplorasi
 1. Buka salah satu file di browser secara langsung atau jalankan `npm run dev` lalu akses:
    - **Kurage Original (ASCII)**: [`http://localhost:3000/ui/web/apps/ai-landing-page/index.html`](http://localhost:3000/ui/web/apps/ai-landing-page/index.html)
-   - **Aetheris Fluid (Non-ASCII)**: [`http://localhost:3000/ui/web/apps/ai-landing-page/index-fluid.html`](http://localhost:3000/ui/web/apps/ai-landing-page/index-fluid.html)
-2. Klik tombol pill **Fluid Edition** / **Switch to Kurage** di bar kanan atas untuk beralih seketika antara versi original dan eksperimen non-ASCII.
+   - **Grid Matrix Edition (Non-ASCII)**: [`http://localhost:3000/ui/web/apps/ai-landing-page/index-fluid.html`](http://localhost:3000/ui/web/apps/ai-landing-page/index-fluid.html)
+2. Klik tombol pill **Grid Matrix Edition** / **Switch to Kurage** di bar kanan atas untuk beralih seketika antara versi original dan eksperimen non-ASCII.

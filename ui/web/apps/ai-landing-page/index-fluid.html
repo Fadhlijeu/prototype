@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kurage — Cyber-Organic AI Workspace (Glass Edition)</title>
+  <title>Kurage — Cyber-Organic AI Workspace (Terrain Grid Edition)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -280,6 +280,14 @@
         <span class="font-mono-code font-semibold">Fluid Edition</span>
         <span class="text-white/40 text-[11px] hidden sm:inline">(Non-ASCII)</span>
       </a>
+            <!-- Screen Grid Switcher Pill -->
+      <a href="index.html" title="Buka Versi Kurage (ASCII)" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-teal-400/30 bg-teal-500/10 hover:bg-teal-500/20 transition-all">
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_#2dd4bf]"></span>
+        <span class="font-mono-code font-semibold">Grid Matrix Edition</span>
+        <span class="text-white/40 text-[11px] hidden sm:inline">(Non-ASCII)</span>
+        <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-teal-200 ml-1">Switch to Kurage</span>
+      </a>
+
       <!-- History Button (1:1 Match) -->
       <button onclick="toggleHistoryModal()" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/80 hover:text-white text-[12px] font-medium">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="text-white/60">
@@ -577,8 +585,9 @@
 
     
     /*************************************************************************
-     * 2. PROCEDURAL BIOLUMINESCENT JELLYFISH (SMOOTH NON-ASCII GLASS ENGINE)
-     * Ultra-clean, monochromatic, high-end Mariana trench aesthetics.
+     * 2. 3D TOPOGRAPHIC TERRAIN & CYBERNETIC PERSPECTIVE GRID ENGINE
+     * Zero animals, pure geometric vector terrain, horizon lidar sweep.
+     * All glass buttons & UI text stay 100% identical.
      *************************************************************************/
     const canvas = document.getElementById('kurage-canvas');
     const ctx = canvas.getContext('2d', { alpha: false });
@@ -608,186 +617,167 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // 4 Jellyfish specimens matching original positions & orientations
-    const JELLYFISH_FLEET = [
-      {
-        // 1. Top-Left Lavender / Indigo
-        anchorX: 0.20, anchorY: 0.27,
-        angle: 0.34,
-        bellRadiusX: 86, bellRadiusY: 62,
-        tentacleLength: 220, tentacleCount: 7,
-        phase: 0.4, speed: 1.45, driftRadius: 12,
-        colorCore: 'rgba(139, 115, 246, 0.14)',
-        colorRim:  'rgba(167, 139, 250, 0.65)',
-        colorTentacle: 'rgba(196, 181, 253, 0.38)'
-      },
-      {
-        // 2. Top-Center Mint Cyan / Ice Blue
-        anchorX: 0.47, anchorY: 0.16,
-        angle: -0.42,
-        bellRadiusX: 106, bellRadiusY: 74,
-        tentacleLength: 280, tentacleCount: 8,
-        phase: 2.1, speed: 1.35, driftRadius: 15,
-        colorCore: 'rgba(94, 234, 212, 0.16)',
-        colorRim:  'rgba(79, 209, 197, 0.72)',
-        colorTentacle: 'rgba(94, 234, 212, 0.42)'
-      },
-      {
-        // 3. Bottom-Center Radiant Cyan
-        anchorX: 0.56, anchorY: 0.67,
-        angle: -0.26,
-        bellRadiusX: 112, bellRadiusY: 78,
-        tentacleLength: 320, tentacleCount: 9,
-        phase: 4.0, speed: 1.4, driftRadius: 14,
-        colorCore: 'rgba(79, 209, 197, 0.18)',
-        colorRim:  'rgba(94, 234, 212, 0.82)',
-        colorTentacle: 'rgba(79, 209, 197, 0.48)'
-      },
-      {
-        // 4. Far-Right Steel Cyan
-        anchorX: 0.85, anchorY: 0.42,
-        angle: -0.36,
-        bellRadiusX: 94, bellRadiusY: 66,
-        tentacleLength: 260, tentacleCount: 7,
-        phase: 1.2, speed: 1.28, driftRadius: 13,
-        colorCore: 'rgba(56, 189, 248, 0.12)',
-        colorRim:  'rgba(56, 189, 248, 0.55)',
-        colorTentacle: 'rgba(56, 189, 248, 0.35)'
-      }
-    ];
-
-    function drawJellyfish(jf, t) {
-      const pulsePhase = t * jf.speed + jf.phase;
-      const pulse = Math.sin(pulsePhase);
-
-      // Swimming drift
-      const cx = jf.anchorX * width + Math.sin(t * 0.42 + jf.phase) * jf.driftRadius;
-      const cy = jf.anchorY * height + Math.cos(t * 0.52 + jf.phase) * jf.driftRadius;
-
-      // Elastic breathing expansion
-      const rx = jf.bellRadiusX * (1 + 0.075 * pulse);
-      const ry = jf.bellRadiusY * (1 - 0.06 * pulse);
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(jf.angle);
-
-      // 1. UNDULATING TENTACLES (Flowing silk Bézier curves)
-      const count = jf.tentacleCount;
-      for (let k = 0; k < count; k++) {
-        const normK = (k / (count - 1)) * 2 - 1; // -1 to +1
-        const isOralArm = (k % 2 === 1);
-        const startX = normK * (rx * 0.72);
-        const startY = ry * 0.18;
-
-        const STEPS = 14;
-        const stepLen = jf.tentacleLength / STEPS;
-
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-
-        let prevX = startX;
-        let prevY = startY;
-
-        for (let s = 1; s <= STEPS; s++) {
-          const u = s / STEPS;
-          const naturalFlare = normK * (rx * 0.32) * Math.pow(u, 1.15);
-          const waveFreq = isOralArm ? 7.2 : 8.8;
-          const waveAmp = (isOralArm ? 18 : 22) * Math.pow(u, 0.85);
-          
-          const wave =
-            Math.sin(u * waveFreq - t * 2.3 + jf.phase + k * 1.1) * waveAmp +
-            Math.cos(u * 4.2 - t * 1.5 + k * 2.1) * (waveAmp * 0.32);
-
-          const px = startX + naturalFlare + wave;
-          const py = startY + s * stepLen;
-
-          const midX = (prevX + px) * 0.5;
-          const midY = (prevY + py) * 0.5;
-          ctx.quadraticCurveTo(prevX, prevY, midX, midY);
-
-          prevX = px;
-          prevY = py;
-        }
-
-        ctx.lineTo(prevX, prevY);
-
-        // Gradient stroke from bell base to fading tip
-        ctx.strokeStyle = jf.colorTentacle;
-        ctx.lineWidth = isOralArm ? 1.8 : 1.1;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-      }
-
-      // 2. TRANSLUCENT GLASS DOME (MUSHROOM BELL)
-      ctx.beginPath();
-      ctx.moveTo(-rx, 0);
-      // Asymmetric upper mushroom dome
-      ctx.bezierCurveTo(-rx * 1.05, -ry * 1.35, rx * 1.05, -ry * 1.35, rx, 0);
-      // Scalloped bottom rim
-      ctx.bezierCurveTo(rx * 0.65, ry * 0.26, -rx * 0.65, ry * 0.26, -rx, 0);
-      ctx.closePath();
-
-      // Soft volumetric radial glow fill
-      const bellGrad = ctx.createRadialGradient(0, -ry * 0.2, 0, 0, 0, rx);
-      bellGrad.addColorStop(0, jf.colorCore);
-      bellGrad.addColorStop(0.65, 'rgba(10, 16, 26, 0.25)');
-      bellGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = bellGrad;
-      ctx.fill();
-
-      // Glowing glass rim highlight
-      ctx.strokeStyle = jf.colorRim;
-      ctx.lineWidth = 1.35;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = jf.colorRim;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Internal delicate radial nerve ribs
-      ctx.strokeStyle = jf.colorCore;
-      ctx.lineWidth = 0.85;
-      for (let r = -2; r <= 2; r++) {
-        const ribBaseX = r * (rx * 0.32);
-        ctx.beginPath();
-        ctx.moveTo(0, -ry * 0.95);
-        ctx.quadraticCurveTo(ribBaseX * 1.15, -ry * 0.15, ribBaseX, ry * 0.2);
-        ctx.stroke();
-      }
-
-      ctx.restore();
-    }
+    // Terrain grid dimensions
+    const GRID_COLS = 38;
+    const GRID_ROWS = 24;
 
     function renderLoop(timestamp) {
       if (!isSimulationPaused) {
-        simTime += 0.016;
+        simTime += 0.015;
       }
 
-      // 1. Pure deep void (#05070A)
+      // 1. Deep Void Canvas (#05070A)
       ctx.fillStyle = '#05070a';
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Crisp 1px geometric grid (3.6% opacity, exactly like original Kurage)
-      const CELL_SIZE = 13;
-      const cols = Math.ceil(width / CELL_SIZE);
-      const rows = Math.ceil(height / CELL_SIZE);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.032)';
+      // 2. Horizon Definition (34% from top)
+      const horizonY = height * 0.36;
+
+      // Subtle atmospheric horizon haze glow
+      const horizonGrad = ctx.createLinearGradient(0, horizonY - 40, 0, horizonY + 60);
+      horizonGrad.addColorStop(0, 'transparent');
+      horizonGrad.addColorStop(0.4, 'rgba(79, 209, 197, 0.08)');
+      horizonGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = horizonGrad;
+      ctx.fillRect(0, horizonY - 40, width, 100);
+
+      // 3. Flat Orthogonal Background Grid in the Sky (Upper 36%)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
       ctx.lineWidth = 1;
+      const SKY_STEP = 36;
       ctx.beginPath();
-      for (let c = 0; c <= cols; c++) {
-        const x = c * CELL_SIZE + 0.5;
-        ctx.moveTo(x, 0); ctx.lineTo(x, height);
+      for (let x = 0; x <= width; x += SKY_STEP) {
+        ctx.moveTo(x + 0.5, 0);
+        ctx.lineTo(x + 0.5, horizonY);
       }
-      for (let r = 0; r <= rows; r++) {
-        const y = r * CELL_SIZE + 0.5;
-        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      for (let y = 0; y <= horizonY; y += SKY_STEP) {
+        ctx.moveTo(0, y + 0.5);
+        ctx.lineTo(width, y + 0.5);
       }
       ctx.stroke();
 
-      // 3. Render all 4 smooth bioluminescent jellyfish
-      for (let j = 0; j < JELLYFISH_FLEET.length; j++) {
-        drawJellyfish(JELLYFISH_FLEET[j], simTime);
+      // Subtle Digital Coordinate Marks in the Sky
+      ctx.font = '500 9px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(79, 209, 197, 0.35)';
+      ctx.textAlign = 'left';
+      ctx.fillText('[GRID // VECTOR_MODE: ACTIVE]', 64, 32);
+      ctx.fillText('[ELEV_FIELD: TOPOGRAPHIC_3D]', 64, 48);
+      ctx.textAlign = 'right';
+      ctx.fillText('[LAT 35.6812 // RNG 120km]', width - 24, 32);
+      ctx.fillText('[FPS 60 // SYNC: LOCAL]', width - 24, 48);
+
+      // 4. Compute 3D Perspective Terrain Grid Vertices
+      const grid = [];
+      for (let r = 0; r < GRID_ROWS; r++) {
+        grid[r] = [];
+        const uz = r / (GRID_ROWS - 1); // 0 (horizon/far) to 1 (near bottom)
+        const depth = Math.pow(uz, 1.85); // Non-linear perspective foreshortening
+        const baseRowY = horizonY + depth * (height - horizonY + 30);
+
+        for (let c = 0; c < GRID_COLS; c++) {
+          const ux = (c / (GRID_COLS - 1)) * 2 - 1; // -1 to +1
+          // Perspective horizontal spread: narrow at horizon, wide at bottom
+          const projX = width * 0.5 + ux * (width * 0.52 * (0.18 + 0.98 * depth));
+
+          // Topographic Elevation:
+          // Keep center relatively flat for chatbot prompt card readability,
+          // create undulating mountain ridges on left and right flanks
+          const flankWeight = Math.pow(Math.abs(ux), 1.6);
+          const travelingWave = Math.sin(ux * 6.5 + simTime * 0.75) * Math.cos(depth * 7.5 - simTime * 1.3);
+          const secondaryWave = Math.sin(ux * 12.0 - depth * 5.0 + simTime * 1.1) * 0.35;
+
+          let elev = (travelingWave + secondaryWave) * (42 * depth) * flankWeight;
+
+          // Interactive Mouse Gravity (Depresses/lifts grid locally)
+          const dx = projX - mouseX;
+          const dy = baseRowY - mouseY;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 22000) {
+            const mFactor = 1 - Math.sqrt(distSq) / 148;
+            elev -= mFactor * (32 * depth);
+          }
+
+          const screenY = baseRowY - elev;
+
+          grid[r][c] = {
+            x: projX,
+            y: screenY,
+            depth: depth,
+            ux: ux
+          };
+        }
       }
+
+      // 5. Render Depth Grid Lines (Longitudinal lines from horizon to foreground)
+      for (let c = 0; c < GRID_COLS; c++) {
+        ctx.beginPath();
+        for (let r = 0; r < GRID_ROWS; r++) {
+          const pt = grid[r][c];
+          if (r === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+
+        // Color & Alpha based on proximity
+        const centerDist = Math.abs((c / (GRID_COLS - 1)) * 2 - 1);
+        const lineAlpha = (1 - centerDist * 0.45) * 0.32;
+        ctx.strokeStyle = `rgba(79, 209, 197, ${lineAlpha.toFixed(3)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // 6. Render Horizontal Latitude Contour Ribbons (Transverse lines)
+      for (let r = 0; r < GRID_ROWS; r++) {
+        ctx.beginPath();
+        for (let c = 0; c < GRID_COLS; c++) {
+          const pt = grid[r][c];
+          if (c === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+
+        const uz = r / (GRID_ROWS - 1);
+        const rowAlpha = Math.min(0.72, 0.12 + uz * 0.55);
+        ctx.strokeStyle = `rgba(79, 209, 197, ${rowAlpha.toFixed(3)})`;
+        ctx.lineWidth = 1 + uz * 0.5;
+        ctx.stroke();
+
+        // Crosshairs (+) at every 4th column intersection on near rows
+        if (r > 6 && r % 3 === 0) {
+          for (let c = 2; c < GRID_COLS - 2; c += 4) {
+            const pt = grid[r][c];
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            ctx.fillRect(pt.x - 1, pt.y - 1, 2, 2);
+          }
+        }
+      }
+
+      // 7. Subtle Horizontal LiDAR Scanning Line
+      const scanProgress = (simTime * 0.35) % 1.0;
+      const scanY = horizonY + Math.pow(scanProgress, 1.85) * (height - horizonY);
+      
+      const scanGrad = ctx.createLinearGradient(0, 0, width, 0);
+      scanGrad.addColorStop(0, 'transparent');
+      scanGrad.addColorStop(0.2, 'rgba(79, 209, 197, 0.35)');
+      scanGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.7)');
+      scanGrad.addColorStop(0.8, 'rgba(79, 209, 197, 0.35)');
+      scanGrad.addColorStop(1, 'transparent');
+
+      ctx.strokeStyle = scanGrad;
+      ctx.lineWidth = 1.4;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(79, 209, 197, 0.6)';
+      ctx.beginPath();
+      ctx.moveTo(0, scanY);
+      ctx.lineTo(width, scanY);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Horizon Edge Line
+      ctx.strokeStyle = 'rgba(79, 209, 197, 0.42)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, horizonY);
+      ctx.lineTo(width, horizonY);
+      ctx.stroke();
 
       requestAnimationFrame(renderLoop);
     }
