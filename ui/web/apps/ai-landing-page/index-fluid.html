@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kurage — Cyber-Organic AI Workspace (Terrain Grid Edition)</title>
+  <title>Kurage — Cyber-Organic AI Workspace (Singularity Core Edition)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -272,20 +272,13 @@
       </div>
     </aside>
 
-    <!-- 3. TOP-RIGHT FLOATING CONTROLS (History Ctrl+K & Fluid Experiment) -->
+        <!-- 3. TOP-RIGHT FLOATING CONTROLS (History Ctrl+K & Kurage Switcher) -->
     <header class="fixed top-3.5 right-4 z-30 flex items-center gap-2">
-      <!-- Fluid Experiment Switcher Pill -->
-      <a href="index-fluid.html" title="Buka Eksperimen Non-ASCII Fluid Aurora" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-cyan-400/30 bg-cyan-500/10 hover:bg-cyan-500/20 transition-all">
-        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8]"></span>
-        <span class="font-mono-code font-semibold">Fluid Edition</span>
-        <span class="text-white/40 text-[11px] hidden sm:inline">(Non-ASCII)</span>
-      </a>
-            <!-- Screen Grid Switcher Pill -->
-      <a href="index.html" title="Buka Versi Kurage (ASCII)" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-teal-400/30 bg-teal-500/10 hover:bg-teal-500/20 transition-all">
+      <!-- Switcher to Original Kurage (ASCII) -->
+      <a href="index.html" title="Switch to Original Kurage (ASCII Edition)" class="kurage-glass-pill flex items-center gap-2 px-3 py-1.5 rounded-[10px] text-white/90 hover:text-white text-[12px] font-medium border border-teal-400/30 bg-teal-500/10 hover:bg-teal-500/20 transition-all">
         <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_#2dd4bf]"></span>
-        <span class="font-mono-code font-semibold">Grid Matrix Edition</span>
-        <span class="text-white/40 text-[11px] hidden sm:inline">(Non-ASCII)</span>
-        <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-teal-200 ml-1">Switch to Kurage</span>
+        <span class="font-mono-code font-semibold">Switch to Kurage</span>
+        <span class="text-white/40 text-[11px] hidden sm:inline">(ASCII)</span>
       </a>
 
       <!-- History Button (1:1 Match) -->
@@ -585,9 +578,10 @@
 
     
     /*************************************************************************
-     * 2. 3D TOPOGRAPHIC TERRAIN & CYBERNETIC PERSPECTIVE GRID ENGINE
-     * Zero animals, pure geometric vector terrain, horizon lidar sweep.
-     * All glass buttons & UI text stay 100% identical.
+     * 2. LUMINESCENT AI SINGULARITY CORE & PRECISION MATRIX ENGINE
+     * Ultra-premium, mature developer canvas.
+     * Organic breathing core + harmonic flux resonance + interactive dot matrix.
+     * Zero animals, zero ASCII, zero goofy arcade wireframes.
      *************************************************************************/
     const canvas = document.getElementById('kurage-canvas');
     const ctx = canvas.getContext('2d', { alpha: false });
@@ -597,190 +591,336 @@
     let dpr = 1;
     let isSimulationPaused = false;
     let simTime = 0;
+    let lastTimestamp = 0;
 
-    let mouseX = -1000;
-    let mouseY = -1000;
+    // Interactive mouse state with smooth spring lerp
+    let mouse = { x: -1000, y: -1000 };
+    let targetMouse = { x: -1000, y: -1000 };
+    let isMouseActive = false;
+    let typingActivity = 0; // Increases core energy when user types
+
+    // Core center position with smooth elastic tracking
+    let corePos = { x: 0, y: 0 };
+
+    // Shockwave click ripples
+    const ripples = [];
+
     window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      targetMouse.x = e.clientX;
+      targetMouse.y = e.clientY;
+      isMouseActive = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      isMouseActive = false;
+    });
+
+    window.addEventListener('click', (e) => {
+      // Don't ripple if clicking interactive buttons or inputs
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea') || e.target.closest('a')) {
+        return;
+      }
+      ripples.push({
+        x: e.clientX,
+        y: e.clientY,
+        radius: 10,
+        maxRadius: Math.min(width, height) * 0.45,
+        alpha: 0.75,
+        speed: 4.8
+      });
     });
 
     function resizeCanvas() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (corePos.x === 0 && corePos.y === 0) {
+        corePos.x = width * 0.5;
+        corePos.y = height * 0.44;
+      }
     }
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Terrain grid dimensions
-    const GRID_COLS = 38;
-    const GRID_ROWS = 24;
+    // Configuration specifications
+    const GRID_SPACING = 28;
+    const SPOTLIGHT_RADIUS = 220;
 
     function renderLoop(timestamp) {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.05);
+      lastTimestamp = timestamp;
+
       if (!isSimulationPaused) {
-        simTime += 0.015;
+        simTime += dt;
       }
 
-      // 1. Deep Void Canvas (#05070A)
-      ctx.fillStyle = '#05070a';
+      // Smooth decay of typing excitement
+      if (typingActivity > 0) {
+        typingActivity = Math.max(0, typingActivity - dt * 1.5);
+      }
+
+      // Mouse lerp interpolation
+      if (isMouseActive) {
+        mouse.x += (targetMouse.x - mouse.x) * 0.1;
+        mouse.y += (targetMouse.y - mouse.y) * 0.1;
+      }
+
+      // Target position for the AI Singularity Core
+      // Centered right behind the central frosted glass card, with subtle organic hover
+      const baseCoreX = width * 0.5;
+      const baseCoreY = height * 0.44;
+      const hoverX = Math.sin(simTime * 0.6) * 16 + Math.cos(simTime * 1.1) * 8;
+      const hoverY = Math.cos(simTime * 0.7) * 12 + Math.sin(simTime * 1.3) * 6;
+
+      // Slight gravitational pull towards mouse if nearby
+      let pullX = 0;
+      let pullY = 0;
+      if (isMouseActive) {
+        const pdx = mouse.x - baseCoreX;
+        const pdy = mouse.y - baseCoreY;
+        const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
+        if (pdist < 400) {
+          const pullFactor = (1 - pdist / 400) * 28;
+          pullX = (pdx / pdist) * pullFactor;
+          pullY = (pdy / pdist) * pullFactor;
+        }
+      }
+
+      const targetCoreX = baseCoreX + hoverX + pullX;
+      const targetCoreY = baseCoreY + hoverY + pullY;
+
+      corePos.x += (targetCoreX - corePos.x) * 0.08;
+      corePos.y += (targetCoreY - corePos.y) * 0.08;
+
+      // 1. Deep Obsidian Void Background (#030508)
+      ctx.fillStyle = '#030508';
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Horizon Definition (34% from top)
-      const horizonY = height * 0.36;
+      // 2. High-Tech Precision Dot Matrix Grid
+      const cols = Math.floor(width / GRID_SPACING);
+      const rows = Math.floor(height / GRID_SPACING);
+      const offsetX = (width - cols * GRID_SPACING) * 0.5;
+      const offsetY = (height - rows * GRID_SPACING) * 0.5;
 
-      // Subtle atmospheric horizon haze glow
-      const horizonGrad = ctx.createLinearGradient(0, horizonY - 40, 0, horizonY + 60);
-      horizonGrad.addColorStop(0, 'transparent');
-      horizonGrad.addColorStop(0.4, 'rgba(79, 209, 197, 0.08)');
-      horizonGrad.addColorStop(1, 'transparent');
-      ctx.fillStyle = horizonGrad;
-      ctx.fillRect(0, horizonY - 40, width, 100);
+      for (let i = 0; i <= cols; i++) {
+        const x = offsetX + i * GRID_SPACING;
 
-      // 3. Flat Orthogonal Background Grid in the Sky (Upper 36%)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
-      ctx.lineWidth = 1;
-      const SKY_STEP = 36;
-      ctx.beginPath();
-      for (let x = 0; x <= width; x += SKY_STEP) {
-        ctx.moveTo(x + 0.5, 0);
-        ctx.lineTo(x + 0.5, horizonY);
-      }
-      for (let y = 0; y <= horizonY; y += SKY_STEP) {
-        ctx.moveTo(0, y + 0.5);
-        ctx.lineTo(width, y + 0.5);
-      }
-      ctx.stroke();
+        for (let j = 0; j <= rows; j++) {
+          const y = offsetY + j * GRID_SPACING;
 
-      // Subtle Digital Coordinate Marks in the Sky
-      ctx.font = '500 9px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(79, 209, 197, 0.35)';
-      ctx.textAlign = 'left';
-      ctx.fillText('[GRID // VECTOR_MODE: ACTIVE]', 64, 32);
-      ctx.fillText('[ELEV_FIELD: TOPOGRAPHIC_3D]', 64, 48);
-      ctx.textAlign = 'right';
-      ctx.fillText('[LAT 35.6812 // RNG 120km]', width - 24, 32);
-      ctx.fillText('[FPS 60 // SYNC: LOCAL]', width - 24, 48);
+          // Distance to Singularity Core
+          const cdx = corePos.x - x;
+          const cdy = corePos.y - y;
+          const coreDist = Math.sqrt(cdx * cdx + cdy * cdy);
 
-      // 4. Compute 3D Perspective Terrain Grid Vertices
-      const grid = [];
-      for (let r = 0; r < GRID_ROWS; r++) {
-        grid[r] = [];
-        const uz = r / (GRID_ROWS - 1); // 0 (horizon/far) to 1 (near bottom)
-        const depth = Math.pow(uz, 1.85); // Non-linear perspective foreshortening
-        const baseRowY = horizonY + depth * (height - horizonY + 30);
+          // Distance to interactive mouse spotlight
+          const mdx = mouse.x - x;
+          const mdy = mouse.y - y;
+          const mouseDist = isMouseActive ? Math.sqrt(mdx * mdx + mdy * mdy) : 9999;
 
-        for (let c = 0; c < GRID_COLS; c++) {
-          const ux = (c / (GRID_COLS - 1)) * 2 - 1; // -1 to +1
-          // Perspective horizontal spread: narrow at horizon, wide at bottom
-          const projX = width * 0.5 + ux * (width * 0.52 * (0.18 + 0.98 * depth));
+          // Base dot parameters
+          let alpha = 0.075;
+          let radius = 0.95;
+          let r = 255, g = 255, b = 255;
 
-          // Topographic Elevation:
-          // Keep center relatively flat for chatbot prompt card readability,
-          // create undulating mountain ridges on left and right flanks
-          const flankWeight = Math.pow(Math.abs(ux), 1.6);
-          const travelingWave = Math.sin(ux * 6.5 + simTime * 0.75) * Math.cos(depth * 7.5 - simTime * 1.3);
-          const secondaryWave = Math.sin(ux * 12.0 - depth * 5.0 + simTime * 1.1) * 0.35;
+          // Gentle ambient wave passing across grid
+          const wave = Math.sin((i * 0.2 + j * 0.15) - simTime * 0.9) * 0.02;
+          alpha += wave;
 
-          let elev = (travelingWave + secondaryWave) * (42 * depth) * flankWeight;
-
-          // Interactive Mouse Gravity (Depresses/lifts grid locally)
-          const dx = projX - mouseX;
-          const dy = baseRowY - mouseY;
-          const distSq = dx * dx + dy * dy;
-          if (distSq < 22000) {
-            const mFactor = 1 - Math.sqrt(distSq) / 148;
-            elev -= mFactor * (32 * depth);
+          // Illumination from Singularity Core's radiant corona (up to 360px radius)
+          if (coreDist < 360) {
+            const coreFactor = 1 - (coreDist / 360);
+            alpha += Math.pow(coreFactor, 1.8) * 0.35;
+            radius += coreFactor * 0.6;
+            // Shift towards cyan near core
+            r = Math.round(255 - coreFactor * 140);
+            g = Math.round(255 - coreFactor * 20);
+            b = Math.round(255 - coreFactor * 40);
           }
 
-          const screenY = baseRowY - elev;
-
-          grid[r][c] = {
-            x: projX,
-            y: screenY,
-            depth: depth,
-            ux: ux
-          };
-        }
-      }
-
-      // 5. Render Depth Grid Lines (Longitudinal lines from horizon to foreground)
-      for (let c = 0; c < GRID_COLS; c++) {
-        ctx.beginPath();
-        for (let r = 0; r < GRID_ROWS; r++) {
-          const pt = grid[r][c];
-          if (r === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
-        }
-
-        // Color & Alpha based on proximity
-        const centerDist = Math.abs((c / (GRID_COLS - 1)) * 2 - 1);
-        const lineAlpha = (1 - centerDist * 0.45) * 0.32;
-        ctx.strokeStyle = `rgba(79, 209, 197, ${lineAlpha.toFixed(3)})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      // 6. Render Horizontal Latitude Contour Ribbons (Transverse lines)
-      for (let r = 0; r < GRID_ROWS; r++) {
-        ctx.beginPath();
-        for (let c = 0; c < GRID_COLS; c++) {
-          const pt = grid[r][c];
-          if (c === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
-        }
-
-        const uz = r / (GRID_ROWS - 1);
-        const rowAlpha = Math.min(0.72, 0.12 + uz * 0.55);
-        ctx.strokeStyle = `rgba(79, 209, 197, ${rowAlpha.toFixed(3)})`;
-        ctx.lineWidth = 1 + uz * 0.5;
-        ctx.stroke();
-
-        // Crosshairs (+) at every 4th column intersection on near rows
-        if (r > 6 && r % 3 === 0) {
-          for (let c = 2; c < GRID_COLS - 2; c += 4) {
-            const pt = grid[r][c];
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-            ctx.fillRect(pt.x - 1, pt.y - 1, 2, 2);
+          // Illumination from interactive mouse spotlight
+          if (mouseDist < SPOTLIGHT_RADIUS) {
+            const mFactor = 1 - (mouseDist / SPOTLIGHT_RADIUS);
+            const easeM = Math.pow(mFactor, 1.5);
+            alpha += easeM * 0.55;
+            radius += easeM * 1.1;
+            // Crisp cyan-teal highlight
+            r = Math.round(255 - easeM * 180);
+            g = Math.round(255 - easeM * 30);
+            b = Math.round(255 - easeM * 40);
           }
+
+          // Check click ripple wave excitation
+          for (let k = 0; k < ripples.length; k++) {
+            const rip = ripples[k];
+            const rdx = rip.x - x;
+            const rdy = rip.y - y;
+            const rdist = Math.sqrt(rdx * rdx + rdy * rdy);
+            const diff = Math.abs(rdist - rip.radius);
+            if (diff < 32) {
+              const ripIntensity = (1 - diff / 32) * rip.alpha;
+              alpha += ripIntensity * 0.6;
+              radius += ripIntensity * 0.9;
+              r = 45; g = 212; b = 191; // Shockwave teal
+            }
+          }
+
+          alpha = Math.max(0.04, Math.min(alpha, 0.95));
+
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
+          ctx.fill();
         }
       }
 
-      // 7. Subtle Horizontal LiDAR Scanning Line
-      const scanProgress = (simTime * 0.35) % 1.0;
-      const scanY = horizonY + Math.pow(scanProgress, 1.85) * (height - horizonY);
-      
-      const scanGrad = ctx.createLinearGradient(0, 0, width, 0);
-      scanGrad.addColorStop(0, 'transparent');
-      scanGrad.addColorStop(0.2, 'rgba(79, 209, 197, 0.35)');
-      scanGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.7)');
-      scanGrad.addColorStop(0.8, 'rgba(79, 209, 197, 0.35)');
-      scanGrad.addColorStop(1, 'transparent');
+      // Update click ripples
+      for (let k = ripples.length - 1; k >= 0; k--) {
+        const rip = ripples[k];
+        rip.radius += rip.speed;
+        rip.alpha -= 0.012;
+        if (rip.alpha <= 0 || rip.radius >= rip.maxRadius) {
+          ripples.splice(k, 1);
+        }
+      }
 
-      ctx.strokeStyle = scanGrad;
-      ctx.lineWidth = 1.4;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(79, 209, 197, 0.6)';
+      // 3. THE LUMINESCENT SINGULARITY CORE (Positioned directly behind central glass card)
+      // Produces rich, realistic optical refraction through backdrop-filter: blur(20px)
+      const energyPulse = Math.sin(simTime * 1.2) * 0.08 + typingActivity * 0.25;
+      const coreBaseR = 120 * (1 + energyPulse);
+
+      // 3A. Atmospheric Corona Bloom (Deep indigo-teal haze)
+      const coronaR = 380 * (1 + energyPulse * 0.5);
+      const coronaGrad = ctx.createRadialGradient(corePos.x, corePos.y, 0, corePos.x, corePos.y, coronaR);
+      coronaGrad.addColorStop(0, `rgba(45, 212, 191, ${0.16 + typingActivity * 0.15})`); // Vibrant teal
+      coronaGrad.addColorStop(0.35, 'rgba(99, 102, 241, 0.08)');                         // Indigo transition
+      coronaGrad.addColorStop(0.7, 'rgba(56, 189, 248, 0.03)');                          // Sky blue edge
+      coronaGrad.addColorStop(1, 'transparent');
+
+      ctx.fillStyle = coronaGrad;
       ctx.beginPath();
-      ctx.moveTo(0, scanY);
-      ctx.lineTo(width, scanY);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      ctx.arc(corePos.x, corePos.y, coronaR, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Horizon Edge Line
-      ctx.strokeStyle = 'rgba(79, 209, 197, 0.42)';
+      // 3B. High-Precision Orbital Rings (Tilted 3D planetary / atomic containment ellipses)
+      ctx.save();
+      ctx.translate(corePos.x, corePos.y);
+
+      // Ring 1 (Tilted 22 degrees)
+      ctx.save();
+      ctx.rotate(0.38 + Math.sin(simTime * 0.2) * 0.08);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 160 * (1 + energyPulse * 0.3), 64 * (1 + energyPulse * 0.3), 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(45, 212, 191, 0.20)';
       ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Orbiting energy bead on Ring 1
+      const orbitAngle1 = simTime * 0.85;
+      const bead1X = Math.cos(orbitAngle1) * 160 * (1 + energyPulse * 0.3);
+      const bead1Y = Math.sin(orbitAngle1) * 64 * (1 + energyPulse * 0.3);
       ctx.beginPath();
-      ctx.moveTo(0, horizonY);
-      ctx.lineTo(width, horizonY);
+      ctx.arc(bead1X, bead1Y, 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#2dd4bf';
+      ctx.fill();
+      ctx.restore();
+
+      // Ring 2 (Tilted -35 degrees)
+      ctx.save();
+      ctx.rotate(-0.61 - Math.cos(simTime * 0.25) * 0.06);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 190 * (1 + energyPulse * 0.25), 52 * (1 + energyPulse * 0.25), 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.18)';
+      ctx.lineWidth = 1.0;
+      ctx.stroke();
+
+      // Orbiting energy bead on Ring 2
+      const orbitAngle2 = -simTime * 0.65 + 1.2;
+      const bead2X = Math.cos(orbitAngle2) * 190 * (1 + energyPulse * 0.25);
+      const bead2Y = Math.sin(orbitAngle2) * 52 * (1 + energyPulse * 0.25);
+      ctx.beginPath();
+      ctx.arc(bead2X, bead2Y, 2.0, 0, Math.PI * 2);
+      ctx.fillStyle = '#a5b4fc';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#6366f1';
+      ctx.fill();
+      ctx.restore();
+
+      ctx.restore();
+
+      // 3C. Harmonic Flux Deforming Ribbon (Organic quantum core boundary)
+      ctx.save();
+      ctx.beginPath();
+      const points = 72;
+      for (let p = 0; p <= points; p++) {
+        const theta = (p / points) * Math.PI * 2;
+        // Harmonic radial distortion
+        const rOffset = Math.sin(theta * 3 + simTime * 1.5) * 14
+                      + Math.sin(theta * 5 - simTime * 1.1) * 8
+                      + Math.cos(theta * 2 + simTime * 1.8) * 6;
+        const currentR = coreBaseR + rOffset;
+        const px = corePos.x + Math.cos(theta) * currentR;
+        const py = corePos.y + Math.sin(theta) * currentR;
+
+        if (p === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(45, 212, 191, 0.42)';
+      ctx.lineWidth = 1.8;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = '#2dd4bf';
+      ctx.stroke();
+      ctx.restore();
+
+      // 3D. Core Photonic Singularity (The intensely brilliant white-hot focal point)
+      const coreSingularityR = 48 * (1 + energyPulse * 0.4);
+      const coreGrad = ctx.createRadialGradient(corePos.x, corePos.y, 0, corePos.x, corePos.y, coreSingularityR);
+      coreGrad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
+      coreGrad.addColorStop(0.25, 'rgba(45, 212, 191, 0.55)');
+      coreGrad.addColorStop(0.65, 'rgba(99, 102, 241, 0.18)');
+      coreGrad.addColorStop(1, 'transparent');
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(corePos.x, corePos.y, coreSingularityR, 0, Math.PI * 2);
+      ctx.fillStyle = coreGrad;
+      ctx.shadowBlur = 32;
+      ctx.shadowColor = '#2dd4bf';
+      ctx.fill();
+      ctx.restore();
+
+      // 4. Subtle Technical Corner Annotations (Linear aesthetic)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = 1;
+      const CROSS = 4;
+      const PAD = 22;
+
+      // Top-Left Crosshair
+      ctx.beginPath();
+      ctx.moveTo(PAD + 52 - CROSS, PAD); ctx.lineTo(PAD + 52 + CROSS, PAD);
+      ctx.moveTo(PAD + 52, PAD - CROSS); ctx.lineTo(PAD + 52, PAD + CROSS);
+      ctx.stroke();
+
+      // Bottom-Right Crosshair
+      ctx.beginPath();
+      ctx.moveTo(width - PAD - CROSS, height - PAD); ctx.lineTo(width - PAD + CROSS, height - PAD);
+      ctx.moveTo(width - PAD, height - PAD - CROSS); ctx.lineTo(width - PAD, height - PAD + CROSS);
       ctx.stroke();
 
       requestAnimationFrame(renderLoop);
     }
+
+    // Start animation loop immediately
+    requestAnimationFrame(renderLoop);
 
     /*************************************************************************
      * 3. UI INTERACTIONS, KEYBOARD SHORTCUTS & 00:07 CINEMATIC CAMERA TOUR
@@ -793,6 +933,11 @@
     const viewportStage = document.getElementById('viewport-stage');
 
     // Fill prompt from quick-action slash pills
+        // Excite AI Singularity Core on user input
+    promptInput.addEventListener('input', () => {
+      typingActivity = 1.0;
+    });
+
     function fillPrompt(text) {
       promptInput.value = text;
       promptInput.focus();
@@ -880,10 +1025,10 @@
       const pauseIcon = document.getElementById('pause-icon');
       if (isSimulationPaused) {
         pauseIcon.innerHTML = `<polygon points="6 4 20 12 6 20 6 4"/>`;
-        showToast('ASCII simulation paused');
+        showToast('Background simulation paused');
       } else {
         pauseIcon.innerHTML = `<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>`;
-        showToast('ASCII simulation resumed');
+        showToast('Background simulation resumed');
       }
     });
 
