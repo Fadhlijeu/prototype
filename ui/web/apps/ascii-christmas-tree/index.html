@@ -16,6 +16,7 @@ canvas{display:block;max-width:100vw;max-height:100vh}
 <body>
 <canvas id="scene" role="img" aria-label="A rotating, ornamented Christmas tree made entirely of animated ASCII characters"></canvas>
 <script>
+
 (function(){
 "use strict";
 
@@ -330,7 +331,7 @@ function project(x,y,z,rot,cr,sr){
   ];
 }
 function setCell(index,glyph,r,g,b,depth,kind=255){
-  if(index<0||index>=glyphs.length||depth>=depths[index])return;
+  if(index<0||index>=glyphs.length||(depth!==Infinity&&depth>=depths[index]))return;
   depths[index]=depth;glyphs[index]=glyph.charCodeAt(0);
   const offset=index*3;
   colors[offset]=Math.round(clamp(r,0,1)*255);
@@ -520,6 +521,7 @@ resize();
 render(0);
 requestAnimationFrame(tick);
 })();
+
 </script>
 </body>
 </html>
