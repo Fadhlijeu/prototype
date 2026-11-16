@@ -160,8 +160,8 @@ const K={NEEDLE:0,SNOW:1,TRUNK:2,TINSEL:3,BAUBLE:4,LIGHT:5,BOX:6,RIBBON:7,INNER:
 const RAMPS=[".,:;+*x#%@",".*oO0@","|!lI#H","~=+x*X",":-=oO0@","+*oO@@","-=+#%&@","=+HX#@",".:;","'.,:;*"];
 let cols=88,rows=64,aspect=1.5,logicalW=cols*CW,logicalH=rows*CH,dpr=1;
 let parts=[],lightStarts=[],flakeSet=[],backgroundStars=[];
-let elapsed=0,paused=false,autoRotate=true,lastFrame=0,frameCount=0;
-let chars=[],colors=[],depths=[],visible=0;
+let elapsed=0,paused=false,autoRotate=true,lastFrame=0,frameCount=0,rotationOffset=0,frozenRotation=0;
+let chars=[],colors=[],depths=[],cellKinds=[],visible=0;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 function rng(seed){let a=seed>>>0;return function(){a+=0x6D2B79F5;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
@@ -261,7 +261,7 @@ function resize(){
  canvas.style.aspectRatio=logicalW+"/"+logicalH;
  ctx.setTransform(dpr,0,0,dpr,0,0);
  ctx.font='12px "Courier New",monospace';ctx.textBaseline="alphabetic";
- chars=new Array(cols*rows).fill("");colors=new Array(cols*rows);depths=new Float32Array(cols*rows);
+ chars=new Array(cols*rows).fill("");colors=new Array(cols*rows);depths=new Float32Array(cols*rows);cellKinds=new Int8Array(cols*rows);cellKinds.fill(-1);
 }
 function project(x,y,z,rot){
  const cr=Math.cos(rot),sr=Math.sin(rot),xr=x*cr+z*sr,zr=-x*sr+z*cr;
@@ -270,9 +270,9 @@ function project(x,y,z,rot){
  return[cols/2+xr*f*SCALE*aspect,rows*.46-y2*f*SCALE,dep];
 }
 const lightDir=unit([-.45,.70,.55]);
-function put(index,ch,color,dep){
+function put(index,ch,color,dep,kind=-1){
  if(index<0||index>=chars.length||dep>=depths[index])return;
- depths[index]=dep;chars[index]=ch;colors[index]=color;
+ depths[index]=dep;chars[index]=ch;colors[index]=color;cellKinds[index]=kind;
 }
 function rgb(c,power){const r=clamp(c[0]*power,0,1),g=clamp(c[1]*power,0,1),b=clamp(c[2]*power,0,1);return"rgb("+Math.round(r*255)+","+Math.round(g*255)+","+Math.round(b*255)+")";}
 function starAt(t,rot){
@@ -298,8 +298,8 @@ function starAt(t,rot){
  }
 }
 function render(t){
- const rot=autoRotate?ROT_SPEED*t:ROT_SPEED*elapsed;
- for(let i=0;i<chars.length;i++){chars[i]="";depths[i]=Infinity;}
+ const rot=autoRotate?ROT_SPEED*t+rotationOffset:frozenRotation;
+ for(let i=0;i<chars.length;i++){chars[i]="";depths[i]=Infinity;cellKinds[i]=-1;}
  // Draw the 3D scene into a character-sized z-buffer.
  for(let j=0;j<parts.length;j++){
   const q=parts[j];if(q.t0>t)continue;
@@ -319,15 +319,15 @@ function render(t){
   const c=q.c.map((v,i)=>clamp(v*bright+(1-v*bright)*(.6*glow+.6*spec),0,1));
   const ramp=RAMPS[q.k],level=Math.min(Math.floor(clamp(b,0,.999)*ramp.length),ramp.length-1);
   const idx=cy*cols+cx;
-  put(idx,ramp[level],rgb(c,1),dep);
+  put(idx,ramp[level],c,dep,q.k);
  }
- // Soft light halos occupy otherwise empty character cells.
- const lightCells=[];
- for(let i=0;i<chars.length;i++)if(chars[i]&&parts.length&&colors[i]&&chars[i]!=="")lightCells.push(i);
- // Nearby empty cells get a restrained glint from the nearest visible bulb.
- for(let i=0;i<chars.length;i++){
-  if(!chars[i])continue;
-  // Keep the scene sparse; no broad blur is needed for the ASCII aesthetic.
+ // A restrained four-cell halo makes the warm bulbs read as light sources.
+ for(let i=0;i<cellKinds.length;i++)if(cellKinds[i]===K.LIGHT){
+  const x=i%cols,y=Math.floor(i/cols),source=colors[i];
+  for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+   const nx=x+dx,ny=y+dy;if(nx<0||nx>=cols||ny<0||ny>=rows)continue;
+   const ni=ny*cols+nx;if(!chars[ni]){chars[ni]=".";colors[ni]=source.map(v=>v*.34);depths[ni]=depths[i]+.08;}
+  }
  }
  // Snowfall in front of the tree.
  for(let i=0;i<flakeSet.length;i++){
@@ -377,7 +377,7 @@ function tick(now){
 }
 playBtn.addEventListener("click",()=>setPaused(!paused));
 document.getElementById("restart").addEventListener("click",()=>{elapsed=0;setPaused(false);lastFrame=0;});
-document.getElementById("rotate").addEventListener("click",e=>{autoRotate=!autoRotate;e.currentTarget.textContent="Rotation: "+(autoRotate?"on":"off");e.currentTarget.setAttribute("aria-pressed",String(autoRotate));});
+document.getElementById("rotate").addEventListener("click",e=>{if(autoRotate){frozenRotation=ROT_SPEED*elapsed+rotationOffset;autoRotate=false;}else{rotationOffset=frozenRotation-ROT_SPEED*elapsed;autoRotate=true;}e.currentTarget.textContent="Rotation: "+(autoRotate?"on":"off");e.currentTarget.setAttribute("aria-pressed",String(autoRotate));});
 scrubber.addEventListener("input",()=>{scrubbing=true;setPaused(true);elapsed=Number(scrubber.value);const info=render(elapsed);updateUI(info);});
 scrubber.addEventListener("change",()=>{scrubbing=false;});
 document.getElementById("snapshot").addEventListener("click",()=>{
