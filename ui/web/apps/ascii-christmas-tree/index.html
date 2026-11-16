@@ -171,7 +171,7 @@ function starAt(t,rot){
  }
 }
 function render(t){
- const rot=autoRotate?ROT_SPEED*t+rotationOffset:frozenRotation;
+ const rot=ROT_SPEED*t;
  for(let i=0;i<chars.length;i++){chars[i]="";depths[i]=Infinity;cellKinds[i]=-1;}
  // Draw the 3D scene into a character-sized z-buffer.
  for(let j=0;j<parts.length;j++){
