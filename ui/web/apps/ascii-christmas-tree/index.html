@@ -3,241 +3,521 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070b12">
-<meta name="description" content="A procedural 3D Christmas tree rendered with animated ASCII characters.">
+<meta name="theme-color" content="#07090e">
+<meta name="description" content="A procedural 3D Christmas tree rendered entirely with animated ASCII characters.">
 <title>ASCII Christmas Tree</title>
 <style>
 *{box-sizing:border-box}
-html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#070b12}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#07090e}
 body{display:grid;place-items:center}
 canvas{display:block;max-width:100vw;max-height:100vh}
 </style>
 </head>
 <body>
-<canvas id="scene" role="img" aria-label="A rotating Christmas tree made entirely of animated ASCII characters"></canvas>
+<canvas id="scene" role="img" aria-label="A rotating, ornamented Christmas tree made entirely of animated ASCII characters"></canvas>
 <script>
-
 (function(){
 "use strict";
-const canvas=document.getElementById("scene");
-const ctx=canvas.getContext("2d",{alpha:false});
-const TAU=Math.PI*2;
-const GROUND=-1.15,Y0=-.95,Y1=1.30,GROUND_R=1.5;
-const T_GROW=[.2,4.6],T_GARLAND=[4.8,7],T_ORN=[6.6,8.6],T_LIGHTS=[7.8,10.4],T_GIFTS=[9.2,10.9],T_STAR=11.4;
-const CAM_D=6,SCALE=18,PITCH=.20,ROT_SPEED=.45,CW=9,CH=14;
-const WHITE=[.95,.97,1],GOLD=[1,.78,.25],BAUBLE_GOLD=[1,.83,.38],RED=[.92,.12,.15],GREEN_BOX=[.16,.74,.34],WARM=[1,.78,.38],BARK=[.42,.27,.15];
-const K={NEEDLE:0,SNOW:1,TRUNK:2,TINSEL:3,BAUBLE:4,LIGHT:5,BOX:6,RIBBON:7,INNER:8,FLOOR:9};
-const RAMPS=[".,:;+*x#%@",".*oO0@","|!lI#H","~=+x*X",":-=oO0@","+*oO@@","-=+#%&@","=+HX#@",".:;","'.,:;*"];
-let cols=88,rows=64,aspect=1.5,logicalW=cols*CW,logicalH=rows*CH,dpr=1;
-let parts=[],lightStarts=[],flakeSet=[],backgroundStars=[];
-let elapsed=0,lastFrame=0;
-let chars=[],colors=[],depths=[],cellKinds=[],visible=0;
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const lerp=(a,b,t)=>a+(b-a)*t;
-function rng(seed){let a=seed>>>0;return function(){a+=0x6D2B79F5;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
-const rand=rng(7);
-const random=(a,b)=>a+rand()*(b-a);
-const unit=v=>{const l=Math.hypot(v[0],v[1],v[2])||1;return[v[0]/l,v[1]/l,v[2]/l];};
-function envelope(y){const u=clamp((y-Y0)/(Y1-Y0),0,1);return Math.pow(1-u,.92)+.02;}
-function growTime(y){return lerp(T_GROW[0],T_GROW[1],clamp((y-GROUND)/(Y1-GROUND),0,1));}
-function add(p,n,c,k,t0,base=1,centre=p,phase=0,pop=false){
- parts.push({p:p,n:n,c:c,k:k,t0:t0,base:base,centre:centre,phase:phase,pop:pop});
+
+const canvas = document.getElementById("scene");
+const ctx = canvas.getContext("2d", { alpha:false });
+
+const TAU = Math.PI * 2;
+const GROUND = -1.18, Y0 = -.96, Y1 = 1.34, GROUND_R = 1.55;
+const T_GROW = [.2, 4.6], T_GARLAND = [4.8, 7.0], T_ORN = [6.6, 8.6];
+const T_LIGHTS = [7.8, 10.4], T_GIFTS = [9.2, 10.9], T_STAR = 11.4;
+const PITCH = .19, CAM_D = 6, SCALE_Y = 20.5, ROT_SPEED = .45;
+const CW = 9, CH = 14;
+const WHITE = [.96,.98,1], GOLD = [1,.80,.24], BAUBLE_GOLD = [1,.84,.36];
+const RED = [.95,.14,.16], SILVER = [.82,.88,.96], GREEN_BOX = [.15,.72,.32];
+const WARM = [1,.82,.42], BARK = [.44,.28,.15];
+const KIND = {NEEDLE:0,SNOW:1,TRUNK:2,TINSEL:3,BAUBLE:4,LIGHT:5,BOX:6,RIBBON:7,FLOOR:8};
+const RAMPS = [".,:;+x*#%@",".+x*oO#@","|!lI#H","~=+x*#@",".:=oO0@","+*oO@@","-=+#%&@","=+HX#@",".,:;"];
+const RAMP_LENGTH = RAMPS.map(s=>s.length);
+const LIGHT_DIR = normalize([-.48,.68,.55]);
+
+let cols = 88, rows = 74, aspect = CW/CH, logicalW = cols*CW, logicalH = rows*CH, dpr = 1;
+let elapsed = 0, lastFrame = 0, lastRendered = 0;
+let P = null, flakes = [], glyphs, depths, cellKinds, colors;
+let visibleLights = [];
+
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp = (a,b,t)=>a+(b-a)*t;
+function normalize(v){
+  const n=Math.hypot(v[0],v[1],v[2])||1;
+  return [v[0]/n,v[1]/n,v[2]/n];
 }
-function fibSphere(n){
- const out=[],golden=Math.PI*(1+Math.sqrt(5));
- for(let i=0;i<n;i++){const y=1-2*(i+.5)/n,r=Math.sqrt(1-y*y),a=golden*(i+.5);out.push([Math.cos(a)*r,y,Math.sin(a)*r]);}
- return out;
+function makeRandom(seed){
+  let a=seed>>>0;
+  return function(){
+    a=(a+0x6D2B79F5)|0;
+    let t=a;
+    t=Math.imul(t^(t>>>15),t|1);
+    t^=t+Math.imul(t^(t>>>7),t|61);
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
 }
-function build(){
- parts=[];lightStarts=[];
- // Snow-covered circular ground.
- for(let i=0;i<1800;i++){const r=GROUND_R*Math.sqrt(rand()),a=rand()*TAU,y=GROUND+random(-.018,.018);add([Math.cos(a)*r,y,Math.sin(a)*r],[0,1,0],WHITE,K.FLOOR,0,1-.5*Math.pow(r/GROUND_R,2));}
- // Drooping branch whorls.
- const tips=[];
- for(let level=0;level<24;level++){
-  const y=lerp(Y0+.02,Y1-.06,level/23),u=(y-Y0)/(Y1-Y0),R=envelope(y)+.05,branches=Math.floor(6+11*(1-u));
-  for(let b=0;b<branches;b++){
-   const a=TAU*(b+.5*rand())/branches+level*.77,L=R*random(.85,1.08),n=Math.floor(22+58*L);
-   const d=[Math.cos(a),0,Math.sin(a)],side=[-Math.sin(a),0,Math.cos(a)];
-   for(let j=0;j<n;j++){
-    const s=Math.pow(rand(),.65),spread=(.015+.09*s)*random(-1,1),sL=s*L;
-    const p=[d[0]*sL+side[0]*spread,y+.06*sL-.20*sL*sL+random(-.012,.012),d[2]*sL+side[2]*spread];
-    const nr=unit([d[0]+random(-.3,.3),.14+random(-.4,.45),d[2]+random(-.3,.3)]);
-    const snow=s>.5&&rand()<.06*s&&nr[1]>.1;
-    const green=[.10+.12*rand(),.48+.30*rand(),.18+.14*rand()];
-    add(p,nr,snow?WHITE:green,snow?K.SNOW:K.NEEDLE,growTime(y)+.45*s,snow?1:(.30+.70*Math.pow(s,1.2))*random(.75,1.1));
-   }
-   const tl=.92*L;tips.push([d[0]*tl,y+.06*tl-.20*tl*tl,d[2]*tl]);
-  }
- }
- // Dark green heart of the tree and the trunk.
- for(let i=0;i<1900;i++){const y=random(Y0,Y1-.1),a=rand()*TAU,r=.6*envelope(y);add([Math.cos(a)*r,y,Math.sin(a)*r],unit([Math.cos(a),.3,Math.sin(a)]),[.05,.25,.09],K.INNER,growTime(y)+.2,.75);}
- for(let i=0;i<520;i++){const y=random(GROUND,Y0+.1),a=rand()*TAU,n=[Math.cos(a),0,Math.sin(a)],b=.75+.25*Math.sin(6*a+30*y)*rand();add([n[0]*.09,y,n[2]*.09],n,BARK.map(v=>v*b),K.TRUNK,growTime(y),.95);}
- // A continuous spiral of gold tinsel.
- for(let i=0;i<1300;i++){
-  const u=i/1299,a=TAU*3.6*u+.9,y=Y0+.15+(Y1-Y0-.45)*u,swag=-.07*Math.abs(Math.sin(a*2.5)),r=(envelope(y)+.07)*(1-.12*Math.abs(Math.sin(a*2.5)));
-  const p=[Math.cos(a)*r+random(-.025,.025),y+swag+random(-.025,.025),Math.sin(a)*r+random(-.025,.025)];
-  add(p,unit([Math.cos(a)+random(-.5,.5),.3+random(-.5,.5),Math.sin(a)+random(-.5,.5)]),GOLD,K.TINSEL,lerp(T_GARLAND[0],T_GARLAND[1],u),1,p,rand()*TAU);
- }
- // Red and gold glass ornaments.
- const sphere=fibSphere(28);
- for(let k=0;k<34;k++){
-  const u=(k+rand())/34,y=Y0+.08+u*(Y1-Y0-.30),a=k*2.39996+rand()*.4,r=envelope(y)+.02,centre=[Math.cos(a)*r,y-.03,Math.sin(a)*r],rad=.058+.022*(1-u),color=k%2===0?RED:BAUBLE_GOLD,t0=random(T_ORN[0],T_ORN[1]);
-  for(const v of sphere)add([centre[0]+v[0]*rad,centre[1]+v[1]*rad,centre[2]+v[2]*rad],v,color,K.BAUBLE,t0,1,centre,0,true);
- }
- // Warm fairy lights at selected branch tips.
- const bulb=fibSphere(9);
- for(let i=0;i<Math.min(145,tips.length);i++){
-  const tip=tips[Math.floor(rand()*tips.length)],t0=random(T_LIGHTS[0],T_LIGHTS[1]),color=rand()<.82?WARM:[1,.95,.85];
-  lightStarts.push(t0);
-  for(const v of bulb)add([tip[0]+v[0]*.03,tip[1]+v[1]*.03,tip[2]+v[2]*.03],v,color,K.LIGHT,t0,1,tip,rand()*TAU,false);
- }
- // Gift boxes: five visible faces, crossed ribbons and a small bow.
- const gifts=[[.3,1.12,.30,.24,.28,.4,RED,GOLD],[1.5,1.18,.26,.30,.26,.9,GREEN_BOX,GOLD],[2.6,1.20,.34,.18,.25,1,GOLD,RED],[3.7,1.10,.24,.26,.24,.2,RED,GOLD],[4.7,1.12,.30,.22,.28,.1,GREEN_BOX,RED],[5.6,1.22,.22,.26,.22,.5,GOLD,GREEN_BOX]];
- for(let g=0;g<gifts.length;g++){
-  const [a,dist,w,h,d,rot,body,rib]=gifts[g],centre=[Math.cos(a)*dist,GROUND,Math.sin(a)*dist],t0=lerp(T_GIFTS[0],T_GIFTS[1],g/5),c=Math.cos(rot),s=Math.sin(rot);
-  const surfaceCount=450;
-  for(let j=0;j<surfaceCount;j++){
-   const face=Math.floor(rand()*5),fa=rand()-.5,fb=rand()-.5;let x=fa*w,y,z=fb*d,n;
-   if(face===0){y=h;x=fa*w;z=fb*d;n=[0,1,0];}
-   else if(face===1){x=w/2;y=(fb+.5)*h;z=fa*d;n=[1,0,0];}
-   else if(face===2){x=-w/2;y=(fb+.5)*h;z=fa*d;n=[-1,0,0];}
-   else if(face===3){z=d/2;y=(fb+.5)*h;x=fa*w;n=[0,0,1];}
-   else{z=-d/2;y=(fb+.5)*h;x=fa*w;n=[0,0,-1];}
-   const ribbon=(Math.abs(x)<.022)||(face===0&&Math.abs(z)<.022);
-   const rx=x*c+z*s,rz=-x*s+z*c,rn=[n[0]*c+n[2]*s,n[1],-n[0]*s+n[2]*c];
-   add([rx+centre[0],y+centre[1],rz+centre[2]],rn,ribbon?rib:body,ribbon?K.RIBBON:K.BOX,t0,.95,centre,0,true);
-  }
-  for(let side=-1;side<=1;side+=2){
-   for(let j=0;j<55;j++){
-    const a2=j/54*TAU,x=side*.04+Math.cos(a2)*.05,y=h+.025+Math.sin(a2)*.03,z=Math.sin(a2)*.025;
-    const rx=x*c+z*s,rz=-x*s+z*c;
-    add([rx+centre[0],y+centre[1],rz+centre[2]],[Math.cos(a2),Math.sin(a2),0],rib,K.RIBBON,t0,.95,centre,0,true);
-   }
-  }
- }
- // Falling snow positions are deterministic; only their vertical phase changes.
- const snowRand=rng(3);
- for(let i=0;i<210;i++)flakeSet.push({x:-2.3+snowRand()*4.6,z:-2.3+snowRand()*4.6,off:snowRand()*3.4,spd:.25+snowRand()*.45,ph:snowRand()*TAU,br:.35+snowRand()*.55});
- for(let i=0;i<155;i++)backgroundStars.push({x:snowRand(),y:snowRand()*.62,a:.15+snowRand()*.45,r:snowRand()<.15?1.35:.7});
+const random = makeRandom(7);
+const rand = (a,b)=>a+random()*(b-a);
+let gaussianCache = null;
+function normal(){
+  if(gaussianCache!==null){const v=gaussianCache;gaussianCache=null;return v;}
+  let u=0,v=0;
+  while(u===0)u=random();
+  while(v===0)v=random();
+  const m=Math.sqrt(-2*Math.log(u));
+  gaussianCache=m*Math.sin(TAU*v);
+  return m*Math.cos(TAU*v);
 }
+const clampNormal=()=>clamp(normal(),-2,2);
+function envelope(y){
+  const u=clamp((y-Y0)/(Y1-Y0),0,1);
+  const tier=1+.045*Math.sin(u*22*Math.PI)*(1-u*.5);
+  return (.78*Math.pow(1-u,.88)+.015)*tier;
+}
+function growTime(y){
+  return lerp(T_GROW[0],T_GROW[1],clamp((y-GROUND)/(Y1-GROUND),0,1));
+}
+function newPointStore(){
+  return {
+    x:[],y:[],z:[],nx:[],ny:[],nz:[],r:[],g:[],b:[],kind:[],
+    t0:[],base:[],cx:[],cy:[],cz:[],phase:[],pop:[]
+  };
+}
+const raw = newPointStore();
+function addPoint(x,y,z,nx,ny,nz,color,kind,t0,base=1,cx=x,cy=y,cz=z,phase=0,pop=false){
+  raw.x.push(x);raw.y.push(y);raw.z.push(z);
+  raw.nx.push(nx);raw.ny.push(ny);raw.nz.push(nz);
+  raw.r.push(color[0]);raw.g.push(color[1]);raw.b.push(color[2]);
+  raw.kind.push(kind);raw.t0.push(t0);raw.base.push(base);
+  raw.cx.push(cx);raw.cy.push(cy);raw.cz.push(cz);
+  raw.phase.push(phase);raw.pop.push(pop?1:0);
+}
+function unitSphere(n){
+  const out=[], golden=Math.PI*(1+Math.sqrt(5));
+  for(let i=0;i<n;i++){
+    const y=1-2*(i+.5)/n, radius=Math.sqrt(1-y*y), a=golden*(i+.5);
+    out.push([Math.cos(a)*radius,y,Math.sin(a)*radius]);
+  }
+  return out;
+}
+function addOrientedPoint(x,y,z,n,color,kind,t0,base=1,center=null,phase=0,pop=false){
+  const c=center||[x,y,z];
+  addPoint(x,y,z,n[0],n[1],n[2],color,kind,t0,base,c[0],c[1],c[2],phase,pop);
+}
+function rotateY(x,y,z,c,s){return [x*c+z*s,y,-x*s+z*c];}
+
+function buildScene(){
+  const tips=[];
+  // A restrained, blue-grey snow disc underneath the tree.
+  for(let i=0;i<2200;i++){
+    const radius=GROUND_R*Math.sqrt(random()),a=random()*TAU;
+    const x=Math.cos(a)*radius,z=Math.sin(a)*radius,y=GROUND+.008*normal();
+    const base=.45*(1-.75*Math.pow(radius/GROUND_R,2));
+    addOrientedPoint(x,y,z,[0,1,0],[.55,.64,.78],KIND.FLOOR,0,base);
+  }
+
+  // Twenty-eight whorls of dense, drooping fir branches.
+  const layers=28;
+  for(let layer=0;layer<layers;layer++){
+    const y=lerp(Y0+.02,Y1-.04,layer/(layers-1));
+    const u=(y-Y0)/(Y1-Y0);
+    const radius=(.78*Math.pow(1-u,.88)+.015)+.04;
+    const branchCount=Math.floor(7+14*(1-u));
+    for(let branch=0;branch<branchCount;branch++){
+      const angle=TAU*(branch+.45*random())/branchCount+layer*.77;
+      const length=radius*rand(.88,1.08);
+      const count=Math.floor(35+210*length);
+      const dx=Math.cos(angle),dz=Math.sin(angle),sx=-Math.sin(angle),sz=Math.cos(angle);
+      const samples=new Float32Array(count);
+      let mean=0;
+      for(let j=0;j<count;j++){
+        const v=Math.pow(random(),.62);samples[j]=v;mean+=v;
+      }
+      mean/=count;
+      for(let j=0;j<count;j++){
+        const v=samples[j],spread=(.010+.065*v*(1-.35*v))*clampNormal();
+        const branchLength=v*length;
+        const x=dx*branchLength+sx*spread,z=dz*branchLength+sz*spread;
+        const droop=.05*branchLength-.19*branchLength*branchLength;
+        const py=y+droop+.009*clampNormal();
+        const n=normalize([
+          dx+.22*normal(),
+          .45-.30*mean+.22*normal(),
+          dz+.22*normal()
+        ]);
+        const snow=v>.52 && random()<.085*Math.pow(v,1.5) && n[1]>.05;
+        const green=[
+          .06+.14*Math.pow(v,.9)+.06*random(),
+          .34+.38*Math.pow(v,.9)+.14*random(),
+          .12+.14*Math.pow(v,.9)+.05*random()
+        ];
+        const ao=(.22+.82*Math.pow(v,1.15))*rand(.80,1.12);
+        addOrientedPoint(x,py,z,n,snow?WHITE:green,snow?KIND.SNOW:KIND.NEEDLE,
+          growTime(y)+.42*v,snow?1.05:ao);
+      }
+      const tipLength=.93*length;
+      tips.push([dx*tipLength,y+.05*tipLength-.19*tipLength*tipLength,dz*tipLength]);
+    }
+  }
+
+  // Dark, irregular inner foliage gives the branches a solid silhouette.
+  for(let i=0;i<7500;i++){
+    const y=rand(Y0,Y1-.08),a=random()*TAU;
+    const n=normalize([Math.cos(a),.25,Math.sin(a)]);
+    const radius=.55*envelope(y)*(.6+.4*random());
+    addOrientedPoint(Math.cos(a)*radius,y,Math.sin(a)*radius,n,[.05,.24,.08],
+      KIND.NEEDLE,growTime(y),.20);
+  }
+
+  // Textured trunk.
+  for(let i=0;i<1800;i++){
+    const y=rand(GROUND,Y0+.12),a=random()*TAU;
+    const n=[Math.cos(a),0,Math.sin(a)];
+    const bark=.72+.28*Math.sin(6*a+30*y)*random();
+    addOrientedPoint(n[0]*.085,y,n[2]*.085,n,BARK.map(v=>v*bark),KIND.TRUNK,growTime(y),.85);
+  }
+
+  // Four strands of fine gold garland follow the same scalloped spiral.
+  const garlandSteps=2600;
+  for(let strand=0;strand<4;strand++){
+    for(let i=0;i<garlandSteps;i++){
+      const u=i/(garlandSteps-1),angle=TAU*3.6*u+.9;
+      const y=Y0+.14+(Y1-Y0-.42)*u;
+      const swag=-.065*Math.abs(Math.sin(angle*2.5));
+      const radius=(envelope(y)+.055)*(1-.11*Math.abs(Math.sin(angle*2.5)));
+      const n=normalize([
+        Math.cos(angle)+.45*normal(),
+        .3+.45*normal(),
+        Math.sin(angle)+.45*normal()
+      ]);
+      const x=Math.cos(angle)*radius+.028*normal();
+      const py=y+swag+.028*normal();
+      const z=Math.sin(angle)*radius+.028*normal();
+      addOrientedPoint(x,py,z,n,GOLD,KIND.TINSEL,
+        lerp(T_GARLAND[0],T_GARLAND[1],u),1,null,random()*TAU);
+    }
+  }
+
+  // Glossy red, gold and occasional silver ornaments.
+  const baubleSphere=unitSphere(60);
+  for(let k=0;k<38;k++){
+    const u=(k+.2+.6*random())/38;
+    const y=Y0+.07+u*(Y1-Y0-.26);
+    const angle=k*2.39996+random()*.35;
+    const radius=envelope(y)+.02;
+    const center=[Math.cos(angle)*radius,y-.03,Math.sin(angle)*radius];
+    const size=.054+.022*(1-u);
+    const color=k%2===0?RED:(k%7===0?SILVER:BAUBLE_GOLD);
+    const t0=rand(T_ORN[0],T_ORN[1]);
+    for(const v of baubleSphere){
+      addOrientedPoint(center[0]+v[0]*size,center[1]+v[1]*size,center[2]+v[2]*size,
+        v,color,KIND.BAUBLE,t0,1,center,0,true);
+    }
+  }
+
+  // Warm fairy lights, distributed over unique branch tips.
+  for(let i=tips.length-1;i>0;i--){
+    const j=Math.floor(random()*(i+1));[tips[i],tips[j]]=[tips[j],tips[i]];
+  }
+  const picked=tips.slice(0,Math.min(185,tips.length));
+  const bulb=unitSphere(16);
+  for(const center of picked){
+    const t0=rand(T_LIGHTS[0],T_LIGHTS[1]);
+    const color=random()<.8?WARM:[1,.96,.88];
+    visibleLights.push(t0);
+    for(const v of bulb){
+      addOrientedPoint(center[0]+v[0]*.028,center[1]+v[1]*.028,center[2]+v[2]*.028,
+        v,color,KIND.LIGHT,t0,1,center,random()*TAU);
+    }
+  }
+
+  // Six wrapped gifts, with six sampled faces and two elliptical bow loops.
+  const gifts=[
+    [.3,.96,.28,.23,.26,.4,RED,GOLD],
+    [1.5,1.02,.25,.28,.25,.9,GREEN_BOX,GOLD],
+    [2.6,1.04,.32,.18,.24,1,GOLD,RED],
+    [3.7,.95,.23,.25,.23,.2,RED,GOLD],
+    [4.7,.98,.28,.21,.26,.1,GREEN_BOX,RED],
+    [5.6,1.05,.22,.25,.22,.5,GOLD,GREEN_BOX]
+  ];
+  const bowSphere=unitSphere(80);
+  for(let giftIndex=0;giftIndex<gifts.length;giftIndex++){
+    const [angle,distance,w,h,d,rotation,body,ribbonColor]=gifts[giftIndex];
+    const areas=[w*d,w*d,h*d,h*d,w*h,w*h];
+    const totalArea=areas.reduce((a,b)=>a+b,0);
+    const sampleCount=Math.floor(5000*totalArea);
+    const center=[Math.cos(angle)*distance,GROUND,Math.sin(angle)*distance];
+    const cr=Math.cos(rotation),sr=Math.sin(rotation);
+    const start=lerp(T_GIFTS[0],T_GIFTS[1],giftIndex/5);
+    for(let j=0;j<sampleCount;j++){
+      let pick=random()*totalArea,face=areas.length-1;
+      for(let f=0;f<areas.length;f++){pick-=areas[f];if(pick<=0){face=f;break;}}
+      const fa=random()-.5,fb=random()-.5;
+      let x=fa*w,y,z=fb*d,n;
+      if(face===0){y=h;n=[0,1,0];}
+      else if(face===1){y=0;n=[0,-1,0];}
+      else if(face===2){x=w/2;y=(fb+.5)*h;z=fa*d;n=[1,0,0];}
+      else if(face===3){x=-w/2;y=(fb+.5)*h;z=fa*d;n=[-1,0,0];}
+      else if(face===4){z=d/2;y=(fb+.5)*h;x=fa*w;n=[0,0,1];}
+      else{z=-d/2;y=(fb+.5)*h;x=fa*w;n=[0,0,-1];}
+      const onX=Math.abs(x)<.022,onZ=Math.abs(z)<.022;
+      const isRibbon=face<2?(onX||onZ):(face<4?onZ:onX);
+      const rotated=rotateY(x,y,z,cr,sr),normal=rotateY(n[0],n[1],n[2],cr,sr);
+      const p=[rotated[0]+center[0],rotated[1]+center[1],rotated[2]+center[2]];
+      addOrientedPoint(p[0],p[1],p[2],normal,isRibbon?ribbonColor:body,
+        isRibbon?KIND.RIBBON:KIND.BOX,start,.95,center,0,true);
+    }
+    for(const side of [-1,1]){
+      for(const v of bowSphere){
+        const x=side*.04+v[0]*.05,y=h+.025+v[1]*.03,z=v[2]*.025;
+        const rotated=rotateY(x,y,z,cr,sr);
+        const n=[v[0],v[1],v[2]];
+        addOrientedPoint(rotated[0]+center[0],y+center[1],rotated[2]+center[2],
+          n,ribbonColor,KIND.RIBBON,start,.95,center,0,true);
+      }
+    }
+  }
+
+  // Pack point attributes into compact typed arrays for frame rendering.
+  P={};
+  for(const key of ["x","y","z","nx","ny","nz","r","g","b","t0","base","cx","cy","cz","phase"]){
+    P[key]=Float32Array.from(raw[key]);
+  }
+  P.kind=Uint8Array.from(raw.kind);
+  P.pop=Uint8Array.from(raw.pop);
+
+  const snowRandom=makeRandom(3);
+  for(let i=0;i<420;i++){
+    flakes.push({
+      x:-2.2+snowRandom()*4.4,z:-2.2+snowRandom()*4.4,
+      off:snowRandom()*3.5,spd:.22+snowRandom()*.43,
+      phase:snowRandom()*TAU,brightness:.30+snowRandom()*.55
+    });
+  }
+}
+
 function resize(){
- const mobile=window.innerWidth<700;
- cols=mobile?44:88;rows=mobile?58:64;
- logicalW=cols*CW;logicalH=rows*CH;
- aspect=(CH/CW)*Math.min(1,cols/59);
- dpr=Math.min(window.devicePixelRatio||1,2);
- canvas.width=Math.round(logicalW*dpr);canvas.height=Math.round(logicalH*dpr);
- canvas.style.aspectRatio=logicalW+"/"+logicalH;
- const fit=Math.min(window.innerWidth/logicalW,window.innerHeight/logicalH);
- canvas.style.width=(logicalW*fit)+"px";
- canvas.style.height=(logicalH*fit)+"px";
- ctx.setTransform(dpr,0,0,dpr,0,0);
- ctx.font='12px "Courier New",monospace';ctx.textBaseline="alphabetic";
- chars=new Array(cols*rows).fill("");colors=new Array(cols*rows);depths=new Float32Array(cols*rows);cellKinds=new Int8Array(cols*rows);cellKinds.fill(-1);
+  const mobile=window.innerWidth<700;
+  cols=mobile?48:88;
+  rows=mobile?64:74;
+  aspect=mobile?.72:CW/CH;
+  logicalW=cols*CW;logicalH=rows*CH;
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.round(logicalW*dpr);
+  canvas.height=Math.round(logicalH*dpr);
+  const fit=Math.min(window.innerWidth/logicalW,window.innerHeight/logicalH);
+  canvas.style.width=(logicalW*fit)+"px";
+  canvas.style.height=(logicalH*fit)+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.font='14px "Courier New",Consolas,monospace';
+  ctx.textBaseline="alphabetic";
+  glyphs=new Uint8Array(cols*rows);
+  depths=new Float32Array(cols*rows);
+  cellKinds=new Uint8Array(cols*rows);
+  colors=new Uint8ClampedArray(cols*rows*3);
 }
-function project(x,y,z,rot){
- const cr=Math.cos(rot),sr=Math.sin(rot),xr=x*cr+z*sr,zr=-x*sr+z*cr;
- const cp=Math.cos(PITCH),sp=Math.sin(PITCH),y2=y*cp-zr*sp,z2=y*sp+zr*cp;
- const dep=CAM_D-z2,f=CAM_D/dep;
- return[cols/2+xr*f*SCALE*aspect,rows*.46-y2*f*SCALE,dep];
+
+function project(x,y,z,rot,cr,sr){
+  const rx=x*cr+z*sr,rz=-x*sr+z*cr;
+  const cp=Math.cos(PITCH),sp=Math.sin(PITCH);
+  const y2=y*cp-rz*sp,z2=y*sp+rz*cp;
+  const distance=CAM_D-z2,f=CAM_D/distance;
+  return [
+    cols/2+rx*f*SCALE_Y/aspect,
+    rows*.47-y2*f*SCALE_Y,
+    distance
+  ];
 }
-const lightDir=unit([-.45,.70,.55]);
-function put(index,ch,color,dep,kind=-1){
- if(index<0||index>=chars.length||dep>=depths[index])return;
- depths[index]=dep;chars[index]=ch;colors[index]=color;cellKinds[index]=kind;
+function setCell(index,glyph,r,g,b,depth,kind=255){
+  if(index<0||index>=glyphs.length||depth>=depths[index])return;
+  depths[index]=depth;glyphs[index]=glyph.charCodeAt(0);
+  const offset=index*3;
+  colors[offset]=Math.round(clamp(r,0,1)*255);
+  colors[offset+1]=Math.round(clamp(g,0,1)*255);
+  colors[offset+2]=Math.round(clamp(b,0,1)*255);
+  cellKinds[index]=kind;
 }
-function rgb(c,power){const r=clamp(c[0]*power,0,1),g=clamp(c[1]*power,0,1),b=clamp(c[2]*power,0,1);return"rgb("+Math.round(r*255)+","+Math.round(g*255)+","+Math.round(b*255)+")";}
-function starAt(t,rot){
- const p=project(0,Y1+.09,0,rot),cx=Math.round(p[0]),cy=Math.round(p[1]),on=clamp((t-T_STAR)/.6,0,1),flash=Math.pow(clamp(1-(t-T_STAR),0,1),2),size=1.6+1.7*on;
- const tint=[1,.78,.25].map(v=>lerp(v,1,flash));
- for(let k=0;k<8;k++){
-  const a=k*TAU/8+.1*Math.sin(t*.7);if(Math.sin(a)<-.3)continue;
-  const reach=size*(2.6+.8*Math.sin(t*3+k*1.3))*(k%2===0?1:.6)*(1+.8*flash);
-  const glyph="-/|\\"[Math.round((a*180/Math.PI%180)/45)%4];
-  for(let s=size*1.1;s<reach;s+=.5){
-   const x=Math.round(cx+Math.cos(a)*s*aspect),y=Math.round(cy-Math.sin(a)*s),i=y*cols+x;
-   if(x>=0&&x<cols&&y>=0&&y<rows&&!chars[i])put(i,glyph,rgb(tint,.55*(1-s/reach)),.1);
+function setStarCell(index,glyph,r,g,b){
+  if(index<0||index>=glyphs.length)return;
+  glyphs[index]=glyph.charCodeAt(0);
+  const offset=index*3;
+  colors[offset]=Math.round(clamp(r,0,1)*255);
+  colors[offset+1]=Math.round(clamp(g,0,1)*255);
+  colors[offset+2]=Math.round(clamp(b,0,1)*255);
+}
+
+function drawStar(t,rot){
+  const point=project(0,Y1+.09,0,rot,Math.cos(rot),Math.sin(rot));
+  const cx=Math.round(point[0]),cy=Math.round(point[1]);
+  const on=clamp((t-T_STAR)/.6,0,1);
+  const flash=Math.pow(clamp(1-(t-T_STAR),0,1),2);
+  const size=(2+2.2*on)*(1+.05*Math.sin(t*3));
+  const tint=GOLD.map(v=>v+(1-v)*flash);
+  const power=.95*(1+1.6*flash);
+
+  const rayChars=["-","|","\\","/"];
+  const rayMap=[0,2,1,3];
+  for(let k=0;k<8;k++){
+    const angle=k*TAU/8+.10*Math.sin(t*.7);
+    if(Math.sin(angle)<-.3)continue;
+    const reach=size*(3+.8*Math.sin(t*3+k*1.3))*(k%2===0?1:.65);
+    const glyph=rayChars[rayMap[Math.round(((angle*180/Math.PI)%180)/45)%4]];
+    for(let step=size*1.1;step<reach;step+=.5){
+      const y=Math.round(cy-Math.sin(angle)*step);
+      const x=Math.round(cx+Math.cos(angle)*step/aspect);
+      if(x>=0&&x<cols&&y>=0&&y<rows){
+        const index=y*cols+x;
+        if(glyphs[index]===0){
+          const brightness=power*.6*(1-step/reach);
+          setStarCell(index,glyph,tint[0]*brightness,tint[1]*brightness,tint[2]*brightness);
+        }
+      }
+    }
   }
- }
- const poly=[];for(let k=0;k<10;k++){const r=k%2===0?size:size*.42,a=Math.PI/2+k*Math.PI/5;poly.push([Math.cos(a)*r,Math.sin(a)*r]);}
- for(let y=Math.floor(cy-size-2);y<=cy+size+2;y++)for(let x=Math.floor(cx-size*aspect-3);x<=cx+size*aspect+3;x++){
-  if(x<0||x>=cols||y<0||y>=rows)continue;
-  const px=(x-cx)/aspect,py=cy-y;let inside=false;
-  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
-   const a=poly[i],b=poly[j];if(((a[1]>py)!==(b[1]>py))&&(px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1]+1e-9)+a[0]))inside=!inside;
+
+  const polygon=[];
+  for(let k=0;k<10;k++){
+    const radius=k%2===0?size:.40*size,angle=Math.PI/2+k*Math.PI/5;
+    polygon.push([Math.cos(angle)*radius,Math.sin(angle)*radius]);
   }
-  if(inside){const d=Math.hypot(px,py)/size;put(y*cols+x,"@",rgb(tint,1.05-.35*d),.05);}
- }
+  const minX=Math.max(0,Math.floor(cx-size/aspect-3)),maxX=Math.min(cols-1,Math.ceil(cx+size/aspect+3));
+  const minY=Math.max(0,Math.floor(cy-size-2)),maxY=Math.min(rows-1,Math.ceil(cy+size+2));
+  for(let y=minY;y<=maxY;y++)for(let x=minX;x<=maxX;x++){
+    const px=(x-cx)*aspect,py=cy-y;
+    let inside=false;
+    for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+      const a=polygon[i],b=polygon[j];
+      if(((a[1]>py)!==(b[1]>py)) && px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1]+1e-9)+a[0])inside=!inside;
+    }
+    if(inside){
+      const distance=Math.hypot(px,py)/(size+1e-6),brightness=power*(1.10-.30*distance);
+      const glyph=distance<.45?"@":"#";
+      setStarCell(y*cols+x,glyph,tint[0]*brightness,tint[1]*brightness,tint[2]*brightness);
+    }
+  }
 }
+
 function render(t){
- const rot=ROT_SPEED*t;
- for(let i=0;i<chars.length;i++){chars[i]="";depths[i]=Infinity;cellKinds[i]=-1;}
- // Draw the 3D scene into a character-sized z-buffer.
- for(let j=0;j<parts.length;j++){
-  const q=parts[j];if(q.t0>t)continue;
-  let x=q.p[0],y=q.p[1],z=q.p[2];
-  if(q.pop){const age=t-q.t0,v=clamp(age/.45,0,1),s=1+2.70158*Math.pow(v-1,3)+1.70158*Math.pow(v-1,2);x=q.centre[0]+(x-q.centre[0])*s;y=q.centre[1]+(y-q.centre[1])*s;z=q.centre[2]+(z-q.centre[2])*s;}
-  const p=project(x,y,z,rot),cx=Math.round(p[0]),cy=Math.round(p[1]);
-  if(cx<0||cx>=cols||cy<0||cy>=rows)continue;
-  const dep=p[2],n=q.n,cr=Math.cos(rot),sr=Math.sin(rot),nx=n[0]*cr+n[2]*sr,ny=n[1],nz=-n[0]*sr+n[2]*cr;
-  const diff=clamp(nx*lightDir[0]+ny*lightDir[1]+nz*lightDir[2],0,1);
-  let b=q.base*(.28+.72*diff),spec=q.k===K.BAUBLE?.9*Math.pow(diff,24):0;
-  const flick=.85+.15*Math.sin(t*4+q.phase),spark=Math.max(0,Math.sin(t*7+q.phase*5));
-  if(q.k===K.LIGHT)b=flick;
-  if(q.k===K.TINSEL)b=.30+.35*diff+.45*spark;
-  const glow=clamp(1-(t-q.t0)/.4,0,1);
-  b=clamp(b+.8*glow,0,1.2);
-  const bright=q.k===K.LIGHT?1.1:.30+.90*b;
-  const c=q.c.map((v,i)=>clamp(v*bright+(1-v*bright)*(.6*glow+.6*spec),0,1));
-  const ramp=RAMPS[q.k],level=Math.min(Math.floor(clamp(b,0,.999)*ramp.length),ramp.length-1);
-  const idx=cy*cols+cx;
-  put(idx,ramp[level],c,dep,q.k);
- }
- // A restrained four-cell halo makes the warm bulbs read as light sources.
- for(let i=0;i<cellKinds.length;i++)if(cellKinds[i]===K.LIGHT){
-  const x=i%cols,y=Math.floor(i/cols),source=colors[i];
-  for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
-   const nx=x+dx,ny=y+dy;if(nx<0||nx>=cols||ny<0||ny>=rows)continue;
-   const ni=ny*cols+nx;if(!chars[ni]){chars[ni]=".";colors[ni]=source.map(v=>v*.34);depths[ni]=depths[i]+.08;}
+  glyphs.fill(0);depths.fill(Infinity);cellKinds.fill(255);
+  const rot=ROT_SPEED*t,cr=Math.cos(rot),sr=Math.sin(rot);
+  const cp=Math.cos(PITCH),sp=Math.sin(PITCH);
+  const total=P.x.length;
+
+  // Project and shade every active point; nearest point wins in each character cell.
+  for(let i=0;i<total;i++){
+    const start=P.t0[i];if(start>t)continue;
+    const age=t-start;
+    let x=P.x[i],y=P.y[i],z=P.z[i];
+    if(P.pop[i]){
+      const u=clamp(age/.45,0,1),scale=1+2.70158*Math.pow(u-1,3)+1.70158*Math.pow(u-1,2);
+      x=P.cx[i]+(x-P.cx[i])*scale;
+      y=P.cy[i]+(y-P.cy[i])*scale;
+      z=P.cz[i]+(z-P.cz[i])*scale;
+    }
+    const rx=x*cr+z*sr,rz=-x*sr+z*cr;
+    const y2=y*cp-rz*sp,z2=y*sp+rz*cp;
+    const distance=CAM_D-z2,projection=CAM_D/distance;
+    const sx=Math.round(cols/2+rx*projection*SCALE_Y/aspect);
+    const sy=Math.round(rows*.47-y2*projection*SCALE_Y);
+    if(sx<0||sx>=cols||sy<0||sy>=rows)continue;
+    const cell=sy*cols+sx;if(distance>=depths[cell])continue;
+
+    const nx=P.nx[i]*cr+P.nz[i]*sr;
+    const ny=P.ny[i];
+    const nz=-P.nx[i]*sr+P.nz[i]*cr;
+    const diffuse=clamp(nx*LIGHT_DIR[0]+ny*LIGHT_DIR[1]+nz*LIGHT_DIR[2],0,1);
+    const kind=P.kind[i];
+    let brightness=P.base[i]*(.18+.82*diffuse);
+    const specular=kind===KIND.BAUBLE?.95*Math.pow(diffuse,20):0;
+    brightness+=specular;
+    const flicker=.85+.15*Math.sin(t*4+P.phase[i]);
+    const spark=Math.max(0,Math.sin(t*7+P.phase[i]*5));
+    if(kind===KIND.LIGHT)brightness=flicker;
+    if(kind===KIND.TINSEL)brightness=.35+.35*diffuse+.50*spark;
+    const glow=clamp(1-age/.38,0,1);
+    brightness=clamp(brightness+.85*glow,0,1.25);
+    const factor=kind===KIND.LIGHT?1.15:.16+.95*brightness;
+    const mix=.65*glow+.65*specular;
+    let red=P.r[i]*factor,green=P.g[i]*factor,blue=P.b[i]*factor;
+    red=clamp(red+(1-red)*mix,0,1);
+    green=clamp(green+(1-green)*mix,0,1);
+    blue=clamp(blue+(1-blue)*mix,0,1);
+    const ramp=RAMPS[kind],level=Math.min(Math.floor(clamp(brightness,0,.999)*RAMP_LENGTH[kind]),RAMP_LENGTH[kind]-1);
+    glyphs[cell]=ramp.charCodeAt(level);
+    depths[cell]=distance;
+    cellKinds[cell]=kind;
+    const offset=cell*3;
+    colors[offset]=Math.round(red*255);
+    colors[offset+1]=Math.round(green*255);
+    colors[offset+2]=Math.round(blue*255);
   }
- }
- // Snowfall in front of the tree.
- for(let i=0;i<flakeSet.length;i++){
-  const f=flakeSet[i],fy=1.9-((t*f.spd+f.off)%3.3),p=project(f.x+.15*Math.sin(t*.8+f.ph),fy,f.z,rot),x=Math.round(p[0]),y=Math.round(p[1]);
-  if(x>=0&&x<cols&&y>=0&&y<rows){const idx=y*cols+x;if(!chars[idx])put(idx,p[2]<CAM_D?"*":".",[.78*f.br,.85*f.br,f.br],100);}
- }
- if(t>T_STAR)starAt(t,rot);
- // Paint the character field.
- const grad=ctx.createLinearGradient(0,0,0,logicalH);grad.addColorStop(0,"#07101e");grad.addColorStop(.58,"#0a1421");grad.addColorStop(1,"#080d17");
- ctx.fillStyle=grad;ctx.fillRect(0,0,logicalW,logicalH);
- for(let i=0;i<backgroundStars.length;i++){
-  const s=backgroundStars[i];ctx.globalAlpha=s.a;ctx.fillStyle="#adc4e4";ctx.fillRect(s.x*logicalW,s.y*logicalH,s.r,s.r);
- }
- ctx.globalAlpha=1;
- let count=0;
- for(let y=0;y<rows;y++){
-  for(let x=0;x<cols;x++){
-   const i=y*cols+x,ch=chars[i];if(!ch)continue;
-   ctx.fillStyle=Array.isArray(colors[i])?rgb(colors[i],1):colors[i];
-   ctx.fillText(ch,x*CW,y*CH+11);
-   count++;
+
+  // Warm light bloom in the four neighbouring empty cells.
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+    const index=y*cols+x;
+    if(cellKinds[index]!==KIND.LIGHT)continue;
+    const source=index*3;
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const nx=x+dx,ny=y+dy;
+      if(nx<0||nx>=cols||ny<0||ny>=rows)continue;
+      const ni=ny*cols+nx;if(glyphs[ni]!==0)continue;
+      glyphs[ni]=".".charCodeAt(0);
+      const offset=ni*3;
+      colors[offset]=Math.round(colors[source]*.42);
+      colors[offset+1]=Math.round(colors[source+1]*.42);
+      colors[offset+2]=Math.round(colors[source+2]*.42);
+    }
   }
- }
- visible=count;
- return{rot:rot,lights:lightStarts.filter(v=>v<=t).length/lightStarts.length,glyphs:count};
+
+  // Falling snow remains behind the tree and ornaments.
+  for(const flake of flakes){
+    const y=1.95-((t*flake.spd+flake.off)%3.35);
+    const point=project(flake.x+.14*Math.sin(t*.8+flake.phase),y,flake.z,rot,cr,sr);
+    const x=Math.round(point[0]),py=Math.round(point[1]);
+    if(x<0||x>=cols||py<0||py>=rows)continue;
+    const index=py*cols+x;if(glyphs[index]!==0)continue;
+    const brightness=flake.brightness;
+    setCell(index,point[2]<CAM_D-.3?"*":".",.75*brightness,.82*brightness,.96*brightness,Infinity);
+  }
+
+  if(t>T_STAR)drawStar(t,rot);
+
+  // A quiet night background; the tree is the only foreground element.
+  const gradient=ctx.createLinearGradient(0,0,0,logicalH);
+  gradient.addColorStop(0,"#07090e");
+  gradient.addColorStop(1,"#0c0f17");
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,logicalW,logicalH);
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+    const index=y*cols+x,code=glyphs[index];
+    if(!code)continue;
+    const offset=index*3;
+    ctx.fillStyle="rgb("+colors[offset]+","+colors[offset+1]+","+colors[offset+2]+")";
+    ctx.fillText(String.fromCharCode(code),x*CW+.4,y*CH+11.2);
+  }
 }
+
 function tick(now){
- if(!lastFrame)lastFrame=now;
- const dt=Math.min((now-lastFrame)/1000,.05);
- lastFrame=now;
- elapsed+=dt;
- render(elapsed);
- requestAnimationFrame(tick);
+  if(!lastFrame)lastFrame=now;
+  const dt=Math.min((now-lastFrame)/1000,.05);
+  lastFrame=now;
+  elapsed+=dt;
+  if(now-lastRendered>=1000/30){
+    render(elapsed);
+    lastRendered=now;
+  }
+  requestAnimationFrame(tick);
 }
-window.addEventListener("resize",()=>{resize();render(elapsed);});
-build();
+
+window.addEventListener("resize",()=>{
+  resize();
+  render(elapsed);
+});
+
+buildScene();
 resize();
+render(0);
 requestAnimationFrame(tick);
 })();
 </script>
